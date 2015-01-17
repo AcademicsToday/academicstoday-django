@@ -59,8 +59,12 @@ WSGI_APPLICATION = 'academicstoday_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'academicstoday_db_1_0',
+        'USER': 'root',
+        'PASSWORD': 'bart',
+        'HOST': 'localhost',
+        'PORT': '3306'
     }
 }
 

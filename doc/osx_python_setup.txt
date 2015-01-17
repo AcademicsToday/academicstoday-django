@@ -105,7 +105,7 @@ $ python --version  # Should return Python 3.x
 
 (5) Now finally lets install djnago
 $ pip3 install django        # Our MVC Framework
-$ pip3 install MySQL-python   # So Python can talk to MySQL
+$ pip3 install PyMySQL   # So Python can talk to MySQL
 
 (6) After installation
 $ python -c "import django; print(django.get_version())"
