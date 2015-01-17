@@ -1,0 +1,226 @@
+—————————————————————————————
+            LOCAL
+—————————————————————————————
+a) Connect to repository:
+# ssh 192.168.0.244 -l admin
+# su
+
+
+
+—————————————————————————————
+           REMOTE
+—————————————————————————————
+Log into ezjail git instance
+# ezjail-admin console git
+
+
+a) Now, lets create some git repository for our system
+# mkdir /git/base/academicstoday-webapp.git;
+
+
+b) Now, lets initialize them - make them ready for push/pull
+# cd /git/base/academicstoday-webapp.git && git init --bare --shared;
+
+
+c) Now, let's export these repos and set proper permissions, so we can clone and fetch from them:
+# touch /git/base/academicstoday-webapp.git/git-daemon-export-ok;
+
+
+d) Go through all the repository folders/files and make them owned by 'git' user.
+# chown -R git:git /git/base/academicstoday-webapp.git;
+
+
+
+—————————————————————————————
+            LOCAL
+—————————————————————————————
+a) Go to where the initial directory is located. This case the directory is located here:
+# mkdir ~/Sites/academicstoday-webapp && cd ~/Sites/academicstoday-webapp
+
+
+b) Add ignore file
+# cat > .gitignore
+
+Add to File:
+— - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+#—————————
+# Xcode
+#—————————
+build/
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata
+*.xccheckout
+*.moved-aside
+DerivedData
+*.hmap
+*.ipa
+*.xcuserstate
+
+# CocoaPods
+#
+# We recommend against adding the Pods directory to your .gitignore. However
+# you should judge for yourself, the pros and cons are mentioned at:
+# http://guides.cocoapods.org/using/using-cocoapods.html#should-i-ignore-the-pods-directory-in-source-control
+#
+# Pods/
+
+
+#—————————
+# OSX 
+#—————————
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two \r
+Icon
+
+
+# Thumbnails
+._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+
+
+#—————————
+# WINDOWS
+#—————————
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+
+#—————————
+# LINUX
+#—————————
+# KDE directory preferences
+.directory
+
+
+#—————————
+# Python
+#—————————
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# C extensions
+*.so
+
+# Distribution / packaging
+bin/
+build/
+develop-eggs/
+dist/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+
+# Translations
+*.mo
+
+# Mr Developer
+.mr.developer.cfg
+.project
+.pydevproject
+
+# Rope
+.ropeproject
+
+# Django stuff:
+*.log
+*.pot
+
+# Sphinx documentation
+docs/_build/
+
+
+#—————————————————————————————
+# Python VirtualEnv Directory
+#—————————————————————————————
+# Important Note: Make sure this is the name of the virtualenv directory
+# that you set when you where setting up the project.
+academicstoday-env/  
+— - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+
+
+c) Setup our local git instance to our remote
+# git init
+# git remote add origin git@192.168.0.5:/git/base/academicstoday-webapp.git
+# git add .
+# git commit -m 'Initial commit.'
+# git push origin master
+
+
+
+—————————————————————————————
+            LOCAL
+—————————————————————————————
+a) To clone the repository, go to the directory root you want to clone your files to:
+# cd ~/Projects
+
+
+b) Now we need to sync with the repository, so delete our folder. Afterwords we will download from the repository.
+Note: This will be the folder where our project "Drone" will be cloned to
+# git clone ssh://git@192.168.0.5//git/base/academicstoday-webapp.git
+
+
+
+Troubleshooting: 
+————————————————
+1) If you get a 'access denied or repository not exported' error then do this:
+# git remote rm origin
+# git remote add origin git@192.168.0.5:/git/base/academicstoday-webapp.git
+# git push origin master
+
+2) Apply gitignore on an existing repository already tracking large number of files
+# git rm -r --cached .
+# git add .
+# git commit -m ".gitignore is now working"
+
+3) I've got a project checked locally from github, that remote repo has since had changes made to it. What's the correct command to update my local copy with the latest changes?
+# git pull origin master;

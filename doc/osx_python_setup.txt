@@ -1,0 +1,173 @@
+———————————————————————————————————————————————————————————
+SETUP WEB-APPLICATION USING PYTHON3 USING DJANGO FRAMEWORK.
+———————————————————————————————————————————————————————————
+By: Bartlomiej Mika
+Date: Jan, 16th, 2015
+
+
+
+********
+* BREW *
+********
+(1)
+Install Xcode and Homebrew
+
+
+(2) Install the Command Line Tools of Xcode. Open a Terminal and type:
+$ xcode-select –install
+
+
+(3) Next, we need to install Homebrew. In the Terminal, type this command line:
+$ ruby -e “$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)”
+
+
+(4) Now, we need to insert the Homebrew directory at the top of the PATH environment variable. In this way, some Homebrew installations will take precedence over stock OS X binaries. Open or create the file ~/.bash_profile and write:
+- - - - - - - - - - - - - - - - - - - -
+export PATH=/usr/local/bin:$PATH
+- - - - - - - - - - - - - - - - - - - -
+
+
+(5) Close your Terminal and open it again to make these changes effective.
+
+
+
+************
+* Python 3 *
+************
+(1) Install python 3 (latest)
+$ brew install python3
+
+
+(2) You can check which version is installed by typing
+$ python3 –version
+
+
+(3) Verify latest is installed:
+$ python3
+
+
+
+**************
+* Virtualenv *
+**************
+Q: What is it?
+A: Python packages installed via the steps above are global in the sense that they are available across all of your projects. That can be convenient at times, but it can also create problems. For example, sometimes one project needs the latest version of Django, while another project needs an older Django version to retain compatibility with a critical third-party extension. This is one of many use cases that virtualenv was designed to solve. On my systems, only a handful of general-purpose Python packages (such as Mercurial and virtualenv) are globally available — every other package is confined to virtual environments.
+
+
+(1) To install:
+$ pip install virtualenv
+
+
+(2) Create some directories to store our projects and virtual environments, respectively:
+$ mkdir -p ~/Developer ~/Virtualenvs
+
+
+(3) We’ll then open the ~/.bashrc file (which may be created if it doesn’t exist yet)…
+$ vi ~/.bashrc
+… and add some lines to it:
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# pip should only run if there is a virtualenv currently activated
+export PIP_REQUIRE_VIRTUALENV=true
+# cache pip-installed packages to avoid re-downloading
+export PIP_DOWNLOAD_CACHE=$HOME/.pip/cache
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+(4) Let’s re-load our bash environment:
+$ source ~/.bash_profile
+
+
+
+*****************
+* PROJECT SETUP *
+*****************
+Q) How do we setup a project project titled: “academicstoday-webapp”
+A) How to create a project
+
+(1)
+$ cd ~/Developer
+$ mkdir academicstoday-webapp
+$ cd academicstoday-webapp
+
+
+(2)
+Setup our environment:
+$ python3 -m venv academicstoday-env
+
+
+(3) okay , Now lets activate virtualenv
+$ source academicstoday-env/bin/activate
+
+
+(4) Confirm we are using Python3
+$ python --version  # Should return Python 3.x
+
+
+(5) Now finally lets install djnago
+$ pip3 install django        # Our MVC Framework
+$ pip3 install MySQL-python   # So Python can talk to MySQL
+
+(6) After installation
+$ python -c "import django; print(django.get_version())"
+
+
+(7) Now django installed and ready to use , okay lets create a sample site
+$ mkdir src
+$ cd src
+$ django-admin.py startproject academicstoday_project
+
+
+(8) Now change directory to my site
+$ cd academicstoday_project
+$ python manage.py runserver
+
+
+(9) Now go to your browser and enter:  http://localhost:8000
+You should see a site.
+
+
+(10) Finally, create a file called ‘requirement.txt’ and add all the libraries this project will use. Make sure this file is located in the root of the project. Run this code.
+$ pip freeze > requirement.txt
+
+
+(11) Submit this code to git. We now have the project setup. See “git.txt”.
+
+
+
+*********************
+* ACCESSING PROJECT *
+*********************
+Q) Now that we have a project, how do we access it and set it up locally on the computer?
+A) Follow these steps:
+
+
+1) Clone from git:
+$ cd ~/Developer
+$ git clone repo_url somedir
+
+
+2) Go into the directory
+$ cd academicstoday-webapp
+
+
+3) Setup our environment
+$ python3 -m venv academicstoday-env
+
+
+(5) okay , Now lets activate virtualenv
+$ source academicstoday-env/bin/activate
+
+
+(6) Now lets install the libraries this project depends on.
+$ cd src
+$ pip install -r requirement.txt
+
+
+
+**********
+* SOURCE *
+**********
+1) https://www.computersnyou.com/2960/setup-django-virtualenv-macosx-mavericks/
+2) http://stackoverflow.com/questions/20251562/how-to-install-django-for-python-3-3
+3) http://hackercodex.com/guide/python-development-environment-on-mac-osx/
+4) http://stackoverflow.com/questions/12410113/migrating-virtualenv-and-github-between-computers

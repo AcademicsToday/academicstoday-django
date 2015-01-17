@@ -1,0 +1,44 @@
+Python in Xcode 6
+http://stackoverflow.com/questions/5276967/python-in-xcode-6
+
+Please note that these instructions are for creating a project from scratch. If you have existing Python scripts that you wish to include in this project, you will obviously need to slightly deviate from these instructions.
+
+If you find that these instructions no longer work or are unclear due to changes in Xcode updates, please let me know. I will make the necessary corrections.
+
+Open Xcode 4 or Xcode 5. The instructions for either are the same.
+In the menu bar, click "File" → "New" → "New Project…".
+Select "Other" under "OS X".
+Select "External Build System" and click "Next".
+Enter the product name, organization name, and company identifier.
+For the "Build Tool" field, type in /usr/local/bin/python3 for Python 3 or /usr/bin/python for Python 2 (or Python 1 if you're into that kind of thing) and then click "Next". Note that this assumes you have Python installed in the typical location(s). if you are unsure as to where your Python executables are enter these commands into Terminal: which python3 and which python.
+Click "Next".
+Choose where to save it and click "Create".
+In the menu bar, click "File" → "New" → "New File…".
+Select "Other" under "OS X".
+Select "Empty" and click "Next".
+Navigate to the project folder (it will not work, otherwise), enter the name of the Python file (include the ".py" extension), and click "Create".
+In the menu bar, click "Product" → "Scheme" → "Edit Scheme…".
+Click "Run" in the left column.
+In the "Info" tab, click the "Executable" field and then click "Other…".
+Navigate to the executable from Step 6. You may need to use ⇧⌘G to type in the directory if it is hidden.
+Select the executable and click "Choose".
+Uncheck "Debug executable". If you skip this step, Xcode will try to debug the Python executable itself. I am unaware of a way to integrate an external debugging tool into Xcode.
+Click the "+" icon under "Arguments Passed On Launch". You may have to expand that section by clicking on the triangle pointing to the right.
+Type in $(SRCROOT)/ (or $(SOURCE_ROOT)/) and then the name of the Python file you want to test. Remember, the Python program must be in the project folder. Otherwise, you will have to type out the full path (or relative path if it's in a subfolder of the project folder) here. If there are spaces anywhere in the full path, you must include quotation marks at the beginning and end of this.
+Click "Close".
+Start coding.
+Note that if you open the "Utilities" panel, with the "Show the File inspector" tab active, the file type is automatically set to "Default - Python script". Feel free to look through all the file type options it has to gain an idea as to what all it is capable of doing. The method above can be applied to any interpreted language. As of right now, I have yet to figure out exactly how to get it to work with Java; then again, I haven't done too much research. Surely there is some documentation floating around on the web about all of this.
+
+Say, "Hello, code completion, auto-indentation, git integration, and syntax highlighting." Note that it's not as advanced as it is with C, C++, or Objective-C but it is better than using IDLE in my opinion. Note that the auto-indentation seems to have been removed from newer releases.
+
+Running without administrative privileges:
+
+If you do not have administrative privileges or are not in the Developer group, you can still use Xcode for Python programming (but you still won't be able to develop in languages that require compiling). Instead of using the play button, in the menu bar, click "Product" → "Perform Action" → "Run Without Building" or simply use the keyboard shortcut ^⌘R.
+
+Other Notes:
+
+To change the text encoding, line endings, and/or indentation settings, open the "Utilities" panel and click "Show the File inspector" tab active. There, you will find these settings.
+
+For more information about Xcode's build settings, there is no better source than this. I'd be interested in hearing from somebody who got this to work with unsupported compiled languages. This process should work for any other interpreted language. Just be sure to change Step 6 and Step 16 accordingly.
+
+To any Apple developers who are still reading, I would love for this process to be better documented (in a general manner such that it's not restricted to just Python). However, I do understand that it is not in Apple's best interest to support "irrelevant" languages.
