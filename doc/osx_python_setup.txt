@@ -123,14 +123,33 @@ $ python manage.py runserver
 
 
 (9) Now go to your browser and enter:  http://localhost:8000
-You should see a site.
+You should see a site. Exit web server when finished.
 
 
-(10) Finally, create a file called ‘requirement.txt’ and add all the libraries this project will use. Make sure this file is located in the root of the project. Run this code.
+(10) Create an application.
+$ python manage.py startapp webapp
+
+
+(11) Then go to academicstoday_project/settings.py and make sure to include ‘webapp’ in the file.
+- - - - - - - - - - - - - - - - - - - - - - - - - - 
+INSTALLED_APPS = (
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'webapp',
+)
+- - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+
+
+(12) Finally, create a file called ‘requirement.txt’ and add all the libraries this project will use. Make sure this file is located in the root of the project. Run this code.
 $ pip freeze > requirement.txt
 
 
-(11) Submit this code to git. We now have the project setup. See “git.txt”.
+(13) Submit this code to git. We now have the project setup. See “git.txt”.
 
 
 
