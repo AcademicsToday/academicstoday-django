@@ -1,0 +1,18 @@
+———————————————
+Handing Models
+———————————————
+Source = https://docs.djangoproject.com/en/1.7/intro/tutorial01/
+
+1) 
+Whenever we make changes to our model (in models.py), run these after:
+
+2)
+Run to create migrations for those changes:
+$ python manage.py makemigrations
+
+3)
+Run to apply those changes to the database:
+python manage.py migrate 
+
+Notes:
+- Run these if you’re creating the app for the first time as well using MySQL.
