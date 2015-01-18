@@ -73,13 +73,14 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+# ( See: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones )
+TIME_ZONE = 'America/Toronto'
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)

@@ -7,4 +7,7 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
+            
+    # This regex makes the default URL for the website to launch this view.
+    url(r'', include('webapp.urls')),
 )
