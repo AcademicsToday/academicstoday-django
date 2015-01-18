@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .models import LandpageTeamMember
+from .models import LandpageCoursePreview
 
 # Create your views here...
 
@@ -27,7 +28,10 @@ def load_landpage(request):
                              "lib/cbpanimatedheader/1.0.0/cbpAnimatedHeader.js",
                              "lib/cbpanimatedheader/1.0.0/cbpAnimatedHeader.min.js",
                              "lib/jqbootstrapvalidation/1.3.6/jqBootstrapValidation.js"]
+    course_previews = LandpageCoursePreview.objects.all();
     team_members = LandpageTeamMember.objects.all()
-    return render(request, 'landpage/main.html', {'team_members' : team_members,
-                  'local_css_urls' : local_css_library_urls,
-                  'local_js_urls' : local_js_library_urls})
+    return render(request, 'landpage/main.html',{
+    'course_previews' : course_previews,
+    'team_members' : team_members,
+    'local_css_urls' : local_css_library_urls,
+    'local_js_urls' : local_js_library_urls})
