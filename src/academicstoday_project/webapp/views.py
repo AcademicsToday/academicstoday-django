@@ -2,6 +2,10 @@ from django.shortcuts import render
 from .models import LandpageTeamMember
 from .models import LandpageCoursePreview
 
+# Developer Notes:
+# (1) Templates
+# https://docs.djangoproject.com/en/1.7/ref/templates
+
 # Create your views here...
 
 def load_landpage(request):
