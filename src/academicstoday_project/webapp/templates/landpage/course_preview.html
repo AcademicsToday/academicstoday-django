@@ -1,0 +1,43 @@
+{% load staticfiles %}
+<div class="modal fade" id="course_preview_modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:77%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h2 class="modal-title" id="myModalLabel">Preview</h2>
+            </div>
+            <div class="modal-body">
+                <div class="row clearfix profile-row">
+                    <form id='course_preview_form'>
+                        <input type="hidden" id="id" name="id" value="{{ course_preview.id }}">
+                    
+                        <div class="col-lg-8 col-lg-offset-2">
+                            <!-- Project Details Go Here -->
+                            <h2> {{ course_preview.title }}</h2>
+                            <p class="item-intro text-muted">{{ course_preview.sub_title }}</p>
+                            <img class="img-responsive" src="{% static 'img/' %}{{ course_preview.image_filename }}" alt="">
+                            <!-- Use this area to describe your project. -->
+                            {{ course_preview.description }}
+                            {{ course_preview.summary }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button"
+                       class="btn btn-primary"
+                data-dismiss="modal">
+                    <i class="fa fa-times"></i> Close Project
+                </button>
+                
+                <button type="button"
+                       class="btn btn-primary"
+                data-dismiss="modal"
+                        form="add_client_form"
+                     onclicl="ajax_update_client();">
+                    <i class="fa fa-times"></i> Close Project
+                </button>
+            </div>
+        </div>
+    </div>
+<!-- end modal -->

@@ -99,9 +99,12 @@ $('#name').focus(function() {
  */
 function ajax_popup_course_preview(course_preview_id)
 {
-    var url = 'index.php/landpage/at_landpage_controller/ajax_popup_course_preview';
+    var url = 'get_course_preview';
     $.ajax( url, {
-        data: "id="+course_preview_id,
+        data: {
+           'course_preview_id': course_preview_id,
+           'csrfmiddlewaretoken': '{{ csrf_token }}',
+        },
         type: 'post',
         success: function(result) {
             // success code execution here

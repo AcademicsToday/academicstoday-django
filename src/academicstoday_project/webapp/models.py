@@ -49,3 +49,18 @@ class LandpageCoursePreview(models.Model):
     
     class Meta:
         db_table = 'at_landpage_course_previews'
+
+class CoursePreview(models.Model):
+    id = models.IntegerField(max_length=11, primary_key=True)
+    image_filename = models.CharField(max_length=31)
+    title = models.CharField(max_length=63)
+    sub_title = models.CharField(max_length=127)
+    category = models.CharField(max_length=31)
+    description = models.TextField()
+    summary = models.TextField()
+    
+    def __str__(self):
+        return self.title
+    
+    class Meta:
+        db_table = 'at_course_previews'

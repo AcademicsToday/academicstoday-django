@@ -1,10 +1,15 @@
 from django.shortcuts import render
+from django.core import serializers
 from .models import LandpageTeamMember
 from .models import LandpageCoursePreview
+from .models import CoursePreview
 
 # Developer Notes:
 # (1) Templates
 # https://docs.djangoproject.com/en/1.7/ref/templates
+#
+# (2) JSON
+# https://docs.djangoproject.com/en/1.7/topics/serialization/
 
 # Create your views here...
 
@@ -39,3 +44,11 @@ def load_landpage(request):
     'team_members' : team_members,
     'local_css_urls' : local_css_library_urls,
     'local_js_urls' : local_js_library_urls})
+
+def get_course_preview(request):
+    course_preview = None
+    if request.method == u'POST':
+        POST = request.POST
+        preview_course_id = int(POST[u'course_preview_id'])
+        course_preview = CoursePreview.objects.get(id=preview_course_id)
+    return render(request, 'landpage/course_preview.html',{ 'course_preview' : course_preview })
