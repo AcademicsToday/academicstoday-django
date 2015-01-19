@@ -125,10 +125,12 @@ function ajax_popup_course_preview(course_preview_id)
  */
 function ajax_popup_login()
 {
-    var url = 'index.php/system/at_login_controller/ajax_popup_login';
+    var url = 'get_login';
             
     $.ajax( url, {
-        data: "id="+'',
+        data: {
+           'csrfmiddlewaretoken': '{{ csrf_token }}',
+        },
         type: 'post',
         success: function(result) {
             // success code execution here
@@ -149,10 +151,12 @@ function ajax_popup_login()
  */
 function ajax_popup_register()
 {
-    var url = 'index.php/system/at_register_controller/ajax_popup_register';
+    var url = 'get_register';
             
     $.ajax( url, {
-        data: "id="+'',
+        data: {
+           'csrfmiddlewaretoken': '{{ csrf_token }}',
+        },
         type: 'post',
         success: function(result) {
             // success code execution here
@@ -167,5 +171,5 @@ function ajax_popup_register()
         }
     });
 }
-        
+    
 </script>

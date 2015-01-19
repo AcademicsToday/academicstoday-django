@@ -52,3 +52,9 @@ def get_course_preview(request):
         preview_course_id = int(POST[u'course_preview_id'])
         course_preview = CoursePreview.objects.get(id=preview_course_id)
     return render(request, 'landpage/course_preview.html',{ 'course_preview' : course_preview })
+
+def get_login(request):
+    return render(request, 'landpage/login.html',{})
+
+def get_register(request):
+    return render(request, 'landpage/register.html',{})
