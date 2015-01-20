@@ -6,7 +6,8 @@ from .models import CoursePreview
 import json
 from django.http import HttpResponse
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 # Developer Notes:
 # (1) Templates
@@ -15,32 +16,33 @@ from django.contrib.auth import authenticate, login
 # (2) JSON
 # https://docs.djangoproject.com/en/1.7/topics/serialization/
 
-# Create your views here...
+
+local_css_library_urls = ["lib/jquery/1.11.1/jquery-ui.css",
+                          "lib/bootstrap/3.2.0/css/bootstrap.min.css",
+                          "lib/font-awesome/4.1.0/css/font-awesome.css",
+                          "lib/font-awesome/4.1.0/css/font-awesome.min.css",
+                          "css/landpage.css"]
+
+local_js_library_urls = ["lib/jquery/1.11.1/jquery.min.js",
+                         "lib/jquery/1.11.1/jquery.tablesorter.js",
+                         "lib/jquery/1.11.1/jquery-ui.js",
+                         "lib/jquery-easing/1.3/jquery.easing.min.js",
+                         "lib/bootstrap/3.2.0/js/bootstrap.min.js",
+                         "lib/bootstrap/3.2.0/js/bootstrap.js",
+                         "lib/bootstrap/3.2.0/js/tab.js",
+                         "lib/bootstrap/3.2.0/js/popover.js",
+                         "lib/bootstrap/3.2.0/js/tooltip.js",
+                         "lib/bootstrap/3.2.0/js/button.js",
+                         "lib/bootstrap/3.2.0/js/modal.js",
+                         "lib/bootstrap/3.2.0/js/functions.js",
+                         "lib/bootstrap/3.2.0/js/collapse.js",
+                         "lib/bootstrap/3.2.0/js/transition.js",
+                         "lib/classie/1.0.0/classie.js",
+                         "lib/cbpanimatedheader/1.0.0/cbpAnimatedHeader.js",
+                         "lib/cbpanimatedheader/1.0.0/cbpAnimatedHeader.min.js",
+                         "lib/jqbootstrapvalidation/1.3.6/jqBootstrapValidation.js"]
 
 def load_landpage(request):
-    local_css_library_urls = ["lib/jquery/1.11.1/jquery-ui.css",
-                              "lib/bootstrap/3.2.0/css/bootstrap.min.css",
-                              "lib/font-awesome/4.1.0/css/font-awesome.css",
-                              "lib/font-awesome/4.1.0/css/font-awesome.min.css",
-                              "css/landpage.css"]
-    local_js_library_urls = ["lib/jquery/1.11.1/jquery.min.js",
-                             "lib/jquery/1.11.1/jquery.tablesorter.js",
-                             "lib/jquery/1.11.1/jquery-ui.js",
-                             "lib/jquery-easing/1.3/jquery.easing.min.js",
-                             "lib/bootstrap/3.2.0/js/bootstrap.min.js",
-                             "lib/bootstrap/3.2.0/js/bootstrap.js",
-                             "lib/bootstrap/3.2.0/js/tab.js",
-                             "lib/bootstrap/3.2.0/js/popover.js",
-                             "lib/bootstrap/3.2.0/js/tooltip.js",
-                             "lib/bootstrap/3.2.0/js/button.js",
-                             "lib/bootstrap/3.2.0/js/modal.js",
-                             "lib/bootstrap/3.2.0/js/functions.js",
-                             "lib/bootstrap/3.2.0/js/collapse.js",
-                             "lib/bootstrap/3.2.0/js/transition.js",
-                             "lib/classie/1.0.0/classie.js",
-                             "lib/cbpanimatedheader/1.0.0/cbpAnimatedHeader.js",
-                             "lib/cbpanimatedheader/1.0.0/cbpAnimatedHeader.min.js",
-                             "lib/jqbootstrapvalidation/1.3.6/jqBootstrapValidation.js"]
     course_previews = LandpageCoursePreview.objects.all();
     team_members = LandpageTeamMember.objects.all()
     return render(request, 'landpage/main.html',{
@@ -122,3 +124,20 @@ def login_authentication(request):
             else:
                 response_data = {'status' : 'failure', 'message' : 'Wrong username or password.'}                
     return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+def logout_authentication(request):
+    response_data = {'status' : 'success', 'message' : 'Done'}
+    if request.is_ajax():
+        if request.method == 'POST':
+            logout(request)
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+@login_required(login_url='/landpage')
+def courses(request):
+    course_previews = LandpageCoursePreview.objects.all();
+    team_members = LandpageTeamMember.objects.all()
+    return render(request, 'courses/list.html',{
+                  'course_previews' : course_previews,
+                  'team_members' : team_members,
+                  'local_css_urls' : local_css_library_urls,
+                  'local_js_urls' : local_js_library_urls})

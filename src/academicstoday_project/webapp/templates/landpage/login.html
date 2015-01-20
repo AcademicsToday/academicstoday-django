@@ -50,7 +50,11 @@ function ajax_authenticate()
            // success code execution here
            if (json_result.status == "success")
            {
+               // Hide & close the current popup modal.
                $('#login_modal').modal('hide');
+           
+               // Load up the course list.
+               window.location = 'courses';
            }
            else
            {
