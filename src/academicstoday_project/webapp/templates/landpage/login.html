@@ -1,26 +1,82 @@
 <!-- Modal -->
-<div class="modal fade" id="login_modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="width:77%;">
+<div class="modal fade" id="login_modal" role="dialog">
+    <div class="modal-dialog" style="width:300px;">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h2 class="modal-title" id="myModalLabel">Log In</h2>
+                <a href="#" class="btn btn-success pull-right" data-dismiss="modal">×</a>
+                <h4>Welcome to academicstoday.ca</h4>
             </div>
             <div class="modal-body">
-                <div class="row clearfix profile-row">
-                    <form id='course_preview_form'>
-                    </form>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button"
-                    class="btn btn-primary"
-                    data-dismiss="modal"
-                    form="add_client_form"
-                    onclicl="ajax_update_client();">
-                    <i class="fa fa-times"></i> Login
-                </button>
+                <form method="post"
+                      action='/login'
+                        name="loginForm">
+                    <p><input type="text"
+                             class="span3"
+                              name="email"
+                              id="email"
+                              placeholder="Enter Email"
+                              value=""></p>
+                    <p><input type="password"
+                             class="span3" id="loginPassword"
+                              name="loginPassword"
+                       placeholder="Enter Password"></p>
+                    <p><button type="submit"
+                             class="btn btn-success">Sign in
+                    </button> <a href="/forgotpassword">Forgot Password</a></p>
+                </form>
             </div>
         </div>
     </div>
+</div>
 <!-- end modal -->
+
+<script>
+/**
+*  Function will call AJAX function to load the register.
+*/
+function ajax_authenticate()
+{
+    var url = 'get_register';
+
+    $.ajax( url, {
+        data: {
+            'csrfmiddlewaretoken': '{{ csrf_token }}',
+        },
+        type: 'post',
+        success: function(result) {
+            // success code execution here
+            $('#ajax_response_register').html(result); // Update UI.
+            $('#register_modal').modal();               // Unhide view.
+        },
+        error: function(xhr,status,error) {
+            // error code here
+        },
+        complete: function(xhr,status) {
+            // completion code here
+        }
+    });
+}
+
+function ajax_forget_password()
+{
+    var url = 'get_register';
+    
+    $.ajax( url, {
+        data: {
+            'csrfmiddlewaretoken': '{{ csrf_token }}',
+        },
+        type: 'post',
+        success: function(result) {
+               // success code execution here
+            $('#ajax_response_register').html(result); // Update UI.
+            $('#register_modal').modal();               // Unhide view.
+        },
+        error: function(xhr,status,error) {
+            // error code here
+        },
+        complete: function(xhr,status) {
+            // completion code here
+        }
+    });
+}
+</script>
