@@ -19,8 +19,7 @@
                                       class="form-control"
                                       name="first_name"
                                         id="first_name"
-                               placeholder="Enter First Name"
-                                    value="">
+                               placeholder="Enter First Name">
                             </div>
                         </div>
                     </div>
@@ -34,11 +33,10 @@
                             </label>
                             <div class="col-sm-9">
                                 <input type="text"
-                                    class="form-control"
-                                    name="last_name"
-                                    id="last_name"
-                                    placeholder="Enter Last Name"
-                                    value="">
+                                      class="form-control"
+                                       name="last_name"
+                                         id="last_name"
+                                placeholder="Enter Last Name">
                             </div>
                         </div>
                     </div>
@@ -52,12 +50,11 @@
                             </label>
                             <div class="col-sm-9">
                                 <input type="text"
-                                    class="form-control"
-                                    name="email"
-                                    id="email"
-                                    placeholder="Enter Email"
-                                    value="">
-                                    </div>
+                                      class="form-control"
+                                       name="electronic_mail"
+                                         id="electronic_mail"
+                                placeholder="Enter Email">
+                            </div>
                         </div>
                     </div>
                     <!-- end EMAIL -->
@@ -73,8 +70,7 @@
                                     class="form-control"
                                     name="password"
                                     id="password"
-                                    placeholder="Enter Password"
-                                    value="">
+                                    placeholder="Enter Password">
                             </div>
                         </div>
                     </div>
@@ -89,10 +85,9 @@
                             <div class="col-sm-9">
                                 <input type="text"
                                     class="form-control"
-                                    name="repeat_password"
-                                    id="repeat_password"
-                                    placeholder="Repeat Password Again"
-                                    value="">
+                                    name="password_repeated"
+                                    id="password_repeated"
+                                    placeholder="Repeat Password Again">
                             </div>
                         </div>
                     </div>
@@ -105,7 +100,9 @@
                                 Are you 18 or older?
                             </label>
                             <div class="col-sm-9">
-                                <input type="checkbox" name="is_18_or_plus" value="1"> Yes, I am 18 years or older
+                                <input type="checkbox"
+                                         id="is_18_or_plus"
+                                       name="is_18_or_plus"> Yes, I am 18 years or older
                             </div>
                         </div>
                     </div>
@@ -114,13 +111,52 @@
             </div>
             <div class="modal-footer">
                 <button type="button"
-                    class="btn btn-primary"
-                    data-dismiss="modal"
-                    form="register_form"
-                    onclicl="ajax_update_client();">
+                       class="btn btn-primary"
+                        form="register_form"
+                     onclick="ajax_register();">
                     <i class="fa fa-times"></i> Register
                 </button>
             </div>
         </div>
     </div>
 <!-- end modal -->
+
+<script>
+/**
+*  Function will call AJAX function to load the register.
+*/
+function ajax_register()
+{
+    var url = 'register';
+    $.ajax( url, {
+        data: {
+           'first_name': $('#first_name').val(),
+           'last_name': $('#last_name').val(),
+           'email': $('#electronic_mail').val(),
+           'password': $('#password').val(),
+           'password_repeated': $('#password_repeated').val(),
+           'is_18_or_plus': $('#is_18_or_plus').is(':checked'),
+           'csrfmiddlewaretoken': '{{ csrf_token }}'
+        },
+        type: 'POST',
+        success: function(json_result) {
+           // success code execution here
+           if (json_result.status == "success")
+           {
+               $('#register_modal').modal('hide');
+           }
+           else
+           {
+               alert(json_result.message);
+           }
+        },
+        error: function(xhr,status,error) {
+            // error code here
+        },
+        complete: function(xhr,status) {
+            // completion code here
+        }
+    });
+}
+
+</script>
