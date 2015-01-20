@@ -1,16 +1,103 @@
 <!-- Modal -->
-<div class="modal fade" id="register_modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="width:77%;">
+<div class="modal fade" id="register_modal" role="dialog">
+    <div class="modal-dialog" style="width:50%;">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                 <h2 class="modal-title" id="myModalLabel">Register</h2>
             </div>
             <div class="modal-body">
-                <div class="row clearfix profile-row">
-                    <form id='register_form'>
-                    </form>
-                </div>
+                <form id='register_form'>
+                    <!-- FIRST NAME -->
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                First Name
+                            </label>
+                            <div class="col-sm-9">
+                                <input type="text"
+                                      class="form-control"
+                                      name="first_name"
+                                        id="first_name"
+                               placeholder="Enter First Name"
+                                    value="">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end FIRST NAME -->
+                    <br/>
+                    <!-- LAST NAME -->
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                Last Name
+                            </label>
+                            <div class="col-sm-9">
+                                <input type="text"
+                                    class="form-control"
+                                    name="last_name"
+                                    id="last_name"
+                                    placeholder="Enter Last Name"
+                                    value="">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end LAST NAME -->
+                    <br/>
+                    <!-- EMAIL -->
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                Email
+                            </label>
+                            <div class="col-sm-9">
+                                <input type="text"
+                                    class="form-control"
+                                    name="email"
+                                    id="email"
+                                    placeholder="Enter Email"
+                                    value="">
+                                    </div>
+                        </div>
+                    </div>
+                    <!-- end EMAIL -->
+                    <br/>
+                    <!-- PASSWORD -->
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                Password
+                            </label>
+                            <div class="col-sm-9">
+                                <input type="text"
+                                    class="form-control"
+                                    name="password"
+                                    id="password"
+                                    placeholder="Enter Password"
+                                    value="">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end PASSWORD -->
+                    <br/>
+                    <!-- REPEAT PASSWORD -->
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                Password
+                            </label>
+                            <div class="col-sm-9">
+                                <input type="text"
+                                    class="form-control"
+                                    name="repeat_password"
+                                    id="repeat_password"
+                                    placeholder="Repeat Password Again"
+                                    value="">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end REPEAT PASSWORD -->
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button"
