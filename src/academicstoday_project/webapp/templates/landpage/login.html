@@ -12,15 +12,16 @@
                         name="loginForm">
                     <p><input type="text"
                              class="span3"
-                              name="email"
-                              id="email"
-                              placeholder="Enter Email"
-                              value=""></p>
+                              name="login_username"
+                                id="login_username"
+                       placeholder="Enter Email"></p>
                     <p><input type="password"
-                             class="span3" id="loginPassword"
-                              name="loginPassword"
+                             class="span3"
+                              name="login_password"
+                                id="login_password"
                        placeholder="Enter Password"></p>
-                    <p><button type="submit"
+                    <p><button type="button"
+                            onclick="ajax_authenticate();"
                              class="btn btn-success">Sign in
                     </button> <a href="/forgotpassword">Forgot Password</a></p>
                 </form>
@@ -36,17 +37,25 @@
 */
 function ajax_authenticate()
 {
-    var url = 'get_register';
+    var url = 'login';
 
     $.ajax( url, {
         data: {
-            'csrfmiddlewaretoken': '{{ csrf_token }}',
+           'username': $("#login_username").val(),
+           'password': $("#login_password").val(),
+           'csrfmiddlewaretoken': '{{ csrf_token }}'
         },
         type: 'post',
-        success: function(result) {
-            // success code execution here
-            $('#ajax_response_register').html(result); // Update UI.
-            $('#register_modal').modal();               // Unhide view.
+        success: function(json_result) {
+           // success code execution here
+           if (json_result.status == "success")
+           {
+               $('#login_modal').modal('hide');
+           }
+           else
+           {
+               alert(json_result.message);
+           }
         },
         error: function(xhr,status,error) {
             // error code here
@@ -57,9 +66,12 @@ function ajax_authenticate()
     });
 }
 
+/**
+ *  TODO: Implement.
+ */
 function ajax_forget_password()
 {
-    var url = 'get_register';
+    var url = 'forget_password';
     
     $.ajax( url, {
         data: {
