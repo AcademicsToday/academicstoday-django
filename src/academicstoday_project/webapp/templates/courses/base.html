@@ -32,17 +32,19 @@
         <![endif]-->
     </head>
     
-    <body id="page-top" class="index">
-        <!-- Navigation -->
-        {% include "courses/nav.html" %}
+    <body id="" class="index">
+        <div id="wrapper">
+            <!-- Navigation -->
+            {% include "courses/nav.html" %}
+
+            <!-- Scripts -->
+            {% csrf_token %}
+            {% include "courses/script.html" %}
         
-        <!-- Scripts -->
-        {% csrf_token %}
-        {% include "courses/script.html" %}
-        
-        <!-- MAIN -->
-        {% block content %}
-        {% endblock %}
+            <!-- MAIN -->
+            {% block content %}
+            {% endblock %}
+        </div><!-- /#wrapper -->
 
         <!-- Footer -->
         {% for local_js_url in local_js_urls %}

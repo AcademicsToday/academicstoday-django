@@ -17,30 +17,54 @@ from django.contrib.auth.decorators import login_required
 # https://docs.djangoproject.com/en/1.7/topics/serialization/
 
 
-local_css_library_urls = ["lib/jquery/1.11.1/jquery-ui.css",
-                          "lib/bootstrap/3.2.0/css/bootstrap.min.css",
-                          "lib/font-awesome/4.1.0/css/font-awesome.css",
-                          "lib/font-awesome/4.1.0/css/font-awesome.min.css",
-                          "css/landpage.css"]
+agency_css_library_urls = ["lib/jquery/1.11.1/jquery-ui.css",
+                           "lib/bootstrap/3.2.0/css/bootstrap.min.css",
+                           "lib/font-awesome/4.1.0/css/font-awesome.css",
+                           "lib/font-awesome/4.1.0/css/font-awesome.min.css",
+                           "css/landpage.css"]
 
-local_js_library_urls = ["lib/jquery/1.11.1/jquery.min.js",
-                         "lib/jquery/1.11.1/jquery.tablesorter.js",
-                         "lib/jquery/1.11.1/jquery-ui.js",
-                         "lib/jquery-easing/1.3/jquery.easing.min.js",
-                         "lib/bootstrap/3.2.0/js/bootstrap.min.js",
-                         "lib/bootstrap/3.2.0/js/bootstrap.js",
-                         "lib/bootstrap/3.2.0/js/tab.js",
-                         "lib/bootstrap/3.2.0/js/popover.js",
-                         "lib/bootstrap/3.2.0/js/tooltip.js",
-                         "lib/bootstrap/3.2.0/js/button.js",
-                         "lib/bootstrap/3.2.0/js/modal.js",
-                         "lib/bootstrap/3.2.0/js/functions.js",
-                         "lib/bootstrap/3.2.0/js/collapse.js",
-                         "lib/bootstrap/3.2.0/js/transition.js",
-                         "lib/classie/1.0.0/classie.js",
-                         "lib/cbpanimatedheader/1.0.0/cbpAnimatedHeader.js",
-                         "lib/cbpanimatedheader/1.0.0/cbpAnimatedHeader.min.js",
-                         "lib/jqbootstrapvalidation/1.3.6/jqBootstrapValidation.js"]
+sb_admin_css_library_urls = ["lib/jquery/1.11.1/jquery-ui.css",
+                             "lib/bootstrap/3.3.2/css/bootstrap.min.css",
+                             "lib/font-awesome/4.2.0/css/font-awesome.css",
+                             "lib/font-awesome/4.2.0/css/font-awesome.min.css",
+                             "css/sb-admin.css"]
+
+agency_js_library_urls = ["lib/jquery/1.11.1/jquery.min.js",
+                          "lib/jquery/1.11.1/jquery.tablesorter.js",
+                          "lib/jquery/1.11.1/jquery-ui.js",
+                          "lib/jquery-easing/1.3/jquery.easing.min.js",
+                          "lib/bootstrap/3.2.0/js/bootstrap.min.js",
+                          "lib/bootstrap/3.2.0/js/bootstrap.js",
+                          "lib/bootstrap/3.2.0/js/tab.js",
+                          "lib/bootstrap/3.2.0/js/popover.js",
+                          "lib/bootstrap/3.2.0/js/tooltip.js",
+                          "lib/bootstrap/3.2.0/js/button.js",
+                          "lib/bootstrap/3.2.0/js/modal.js",
+                          "lib/bootstrap/3.2.0/js/functions.js",
+                          "lib/bootstrap/3.2.0/js/collapse.js",
+                          "lib/bootstrap/3.2.0/js/transition.js",
+                          "lib/classie/1.0.0/classie.js",
+                          "lib/cbpanimatedheader/1.0.0/cbpAnimatedHeader.js",
+                          "lib/cbpanimatedheader/1.0.0/cbpAnimatedHeader.min.js",
+                          "lib/jqbootstrapvalidation/1.3.6/jqBootstrapValidation.js"]
+
+sb_admin_js_library_urls = ["lib/jquery/1.11.1/jquery.min.js",
+                            "lib/jquery/1.11.1/jquery.tablesorter.js",
+                            "lib/jquery/1.11.1/jquery-ui.js",
+                            "lib/jquery-easing/1.3/jquery.easing.min.js",
+                            "lib/bootstrap/3.3.2/js/bootstrap.min.js",
+                            "lib/bootstrap/3.3.2/js/bootstrap.js",
+                            "lib/morris/0.5.0/morris.js",
+                            "lib/morris/0.5.0/morris.min.js",
+                            "lib/morris/0.5.0/raphael.min.js",
+                            "lib/morris/0.5.0/morris-data.js",
+                            "lib/flot/x.x/excanvas.min.js",
+                            "lib/flot/x.x/flot-data.js",
+                            "lib/flot/x.x/jquery.flot.js",
+                            "lib/flot/x.x/jquery.flot.pie.js",
+                            "lib/flot/x.x/jquery.flot.resize.js",
+                            "lib/flot/x.x/jquery.flot.tooltip.min.js",
+                            ]
 
 def load_landpage(request):
     course_previews = LandpageCoursePreview.objects.all();
@@ -48,8 +72,8 @@ def load_landpage(request):
     return render(request, 'landpage/main.html',{
     'course_previews' : course_previews,
     'team_members' : team_members,
-    'local_css_urls' : local_css_library_urls,
-    'local_js_urls' : local_js_library_urls})
+    'local_css_urls' : agency_css_library_urls,
+    'local_js_urls' : agency_js_library_urls})
 
 def get_course_preview(request):
     course_preview = None
@@ -139,5 +163,5 @@ def courses(request):
     return render(request, 'courses/list.html',{
                   'course_previews' : course_previews,
                   'team_members' : team_members,
-                  'local_css_urls' : local_css_library_urls,
-                  'local_js_urls' : local_js_library_urls})
+                  'local_css_urls' : sb_admin_css_library_urls,
+                  'local_js_urls' : sb_admin_js_library_urls})
