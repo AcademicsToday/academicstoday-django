@@ -3,7 +3,8 @@ from django.core import serializers
 from .models import LandpageTeamMember
 from .models import LandpageCoursePreview
 from .models import CoursePreview
-from .models import CourseEnrollmentInfo
+from .models import Course
+from .models import CourseEnrollment
 import json
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -67,6 +68,7 @@ sb_admin_js_library_urls = ["lib/jquery/1.11.1/jquery.min.js",
 #                            "lib/flot/x.x/jquery.flot.tooltip.min.js",
                             ]
 
+
 def load_landpage(request):
     course_previews = LandpageCoursePreview.objects.all();
     team_members = LandpageTeamMember.objects.all()
@@ -76,6 +78,7 @@ def load_landpage(request):
     'local_css_urls' : agency_css_library_urls,
     'local_js_urls' : agency_js_library_urls})
 
+
 def get_course_preview(request):
     course_preview = None
     if request.method == u'POST':
@@ -84,11 +87,14 @@ def get_course_preview(request):
         course_preview = CoursePreview.objects.get(id=preview_course_id)
     return render(request, 'landpage/course_preview.html',{ 'course_preview' : course_preview })
 
+
 def get_login(request):
     return render(request, 'landpage/login.html',{})
 
+
 def get_register(request):
     return render(request, 'landpage/register.html',{})
+
 
 def register(request):
     response_data = {}
@@ -132,6 +138,7 @@ def register(request):
 
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
+
 def login_authentication(request):
     response_data = {}
     if request.is_ajax():
@@ -150,6 +157,7 @@ def login_authentication(request):
                 response_data = {'status' : 'failure', 'message' : 'Wrong username or password.'}                
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
+
 def logout_authentication(request):
     response_data = {'status' : 'success', 'message' : 'Done'}
     if request.is_ajax():
@@ -157,11 +165,127 @@ def logout_authentication(request):
             logout(request)
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
+
 @login_required(login_url='/landpage')
 def courses(request):
-    courses = CourseEnrollmentInfo.objects.all()
+    courses = Course.objects.all()
     return render(request, 'courses/list.html',{
                   'courses' : courses,
                   'user' : request.user,
+                  'local_css_urls' : sb_admin_css_library_urls,
+                  'local_js_urls' : sb_admin_js_library_urls})
+
+
+@login_required()
+def enroll(request):
+    response_data = {'status' : 'failure', 'message' : 'unsupported request format'}
+    if request.is_ajax():
+        user_id = request.user.id
+        course_id = request.POST['course_id']
+        
+        if course_id == '':
+            response_data = {'status' : 'failure', 'message' : 'Missing course_id.' }
+        else:
+            # Check to see if the user is enrolled, if not, enroll user.
+            try:
+                enrollment = CourseEnrollment.objects.get(id=user_id,course_id=course_id)
+            except CourseEnrollment.DoesNotExist:
+                # Create new record.
+                enrollment = CourseEnrollment.create(course_id=course_id, user_id=user_id)
+                enrollment.save()
+                    
+            # Indicate the user is enrolled
+            response_data = {'status' : 'success', 'message' : 'enrolled' }
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
+@login_required(login_url='/landpage')
+def course(request, course_id, tab):
+    course = Course.objects.get(id=course_id)
+    return render(request, 'course/home.html',{
+                  'course' : course,
+                  'user' : request.user,
+                  'tab' : tab,
+                  'local_css_urls' : sb_admin_css_library_urls,
+                  'local_js_urls' : sb_admin_js_library_urls})
+
+
+@login_required(login_url='/landpage')
+def course_home(request, course_id):
+    course = Course.objects.get(id=course_id)
+    return render(request, 'course/home.html',{
+                  'course' : course,
+                  'user' : request.user,
+                  'tab' : 'home',
+                  'local_css_urls' : sb_admin_css_library_urls,
+                  'local_js_urls' : sb_admin_js_library_urls})
+
+@login_required(login_url='/landpage')
+def course_syllabus(request, course_id):
+    course = Course.objects.get(id=course_id)
+    return render(request, 'course/syllabus.html',{
+                  'course' : course,
+                  'user' : request.user,
+                  'tab' : 'syllabus',
+                  'local_css_urls' : sb_admin_css_library_urls,
+                  'local_js_urls' : sb_admin_js_library_urls})
+
+@login_required(login_url='/landpage')
+def course_policy(request, course_id):
+    course = Course.objects.get(id=course_id)
+    return render(request, 'course/policy.html',{
+                  'course' : course,
+                  'user' : request.user,
+                  'tab' : 'policy',
+                  'local_css_urls' : sb_admin_css_library_urls,
+                  'local_js_urls' : sb_admin_js_library_urls})
+
+@login_required(login_url='/landpage')
+def course_lectures(request, course_id):
+    course = Course.objects.get(id=course_id)
+    return render(request, 'course/lectures.html',{
+                  'course' : course,
+                  'user' : request.user,
+                  'tab' : 'lectures',
+                  'local_css_urls' : sb_admin_css_library_urls,
+                  'local_js_urls' : sb_admin_js_library_urls})
+
+@login_required(login_url='/landpage')
+def course_assignments(request, course_id):
+    course = Course.objects.get(id=course_id)
+    return render(request, 'course/assignments.html',{
+                  'course' : course,
+                  'user' : request.user,
+                  'tab' : 'assignments',
+                  'local_css_urls' : sb_admin_css_library_urls,
+                  'local_js_urls' : sb_admin_js_library_urls})
+
+@login_required(login_url='/landpage')
+def course_quizzes(request, course_id):
+    course = Course.objects.get(id=course_id)
+    return render(request, 'course/quizzes.html',{
+                  'course' : course,
+                  'user' : request.user,
+                  'tab' : 'quizzes',
+                  'local_css_urls' : sb_admin_css_library_urls,
+                  'local_js_urls' : sb_admin_js_library_urls})
+
+@login_required(login_url='/landpage')
+def course_exams(request, course_id):
+    course = Course.objects.get(id=course_id)
+    return render(request, 'course/exams.html',{
+                  'course' : course,
+                  'user' : request.user,
+                  'tab' : 'exams',
+                  'local_css_urls' : sb_admin_css_library_urls,
+                  'local_js_urls' : sb_admin_js_library_urls})
+
+@login_required(login_url='/landpage')
+def course_discussion(request, course_id):
+    course = Course.objects.get(id=course_id)
+    return render(request, 'course/discussion.html',{
+                  'course' : course,
+                  'user' : request.user,
+                  'tab' : 'discussion',
                   'local_css_urls' : sb_admin_css_library_urls,
                   'local_js_urls' : sb_admin_js_library_urls})

@@ -14,11 +14,8 @@
                     <small>The following are the available courses on Academics Today</small>
                 </h1>
                 <ol class="breadcrumb">
-                    <li>
-                        <i class="fa fa-university"></i>  <a href="courses">Courses</a>
-                    </li>
                     <li class="active">
-                        <i class="fa fa-list"></i> Enrollment
+                        <i class="fa fa-university"></i> Courses
                     </li>
                 </ol>
             </div>
@@ -43,7 +40,11 @@
                             <p>{{ course.paragraph_two }}<p>
                             <p>{{ course.paragraph_three }}<p>
                             <p>Durration: {{ course.start_date }} to {{ course.finish_date }}</p>
-                            <p align="right"><button type="button" class="btn btn-lg btn-primary">Enroll</button></p>
+                            <p align="right">
+                                <button type="button"
+                                       class="btn btn-lg btn-primary"
+                                     onclick="ajax_enroll({{ course.id }});">Enroll</button>
+                            </p>
                         </div>
                         <!-- /.Course Info -->
                     </div>

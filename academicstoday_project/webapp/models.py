@@ -8,8 +8,7 @@ from django.db import models
 #     $ python manage.py makemigrations webapp
 #     $ python manage.py migrate webapp
 #
-#     (2) Reference
-#     Go to here to get a list of all the field types we can use.
+#     (2) Field Types
 #     https://docs.djangoproject.com/en/1.7/ref/models/fields/#field-types
 #
 #     (3) Meta Options
@@ -20,7 +19,10 @@ from django.db import models
 #
 #     (5) Models
 #     https://docs.djangoproject.com/en/1.7/topics/db/models/
-
+#
+#     (6) Model Instances
+#     https://docs.djangoproject.com/en/1.7/ref/models/instances/
+#
 
 class LandpageTeamMember(models.Model):
     id = models.AutoField(max_length=11, primary_key=True)
@@ -69,7 +71,7 @@ class CoursePreview(models.Model):
         db_table = 'at_course_previews'
 
 
-class CourseEnrollmentInfo(models.Model):
+class Course(models.Model):
     id = models.AutoField(max_length=11, primary_key=True)
     image_filename = models.CharField(max_length=31)
     title = models.CharField(max_length=63)
@@ -85,4 +87,20 @@ class CourseEnrollmentInfo(models.Model):
         return self.title
     
     class Meta:
-        db_table = 'at_course_entrollment_infos'
+        db_table = 'at_courses'
+
+class CourseEnrollment(models.Model):
+    id = models.AutoField(max_length=11, primary_key=True)
+    course_id = models.IntegerField(max_length=11)
+    user_id = models.IntegerField(max_length=11)
+    
+    @classmethod
+    def create(cls, course_id, user_id):
+        enrollment = cls(course_id=course_id, user_id=user_id)
+        return enrollment
+    
+    def __str__(self):
+        return self.course_id + ' ' + self.user_id
+    
+    class Meta:
+        db_table = 'at_course_enrollments'
