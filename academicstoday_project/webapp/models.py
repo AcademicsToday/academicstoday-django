@@ -21,8 +21,9 @@ from django.db import models
 #     (5) Models
 #     https://docs.djangoproject.com/en/1.7/topics/db/models/
 
+
 class LandpageTeamMember(models.Model):
-    id = models.IntegerField(max_length=11, primary_key=True)
+    id = models.AutoField(max_length=11, primary_key=True)
     image_filename = models.CharField(max_length=31)
     full_name = models.CharField(max_length=31)
     role = models.CharField(max_length=31)
@@ -38,8 +39,9 @@ class LandpageTeamMember(models.Model):
     class Meta:
         db_table = 'at_landpage_team_members'
 
+
 class LandpageCoursePreview(models.Model):
-    id = models.IntegerField(max_length=11, primary_key=True)
+    id = models.AutoField(max_length=11, primary_key=True)
     image_filename = models.CharField(max_length=31)
     title = models.CharField(max_length=127)
     category = models.CharField(max_length=31)
@@ -50,8 +52,9 @@ class LandpageCoursePreview(models.Model):
     class Meta:
         db_table = 'at_landpage_course_previews'
 
+
 class CoursePreview(models.Model):
-    id = models.IntegerField(max_length=11, primary_key=True)
+    id = models.AutoField(max_length=11, primary_key=True)
     image_filename = models.CharField(max_length=31)
     title = models.CharField(max_length=63)
     sub_title = models.CharField(max_length=127)
@@ -64,3 +67,22 @@ class CoursePreview(models.Model):
     
     class Meta:
         db_table = 'at_course_previews'
+
+
+class CourseEnrollmentInfo(models.Model):
+    id = models.AutoField(max_length=11, primary_key=True)
+    image_filename = models.CharField(max_length=31)
+    title = models.CharField(max_length=63)
+    sub_title = models.CharField(max_length=127)
+    category = models.CharField(max_length=31)
+    paragraph_one = models.CharField(max_length=255)
+    paragraph_two = models.CharField(max_length=255)
+    paragraph_three = models.CharField(max_length=255)
+    start_date = models.DateField()
+    finish_date = models.DateField()
+    
+    def __str__(self):
+        return self.title
+    
+    class Meta:
+        db_table = 'at_course_entrollment_infos'

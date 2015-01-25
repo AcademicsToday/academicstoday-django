@@ -3,6 +3,7 @@ from django.core import serializers
 from .models import LandpageTeamMember
 from .models import LandpageCoursePreview
 from .models import CoursePreview
+from .models import CourseEnrollmentInfo
 import json
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -158,10 +159,8 @@ def logout_authentication(request):
 
 @login_required(login_url='/landpage')
 def courses(request):
-    course_previews = LandpageCoursePreview.objects.all();
-    team_members = LandpageTeamMember.objects.all()
+    courses = CourseEnrollmentInfo.objects.all();
     return render(request, 'courses/list.html',{
-                  'course_previews' : course_previews,
-                  'team_members' : team_members,
+                  'courses' : courses,
                   'local_css_urls' : sb_admin_css_library_urls,
                   'local_js_urls' : sb_admin_js_library_urls})
