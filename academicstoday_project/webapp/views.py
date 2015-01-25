@@ -159,8 +159,9 @@ def logout_authentication(request):
 
 @login_required(login_url='/landpage')
 def courses(request):
-    courses = CourseEnrollmentInfo.objects.all();
+    courses = CourseEnrollmentInfo.objects.all()
     return render(request, 'courses/list.html',{
                   'courses' : courses,
+                  'user' : request.user,
                   'local_css_urls' : sb_admin_css_library_urls,
                   'local_js_urls' : sb_admin_js_library_urls})
