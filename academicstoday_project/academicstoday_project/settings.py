@@ -17,7 +17,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'jr@8*)xvmcs5sjnvim2w$v-xbq=842p7nmu@nyp$_$ayi-^1%d'
+SECRET_KEY = 'o6$v5vhh(r=a*0dkl^)5)%x1wyb6tjzo-8@76lqb*b6lheos&m'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -58,13 +58,13 @@ WSGI_APPLICATION = 'academicstoday_project.wsgi.application'
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'academicstoday_db_1_0',
-        'USER': 'root',
-        'PASSWORD': 'bart',
-        'HOST': 'localhost',
-        'PORT': '3306'
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": "academicstoday_db",
+        "USER": "bart",
+        "PASSWORD": "123password",
+        "HOST": "localhost",
+        "PORT": "5432",
     }
 }
 

@@ -40,7 +40,7 @@ $ export PATH="/Applications/Postgres.app/Contents/Versions/9.4/bin:$PATH"
 
 (6) Now finally lets install djnago
 $ pip3 install django        # Our MVC Framework
-$ pip3 install psycogs2      # Postgres SQL DB
+$ pip3 install psycopg2      # Postgres SQL DB
 
 
 (7) After installation
