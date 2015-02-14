@@ -1,0 +1,149 @@
+———————————————————————————————————————————————————————————
+SETUP WEB-APPLICATION USING PYTHON3 USING DJANGO FRAMEWORK.
+———————————————————————————————————————————————————————————
+By: Bartlomiej Mika
+Date: Feb, 14th, 2015
+
+
+
+*****************
+* PROJECT SETUP *
+*****************
+Q) How do we setup a project project titled: “academicstoday-webapp”
+A) How to create a project
+
+
+(1)
+$ cd ~/Developer
+$ mkdir academicstoday-webapp
+$ cd academicstoday-webapp
+
+
+(2)
+Setup our environment:
+$ python3 -m venv env
+
+
+(3) okay , Now lets activate virtualenv
+$ source env/bin/activate
+
+
+(4) Confirm we are using Python3
+$ python --version  # Should return Python 3.x
+
+
+(5) OSX USERS ONLY:
+(a) Check what Postgres.app version you are using.
+(b) For Postgres we need the following $PATH, so just type it in.
+$ export PATH="/Applications/Postgres.app/Contents/Versions/9.4/bin:$PATH"
+
+
+(6) Now finally lets install djnago
+$ pip3 install django        # Our MVC Framework
+$ pip3 install psycogs2      # Postgres SQL DB
+
+
+(7) After installation
+$ python -c "import django; print(django.get_version())" # 1.7.4
+
+
+(8) Now django installed and ready to use , okay lets create a sample site
+$ django-admin.py startproject academicstoday_project
+
+
+(9) Now change directory to my site
+$ cd academicstoday_project
+$ python manage.py runserver
+
+
+(10) Now go to your browser and enter:  http://localhost:8000
+You should see a site. Exit web server when finished.
+
+
+(10) (10) Lets get our Postgres.app setup, see "postgres.txt", then do this:
+
+Update your database settings to use your Postgres SQL DB.
+- - - - - - - - - - - - - - - - - - - - - - - - - -
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": "academicstoday_db",
+        "USER": "bart",
+        "PASSWORD": "123password",
+        "HOST": "localhost",
+        "PORT": "5432",
+    }
+}
+- - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+
+(10) Create an application.
+$ python manage.py startapp webapp
+
+
+(11) Then go to academicstoday_project/settings.py and make sure to include ‘webapp’ in the file.
+- - - - - - - - - - - - - - - - - - - - - - - - - -
+INSTALLED_APPS = (
+'django.contrib.admin',
+'django.contrib.auth',
+'django.contrib.contenttypes',
+'django.contrib.sessions',
+'django.contrib.messages',
+'django.contrib.staticfiles',
+'webapp',
+)
+- - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+
+(12) Finally, create a file called ‘requirements.txt’ and add all the libraries this project will use. Make sure this file is located in the root of the project. Run this code.
+$ pip freeze > requirements.txt
+
+
+(13) Submit this code to git. We now have the project setup. See “git.txt”.
+
+
+
+*********************
+* ACCESSING PROJECT *
+*********************
+Q) Now that we have a project, how do we access it and set it up locally on the computer?
+A) Follow these steps:
+
+
+1) Clone from git:
+$ cd ~/Developer
+$ git clone some_url (See "git.txt").
+
+
+2) Go into the directory
+$ cd academicstoday-webapp
+
+
+3) Setup our virtual environment
+$ python3 -m venv env
+
+
+(5) okay , Now lets activate virtualenv
+$ source env/bin/activate
+
+
+(6) OSX USERS ONLY:
+(a) Check what Postgres.app version you are using.
+(b) For Postgres we need the following $PATH, so just type it in.
+$ export PATH="/Applications/Postgres.app/Contents/Versions/9.4/bin:$PATH"
+
+
+(7) Now lets install the libraries this project depends on.
+$ pip install -r requirements.txt
+
+
+
+**********
+* SOURCE *
+**********
+1) https://www.computersnyou.com/2960/setup-django-virtualenv-macosx-mavericks/
+2) http://stackoverflow.com/questions/20251562/how-to-install-django-for-python-3-3
+3) http://hackercodex.com/guide/python-development-environment-on-mac-osx/
+4) http://stackoverflow.com/questions/12410113/migrating-virtualenv-and-github-between-computers

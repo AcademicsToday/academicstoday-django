@@ -1,0 +1,48 @@
+———————————————————————————————————————————————————————————
+HOWTO: Setup Postgres SQL Database for Mac OSX Yosemite
+———————————————————————————————————————————————————————————
+By: Bartlomiej Mika
+Date: Feb, 14th, 2015
+
+
+
+********************
+* Instal OSX App   *
+********************
+1) Download for OSX: http://postgresapp.com
+
+2) Copy into /Applications
+
+3) Run it
+
+
+
+******************
+* Setup Database *
+******************
+To create a new database use
+# create database academicstoday_db;
+
+To list all the database, use
+$ \l
+
+To delete a database,
+$ drop database academicstoday_db;
+
+To enter a database:
+$ \c academicstoday_db
+
+To create an administrator for this database.
+# CREATE USER bart WITH PASSWORD '123password';
+# GRANT ALL PRIVILEGES ON DATABASE academicstoday_db to bart;
+
+You are now able to log into the database "academicstoday_db" with the admin
+user account "bart" using the passowrd "123password"."
+
+
+
+******************
+* Source(s) *
+******************
+Beginners Coures:
+http://www.postgresqlforbeginners.com/2010/11/interacting-with-postgresql-psql.html
