@@ -184,7 +184,7 @@ docs/_build/
 #—————————————————————————————
 # Important Note: Make sure this is the name of the virtualenv directory
 # that you set when you where setting up the project.
-academicstoday-env/  
+env/  
 *.cfg
 — - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
 
