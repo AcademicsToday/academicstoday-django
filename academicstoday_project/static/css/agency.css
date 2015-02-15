@@ -839,6 +839,11 @@ ul.social-buttons li a:active {
     transform: rotate(90deg);
 }
 
+.portfolio-modal .modal-backdrop {
+    display: none;
+    opacity: 0;
+}
+
 ::-moz-selection {
     text-shadow: none;
     background: #fed136;
