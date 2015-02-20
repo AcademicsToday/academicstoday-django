@@ -15,19 +15,19 @@ Log into ezjail git instance
 
 
 a) Now, lets create some git repository for our system
-# mkdir /git/base/academicstoday-webapp.git;
+# mkdir /git/base/py-academicstoday.git;
 
 
 b) Now, lets initialize them - make them ready for push/pull
-# cd /git/base/academicstoday-webapp.git && git init --bare --shared;
+# cd /git/base/py-academicstoday.git && git init --bare --shared;
 
 
 c) Now, let's export these repos and set proper permissions, so we can clone and fetch from them:
-# touch /git/base/academicstoday-webapp.git/git-daemon-export-ok;
+# touch /git/base/py-academicstoday.git/git-daemon-export-ok;
 
 
 d) Go through all the repository folders/files and make them owned by 'git' user.
-# chown -R git:git /git/base/academicstoday-webapp.git;
+# chown -R git:git /git/base/py-academicstoday.git;
 
 
 
@@ -35,7 +35,7 @@ d) Go through all the repository folders/files and make them owned by 'git' user
             LOCAL
 —————————————————————————————
 a) Go to where the initial directory is located. This case the directory is located here:
-# mkdir ~/Sites/academicstoday-webapp && cd ~/Sites/academicstoday-webapp
+# mkdir ~/Develpoer/py-academicstoday && cd ~/Developer/py-academicstoday
 
 
 b) Add ignore file
@@ -191,7 +191,8 @@ env/
 
 c) Setup our local git instance to our remote
 # git init
-# git remote add origin git@192.168.0.5:/git/base/academicstoday-webapp.git
+# git remote add origin https://github.com/AcademicsToday/py-academicstoday.git
+# git remote add backup git@192.168.0.5:/git/base/py-academicstoday.git
 # git add .
 # git commit -m 'Initial commit.'
 # git push origin master
@@ -202,12 +203,17 @@ c) Setup our local git instance to our remote
             LOCAL
 —————————————————————————————
 a) To clone the repository, go to the directory root you want to clone your files to:
-# cd ~/Projects
+# cd ~/Developer
 
 
 b) Now we need to sync with the repository, so delete our folder. Afterwords we will download from the repository.
-Note: This will be the folder where our project "Drone" will be cloned to
-# git clone ssh://git@192.168.0.5//git/base/academicstoday-webapp.git
+Note: This will be the folder where our project "py-academicstoday" will be cloned to
+[Origin]
+# git clone https://github.com/AcademicsToday/py-academicstoday.git
+
+
+[Backup]
+# git clone ssh://git@192.168.0.5//git/base/py-academicstoday.git
 
 
 
@@ -215,7 +221,7 @@ Troubleshooting:
 ————————————————
 1) If you get a 'access denied or repository not exported' error then do this:
 # git remote rm origin
-# git remote add origin git@192.168.0.5:/git/base/academicstoday-webapp.git
+# git remote add origin git@192.168.0.5:/git/base/py-academicstoday.git
 # git push origin master
 
 2) Apply gitignore on an existing repository already tracking large number of files
