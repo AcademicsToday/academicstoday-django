@@ -62,6 +62,11 @@ sb_admin_js_library_urls = ["lib/jquery/1.11.1/jquery.min.js",
 #                            "lib/flot/x.x/jquery.flot.tooltip.min.js",
                             ]
 
+def load_robots_txt(request):
+    return render(request, 'misc/robots.txt', {}, content_type="text/plain")
+
+def load_humans_txt(request):
+    return render(request, 'misc/humans.txt', {}, content_type="text/plain")
 
 def load_landpage(request):
     course_previews = LandpageCoursePreview.objects.all();
