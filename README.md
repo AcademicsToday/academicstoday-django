@@ -1,10 +1,11 @@
-# academicstoday-webapp
+# py-academicstoday
 ## Description
 A open-source platform for online course-based learning and education.
 
 ## Support
 You can financially support the project by either:
-* direct donation: 1NdWWNyHJJd5oFhtzAFtApNaHjSuAbGmXZ
+* Bitcoin donations: 1NdWWNyHJJd5oFhtzAFtApNaHjSuAbGmXZ
+* Darkcoin donations: XcNwdbXmEdnm4ErQuK8A9UkcTwTkUGf7ML 
 
 ## Features
 * Students log in and enrol in the provided courses
@@ -27,8 +28,8 @@ For Linux and OSX users, run these commands:
 
 1. First clone the project locally and then go into the directory
   ```
-  $ git clone https://github.com/AcademicsToday/academicstoday-webapp.git 
-  $ cd academicstoday-webapp
+  $ git clone https://github.com/AcademicsToday/py-academicstoday.git 
+  $ cd py-academicstoday
   ```
 
 2. Setup our virtual environment
