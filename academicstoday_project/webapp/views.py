@@ -21,8 +21,8 @@ from django.contrib.auth.decorators import login_required
 
 agency_css_library_urls = ["lib/jquery/1.11.1/jquery-ui.css",
                            "lib/bootstrap/3.3.2/css/bootstrap.min.css",
-                           "lib/font-awesome/4.1.0/css/font-awesome.css",
-                           "lib/font-awesome/4.1.0/css/font-awesome.min.css",
+                           "lib/font-awesome/4.2.0/css/font-awesome.css",
+                           "lib/font-awesome/4.2.0/css/font-awesome.min.css",
                            "css/landpage.css",
                            "css/agency.css"]
 

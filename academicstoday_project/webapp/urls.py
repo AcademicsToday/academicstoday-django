@@ -3,8 +3,8 @@ from . import views
 
 urlpatterns = patterns('',
     # Search Engine
-    url(r'^robots\.txt$', landpage.load_robots_txt),
-    url(r'^humans\.txt$', landpage.load_humans_txt),
+    url(r'^robots\.txt$', views.load_robots_txt),
+    url(r'^humans\.txt$', views.load_humans_txt),
             
     # Landpage
     url(r'^$', views.load_landpage),
