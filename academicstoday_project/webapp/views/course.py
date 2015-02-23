@@ -4,6 +4,7 @@ from webapp.models import Course
 from webapp.models import CourseEnrollment
 from webapp.models import Announcement
 from webapp.models import Syllabus
+from webapp.models import Policy
 import json
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -65,7 +66,10 @@ def course(request, course_id, tab):
 @login_required(login_url='/landpage')
 def course_home(request, course_id):
     course = Course.objects.get(id=course_id)
-    announcements = Announcement.objects.filter(course_id=course_id).order_by('-post_date')
+    try:
+        announcements = Announcement.objects.filter(course_id=course_id).order_by('-post_date')
+    except Announcement.DoesNotExist:
+        announcements = None
     return render(request, 'course/home.html',{
                   'course' : course,
                   'announcements' : announcements,
@@ -77,7 +81,10 @@ def course_home(request, course_id):
 @login_required(login_url='/landpage')
 def course_syllabus(request, course_id):
     course = Course.objects.get(id=course_id)
-    syllabus = Syllabus.objects.get(course_id=course_id)
+    try:
+        syllabus = Syllabus.objects.get(course_id=course_id)
+    except Syllabus.DoesNotExist:
+        syllabus = None
     return render(request, 'course/syllabus.html',{
                   'course' : course,
                   'syllabus' : syllabus,
@@ -89,9 +96,14 @@ def course_syllabus(request, course_id):
 @login_required(login_url='/landpage')
 def course_policy(request, course_id):
     course = Course.objects.get(id=course_id)
+    try:
+        policy = Policy.objects.get(course_id=course_id)
+    except Policy.DoesNotExist:
+        policy = None
     return render(request, 'course/policy.html',{
                   'course' : course,
                   'user' : request.user,
+                  'policy' : policy,
                   'tab' : 'policy',
                   'local_css_urls' : css_library_urls,
                   'local_js_urls' : js_library_urls})
