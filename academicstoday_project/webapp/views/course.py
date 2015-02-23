@@ -5,6 +5,8 @@ from webapp.models import CourseEnrollment
 from webapp.models import Announcement
 from webapp.models import Syllabus
 from webapp.models import Policy
+from webapp.models import Week
+from webapp.models import Lecture
 import json
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -111,12 +113,40 @@ def course_policy(request, course_id):
 @login_required(login_url='/landpage')
 def course_lectures(request, course_id):
     course = Course.objects.get(id=course_id)
+    try:
+        weeks = Week.objects.filter(course_id=course_id)
+    except Week.DoesNotExist:
+        weeks = None
+    try:
+        lectures = Lecture.objects.filter(course_id=course_id).order_by('-lecture_num')
+    except Lecture.DoesNotExist:
+        lectures = None
     return render(request, 'course/lectures.html',{
                   'course' : course,
+                  'weeks' : weeks,
+                  'lectures' : lectures,
                   'user' : request.user,
                   'tab' : 'lectures',
                   'local_css_urls' : css_library_urls,
                   'local_js_urls' : js_library_urls})
+
+@login_required(login_url='/landpage')
+def get_lecture(request, course_id):
+    response_data = {}
+    if request.is_ajax():
+         if request.method == 'POST':
+             # Check to see if any fields where missing from the form.
+             if request.POST['lecture_id'] != '':
+                 try:
+                     lecture_id = request.POST['lecture_id']
+                     lecture = Lecture.objects.get(id=lecture_id)
+                 except Lecture.DoesNotExist:
+                     lecture = None
+                 return render(request, 'course/lecture.html',{
+                                        'lecture' : lecture,
+                                        'user' : request.user,
+                                        'local_css_urls' : css_library_urls,
+                                        'local_js_urls' : js_library_urls})
 
 @login_required(login_url='/landpage')
 def course_assignments(request, course_id):

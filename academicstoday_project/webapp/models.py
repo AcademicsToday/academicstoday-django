@@ -155,3 +155,46 @@ class Policy(models.Model):
     
     class Meta:
         db_table = 'at_policys'
+
+class Week(models.Model):
+    id = models.AutoField(max_length=11, primary_key=True)
+    course_id = models.IntegerField(max_length=11)
+    week_num = models.IntegerField(max_length=7)
+    title = models.CharField(max_length=31)
+    description = models.TextField()
+    
+#TODO: IMPLEMENT
+#    @classmethod
+#    def create(cls, course_id, url):
+#        syllabus = cls(course_id=course_id, file_url=file_url)
+#        return syllabus
+
+    def __str__(self):
+        return self.course_id + ' ' + self.file_url;
+    
+    class Meta:
+        db_table = 'at_weeks'
+
+class Lecture(models.Model):
+    id = models.AutoField(max_length=11, primary_key=True)
+    course_id = models.IntegerField(max_length=11)
+    week_num = models.IntegerField(max_length=7)
+    lecture_num = models.IntegerField(max_length=7, default=0)
+    title = models.CharField(max_length=31, default='')
+    description = models.TextField(default='')
+    youtube_url = models.URLField(default='')
+    vimeo_url = models.URLField(default='')
+    bliptv_url = models.URLField(default='')
+    preferred_service = models.CharField(max_length=31)
+    
+    #TODO: IMPLEMENT
+    #    @classmethod
+    #    def create(cls, course_id, url):
+    #        syllabus = cls(course_id=course_id, file_url=file_url)
+    #        return syllabus
+    
+    def __str__(self):
+        return self.course_id + ' ' + self.file_url;
+    
+    class Meta:
+        db_table = 'at_lectures'

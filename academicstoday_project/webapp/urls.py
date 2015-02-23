@@ -37,4 +37,5 @@ urlpatterns = patterns('',
     url(r'^course/(\d)/quizzes$', course.course_quizzes),
     url(r'^course/(\d)/exams$', course.course_exams),
     url(r'^course/(\d)/discussion$', course.course_discussion),
+    url(r'^course/(\d)/get_lecture$', course.get_lecture),
 )
