@@ -28,4 +28,14 @@
         </div>
     </div>
 </div>
-<!-- end modal -->
+
+
+<script>
+    $(document).ready(function(){
+        // When this model hides, we will clear the contents of it.
+        $('#lecture_modal').on('hidden.bs.modal', function (e) {
+            // Clear all the code inside this modal.
+            $('#ajax_learn_lecture').html('');
+        })
+    });
+</script>
