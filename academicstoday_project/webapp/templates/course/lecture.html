@@ -4,20 +4,19 @@
         <div class="modal-content">
             <div class="modal-header">
                 <a href="#" class="btn btn-success pull-right" data-dismiss="modal">×</a>
-                <h4>Lecture #{{ lecture.lecture_num }}</h4>
+                <h4>Lecture #{{ lecture.lecture_num }}: {{ lecture.title }}</h4>
             </div>
             <div class="modal-body">
                 <form method="post"
                       action='/learn'
                         name="learnForm">
-                        {% if lecture.preferred_service == 'youtube' %}
+                        {% if lecture.preferred_service == 'youtube' %} <!-- YouTube -->
                         <iframe width="720"
                                height="480"
                                   src="{{ lecture.youtube_url }}"
                           frameborder="0"
                       allowfullscreen></iframe>
-                        {% endif %}
-                        {% if lecture.preferred_service == 'vimeo' %}
+                        {% elif lecture.preferred_service == 'vimeo' %} <!-- Vimeo -->
                         <iframe src="{{ lecture.vimeo_url }}"
                               width="720"
                              height="480"
