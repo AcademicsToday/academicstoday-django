@@ -43,3 +43,11 @@ VALUES
 INSERT INTO at_landpage_team_members (id, full_name, role, twitter_url, facebook_url, image_filename, linkedin_url, email)
 VALUES
 (3, 'Sebastion Rydzewski', 'Developer', 'https://twitter.com/@srydzewski_AT', '', 'sebastionrydzewski.png', 'http://ca.linkedin.com/pub/sebastian-rydzewski/5b/108/160', 'srydzewski.AT@gmail.com');
+
+
+/*------------------*/
+/* at_announcements */
+/*------------------*/
+INSERT INTO at_announcements (id, course_id, title, body, post_date)
+VALUES
+(1, 1, 'Hello World!', '<p>This is a test!</p>', '2015-01-01');

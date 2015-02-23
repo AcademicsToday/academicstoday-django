@@ -104,3 +104,22 @@ class CourseEnrollment(models.Model):
     
     class Meta:
         db_table = 'at_course_enrollments'
+
+class Announcement(models.Model):
+    id = models.AutoField(max_length=11, primary_key=True)
+    course_id = models.IntegerField(max_length=11)
+    title = models.CharField(max_length=31)
+    body = models.TextField()
+    post_date = models.DateField()
+    
+    @classmethod
+    def create(cls, course_id, title, body, post_date):
+        announcement = cls(course_id=course_id, title=title,
+                           body=body, post_date=post_date)
+        return announcement
+    
+    def __str__(self):
+        return self.course_id + ' ' + self.title + ' ' + self.body + ' ' + self.post_date;
+    
+    class Meta:
+        db_table = 'at_announcements'
