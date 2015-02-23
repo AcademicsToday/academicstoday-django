@@ -65,10 +65,7 @@ def course(request, course_id, tab):
 @login_required(login_url='/landpage')
 def course_home(request, course_id):
     course = Course.objects.get(id=course_id)
-    
-    # Get latest announcements for the course.
     announcements = Announcement.objects.filter(course_id=course_id).order_by('-post_date')
-    
     return render(request, 'course/home.html',{
                   'course' : course,
                   'announcements' : announcements,
@@ -80,12 +77,10 @@ def course_home(request, course_id):
 @login_required(login_url='/landpage')
 def course_syllabus(request, course_id):
     course = Course.objects.get(id=course_id)
-    
     syllabus = Syllabus.objects.get(course_id=course_id)
-    
     return render(request, 'course/syllabus.html',{
                   'course' : course,
-                  'pdf_url' : syllabus.url,
+                  'syllabus' : syllabus,
                   'user' : request.user,
                   'tab' : 'syllabus',
                   'local_css_urls' : css_library_urls,
