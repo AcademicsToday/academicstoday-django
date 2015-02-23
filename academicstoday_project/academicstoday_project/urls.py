@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+from django.conf.urls.static import static, settings
 from django.contrib import admin
 
 urlpatterns = patterns('',
@@ -10,4 +11,4 @@ urlpatterns = patterns('',
                        
     # This regex makes the default URL for the website to launch this view.
     url(r'', include('webapp.urls')),
-)
+)+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

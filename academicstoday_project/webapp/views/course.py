@@ -3,6 +3,7 @@ from django.core import serializers
 from webapp.models import Course
 from webapp.models import CourseEnrollment
 from webapp.models import Announcement
+from webapp.models import Syllabus
 import json
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -79,8 +80,12 @@ def course_home(request, course_id):
 @login_required(login_url='/landpage')
 def course_syllabus(request, course_id):
     course = Course.objects.get(id=course_id)
+    
+    syllabus = Syllabus.objects.get(course_id=course_id)
+    
     return render(request, 'course/syllabus.html',{
                   'course' : course,
+                  'pdf_url' : syllabus.url,
                   'user' : request.user,
                   'tab' : 'syllabus',
                   'local_css_urls' : css_library_urls,

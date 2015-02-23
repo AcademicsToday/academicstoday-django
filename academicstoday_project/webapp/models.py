@@ -123,3 +123,19 @@ class Announcement(models.Model):
     
     class Meta:
         db_table = 'at_announcements'
+
+class Syllabus(models.Model):
+    id = models.AutoField(max_length=11, primary_key=True)
+    course_id = models.IntegerField(max_length=11)
+    url = models.URLField(default='')
+    
+    @classmethod
+    def create(cls, course_id, url):
+        syllabus = cls(course_id=course_id, file_url=file_url)
+        return syllabus
+    
+    def __str__(self):
+        return self.course_id + ' ' + self.file_url;
+    
+    class Meta:
+        db_table = 'at_syllabus'

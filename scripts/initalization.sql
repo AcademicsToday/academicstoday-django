@@ -51,3 +51,11 @@ VALUES
 INSERT INTO at_announcements (id, course_id, title, body, post_date)
 VALUES
 (1, 1, 'Hello World!', '<p>This is a test!</p>', '2015-01-01');
+
+
+/*-------------*/
+/* at_syllabus */
+/*-------------*/
+INSERT INTO at_syllabus (id, course_id, url)
+VALUES
+(1, 1, 'http://127.0.0.1:8000/media/syllabus_1.pdf')

@@ -1,14 +1,17 @@
 from django.conf.urls import patterns, include, url
+
 from . import views
 
 # Import custom views.
 from webapp.views import landpage
 from webapp.views import courses
 from webapp.views import course
+from webapp.views import course
+from webapp.views import file
 urlpatterns = patterns('',
-    # Search Engine
-    url(r'^robots\.txt$', landpage.load_robots_txt),
-    url(r'^humans\.txt$', landpage.load_humans_txt),
+    # Custom Files
+    url(r'^robots\.txt$', file.load_robots_txt),
+    url(r'^humans\.txt$', file.load_humans_txt),
             
     # Landpage
     url(r'^$', landpage.load_landpage),
