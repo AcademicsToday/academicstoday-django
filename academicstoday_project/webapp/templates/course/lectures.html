@@ -54,19 +54,19 @@
                                 <td>
                                     {% if lecture.preferred_service == 'youtube' %}
                                     <button type="button"
-                                           class="btn btn-sm btn-default"
+                                           class="btn btn-sm btn-primary"
                                          onclick="ajax_learn_lecture({{ lecture.id }});">
                                         <i class="fa fa-youtube"></i> Learn
                                     </button>
                                     {% elif lecture.preferred_service == 'vimeo' %}
                                     <button type="button"
-                                           class="btn btn-sm btn-default"
+                                           class="btn btn-sm btn-primary"
                                          onclick="ajax_learn_lecture({{ lecture.id }});">
                                         <i class="fa fa-vimeo-square"></i> Learn
                                     </button>
                                     {% else %}
                                     <button type="button"
-                                          class="btn btn-sm btn-default" disabled
+                                          class="btn btn-sm btn-primary" disabled
                                         onclick="">
                                         <i class="fa fa-ban"></i> Lecture Unavailable
                                     </button>

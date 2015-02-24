@@ -10,17 +10,52 @@
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">
-                    Blank Page
-                    <small>Subheading</small>
+                    Assignments
+                    <small></small>
                 </h1>
                 <ol class="breadcrumb">
                     <li>
-                        <i class="fa fa-dashboard"></i>  <a href="index.html">Dashboard</a>
+                        <i class="fa fa-university"></i>  <a href="../../courses">Courses</a>
+                    </li>
+                    <li>
+                        <i class="fa fa-compass"></i> {{ course.title }}
                     </li>
                     <li class="active">
-                        <i class="fa fa-file"></i> Blank Page
+                        <i class="fa fa-book"></i> List Assignments
                     </li>
                 </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+        
+        <!-- Assignments -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h2>List</h2>
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Due Date</th>
+                                <th>Completed</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for assignment in assignments %}
+                            <tr>
+                                <td>{{ assignment.order_num }}</td>
+                                <td>{{ assignment.due_date }}</td>
+                                <td>No</td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-primary">Start Assignment</button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div><!-- /.table -->
             </div>
         </div>
         <!-- /.row -->

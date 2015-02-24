@@ -7,6 +7,15 @@ from webapp.models import Syllabus
 from webapp.models import Policy
 from webapp.models import Week
 from webapp.models import Lecture
+from webapp.models import Assignment
+from webapp.models import EssayQuestion
+from webapp.models import EssaySubmission
+from webapp.models import MultipleChoiceQuestion
+from webapp.models import MultipleChoiceOption
+from webapp.models import MultipleChoiceAnswer
+from webapp.models import MultipleChoiceSubmission
+from webapp.models import ResponseQuestion
+from webapp.models import ResponseSubmission
 import json
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -149,12 +158,18 @@ def get_lecture(request, course_id):
                                         'local_js_urls' : js_library_urls})
 
 @login_required(login_url='/landpage')
-def course_assignments(request, course_id):
+def assignments(request, course_id):
     course = Course.objects.get(id=course_id)
+    
+    # Fetch all the assignments for this course.
+    assignments = Assignment.objects.filter(course_id=course_id).order_by('-order_num')
+    
     return render(request, 'course/assignments.html',{
                   'course' : course,
                   'user' : request.user,
+                  'assignments' : assignments,
                   'tab' : 'assignments',
+                  'subtab' : 'assignments_list',
                   'local_css_urls' : css_library_urls,
                   'local_js_urls' : js_library_urls})
 

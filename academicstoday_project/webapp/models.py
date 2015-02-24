@@ -92,7 +92,7 @@ class Course(models.Model):
 class CourseEnrollment(models.Model):
     id = models.AutoField(max_length=11, primary_key=True)
     course_id = models.IntegerField(max_length=11)
-    user_id = models.IntegerField(max_length=11)
+    user_id = models.BigIntegerField()
     
     @classmethod
     def create(cls, course_id, user_id):
@@ -163,12 +163,6 @@ class Week(models.Model):
     title = models.CharField(max_length=31)
     description = models.TextField()
     
-#TODO: IMPLEMENT
-#    @classmethod
-#    def create(cls, course_id, url):
-#        syllabus = cls(course_id=course_id, file_url=file_url)
-#        return syllabus
-
     def __str__(self):
         return self.course_id + ' ' + self.file_url;
     
@@ -180,21 +174,134 @@ class Lecture(models.Model):
     course_id = models.IntegerField(max_length=11)
     week_num = models.IntegerField(max_length=7)
     lecture_num = models.IntegerField(max_length=7, default=0)
-    title = models.CharField(max_length=31, default='')
-    description = models.TextField(default='')
-    youtube_url = models.URLField(default='')
-    vimeo_url = models.URLField(default='')
-    bliptv_url = models.URLField(default='')
+    title = models.CharField(max_length=31, default='',null=True)
+    description = models.TextField(default='',null=True)
+    youtube_url = models.URLField(default='',null=True)
+    vimeo_url = models.URLField(default='',null=True)
+    bliptv_url = models.URLField(default='',null=True)
     preferred_service = models.CharField(max_length=31)
-    
-    #TODO: IMPLEMENT
-    #    @classmethod
-    #    def create(cls, course_id, url):
-    #        syllabus = cls(course_id=course_id, file_url=file_url)
-    #        return syllabus
     
     def __str__(self):
         return self.course_id + ' ' + self.file_url;
     
     class Meta:
         db_table = 'at_lectures'
+
+class Assignment(models.Model):
+    id = models.AutoField(max_length=11, primary_key=True)
+    course_id = models.IntegerField(max_length=11)
+    order_num = models.SmallIntegerField(default=0)
+    type = models.SmallIntegerField()
+    due_date = models.DateField(null=True)
+
+    def __str__(self):
+        return self.course_id + ' ' + self.type;
+    
+    class Meta:
+        db_table = 'at_assignments'
+
+class EssayQuestion(models.Model):
+    id = models.AutoField(max_length=11, primary_key=True)
+    assignment_id = models.IntegerField(max_length=11)
+    course_id = models.IntegerField(max_length=11)
+    question_num = models.SmallIntegerField()
+    title = models.CharField(max_length=31, default='')
+    description = models.TextField(default='')
+    
+    def __str__(self):
+        return self.course_id + ' ' + self.title + ' ' + self.description;
+    
+    class Meta:
+        db_table = 'at_essay_questions'
+
+class EssaySubmission(models.Model):
+    id = models.AutoField(max_length=11, primary_key=True)
+    user_id = models.BigIntegerField()
+    assignment_id = models.IntegerField(max_length=11)
+    course_id = models.IntegerField(max_length=11)
+    file_path = models.FilePathField()
+    
+    def __str__(self):
+        return self.course_id + ' ' + self.file_path;
+    
+    class Meta:
+        db_table = 'at_essay_submissions'
+
+class MultipleChoiceQuestion(models.Model):
+    id = models.AutoField(max_length=11, primary_key=True)
+    assignment_id = models.IntegerField(max_length=11)
+    course_id = models.IntegerField(max_length=11)
+    question_num = models.SmallIntegerField()
+    title = models.CharField(max_length=31, default='')
+    description = models.TextField(default='')
+    
+    def __str__(self):
+        return self.course_id + ' ' + self.title + ' ' + self.description;
+    
+    class Meta:
+        db_table = 'at_multiple_choice_question'
+
+class MultipleChoiceOption(models.Model):
+    id = models.AutoField(max_length=11, primary_key=True)
+    assignment_id = models.IntegerField(max_length=11)
+    course_id = models.IntegerField(max_length=11)
+    choice = models.CharField(max_length=1)
+    description = models.TextField(default='')
+    
+    def __str__(self):
+        return self.course_id + ' ' + self.choice + ' ' + self.description;
+    
+    class Meta:
+        db_table = 'at_multiple_choice_options'
+
+class MultipleChoiceAnswer(models.Model):
+    id = models.AutoField(max_length=11, primary_key=True)
+    assignment_id = models.IntegerField(max_length=11)
+    course_id = models.IntegerField(max_length=11)
+    selected = models.CharField(max_length=1)
+    
+    def __str__(self):
+        return self.course_id + ' ' + self.selected;
+    
+    class Meta:
+        db_table = 'at_multiple_choice_answers'
+
+class MultipleChoiceSubmission(models.Model):
+    id = models.AutoField(max_length=11, primary_key=True)
+    user_id = models.BigIntegerField()
+    assignment_id = models.IntegerField(max_length=11)
+    course_id = models.IntegerField(max_length=11)
+    selected = models.CharField(max_length=1)
+    
+    def __str__(self):
+        return self.course_id + ' ' + self.selected;
+    
+    class Meta:
+        db_table = 'at_multiple_choice_submissions'
+
+class ResponseQuestion(models.Model):
+    id = models.AutoField(max_length=11, primary_key=True)
+    assignment_id = models.IntegerField(max_length=11)
+    course_id = models.IntegerField(max_length=11)
+    question_num = models.SmallIntegerField()
+    title = models.CharField(max_length=31, default='')
+    description = models.TextField(default='')
+    
+    def __str__(self):
+        return self.course_id + ' ' + self.title + ' ' + self.description;
+    
+    class Meta:
+        db_table = 'at_response_question'
+
+class ResponseSubmission(models.Model):
+    id = models.AutoField(max_length=11, primary_key=True)
+    user_id = models.BigIntegerField()
+    assignment_id = models.IntegerField(max_length=11)
+    course_id = models.IntegerField(max_length=11)
+    response = models.TextField(default='')
+    
+    def __str__(self):
+        return self.course_id + ' ' + self.response;
+    
+    class Meta:
+        db_table = 'at_response_submissions'
