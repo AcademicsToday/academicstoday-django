@@ -230,7 +230,8 @@ def upload_essay(request, course_id):
     assignment_id = request.POST.get('assignment_id')
     if request.is_ajax():
         if request.method == 'POST':
-            a_file = request.POST.get('file', None)
+            a_file = request.FILES['file']
+            
             if a_file:
                 new_file = EssaySubmission(assignment_id=assignment_id, file = a_file)
                 new_file.save()
