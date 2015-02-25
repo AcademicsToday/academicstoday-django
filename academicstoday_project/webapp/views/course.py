@@ -231,7 +231,7 @@ def upload_essay(request, course_id):
         if request.method == 'POST':
             form = EssaySubmissionForm(request.POST, request.FILES)
             if form.is_valid():
-                form.save()  # Save the form contents to the model
+                #form.save()  # Save the form contents to the model
                 response_data = {'status' : 'success', 'message' : 'submitted'}
             else:
                 response_data = {'status' : 'failed', 'message' : form.errors}

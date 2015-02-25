@@ -3,7 +3,7 @@
     <div class="modal-dialog" style="width:750px;">
         <div class="modal-content">
             <div class="modal-header">
-                <a href="#" class="btn btn-success pull-right" data-dismiss="modal">×</a>
+                <a href="#" class="btn btn-primary pull-right" data-dismiss="modal">×</a>
                 <h4>Essay Assignment #{{ essay_question.question_num }}: {{ essay_question.title }}</h4>
             </div>
             <div class="modal-body">
@@ -62,12 +62,6 @@
                                   class="form-control">
                             </input>
                         </div>
-                        <div class="col-sm-6">
-                            <button type="button"
-                                onclick="ajax_upload_assignment();"
-                                class="btn btn-sm btn-primary">Upload
-                            </button>
-                        </div>
                     </div><!-- /.row -->
                     
                     <br/>
@@ -99,8 +93,8 @@
                 <button type="button"
                        class="btn btn-primary"
                         form="assignment_form"
-                     onclick="">
-                    <i class="fa fa-times"></i> Submit
+                     onclick="ajax_upload_assignment()">
+                    <i class="fa fa-check"></i> Submit
                 </button>
             </div> <!-- /.modal-footer -->
         </div>
@@ -131,9 +125,7 @@
             success: function(result){
                 if (result.status == 'success')
                 {
-                    $("#success_status_info").show();
-                    $("#warning_status_info").hide();
-                    $("#danger_status_info").hide();
+                    $('#assignment_modal').modal('hide'); // Hide modal.
                 }
                 else
                 {

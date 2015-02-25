@@ -7,4 +7,3 @@ from webapp.models import EssaySubmission
 class EssaySubmissionForm(forms.ModelForm):
     class Meta:
         model = EssaySubmission
-        exclude = ['id']
