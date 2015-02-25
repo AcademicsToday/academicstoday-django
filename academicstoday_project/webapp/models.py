@@ -216,12 +216,17 @@ class EssayQuestion(models.Model):
 
 class EssaySubmission(models.Model):
     id = models.AutoField(max_length=11, primary_key=True)
-    assignment_id = models.IntegerField(max_length=11)
-    file = models.FileField(blank=True, null=True, upload_to='uploads')
+    assignment_id = models.BigIntegerField()
+    student_id = models.BigIntegerField()
+    course_id = models.IntegerField(max_length=11)
+    file = models.FileField(upload_to='uploads')
     
     @classmethod
-    def create(cls, assignment_id, file):
-        submission = cls(assignment_id=assignment_id, file=file)
+    def create(cls, student_id, course_id, assignment_id, file):
+        submission = cls(student_id=student_id,
+                         course_id=course_id,
+                         assignment_id=assignment_id,
+                         file=file)
         return submission
     
     def __str__(self):

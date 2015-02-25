@@ -73,8 +73,23 @@
                     <br/>
                     <div class="row">
                         <div class="col-sm-12">
-                            <div class="alert alert-warning">
+                            <div class="alert alert-success"
+                                    id="success_status_info"
+                                  name="success_status_info"
+                                hidden>
+                                <strong>Well done!</strong> You successfully uploaded your essay.
+                            </div>
+                            <div class="alert alert-warning"
+                                    id="warning_status_info"
+                                  name="warning_status_info"
+                                hidden>
                                 <strong>Warning:</strong> Please upload your assignment before proceeding.
+                            </div>
+                            <div class="alert alert-danger"
+                                    id="danger_status_info"
+                                  name="danger_status_info"
+                                hidden>
+                                <strong>Failed!</strong> There was a problem uploading your resume.
                             </div>
                         </div>
                     </div><!-- /.row -->
@@ -85,7 +100,7 @@
                        class="btn btn-primary"
                         form="assignment_form"
                      onclick="">
-                    <i class="fa fa-times"></i> Upload
+                    <i class="fa fa-times"></i> Submit
                 </button>
             </div> <!-- /.modal-footer -->
         </div>
@@ -103,6 +118,8 @@
         data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
         data.append('assignment_id', {{ assignment.id }});
         data.append('file', document.getElementById('file').files[0]);
+        data.append('student_id', {{ user.id }});
+        data.append('course_id', {{ assignment.course_id }});
         
         jQuery.ajax({
             url: 'upload_essay',
@@ -111,8 +128,19 @@
             contentType: false,
             processData: false,
             type: 'POST',
-            success: function(data){
-                    
+            success: function(result){
+                if (result.status == 'success')
+                {
+                    $("#success_status_info").show();
+                    $("#warning_status_info").hide();
+                    $("#danger_status_info").hide();
+                }
+                else
+                {
+                    $("#success_status_info").hide();
+                    $("#warning_status_info").hide();
+                    $("#danger_status_info").show();
+                }
             }
         });
     }

@@ -22,6 +22,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
+# Forms
+from webapp.forms import EssaySubmissionForm
+
 # Developer Notes:
 # (1) Templates
 # https://docs.djangoproject.com/en/1.7/ref/templates
@@ -223,21 +226,15 @@ def assignment_essay(request, assignment_id):
 
 @login_required()
 def upload_essay(request, course_id):
-    # Note:
-    # https://docs.djangoproject.com/en/1.7/topics/http/file-uploads/
-    #
     response_data = {'status' : 'failed', 'message' : 'error submitting'}
-    assignment_id = request.POST.get('assignment_id')
     if request.is_ajax():
         if request.method == 'POST':
-            a_file = request.FILES['file']
-            
-            if a_file:
-                new_file = EssaySubmission(assignment_id=assignment_id, file = a_file)
-                new_file.save()
+            form = EssaySubmissionForm(request.POST, request.FILES)
+            if form.is_valid():
+                form.save()  # Save the form contents to the model
                 response_data = {'status' : 'success', 'message' : 'submitted'}
             else:
-                response_data = {'status' : 'failed', 'message' : 'no file'}
+                response_data = {'status' : 'failed', 'message' : form.errors}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
