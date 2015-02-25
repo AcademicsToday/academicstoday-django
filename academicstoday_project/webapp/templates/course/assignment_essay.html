@@ -83,7 +83,9 @@
                                     id="danger_status_info"
                                   name="danger_status_info"
                                 hidden>
-                                <strong>Failed!</strong> There was a problem uploading your resume.
+                                <div id="danger_status_msg" name="danger_status_msg">
+                                    <strong>Failed!</strong> There was a problem uploading your resume.
+                                </div>
                             </div>
                         </div>
                     </div><!-- /.row -->
@@ -129,6 +131,9 @@
                 }
                 else
                 {
+                    var message = "<strong>Failed!</strong>";
+                    message += " " + result.message['file']
+                    $('#danger_status_msg').html(message);
                     $("#success_status_info").hide();
                     $("#warning_status_info").hide();
                     $("#danger_status_info").show();
