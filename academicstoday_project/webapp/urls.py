@@ -39,5 +39,7 @@ urlpatterns = patterns('',
     url(r'^course/(\d)/discussion$', course.course_discussion),
     url(r'^course/(\d)/assignments$', course.assignments),
     url(r'^course/(\d)/assignment$', course.assignment),
+    url(r'^course/(\d)/upload_essay$', course.upload_essay),
+                       
                        
 )

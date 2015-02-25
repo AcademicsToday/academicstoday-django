@@ -91,6 +91,7 @@ def course_home(request, course_id):
         'local_js_urls' : js_library_urls
     })
 
+
 @login_required(login_url='/landpage')
 def course_syllabus(request, course_id):
     course = Course.objects.get(id=course_id)
@@ -107,6 +108,7 @@ def course_syllabus(request, course_id):
         'local_js_urls' : js_library_urls
     })
 
+
 @login_required(login_url='/landpage')
 def course_policy(request, course_id):
     course = Course.objects.get(id=course_id)
@@ -122,6 +124,7 @@ def course_policy(request, course_id):
         'local_css_urls' : css_library_urls,
         'local_js_urls' : js_library_urls
     })
+
 
 @login_required(login_url='/landpage')
 def course_lectures(request, course_id):
@@ -144,6 +147,7 @@ def course_lectures(request, course_id):
         'local_js_urls' : js_library_urls
     })
 
+
 @login_required(login_url='/landpage')
 def lecture(request, course_id):
     response_data = {}
@@ -163,6 +167,7 @@ def lecture(request, course_id):
                     'local_js_urls' : js_library_urls
                  })
 
+
 @login_required(login_url='/landpage')
 def assignments(request, course_id):
     course = Course.objects.get(id=course_id)
@@ -180,6 +185,7 @@ def assignments(request, course_id):
         'local_js_urls' : js_library_urls
     })
 
+
 @login_required(login_url='/landpage')
 def assignment(request, course_id):
     response_data = {}
@@ -194,14 +200,45 @@ def assignment(request, course_id):
     # If this line is reached, then that means an error occured.
     return HttpResponse(json.dumps({'status':'failure'}), content_type="application/json")
 
+
+@login_required()
 def assignment_essay(request, assignment_id):
+    assignment = Assignment.objects.get(id=assignment_id)
     try:
         essay_question = EssayQuestion.objects.get(assignment_id=assignment_id)
     except EssayQuestion.DoesNotExist:
         essay_question = None
+
+    try:
+        essay_submission = EssaySubmission.objects.get(assignment_id=assignment_id)
+    except EssaySubmission.DoesNotExist:
+        essay_submission = None
+
     return render(request, 'course/assignment_essay.html',{
-        'question' : essay_question
+        'assignment' : assignment,
+        'essay_question' : essay_question,
+        'essay_submission' : essay_submission
     })
+
+
+@login_required()
+def upload_essay(request, course_id):
+    # Note:
+    # https://docs.djangoproject.com/en/1.7/topics/http/file-uploads/
+    #
+    response_data = {'status' : 'failed', 'message' : 'error submitting'}
+    assignment_id = request.POST.get('assignment_id')
+    if request.is_ajax():
+        if request.method == 'POST':
+            a_file = request.POST.get('file', None)
+            if a_file:
+                new_file = EssaySubmission(assignment_id=assignment_id, file = a_file)
+                new_file.save()
+                response_data = {'status' : 'success', 'message' : 'submitted'}
+            else:
+                response_data = {'status' : 'failed', 'message' : 'no file'}
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
+
 
 @login_required(login_url='/landpage')
 def course_quizzes(request, course_id):
@@ -214,6 +251,7 @@ def course_quizzes(request, course_id):
         'local_js_urls' : js_library_urls
     })
 
+
 @login_required(login_url='/landpage')
 def course_exams(request, course_id):
     course = Course.objects.get(id=course_id)
@@ -224,6 +262,7 @@ def course_exams(request, course_id):
         'local_css_urls' : css_library_urls,
         'local_js_urls' : js_library_urls
     })
+
 
 @login_required(login_url='/landpage')
 def course_discussion(request, course_id):

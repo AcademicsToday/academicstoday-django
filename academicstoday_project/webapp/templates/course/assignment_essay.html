@@ -4,20 +4,121 @@
         <div class="modal-content">
             <div class="modal-header">
                 <a href="#" class="btn btn-success pull-right" data-dismiss="modal">×</a>
-                <h4><!-- TODO: IMPL --></h4>
+                <h4>Essay Assignment #{{ essay_question.question_num }}: {{ essay_question.title }}</h4>
             </div>
             <div class="modal-body">
-                <form method="post"
-                    action='/learn'
-                    name="learnForm">
-                    <!-- TODO: IMPL -->
+                <form name="assignment_form" enctype="multipart/form-data" action="." method="post" >
+                    <!-- DESCRIPTION -->
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                Description
+                            </label>
+                        </div>
+                    </div><!-- /.row -->
+                    
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-sm-12" style="font-weight:normal;">
+                                <p>{{ essay_question.description }}</p>
+                            </label>
+                        </div>
+                    </div><!-- /.row -->
+                    
+                    <!-- DUE DATE -->
+                    <br/>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                Due Date:
+                            </label>
+                        </div>
+                    </div><!-- /.row -->
+                    
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-sm-12" style="font-weight:normal;">
+                                <p>{{ assignment.due_date }}</p>
+                            </label>
+                        </div>
+                    </div><!-- /.row -->
+
+
+                    <!-- SUBMISSION -->
+                    <br/>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">
+                                Submission:
+                            </label>
+                        </div>
+                    </div><!-- /.row -->
+                    
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <input type="file"
+                                     id="file"
+                                   name="file"
+                                  class="form-control">
+                            </input>
+                        </div>
+                        <div class="col-sm-6">
+                            <button type="button"
+                                onclick="ajax_upload_assignment();"
+                                class="btn btn-sm btn-primary">Upload
+                            </button>
+                        </div>
+                    </div><!-- /.row -->
+                    
+                    <br/>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="alert alert-warning">
+                                <strong>Warning:</strong> Please upload your assignment before proceeding.
+                            </div>
+                        </div>
+                    </div><!-- /.row -->
                 </form>
-            </div>
+            </div> <!-- /.modal-body -->
+            <div class="modal-footer">
+                <button type="button"
+                       class="btn btn-primary"
+                        form="assignment_form"
+                     onclick="">
+                    <i class="fa fa-times"></i> Upload
+                </button>
+            </div> <!-- /.modal-footer -->
         </div>
     </div>
 </div>
 
 <script>
+    // 'file': $('#file').val(),
+    
+    
+    function ajax_upload_assignment()
+    {
+        var url = 'upload_essay';
+        
+        $.ajax( url, {
+               data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    'assignment_id': {{ assignment.id }},
+                    'file': $('#file').val(),
+               },
+               type: 'post',
+               success: function(result) {
+                    // success code execution here
+               },
+               error: function(xhr,status,error) {
+                    // error code here
+               },
+               complete: function(xhr,status) {
+                    // completion code here
+               }
+        });
+    }
+    
     $(document).ready(function(){
         // When this model hides, we will clear the contents of it.
         $('#assignment_modal').on('hidden.bs.modal', function (e) {
