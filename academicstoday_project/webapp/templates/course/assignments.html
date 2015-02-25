@@ -49,7 +49,10 @@
                                 <td>{{ assignment.due_date }}</td>
                                 <td>No</td>
                                 <td>
-                                    <button type="button" class="btn btn-sm btn-primary">Start Assignment</button>
+                                    <button type="button"
+                                         onclick="ajax_assignment({{ assignment.id }},{{ assignment.type }});"
+                                           class="btn btn-sm btn-primary">Start Assignment
+                                    </button>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -63,5 +66,40 @@
     </div>
     
 </div>
+
+<script>
+    /**
+     *  Function will call AJAX function to load the assignment modal.
+     */
+function ajax_assignment(assignment_id, assignment_type)
+{
+    var url = 'assignment';
+    
+    $.ajax( url, {
+           data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'assignment_id': assignment_id,
+                'assignment_type' : assignment_type
+           },
+           type: 'post',
+           success: function(result) {
+                // success code execution here
+                $('#ajax_assignment').html(result); // Update UI.
+                $('#assignment_modal').modal();               // Unhide view.
+           },
+           error: function(xhr,status,error) {
+                // error code here
+           },
+           complete: function(xhr,status) {
+                // completion code here
+           }
+    });
+}
+</script>
+
+<!-- Modal -->
+<div id="ajax_assignment"
+   name="ajax_assignment"></div>
+<!-- /.Modal -->
 
 {% endblock content %}

@@ -33,9 +33,11 @@ urlpatterns = patterns('',
     url(r'^course/(\d)/syllabus$', course.course_syllabus),
     url(r'^course/(\d)/policy$', course.course_policy),
     url(r'^course/(\d)/lectures$', course.course_lectures),
+    url(r'^course/(\d)/lecture$', course.lecture),
     url(r'^course/(\d)/quizzes$', course.course_quizzes),
     url(r'^course/(\d)/exams$', course.course_exams),
     url(r'^course/(\d)/discussion$', course.course_discussion),
-    url(r'^course/(\d)/get_lecture$', course.get_lecture),
     url(r'^course/(\d)/assignments$', course.assignments),
+    url(r'^course/(\d)/assignment$', course.assignment),
+                       
 )
