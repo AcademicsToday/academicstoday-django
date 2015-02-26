@@ -25,6 +25,11 @@ from django.contrib.auth.decorators import login_required
 # Forms
 from webapp.forms import EssaySubmissionForm
 
+# Constants
+ESSAY_ASSIGNMENT_TYPE = 1
+MULTIPLECHOICE_ASSIGNMENT_TYPE = 2
+RESPONSE_ASSIGNMENT_TYPE = 3
+
 # Developer Notes:
 # (1) Templates
 # https://docs.djangoproject.com/en/1.7/ref/templates
@@ -193,12 +198,14 @@ def assignments(request, course_id):
         'user' : request.user,
         'assignments' : assignments,
         'essay_submissions' : essay_submissions,
+        'ESSAY_ASSIGNMENT_TYPE' : ESSAY_ASSIGNMENT_TYPE,
+        'MULTIPLECHOICE_ASSIGNMENT_TYPE' : MULTIPLECHOICE_ASSIGNMENT_TYPE,
+        'RESPONSE_ASSIGNMENT_TYPE' : RESPONSE_ASSIGNMENT_TYPE,
         'tab' : 'assignments',
         'subtab' : 'assignments_list',
         'local_css_urls' : css_library_urls,
         'local_js_urls' : js_library_urls
     })
-
 
 
 @login_required()
@@ -210,7 +217,7 @@ def assignment_delete(request, course_id):
             assignment_type = int(request.POST['assignment_type'])
             
             # Delete assignments depending on what type
-            if assignment_type == 1:
+            if assignment_type == ESSAY_ASSIGNMENT_TYPE:
                 try:
                     EssaySubmission.objects.get(
                         assignment_id=assignment_id,
@@ -223,6 +230,7 @@ def assignment_delete(request, course_id):
             return HttpResponse(json.dumps(response_data), content_type="application/json")
     response_data = {'status' : 'failed', 'message' : 'unknown error with deletion'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
+
 
 @login_required()
 def assignment_essay(request, assignment_id):

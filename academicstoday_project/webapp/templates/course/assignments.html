@@ -46,7 +46,7 @@
                         </thead>
                         <tbody>
                             {% for assignment in assignments %}
-                                {% if assignment.type == 1 %}
+                                {% if assignment.type == ESSAY_ASSIGNMENT_TYPE %}
                                     {% for essay_submission in essay_submissions %}
                                         {% if essay_submission.assignment_id == assignment.id %}
                                         <tr>
