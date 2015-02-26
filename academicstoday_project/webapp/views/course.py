@@ -74,7 +74,7 @@ def logout_authentication(request):
 @login_required(login_url='/landpage')
 def course(request, course_id, tab):
     course = Course.objects.get(id=course_id)
-    return render(request, 'course/home.html',{
+    return render(request, 'course/announcement/list.html',{
         'course' : course,
         'user' : request.user,
         'tab' : tab,
@@ -90,7 +90,7 @@ def course_home(request, course_id):
         announcements = Announcement.objects.filter(course_id=course_id).order_by('-post_date')
     except Announcement.DoesNotExist:
         announcements = None
-    return render(request, 'course/home.html',{
+    return render(request, 'course/announcement/list.html',{
         'course' : course,
         'announcements' : announcements,
         'user' : request.user,
@@ -107,7 +107,7 @@ def course_syllabus(request, course_id):
         syllabus = Syllabus.objects.get(course_id=course_id)
     except Syllabus.DoesNotExist:
         syllabus = None
-    return render(request, 'course/syllabus.html',{
+    return render(request, 'course/syllabus/view.html',{
         'course' : course,
         'syllabus' : syllabus,
         'user' : request.user,
@@ -124,7 +124,7 @@ def course_policy(request, course_id):
         policy = Policy.objects.get(course_id=course_id)
     except Policy.DoesNotExist:
         policy = None
-    return render(request, 'course/policy.html',{
+    return render(request, 'course/policy/view.html',{
         'course' : course,
         'user' : request.user,
         'policy' : policy,
@@ -145,7 +145,7 @@ def course_lectures(request, course_id):
         lectures = Lecture.objects.filter(course_id=course_id).order_by('-lecture_num')
     except Lecture.DoesNotExist:
         lectures = None
-    return render(request, 'course/lectures.html',{
+    return render(request, 'course/lecture/list.html',{
         'course' : course,
         'weeks' : weeks,
         'lectures' : lectures,
@@ -168,7 +168,7 @@ def lecture(request, course_id):
                      lecture = Lecture.objects.get(id=lecture_id)
                  except Lecture.DoesNotExist:
                      lecture = None
-                 return render(request, 'course/lecture.html',{
+                 return render(request, 'course/lecture/details.html',{
                     'lecture' : lecture,
                     'user' : request.user,
                     'local_css_urls' : css_library_urls,
@@ -280,7 +280,7 @@ def upload_essay(request, course_id):
 @login_required(login_url='/landpage')
 def course_quizzes(request, course_id):
     course = Course.objects.get(id=course_id)
-    return render(request, 'course/quizzes.html',{
+    return render(request, 'course/quiz/quizzes.html',{
         'course' : course,
         'user' : request.user,
         'tab' : 'quizzes',
@@ -292,7 +292,7 @@ def course_quizzes(request, course_id):
 @login_required(login_url='/landpage')
 def course_exams(request, course_id):
     course = Course.objects.get(id=course_id)
-    return render(request, 'course/exams.html',{
+    return render(request, 'course/exam/exams.html',{
         'course' : course,
         'user' : request.user,
         'tab' : 'exams',
@@ -304,7 +304,7 @@ def course_exams(request, course_id):
 @login_required(login_url='/landpage')
 def course_discussion(request, course_id):
     course = Course.objects.get(id=course_id)
-    return render(request, 'course/discussion.html',{
+    return render(request, 'course/discussion/discussion.html',{
         'course' : course,
         'user' : request.user,
         'tab' : 'discussion',
