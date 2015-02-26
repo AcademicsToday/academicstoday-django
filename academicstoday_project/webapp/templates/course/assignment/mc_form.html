@@ -1,0 +1,15 @@
+<form name="assignment_form">
+    {% for question in questions %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Q{{ question.question_num }}: {{ question.title }}</h3>
+        </div>
+        <div class="panel-body">
+            <p>{{ question.description }}</p>
+
+        </div>
+    </div>
+    {% empty %}
+    <strong>Missing Questions!</strong> It appears we're missing the questions!
+    {% endfor %}
+</form>

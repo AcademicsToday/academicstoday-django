@@ -243,6 +243,8 @@ class MultipleChoiceQuestion(models.Model):
     question_num = models.SmallIntegerField()
     title = models.CharField(max_length=31, default='')
     description = models.TextField(default='')
+    json_choices = models.CharField(max_length=1055, null=True)
+    json_answers = models.CharField(max_length=127, null=True)
     
     def __str__(self):
         return self.course_id + ' ' + self.title + ' ' + self.description;
@@ -250,38 +252,14 @@ class MultipleChoiceQuestion(models.Model):
     class Meta:
         db_table = 'at_multiple_choice_question'
 
-class MultipleChoiceOption(models.Model):
-    id = models.AutoField(max_length=11, primary_key=True)
-    assignment_id = models.IntegerField(max_length=11)
-    course_id = models.IntegerField(max_length=11)
-    choice = models.CharField(max_length=1)
-    description = models.TextField(default='')
-    
-    def __str__(self):
-        return self.course_id + ' ' + self.choice + ' ' + self.description;
-    
-    class Meta:
-        db_table = 'at_multiple_choice_options'
-
-class MultipleChoiceAnswer(models.Model):
-    id = models.AutoField(max_length=11, primary_key=True)
-    assignment_id = models.IntegerField(max_length=11)
-    course_id = models.IntegerField(max_length=11)
-    selected = models.CharField(max_length=1)
-    
-    def __str__(self):
-        return self.course_id + ' ' + self.selected;
-    
-    class Meta:
-        db_table = 'at_multiple_choice_answers'
-
 class MultipleChoiceSubmission(models.Model):
     id = models.AutoField(max_length=11, primary_key=True)
     student_id = models.BigIntegerField()
     assignment_id = models.IntegerField(max_length=11)
     course_id = models.IntegerField(max_length=11)
     question_num = models.SmallIntegerField(default=0)
-    selected = models.CharField(max_length=1)
+    json_answers = models.CharField(max_length=127, null=True)
+    marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
     
     def __str__(self):
@@ -302,7 +280,7 @@ class ResponseQuestion(models.Model):
         return self.course_id + ' ' + self.title + ' ' + self.description;
     
     class Meta:
-        db_table = 'at_response_question'
+        db_table = 'at_response_questions'
 
 class ResponseSubmission(models.Model):
     id = models.AutoField(max_length=11, primary_key=True)
