@@ -182,7 +182,7 @@ def assignments(request, course_id):
     
     # Fetch all the assignments for this course.
     try:
-        assignments = Assignment.objects.filter(course_id=course_id).order_by('-order_num')
+        assignments = Assignment.objects.filter(course_id=course_id).order_by('order_num')
     except Assignment.DoesNotExist:
         assignment = None
 
@@ -193,11 +193,19 @@ def assignments(request, course_id):
     except EssaySubmission.DoesNotExist:
         essay_submissions = None
 
-    return render(request, 'course/assignments.html',{
+    # Fetch all multpile choice assignments
+    try:
+        mc_submissions = MultipleChoiceSubmission.objects.filter(course_id=course_id,
+                                                                 student_id=request.user.id)
+    except MultipleChoiceSubmission.DoesNotExist:
+        mc_submissions = None
+
+    return render(request, 'course/assignment/list.html',{
         'course' : course,
         'user' : request.user,
         'assignments' : assignments,
         'essay_submissions' : essay_submissions,
+        'mc_submissions' : mc_submissions,
         'ESSAY_ASSIGNMENT_TYPE' : ESSAY_ASSIGNMENT_TYPE,
         'MULTIPLECHOICE_ASSIGNMENT_TYPE' : MULTIPLECHOICE_ASSIGNMENT_TYPE,
         'RESPONSE_ASSIGNMENT_TYPE' : RESPONSE_ASSIGNMENT_TYPE,
@@ -248,7 +256,7 @@ def assignment_essay(request, assignment_id):
             except EssaySubmission.DoesNotExist:
                 essay_submission = None
 
-            return render(request, 'course/assignment_essay.html',{
+            return render(request, 'course/assignment/essay.html',{
                 'assignment' : assignment,
                 'essay_question' : essay_question,
                 'essay_submission' : essay_submission

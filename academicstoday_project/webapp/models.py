@@ -277,10 +277,12 @@ class MultipleChoiceAnswer(models.Model):
 
 class MultipleChoiceSubmission(models.Model):
     id = models.AutoField(max_length=11, primary_key=True)
-    user_id = models.BigIntegerField()
+    student_id = models.BigIntegerField()
     assignment_id = models.IntegerField(max_length=11)
     course_id = models.IntegerField(max_length=11)
+    question_num = models.SmallIntegerField(default=0)
     selected = models.CharField(max_length=1)
+    submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
     
     def __str__(self):
         return self.course_id + ' ' + self.selected;

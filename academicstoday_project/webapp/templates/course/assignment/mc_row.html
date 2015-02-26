@@ -1,0 +1,38 @@
+{% for mc_submission in mc_submissions %}
+{% if mc_submissions.assignment_id == assignment.id %}
+<tr>
+    <td>{{ assignment.order_num }}</td>
+    <td>Multiple Choice</td>
+    <td><span class="badge">Complete</span></td>
+    <td>{{ assignment.due_date }}</td>
+    <td>{{ mc_submissions.submission_date }} </td>
+    <td>
+        <button type="button"
+            onclick="ajax_assignment_essay({{ assignment.id }});"
+            class="btn btn-sm btn-primary" disabled>
+            <i class="fa fa-plus"></i> Submit
+        </button>
+        <button type="button"
+            onclick="ajax_delete_assignment({{ assignment.id }}, {{ assignment.type }});"
+            class="btn btn-sm btn-danger">
+            <i class="fa fa-minus"></i> Delete
+        </button>
+    </td>
+</tr>
+{% endif %}
+{% empty %}
+<tr>
+    <td>{{ assignment.order_num }}</td>
+    <td>Multiple Choice</td>
+    <td><span class="badge">Incomplete</span></td>
+    <td>{{ assignment.due_date }}</td>
+    <td></td>
+    <td>
+        <button type="button"
+            onclick="ajax_assignment_essay({{ assignment.id }});"
+            class="btn btn-sm btn-primary">
+            <i class="fa fa-plus"></i> Submit
+        </button>
+    </td>
+</tr>
+{% endfor %}

@@ -47,44 +47,9 @@
                         <tbody>
                             {% for assignment in assignments %}
                                 {% if assignment.type == ESSAY_ASSIGNMENT_TYPE %}
-                                    {% for essay_submission in essay_submissions %}
-                                        {% if essay_submission.assignment_id == assignment.id %}
-                                        <tr>
-                                            <td>{{ assignment.order_num }}</td>
-                                            <td>Essay</td>
-                                            <td><span class="badge">Complete</span></td>
-                                            <td>{{ assignment.due_date }}</td>
-                                            <td>{{ essay_submission.submission_date }} </td>
-                                            <td>
-                                                <button type="button"
-                                                    onclick="ajax_assignment_essay({{ assignment.id }});"
-                                                    class="btn btn-sm btn-primary" disabled>
-                                                    <i class="fa fa-plus"></i> Submit
-                                                </button>
-                                                <button type="button"
-                                                    onclick="ajax_delete_assignment({{ assignment.id }}, {{ assignment.type }});"
-                                                    class="btn btn-sm btn-danger">
-                                                        <i class="fa fa-minus"></i> Delete
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        {% endif %}
-                                    {% empty %}
-                                    <tr>
-                                        <td>{{ assignment.order_num }}</td>
-                                        <td>Essay</td>
-                                        <td><span class="badge">Incomplete</span></td>
-                                        <td>{{ assignment.due_date }}</td>
-                                        <td></td>
-                                        <td>
-                                            <button type="button"
-                                                onclick="ajax_assignment_essay({{ assignment.id }});"
-                                                class="btn btn-sm btn-primary">
-                                                    <i class="fa fa-plus"></i> Submit
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
+                                    {% include "course/assignment/essay_row.html" %}
+                                {% elif assignment.type == MULTIPLECHOICE_ASSIGNMENT_TYPE %}
+                                    {% include "course/assignment/mc_row.html" %}
                                 {% else %}
                                 <tr>
                                     <td></td>
