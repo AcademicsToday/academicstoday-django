@@ -47,9 +47,9 @@
                         <tbody>
                             {% for assignment in assignments %}
                                 {% if assignment.type == ESSAY_ASSIGNMENT_TYPE %}
-                                    {% include "course/assignment/essay_row.html" %}
+                                    {% include "course/assignment/list_essay_row.html" %}
                                 {% elif assignment.type == MULTIPLECHOICE_ASSIGNMENT_TYPE %}
-                                    {% include "course/assignment/mc_row.html" %}
+                                    {% include "course/assignment/list_mc_row.html" %}
                                 {% else %}
                                 <tr>
                                     <td></td>
@@ -80,35 +80,11 @@
 </div>
 
 <script>
-/**
-  *  Function will call AJAX function to load the assignment modal.
-  */
-function ajax_assignment_essay(assignment_id)
-{
-    var url = 'assignment_essay';
     
-    $.ajax( url, {
-           data: {
-                'csrfmiddlewaretoken': '{{ csrf_token }}',
-                'assignment_id': assignment_id,
-                'student_id' : {{ user.id }},
-                'course_id' : {{ course.id }}
-           },
-           type: 'post',
-           success: function(result) {
-                // success code execution here
-                $('#ajax_assignment').html(result); // Update UI.
-                $('#assignment_modal').modal();     // Unhide view.
-           },
-           error: function(xhr,status,error) {
-                // error code here
-           },
-           complete: function(xhr,status) {
-                // completion code here
-           }
-    });
-}
-
+/**
+ *  Function will delete the current logged in users assignment for the
+ *  given parameters.
+ */
 function ajax_delete_assignment(assignment_id, assignment_type)
 {
     var url = 'assignment_delete';
@@ -149,7 +125,6 @@ function refresh_current_assignments_page()
 {
     window.location = 'assignments';
 }
-
 </script>
 
 <!-- Modal -->

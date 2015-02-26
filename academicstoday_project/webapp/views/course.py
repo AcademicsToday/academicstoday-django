@@ -21,14 +21,11 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 
 # Forms
 from webapp.forms import EssaySubmissionForm
 
-# Constants
-ESSAY_ASSIGNMENT_TYPE = 1
-MULTIPLECHOICE_ASSIGNMENT_TYPE = 2
-RESPONSE_ASSIGNMENT_TYPE = 3
 
 # Developer Notes:
 # (1) Templates
@@ -206,9 +203,9 @@ def assignments(request, course_id):
         'assignments' : assignments,
         'essay_submissions' : essay_submissions,
         'mc_submissions' : mc_submissions,
-        'ESSAY_ASSIGNMENT_TYPE' : ESSAY_ASSIGNMENT_TYPE,
-        'MULTIPLECHOICE_ASSIGNMENT_TYPE' : MULTIPLECHOICE_ASSIGNMENT_TYPE,
-        'RESPONSE_ASSIGNMENT_TYPE' : RESPONSE_ASSIGNMENT_TYPE,
+        'ESSAY_ASSIGNMENT_TYPE' : settings.ESSAY_ASSIGNMENT_TYPE,
+        'MULTIPLECHOICE_ASSIGNMENT_TYPE' : settings.MULTIPLECHOICE_ASSIGNMENT_TYPE,
+        'RESPONSE_ASSIGNMENT_TYPE' : settings.RESPONSE_ASSIGNMENT_TYPE,
         'tab' : 'assignments',
         'subtab' : 'assignments_list',
         'local_css_urls' : css_library_urls,
@@ -225,7 +222,7 @@ def assignment_delete(request, course_id):
             assignment_type = int(request.POST['assignment_type'])
             
             # Delete assignments depending on what type
-            if assignment_type == ESSAY_ASSIGNMENT_TYPE:
+            if assignment_type == settings.ESSAY_ASSIGNMENT_TYPE:
                 try:
                     EssaySubmission.objects.get(
                         assignment_id=assignment_id,
@@ -264,7 +261,7 @@ def assignment_essay(request, assignment_id):
 
 
 @login_required()
-def upload_essay(request, course_id):
+def upload_essay_assignment(request, course_id):
     response_data = {'status' : 'failed', 'message' : 'error submitting'}
     if request.is_ajax():
         if request.method == 'POST':
@@ -274,6 +271,35 @@ def upload_essay(request, course_id):
                 response_data = {'status' : 'success', 'message' : 'submitted'}
             else:
                 response_data = {'status' : 'failed', 'message' : form.errors}
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
+@login_required()
+def assignment_multiplechoice(request, assignment_id):
+    response_data = {}
+    if request.is_ajax():
+        if request.method == 'POST':
+            assignment = Assignment.objects.get(id=assignment_id)
+            try:
+                essay_question = EssayQuestion.objects.get(assignment_id=assignment_id)
+            except EssayQuestion.DoesNotExist:
+                essay_question = None
+            
+            try:
+                essay_submission = EssaySubmission.objects.get(assignment_id=assignment_id)
+            except EssaySubmission.DoesNotExist:
+                essay_submission = None
+        
+            return render(request, 'course/assignment/mc.html',{
+                'assignment' : assignment,
+                'essay_question' : essay_question,
+                'essay_submission' : essay_submission
+            })
+
+
+@login_required()
+def submit_mc_assignment(request, course_id):
+    response_data = {'status' : 'failed', 'message' : 'error submitting'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 

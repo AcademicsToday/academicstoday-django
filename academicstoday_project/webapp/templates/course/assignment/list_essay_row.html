@@ -36,3 +36,34 @@
     </td>
 </tr>
 {% endfor %}
+
+<script>
+/**
+ *  Function will call AJAX function to load the assignment modal.
+ */
+function ajax_assignment_essay(assignment_id)
+{
+    var url = 'assignment_essay';
+    
+    $.ajax( url, {
+           data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'assignment_id': assignment_id,
+                'student_id' : {{ user.id }},
+                'course_id' : {{ course.id }}
+           },
+           type: 'post',
+           success: function(result) {
+                // success code execution here
+                $('#ajax_assignment').html(result); // Update UI.
+                $('#assignment_modal').modal();     // Unhide view.
+           },
+           error: function(xhr,status,error) {
+                // error code here
+           },
+           complete: function(xhr,status) {
+                // completion code here
+           }
+    });
+}
+</script>
