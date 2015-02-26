@@ -147,6 +147,10 @@
         $('#assignment_modal').on('hidden.bs.modal', function (e) {
             // Clear all the code inside this modal.
             $('#ajax_assignment').html('');
+                                  
+            // When the essay assignment tab finishes closing, then we will
+            // make the 'assignments' page to refresh with this function.
+            refresh_current_assignments_page(); // (Inside assignments.html)
         })
     });
 </script>

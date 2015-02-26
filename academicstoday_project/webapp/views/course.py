@@ -176,12 +176,23 @@ def assignments(request, course_id):
     course = Course.objects.get(id=course_id)
     
     # Fetch all the assignments for this course.
-    assignments = Assignment.objects.filter(course_id=course_id).order_by('-order_num')
-    
+    try:
+        assignments = Assignment.objects.filter(course_id=course_id).order_by('-order_num')
+    except Assignment.DoesNotExist:
+        assignment = None
+
+    # Fetch all essay assignments
+    try:
+        essay_submissions = EssaySubmission.objects.filter(course_id=course_id,
+                                                           student_id=request.user.id)
+    except EssaySubmission.DoesNotExist:
+        essay_submissions = None
+
     return render(request, 'course/assignments.html',{
         'course' : course,
         'user' : request.user,
         'assignments' : assignments,
+        'essay_submissions' : essay_submissions,
         'tab' : 'assignments',
         'subtab' : 'assignments_list',
         'local_css_urls' : css_library_urls,
@@ -189,39 +200,51 @@ def assignments(request, course_id):
     })
 
 
-@login_required(login_url='/landpage')
-def assignment(request, course_id):
-    response_data = {}
+
+@login_required()
+def assignment_delete(request, course_id):
     if request.is_ajax():
         if request.method == 'POST':
-            # Check to see if any fields where missing from the form.
+            student_id = int(request.POST['student_id'])
             assignment_id = int(request.POST['assignment_id'])
             assignment_type = int(request.POST['assignment_type'])
-            if assignment_id != '' and assignment_type != '':
-                if assignment_type == 1:
-                    return assignment_essay(request, assignment_id)
-    # If this line is reached, then that means an error occured.
-    return HttpResponse(json.dumps({'status':'failure'}), content_type="application/json")
-
+            
+            # Delete assignments depending on what type
+            if assignment_type == 1:
+                try:
+                    EssaySubmission.objects.get(
+                        assignment_id=assignment_id,
+                        student_id=student_id,
+                        course_id=course_id
+                    ).delete()
+                    response_data = {'status' : 'success', 'message' : 'assignment was deleted'}
+                except EssaySubmission.DoesNotExist:
+                    response_data = {'status' : 'failed', 'message' : 'assignment not found'}
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+    response_data = {'status' : 'failed', 'message' : 'unknown error with deletion'}
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 @login_required()
 def assignment_essay(request, assignment_id):
-    assignment = Assignment.objects.get(id=assignment_id)
-    try:
-        essay_question = EssayQuestion.objects.get(assignment_id=assignment_id)
-    except EssayQuestion.DoesNotExist:
-        essay_question = None
+    response_data = {}
+    if request.is_ajax():
+        if request.method == 'POST':
+            assignment = Assignment.objects.get(id=assignment_id)
+            try:
+                essay_question = EssayQuestion.objects.get(assignment_id=assignment_id)
+            except EssayQuestion.DoesNotExist:
+                essay_question = None
 
-    try:
-        essay_submission = EssaySubmission.objects.get(assignment_id=assignment_id)
-    except EssaySubmission.DoesNotExist:
-        essay_submission = None
+            try:
+                essay_submission = EssaySubmission.objects.get(assignment_id=assignment_id)
+            except EssaySubmission.DoesNotExist:
+                essay_submission = None
 
-    return render(request, 'course/assignment_essay.html',{
-        'assignment' : assignment,
-        'essay_question' : essay_question,
-        'essay_submission' : essay_submission
-    })
+            return render(request, 'course/assignment_essay.html',{
+                'assignment' : assignment,
+                'essay_question' : essay_question,
+                'essay_submission' : essay_submission
+             })
 
 
 @login_required()

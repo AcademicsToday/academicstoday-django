@@ -37,23 +37,70 @@
                         <thead>
                             <tr>
                                 <th>#</th>
+                                <th>Type</th>
+                                <th>Status</th>
                                 <th>Due Date</th>
-                                <th>Completed</th>
+                                <th>Date Submitted</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for assignment in assignments %}
+                                {% if assignment.type == 1 %}
+                                    {% for essay_submission in essay_submissions %}
+                                        {% if essay_submission.assignment_id == assignment.id %}
+                                        <tr>
+                                            <td>{{ assignment.order_num }}</td>
+                                            <td>Essay</td>
+                                            <td><span class="badge">Complete</span></td>
+                                            <td>{{ assignment.due_date }}</td>
+                                            <td>{{ essay_submission.submission_date }} </td>
+                                            <td>
+                                                <button type="button"
+                                                    onclick="ajax_assignment_essay({{ assignment.id }});"
+                                                    class="btn btn-sm btn-primary" disabled>
+                                                    <i class="fa fa-plus"></i> Submit
+                                                </button>
+                                                <button type="button"
+                                                    onclick="ajax_delete_assignment({{ assignment.id }}, {{ assignment.type }});"
+                                                    class="btn btn-sm btn-danger">
+                                                        <i class="fa fa-minus"></i> Delete
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        {% endif %}
+                                    {% empty %}
+                                    <tr>
+                                        <td>{{ assignment.order_num }}</td>
+                                        <td>Essay</td>
+                                        <td><span class="badge">Incomplete</span></td>
+                                        <td>{{ assignment.due_date }}</td>
+                                        <td></td>
+                                        <td>
+                                            <button type="button"
+                                                onclick="ajax_assignment_essay({{ assignment.id }});"
+                                                class="btn btn-sm btn-primary">
+                                                    <i class="fa fa-plus"></i> Submit
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                {% else %}
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                {% endif %}
+                            {% empty %}
                             <tr>
-                                <td>{{ assignment.order_num }}</td>
-                                <td>{{ assignment.due_date }}</td>
-                                <td>No</td>
-                                <td>
-                                    <button type="button"
-                                         onclick="ajax_assignment({{ assignment.id }},{{ assignment.type }});"
-                                           class="btn btn-sm btn-primary">Start Assignment
-                                    </button>
-                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -68,24 +115,25 @@
 </div>
 
 <script>
-    /**
-     *  Function will call AJAX function to load the assignment modal.
-     */
-function ajax_assignment(assignment_id, assignment_type)
+/**
+  *  Function will call AJAX function to load the assignment modal.
+  */
+function ajax_assignment_essay(assignment_id)
 {
-    var url = 'assignment';
+    var url = 'assignment_essay';
     
     $.ajax( url, {
            data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
                 'assignment_id': assignment_id,
-                'assignment_type' : assignment_type
+                'student_id' : {{ user.id }},
+                'course_id' : {{ course.id }}
            },
            type: 'post',
            success: function(result) {
                 // success code execution here
                 $('#ajax_assignment').html(result); // Update UI.
-                $('#assignment_modal').modal();               // Unhide view.
+                $('#assignment_modal').modal();     // Unhide view.
            },
            error: function(xhr,status,error) {
                 // error code here
@@ -95,6 +143,48 @@ function ajax_assignment(assignment_id, assignment_type)
            }
     });
 }
+
+function ajax_delete_assignment(assignment_id, assignment_type)
+{
+    var url = 'assignment_delete';
+    
+    $.ajax( url, {
+           data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'assignment_id': assignment_id,
+                'assignment_type': assignment_type,
+                'student_id' : {{ user.id }},
+                'course_id' : {{ course.id }}
+           },
+           type: 'post',
+           success: function(result) {
+                // success code execution here
+                if (result.status == 'success')
+                {
+                    refresh_current_assignments_page(); // Reload UI.
+                }
+                else
+                {
+                    alert(result.message);
+                }
+           },
+           error: function(xhr,status,error) {
+                // error code here
+           },
+           complete: function(xhr,status) {
+                // completion code here
+           }
+    });
+}
+
+/**
+ *  Function makes the current tab refresh the page.
+ */
+function refresh_current_assignments_page()
+{
+    window.location = 'assignments';
+}
+
 </script>
 
 <!-- Modal -->

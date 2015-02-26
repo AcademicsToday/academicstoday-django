@@ -220,6 +220,7 @@ class EssaySubmission(models.Model):
     student_id = models.BigIntegerField()
     course_id = models.IntegerField(max_length=11)
     file = models.FileField(upload_to='uploads')
+    submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
     
     @classmethod
     def create(cls, student_id, course_id, assignment_id, file):
