@@ -50,4 +50,8 @@ urlpatterns = patterns('',
     url(r'^course/(\d)/submit_mc_assignment_completion$', course.submit_mc_assignment_completion),
     url(r'^course/(\d)/submit_truefalse_assignment_completion$', course.submit_truefalse_assignment_completion),
     url(r'^course/(\d)/submit_response_assignment_completion$', course.submit_response_assignment_completion),
+    url(r'^course/(\d)/quiz_truefalse$', course.quiz_truefalse),
+    url(r'^course/(\d)/submit_truefalse_quiz_answer$', course.submit_truefalse_quiz_answer),
+    url(r'^course/(\d)/submit_truefalse_quiz_completion$', course.submit_truefalse_quiz_completion),
+    url(r'^course/(\d)/quiz_delete$', course.quiz_delete),
 )
