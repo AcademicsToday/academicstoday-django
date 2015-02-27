@@ -274,7 +274,6 @@ def upload_essay_assignment(request, course_id):
 
 @login_required()
 def assignment_multiplechoice(request, course_id):
-    response_data = {}
     if request.is_ajax():
         if request.method == 'POST':
             assignment_id = int(request.POST['assignment_id'])
@@ -297,6 +296,65 @@ def assignment_multiplechoice(request, course_id):
 def submit_mc_assignment(request, course_id):
     response_data = {'status' : 'failed', 'message' : 'error submitting'}
     #TODO: Impl.
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
+@login_required()
+def submit_mc_assignment_answer(request, course_id):
+    if request.is_ajax():
+        if request.method == 'POST':
+            assignment_id = int(request.POST['assignment_id'])
+            student_id = int(request.POST['student_id'])
+            course_id = int(request.POST['course_id'])
+            question_num = int(request.POST['num'])
+            key = request.POST['key']
+            value = request.POST['value']
+            # Fetch question and error if not found.
+            try:
+                question = MultipleChoiceQuestion.objects.get(
+                    assignment_id=assignment_id,
+                    course_id=course_id,
+                    question_num=question_num,
+                )
+            except MultipleChoiceQuestion.DoesNotExist:
+                response_data = {'status' : 'failed', 'message' : 'cannot find question'}
+                return HttpResponse(json.dumps(response_data), content_type="application/json")
+            
+            # Fetch submission and create new submission if not found.
+            try:
+                submission = MultipleChoiceSubmission.objects.get(
+                    student_id=student_id,
+                    assignment_id=assignment_id,
+                    course_id=course_id,
+                    question_num=question_num,
+                )
+            except MultipleChoiceSubmission.DoesNotExist:
+                submission = MultipleChoiceSubmission.create(
+                    student_id=student_id,
+                    assignment_id=assignment_id,
+                    course_id=course_id,
+                    question_num=question_num,
+                )
+                submission.save()
+                
+            # Convert JSON string into Python array
+            answers = json.loads(submission.json_answers)
+            
+            # Append or remove the answers json entry from the submission object.
+            found_value = answers.get(key, None)
+            if found_value == value:
+                answers.pop(key, None)
+            else:
+                answers[key] = value
+            
+            # Convert back into JSON string and save
+            submission.json_answers = json.dumps(answers)
+            submission.save()
+            
+            response_data = {'status' : 'success', 'message' : ''}
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+    response_data = {'status' : 'failed', 'message' : 'error submitting'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 

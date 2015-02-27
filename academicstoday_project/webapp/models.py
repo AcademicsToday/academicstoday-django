@@ -243,8 +243,8 @@ class MultipleChoiceQuestion(models.Model):
     question_num = models.SmallIntegerField()
     title = models.CharField(max_length=31, default='')
     description = models.TextField(default='')
-    json_choices = models.CharField(max_length=1055, null=True)
-    json_answers = models.CharField(max_length=127, null=True)
+    json_choices = models.CharField(max_length=1055, default='{}')
+    json_answers = models.CharField(max_length=127, default='{}')
     
     def __str__(self):
         return self.course_id + ' ' + self.title + ' ' + self.description;
@@ -258,9 +258,17 @@ class MultipleChoiceSubmission(models.Model):
     assignment_id = models.IntegerField(max_length=11)
     course_id = models.IntegerField(max_length=11)
     question_num = models.SmallIntegerField(default=0)
-    json_answers = models.CharField(max_length=127, null=True)
+    json_answers = models.CharField(max_length=127, default='{}')
     marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
+    
+    @classmethod
+    def create(cls, assignment_id, course_id, student_id, question_num):
+        submission = cls(student_id=student_id,
+                         course_id=course_id,
+                         assignment_id=assignment_id,
+                         question_num=question_num)
+        return submission
     
     def __str__(self):
         return self.course_id + ' ' + self.selected;

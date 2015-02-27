@@ -28,9 +28,13 @@
         var data = new FormData();
         data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
         data.append('assignment_id', {{ assignment.id }});
-        data.append('file', document.getElementById('file').files[0]);
         data.append('student_id', {{ user.id }});
         data.append('course_id', {{ assignment.course_id }});
+        
+        // Code which will put the results from the questions into our form
+        {% for question in questions %}
+        data.append('file', document.getElementById('Q1').val);
+        {% endfor %}
         
         jQuery.ajax({
             url: 'submit_mc_assignment',
