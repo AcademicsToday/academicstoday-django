@@ -30,14 +30,11 @@
         data.append('assignment_id', {{ assignment.id }});
         data.append('student_id', {{ user.id }});
         data.append('course_id', {{ assignment.course_id }});
-        
-        // Code which will put the results from the questions into our form
-        {% for question in questions %}
-        data.append('file', document.getElementById('Q1').val);
-        {% endfor %}
+        data.append('order_num', {{ assignment.order_num }});
+        data.append('type', {{ assignment.type }});
         
         jQuery.ajax({
-            url: 'submit_mc_assignment',
+            url: 'submit_mc_assignment_completion',
             data: data,
             cache: false,
             contentType: false,

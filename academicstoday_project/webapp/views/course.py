@@ -8,6 +8,7 @@ from webapp.models import Policy
 from webapp.models import Week
 from webapp.models import Lecture
 from webapp.models import Assignment
+from webapp.models import AssignmentSubmission
 from webapp.models import EssayQuestion
 from webapp.models import EssaySubmission
 from webapp.models import MultipleChoiceQuestion
@@ -15,14 +16,17 @@ from webapp.models import MultipleChoiceSubmission
 from webapp.models import ResponseQuestion
 from webapp.models import ResponseSubmission
 import json
+import datetime
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 
+
 # Forms
 from webapp.forms import EssaySubmissionForm
+from webapp.forms import AssignmentSubmissionForm
 
 
 # Developer Notes:
@@ -180,27 +184,38 @@ def assignments(request, course_id):
         assignments = Assignment.objects.filter(course_id=course_id).order_by('order_num')
     except Assignment.DoesNotExist:
         assignment = None
-
-    # Fetch all essay assignments
+    
+    # Fetch all submitted assignments
     try:
-        essay_submissions = EssaySubmission.objects.filter(course_id=course_id,
-                                                           student_id=request.user.id)
-    except EssaySubmission.DoesNotExist:
-        essay_submissions = None
+         submitted_assignments = AssignmentSubmission.objects.filter(course_id=course_id,
+                                                                     student_id=request.user.id)
+    except AssignmentSubmission.DoesNotExist:
+        submitted_assignments = None
 
-    # Fetch all multpile choice assignments
-    try:
-        mc_submissions = MultipleChoiceSubmission.objects.filter(course_id=course_id,
-                                                                 student_id=request.user.id)
-    except MultipleChoiceSubmission.DoesNotExist:
-        mc_submissions = None
+    # If the submissions & assignment counts do not equal, then we have to
+    # iterate through all the assignments and create the missing 'submission'
+    # entries for our system.
+    if len(assignments) != len(submitted_assignments):
+        for assignment in assignments:
+            found_assignment = False
+            for submitted_assignment in submitted_assignments:
+                if assignment.id == submitted_assignment.assignment_id:
+                    found_assignment = True
+            if not found_assignment:
+                submission = AssignmentSubmission.create(
+                    student_id=request.user.id,
+                    course_id=course_id,
+                    assignment_id=assignment.id,
+                    type=assignment.type,
+                    order_num=assignment.order_num
+                )
+                submission.save()
 
     return render(request, 'course/assignment/list.html',{
         'course' : course,
         'user' : request.user,
         'assignments' : assignments,
-        'essay_submissions' : essay_submissions,
-        'mc_submissions' : mc_submissions,
+        'submitted_assignments' : submitted_assignments,
         'ESSAY_ASSIGNMENT_TYPE' : settings.ESSAY_ASSIGNMENT_TYPE,
         'MULTIPLECHOICE_ASSIGNMENT_TYPE' : settings.MULTIPLECHOICE_ASSIGNMENT_TYPE,
         'RESPONSE_ASSIGNMENT_TYPE' : settings.RESPONSE_ASSIGNMENT_TYPE,
@@ -219,6 +234,16 @@ def assignment_delete(request, course_id):
             assignment_id = int(request.POST['assignment_id'])
             assignment_type = int(request.POST['assignment_type'])
             
+            # Update the 'submission_date' of our entry to indicate we
+            # have finished the assignment.
+            submission = AssignmentSubmission.objects.get(
+                assignment_id=int(request.POST['assignment_id']),
+                student_id=int(request.POST['student_id']),
+                course_id=int(request.POST['course_id'])
+            )
+            submission.submission_date = None
+            submission.save()
+            
             # Delete assignments depending on what type
             if assignment_type == settings.ESSAY_ASSIGNMENT_TYPE:
                 try:
@@ -227,9 +252,13 @@ def assignment_delete(request, course_id):
                         student_id=student_id,
                         course_id=course_id
                     ).delete()
+                    
+                    # Send JSON Response indicating success
                     response_data = {'status' : 'success', 'message' : 'assignment was deleted'}
                 except EssaySubmission.DoesNotExist:
                     response_data = {'status' : 'failed', 'message' : 'assignment not found'}
+            else:
+                response_data = {'status' : 'success', 'message' : ''}
             return HttpResponse(json.dumps(response_data), content_type="application/json")
     response_data = {'status' : 'failed', 'message' : 'unknown error with deletion'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
@@ -264,8 +293,20 @@ def upload_essay_assignment(request, course_id):
     if request.is_ajax():
         if request.method == 'POST':
             form = EssaySubmissionForm(request.POST, request.FILES)
+           
             if form.is_valid():
                 form.save()  # Save the form contents to the model
+              
+                # Update the 'submission_date' of our entry to indicate we
+                # have finished the assignment.
+                submission = AssignmentSubmission.objects.get(
+                    assignment_id=int(request.POST['assignment_id']),
+                    student_id=int(request.POST['student_id']),
+                    course_id=int(request.POST['course_id'])
+                )
+                submission.submission_date = datetime.datetime.utcnow()
+                submission.save()
+              
                 response_data = {'status' : 'success', 'message' : 'submitted'}
             else:
                 response_data = {'status' : 'failed', 'message' : form.errors}
@@ -293,9 +334,18 @@ def assignment_multiplechoice(request, course_id):
 
 
 @login_required()
-def submit_mc_assignment(request, course_id):
-    response_data = {'status' : 'failed', 'message' : 'error submitting'}
-    #TODO: Impl.
+def submit_mc_assignment_completion(request, course_id):
+    # Update the 'submission_date' of our entry to indicate we
+    # have finished the assignment.
+    submission = AssignmentSubmission.objects.get(
+        assignment_id=int(request.POST['assignment_id']),
+        student_id=int(request.POST['student_id']),
+        course_id=int(request.POST['course_id'])
+    )
+    submission.submission_date = datetime.datetime.utcnow()
+    submission.save()
+    
+    response_data = {'status' : 'success', 'message' : ''}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 

@@ -22,9 +22,6 @@
 </div>
 
 <script>
-    // 'file': $('#file').val(),
-    
-    
     function ajax_upload_assignment()
     {
         // create a FormData Object using your form dom element
@@ -34,6 +31,9 @@
         data.append('file', document.getElementById('file').files[0]);
         data.append('student_id', {{ user.id }});
         data.append('course_id', {{ assignment.course_id }});
+        data.append('order_num', {{ assignment.order_num }});
+        data.append('type', {{ assignment.type }});
+        data.append('submission_date', '{{ time }}');
         
         jQuery.ajax({
             url: 'upload_essay_assignment',

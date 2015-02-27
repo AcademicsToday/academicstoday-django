@@ -3,6 +3,7 @@ from django import forms
 
 from django.forms import ModelForm
 from webapp.models import EssaySubmission
+from webapp.models import AssignmentSubmission
 
 class EssaySubmissionForm(forms.ModelForm):
     class Meta:
@@ -19,3 +20,7 @@ class EssaySubmissionForm(forms.ModelForm):
                 raise forms.ValidationError("Cannot exceed 20MB size")
         else:
             raise forms.ValidationError("Only accepting PDF files for essays.")
+
+class AssignmentSubmissionForm(forms.ModelForm):
+    class Meta:
+        model = AssignmentSubmission

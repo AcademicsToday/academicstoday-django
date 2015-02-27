@@ -200,6 +200,33 @@ class Assignment(models.Model):
     class Meta:
         db_table = 'at_assignments'
 
+
+class AssignmentSubmission(models.Model):
+    assignment_id = models.AutoField(primary_key=True)
+    student_id = models.BigIntegerField()
+    course_id = models.IntegerField(max_length=11)
+    order_num = models.SmallIntegerField(default=0)
+    type = models.SmallIntegerField()
+    submission_date = models.DateField(null=True)
+    
+    @classmethod
+    def create(cls, student_id, course_id, assignment_id, type, order_num):
+        submission = cls(
+            student_id=student_id,
+            course_id=course_id,
+            assignment_id=assignment_id,
+            type=type,
+            order_num=order_num
+        )
+        return submission
+    
+    def __str__(self):
+        return self.course_id + ' ' + self.type;
+    
+    class Meta:
+        db_table = 'at_assignment_submissions'
+
+
 class EssayQuestion(models.Model):
     id = models.AutoField(max_length=11, primary_key=True)
     assignment_id = models.IntegerField(max_length=11)

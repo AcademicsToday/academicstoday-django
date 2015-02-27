@@ -42,6 +42,6 @@ urlpatterns = patterns('',
     url(r'^course/(\d)/assignment_essay$', course.assignment_essay),
     url(r'^course/(\d)/assignment_multiplechoice$', course.assignment_multiplechoice),
     url(r'^course/(\d)/upload_essay_assignment$', course.upload_essay_assignment),
-    url(r'^course/(\d)/submit_mc_assignment$', course.submit_mc_assignment),
     url(r'^course/(\d)/submit_mc_assignment_answer$', course.submit_mc_assignment_answer),
+    url(r'^course/(\d)/submit_mc_assignment_completion$', course.submit_mc_assignment_completion),
 )

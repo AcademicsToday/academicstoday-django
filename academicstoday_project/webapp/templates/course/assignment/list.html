@@ -37,7 +37,6 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Type</th>
                                 <th>Status</th>
                                 <th>Due Date</th>
                                 <th>Date Submitted</th>
@@ -46,27 +45,42 @@
                         </thead>
                         <tbody>
                             {% for assignment in assignments %}
-                                {% if assignment.type == ESSAY_ASSIGNMENT_TYPE %}
-                                    {% include "course/assignment/essay_list_row.html" %}
-                                {% elif assignment.type == MULTIPLECHOICE_ASSIGNMENT_TYPE %}
-                                    {% include "course/assignment/mc_list_row.html" %}
-                                {% else %}
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                                {% endif %}
-                            {% empty %}
+                            {% for submission in submitted_assignments %}
+                            {% if submission.assignment_id == assignment.id %}
                             <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>{{ assignment.order_num }}</td>
+                                <td>
+                                    {% if submission.submission_date != None %}
+                                    <span class="badge">Complete</span>
+                                    {% else %}
+                                    <span class="badge">Incomplete</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ assignment.due_date }}</td>
+                                <td>{{ submission.submission_date }} </td>
+                                <td>
+                                    {% if submission.submission_date != None %}
+                                        <button type="button"
+                                             onclick=""
+                                              class="btn btn-sm btn-primary" disabled>
+                                              <i class="fa fa-plus"></i> Submit
+                                        </button>
+                                        <button type="button"
+                                             onclick="ajax_delete_assignment({{ assignment.id }}, {{ assignment.type }});"
+                                               class="btn btn-sm btn-danger">
+                                               <i class="fa fa-minus"></i> Delete
+                                        </button>
+                                    {% else %}
+                                        <button type="button"
+                                            onclick="ajax_assignment({{ assignment.id }}, {{ assignment.type }});"
+                                            class="btn btn-sm btn-primary">
+                                            <i class="fa fa-plus"></i> Submit
+                                        </button>
+                                    {% endif %}
+                                </td>
                             </tr>
+                            {% endif %}
+                            {% endfor %}
                             {% endfor %}
                         </tbody>
                     </table>
@@ -124,6 +138,43 @@ function ajax_delete_assignment(assignment_id, assignment_type)
 function refresh_current_assignments_page()
 {
     window.location = 'assignments';
+}
+
+/**
+ *  Function will call AJAX function to load the assignment modal.
+ */
+function ajax_assignment(assignment_id, assignment_type)
+{
+    var url;
+    if (assignment_type == {{ ESSAY_ASSIGNMENT_TYPE }})
+    {
+        url = 'assignment_essay';
+    }
+    if (assignment_type == {{ MULTIPLECHOICE_ASSIGNMENT_TYPE }})
+    {
+        url = 'assignment_multiplechoice';
+    }
+    
+    $.ajax( url, {
+           data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'assignment_id': assignment_id,
+                'student_id' : {{ user.id }},
+                'course_id' : {{ course.id }}
+           },
+           type: 'post',
+           success: function(result) {
+                // success code execution here
+                $('#ajax_assignment').html(result); // Update UI.
+                $('#assignment_modal').modal();     // Unhide view.
+           },
+           error: function(xhr,status,error) {
+                // error code here
+           },
+           complete: function(xhr,status) {
+                // completion code here
+           }
+    });
 }
 </script>
 
