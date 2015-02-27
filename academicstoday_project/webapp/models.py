@@ -202,7 +202,8 @@ class Assignment(models.Model):
 
 
 class AssignmentSubmission(models.Model):
-    assignment_id = models.AutoField(primary_key=True)
+    id = models.AutoField(max_length=11, primary_key=True)
+    assignment_id = models.IntegerField(max_length=11)
     student_id = models.BigIntegerField()
     course_id = models.IntegerField(max_length=11)
     order_num = models.SmallIntegerField(default=0)
@@ -277,7 +278,7 @@ class MultipleChoiceQuestion(models.Model):
         return self.course_id + ' ' + self.title + ' ' + self.description;
     
     class Meta:
-        db_table = 'at_multiple_choice_question'
+        db_table = 'at_multiple_choice_questions'
 
 class MultipleChoiceSubmission(models.Model):
     id = models.AutoField(max_length=11, primary_key=True)
@@ -303,6 +304,50 @@ class MultipleChoiceSubmission(models.Model):
     class Meta:
         db_table = 'at_multiple_choice_submissions'
 
+
+class TrueFalseQuestion(models.Model):
+    id = models.AutoField(max_length=11, primary_key=True)
+    assignment_id = models.IntegerField(max_length=11)
+    course_id = models.IntegerField(max_length=11)
+    question_num = models.SmallIntegerField()
+    title = models.CharField(max_length=31, default='')
+    description = models.TextField(default='')
+    true_choice = models.CharField(max_length=127, null=True)
+    false_choice = models.CharField(max_length=127, null=True)
+    answer = models.BooleanField(default=False)
+    
+    def __str__(self):
+        return self.course_id + ' ' + self.title + ' ' + self.description;
+    
+    class Meta:
+        db_table = 'at_true_false_questions'
+
+
+class TrueFalseSubmission(models.Model):
+    id = models.AutoField(max_length=11, primary_key=True)
+    student_id = models.BigIntegerField()
+    assignment_id = models.IntegerField(max_length=11)
+    course_id = models.IntegerField(max_length=11)
+    question_num = models.SmallIntegerField(default=0)
+    answer = models.BooleanField(default=False)
+    marks = models.PositiveSmallIntegerField(default=0)
+    submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
+    
+    @classmethod
+    def create(cls, assignment_id, course_id, student_id, question_num):
+        submission = cls(student_id=student_id,
+                         course_id=course_id,
+                         assignment_id=assignment_id,
+                         question_num=question_num)
+        return submission
+    
+    def __str__(self):
+        return self.course_id + ' ' + self.selected;
+    
+    class Meta:
+        db_table = 'at_true_false_submissions'
+
+
 class ResponseQuestion(models.Model):
     id = models.AutoField(max_length=11, primary_key=True)
     assignment_id = models.IntegerField(max_length=11)
@@ -316,6 +361,7 @@ class ResponseQuestion(models.Model):
     
     class Meta:
         db_table = 'at_response_questions'
+
 
 class ResponseSubmission(models.Model):
     id = models.AutoField(max_length=11, primary_key=True)

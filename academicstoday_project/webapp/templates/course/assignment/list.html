@@ -154,6 +154,10 @@ function ajax_assignment(assignment_id, assignment_type)
     {
         url = 'assignment_multiplechoice';
     }
+    if (assignment_type == {{ TRUEFALSE_ASSIGNMENT_TYPE }})
+    {
+        url = 'assignment_truefalse';
+    }
     
     $.ajax( url, {
            data: {

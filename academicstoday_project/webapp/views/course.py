@@ -15,6 +15,8 @@ from webapp.models import MultipleChoiceQuestion
 from webapp.models import MultipleChoiceSubmission
 from webapp.models import ResponseQuestion
 from webapp.models import ResponseSubmission
+from webapp.models import TrueFalseQuestion
+from webapp.models import TrueFalseSubmission
 import json
 import datetime
 from django.http import HttpResponse
@@ -218,6 +220,7 @@ def assignments(request, course_id):
         'submitted_assignments' : submitted_assignments,
         'ESSAY_ASSIGNMENT_TYPE' : settings.ESSAY_ASSIGNMENT_TYPE,
         'MULTIPLECHOICE_ASSIGNMENT_TYPE' : settings.MULTIPLECHOICE_ASSIGNMENT_TYPE,
+        'TRUEFALSE_ASSIGNMENT_TYPE' : settings.TRUEFALSE_ASSIGNMENT_TYPE,
         'RESPONSE_ASSIGNMENT_TYPE' : settings.RESPONSE_ASSIGNMENT_TYPE,
         'tab' : 'assignments',
         'subtab' : 'assignments_list',
@@ -402,6 +405,105 @@ def submit_mc_assignment_answer(request, course_id):
             submission.save()
             
             response_data = {'status' : 'success', 'message' : ''}
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+    response_data = {'status' : 'failed', 'message' : 'error submitting'}
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
+@login_required()
+def assignment_truefalse(request, course_id):
+    if request.is_ajax():
+        if request.method == 'POST':
+            student_id = int(request.POST['student_id'])
+            assignment_id = int(request.POST['assignment_id'])
+            assignment = Assignment.objects.get(id=assignment_id)
+            
+            # Fetch questions
+            try:
+                questions = TrueFalseQuestion.objects.filter(
+                    assignment_id=assignment_id,
+                    course_id=course_id
+                )
+            except TrueFalseQuestion.DoesNotExist:
+                questions = None
+        
+            # Fetch submissions
+            try:
+                submissions = TrueFalseSubmission.objects.filter(
+                    student_id=student_id,
+                    assignment_id=assignment_id,
+                    course_id=course_id,
+                )
+            except TrueFalseSubmission.DoesNotExist:
+                submission = None
+
+            return render(request, 'course/assignment/truefalse_modal.html',{
+                'assignment' : assignment,
+                'questions' : questions,
+                'submissions' : submissions,
+            })
+
+
+@login_required()
+def submit_truefalse_assignment_completion(request, course_id):
+    # Update the 'submission_date' of our entry to indicate we
+    # have finished the assignment.
+    submission = AssignmentSubmission.objects.get(
+        assignment_id=int(request.POST['assignment_id']),
+        student_id=int(request.POST['student_id']),
+        course_id=int(request.POST['course_id'])
+    )
+    submission.submission_date = datetime.datetime.utcnow()
+    submission.save()
+                                                  
+    response_data = {'status' : 'success', 'message' : ''}
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
+@login_required()
+def submit_truefalse_assignment_answer(request, course_id):
+    if request.is_ajax():
+        if request.method == 'POST':
+            assignment_id = int(request.POST['assignment_id'])
+            student_id = int(request.POST['student_id'])
+            course_id = int(request.POST['course_id'])
+            question_num = int(request.POST['num'])
+            key = request.POST['key']
+            value = request.POST['value']
+            
+            # Fetch question and error if not found.
+            try:
+                question = TrueFalseQuestion.objects.get(
+                    assignment_id=assignment_id,
+                    course_id=course_id,
+                    question_num=question_num,
+                )
+            except MultipleChoiceQuestion.DoesNotExist:
+                response_data = {'status' : 'failed', 'message' : 'cannot find question'}
+                return HttpResponse(json.dumps(response_data), content_type="application/json")
+        
+            # Fetch submission and create new submission if not found.
+            try:
+                submission = TrueFalseSubmission.objects.get(
+                    student_id=student_id,
+                    assignment_id=assignment_id,
+                    course_id=course_id,
+                    question_num=question_num,
+                )
+            except TrueFalseSubmission.DoesNotExist:
+                submission = TrueFalseSubmission.create(
+                    student_id=student_id,
+                    assignment_id=assignment_id,
+                    course_id=course_id,
+                    question_num=question_num,
+                )
+            
+            # Save answer
+            submission.answer = key == "true"
+            submission.save()
+
+            response_data = {'status' : 'success', 'message' : 'submitted'}
             return HttpResponse(json.dumps(response_data), content_type="application/json")
 
     response_data = {'status' : 'failed', 'message' : 'error submitting'}
