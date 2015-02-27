@@ -260,6 +260,36 @@ def assignment_delete(request, course_id):
                     response_data = {'status' : 'success', 'message' : 'assignment was deleted'}
                 except EssaySubmission.DoesNotExist:
                     response_data = {'status' : 'failed', 'message' : 'assignment not found'}
+            elif assignment_type == settings.MULTIPLECHOICE_ASSIGNMENT_TYPE:
+                try:
+                    MultipleChoiceSubmission.objects.filter(
+                        assignment_id=assignment_id,
+                        student_id=student_id,
+                        course_id=course_id
+                    ).delete()
+                    response_data = {'status' : 'success', 'message' : 'assignment was deleted'}
+                except EssaySubmission.DoesNotExist:
+                    response_data = {'status' : 'failed', 'message' : 'assignment not found'}
+            elif assignment_type == settings.TRUEFALSE_ASSIGNMENT_TYPE:
+                try:
+                    TrueFalseSubmission.objects.filter(
+                        assignment_id=assignment_id,
+                        student_id=student_id,
+                        course_id=course_id
+                    ).delete()
+                    response_data = {'status' : 'success', 'message' : 'assignment was deleted'}
+                except EssaySubmission.DoesNotExist:
+                    response_data = {'status' : 'failed', 'message' : 'assignment not found'}
+            elif assignment_type == settings.RESPONSE_ASSIGNMENT_TYPE:
+                try:
+                    ResponseSubmission.objects.filter(
+                        assignment_id=assignment_id,
+                        student_id=student_id,
+                        course_id=course_id
+                    ).delete()
+                    response_data = {'status' : 'success', 'message' : 'assignment was deleted'}
+                except EssaySubmission.DoesNotExist:
+                    response_data = {'status' : 'failed', 'message' : 'assignment not found'}
             else:
                 response_data = {'status' : 'success', 'message' : ''}
             return HttpResponse(json.dumps(response_data), content_type="application/json")
