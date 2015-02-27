@@ -2,7 +2,7 @@
 /**
  *  Function will create a checkbox with specified parameters.
  */
-function create_checkbox(num, key, value)
+function create_checkbox(div_id, num, key, value)
 {
     // Create our question text.
     var text = " " + value;
@@ -28,7 +28,7 @@ function create_checkbox(num, key, value)
     label.appendChild(description);// add the description to the element
     
     // add the label element to your div
-    document.getElementById('panel-body').appendChild(label);
+    document.getElementById(div_id).appendChild(label);
 }
 
 /**
@@ -70,17 +70,28 @@ function ajax_submit_multiplechoice_assignment_answer(num, key, value)
             <h3 class="panel-title">Q{{ question.question_num }}: {{ question.title }}</h3>
         </div>
         <div id="panel-body" class="panel-body">
-            <p>{{ question.description }}</p>
-            <script>
-                // The following script will get the JSON data and generate the UI.
-                var jsonObject = {{ question.json_choices|safe }};
-                for (var key in jsonObject) {
-                    var val = jsonObject[key];
-                    $('#panel-body').append("<br/>");
-                    create_checkbox({{ question.question_num }}, key, val);
-                    $('#panel-body').append("<br/>");
-                }
-            </script>
+            <div id="QUESTION_{{ question.question_num }}">
+                <p>{{ question.description }}</p>
+                <script>
+                    // The following script will get the JSON data and generate the UI.
+                    var num = {{ question.question_num }};
+                    var div_id = "QUESTION_"+num;
+                    var jsonObject = {{ question.json_choices|safe }};
+                    for (var key in jsonObject) {
+                        // Get the value of JSON string at the particular key.
+                        var val = jsonObject[key];
+                        
+                        // Create our checkbox row
+                        create_checkbox(div_id, num, key, val);
+                        
+                        // Create two line breaks.
+                        var newline = document.createElement("br");
+                        document.getElementById(div_id).appendChild(newline);
+                        var newline2 = document.createElement("br");
+                        document.getElementById(div_id).appendChild(newline2);
+                    }
+                </script>
+            </div>
         </div>
     </div>
     {% empty %}
