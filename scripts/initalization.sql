@@ -58,11 +58,11 @@ VALUES
 /*-------------*/
 INSERT INTO at_syllabus (id, course_id, url)
 VALUES
-(1, 1, 'http://127.0.0.1:8000/media/syllabus_1.pdf')
+(1, 1, 'http://127.0.0.1:8000/media/syllabus_1.pdf');
 
 /*-----------*/
 /* at_policy */
 /*-----------*/
 INSERT INTO at_policys (id, course_id, url)
 VALUES
-(1, 1, 'http://127.0.0.1:8000/media/policy_1.pdf')
+(1, 1, 'http://127.0.0.1:8000/media/policy_1.pdf');
