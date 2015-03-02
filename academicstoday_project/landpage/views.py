@@ -37,6 +37,15 @@ js_library_urls = ["js/jquery/1.11.1/jquery.min.js",
                    "js/jqbootstrapvalidation/1.3.6/jqBootstrapValidation.js",
                    "js/misc/agency.js"]
 
+
+def load_robots_txt(request):
+    return render(request, 'misc/robots.txt', {}, content_type="text/plain")
+
+
+def load_humans_txt(request):
+    return render(request, 'misc/humans.txt', {}, content_type="text/plain")
+
+
 def load_landpage(request):
     course_previews = LandpageCoursePreview.objects.all();
     team_members = LandpageTeamMember.objects.all()

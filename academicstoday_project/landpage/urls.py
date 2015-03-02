@@ -2,12 +2,10 @@ from django.conf.urls import patterns, include, url
 
 from . import views
 
-# Import custom views.
-from webapp.views import file
 urlpatterns = patterns('',
     # Custom Files
-    url(r'^robots\.txt$', file.load_robots_txt),
-    url(r'^humans\.txt$', file.load_humans_txt),
+    url(r'^robots\.txt$', views.load_robots_txt),
+    url(r'^humans\.txt$', views.load_humans_txt),
             
     # Landpage
     url(r'^$', views.load_landpage),

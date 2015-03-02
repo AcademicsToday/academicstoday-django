@@ -5,8 +5,8 @@ from django.db import models
 # Developers Note:
 #     (1) Database
 #     Once you make a change, go to /src/academicstoday_project and type:
-#     $ python manage.py makemigrations webapp
-#     $ python manage.py migrate webapp
+#     $ python manage.py makemigrations landpage
+#     $ python manage.py migrate landpage
 #
 #     (2) Field Types
 #     https://docs.djangoproject.com/en/1.7/ref/models/fields/#field-types

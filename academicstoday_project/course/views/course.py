@@ -1,24 +1,24 @@
 from django.shortcuts import render
 from django.core import serializers
-from webapp.models import Course
-from webapp.models import CourseEnrollment
-from webapp.models import Announcement
-from webapp.models import Syllabus
-from webapp.models import Policy
-from webapp.models import Week
-from webapp.models import Lecture
-from webapp.models import Assignment
-from webapp.models import AssignmentSubmission
-from webapp.models import EssayQuestion
-from webapp.models import EssaySubmission
-from webapp.models import MultipleChoiceQuestion
-from webapp.models import MultipleChoiceSubmission
-from webapp.models import ResponseQuestion
-from webapp.models import ResponseSubmission
-from webapp.models import TrueFalseQuestion
-from webapp.models import TrueFalseSubmission
-from webapp.models import Quiz
-from webapp.models import QuizSubmission
+from registrar.models import Course
+from registrar.models import CourseEnrollment
+from course.models import Announcement
+from course.models import Syllabus
+from course.models import Policy
+from course.models import Week
+from course.models import Lecture
+from course.models import Assignment
+from course.models import AssignmentSubmission
+from course.models import EssayQuestion
+from course.models import EssaySubmission
+from course.models import MultipleChoiceQuestion
+from course.models import MultipleChoiceSubmission
+from course.models import ResponseQuestion
+from course.models import ResponseSubmission
+from course.models import TrueFalseQuestion
+from course.models import TrueFalseSubmission
+from course.models import Quiz
+from course.models import QuizSubmission
 import json
 import datetime
 from django.http import HttpResponse
@@ -29,8 +29,8 @@ from django.conf import settings
 
 
 # Forms
-from webapp.forms import EssaySubmissionForm
-from webapp.forms import AssignmentSubmissionForm
+from course.forms import EssaySubmissionForm
+from course.forms import AssignmentSubmissionForm
 
 
 # Developer Notes:

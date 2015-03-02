@@ -1,5 +1,5 @@
 ——————————————————————————————————————————————————————————————————————
-HOWTO: Setup "academicstoday-webapp" on Raspbian from Mac OSX Yosemite
+HOWTO: Setup "py-academicstoday" on Raspbian from Mac OSX Yosemite
 ——————————————————————————————————————————————————————————————————————
 By: Bartlomiej Mika
 Date: Feb, 14th, 2015
@@ -94,15 +94,15 @@ $ sudo service postgresql reload
 
 
 *************************
-* academicstoday-webapp *
+* py-academicstoday     *
 *************************
 $ cd ~/
-$ <from Mac OSX, ssh into RPi and manually add "academicstoday-webapp">
-$ cd ~/academicstoday-webapp
+$ <from Mac OSX, ssh into RPi and manually add "py-academicstoday">
+$ cd ~/py-academicstoday
 $ virtualenv env
 $ source env/bin/activate
 $ pip install -r requirements.txt # Install dependencies for our project.
-$ cd ~/academicstoday-webapp/academicstoday_project
+$ cd ~/py-academicstoday/academicstoday_project
 $ python manage.py makemigrations
 $ python manage.py migrate
 $ sudo -u postgres psql postgres # Go and run 'initalization.sql' script.

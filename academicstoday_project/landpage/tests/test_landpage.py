@@ -1,6 +1,6 @@
 from django.core.urlresolvers import resolve
 from django.test import TestCase
-from webapp.views import landpage
+from landpage.views import landpage
 
 # Create your tests here.
 class LandpageTest(TestCase):

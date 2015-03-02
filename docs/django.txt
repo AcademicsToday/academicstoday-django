@@ -9,14 +9,14 @@ Date: Feb, 14th, 2015
 *****************
 * PROJECT SETUP *
 *****************
-Q) How do we setup a project project titled: “academicstoday-webapp”
+Q) How do we setup a project project titled: “py-academicstoday”
 A) How to create a project
 
 
 (1)
 $ cd ~/Developer
-$ mkdir academicstoday-webapp
-$ cd academicstoday-webapp
+$ mkdir py-academicstoday
+$ cd py-academicstoday
 
 
 (2)
@@ -86,7 +86,7 @@ $ python manage.py startapp course
 
 
 
-(11) Then go to academicstoday_project/settings.py and make sure to include ‘webapp’ in the file.
+(11) Then go to academicstoday_project/settings.py and make sure to include ‘py-academicstoday’ in the file.
 - - - - - - - - - - - - - - - - - - - - - - - - - -
 INSTALLED_APPS = (
 'django.contrib.admin',

@@ -2,8 +2,8 @@ from django.db import models
 from django import forms
 
 from django.forms import ModelForm
-from webapp.models import EssaySubmission
-from webapp.models import AssignmentSubmission
+from course.models import EssaySubmission
+from course.models import AssignmentSubmission
 
 class EssaySubmissionForm(forms.ModelForm):
     class Meta:
