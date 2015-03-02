@@ -1,0 +1,49 @@
+{% extends 'course/base.html' %}
+{% load staticfiles %}
+{% block content %}
+
+<div id="page-wrapper">
+    
+    <div class="container-fluid">
+        
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    Announcements
+                    
+                </h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-university"></i>  <a href="../../courses">Courses</a>
+                    </li>
+                    <li>
+                        <i class="fa fa-compass"></i> {{ course.title }}
+                    </li>
+                    <li class="active">
+                        <i class="fa fa-home"></i> Home
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+        
+        <!-- Announcement -->
+         {% for announcement in announcements %}
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="page-header">{{ announcement.title }}</h2>
+                {% autoescape off %}
+                {{ announcement.body }}
+                {% endautoescape %}
+                <p style="float: right; margin-right: 100px;"><i>{{ announcement.post_date }}</i></p>
+            </div>
+        </div>
+        {% endfor %}
+        <!-- /.row -->
+        
+    </div>
+    
+</div>
+
+{% endblock content %}

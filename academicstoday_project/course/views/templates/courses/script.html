@@ -1,0 +1,56 @@
+{% load staticfiles %}
+<script>
+                                                                                          
+/**
+ *  Function will call AJAX function to load the login modal.
+ */
+function ajax_logout()
+{
+    var url = 'logout';
+            
+    $.ajax( url, {
+        data: {
+           'csrfmiddlewaretoken': '{{ csrf_token }}',
+        },
+        type: 'post',
+        success: function(result) {
+            // success code execution here
+            window.location = 'landpage';
+        },
+        error: function(xhr,status,error) {
+            // error code here
+        },
+        complete: function(xhr,status) {
+            // completion code here
+        }
+    });
+}
+
+/**
+ *  Function will call AJAX function to enroll into a specific course for the
+ *  current logged on user.
+ */
+function ajax_enroll(course_id)
+{
+    var url = 'enroll';
+    
+    $.ajax( url, {
+           data: {
+                'course_id' : course_id,
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+           },
+           type: 'post',
+           success: function(result) {
+                // success code execution here
+                window.location = 'course/' + course_id + '/home';
+           },
+           error: function(xhr,status,error) {
+                // error code here
+           },
+           complete: function(xhr,status) {
+                // completion code here
+           }
+    });
+}
+
+</script>
