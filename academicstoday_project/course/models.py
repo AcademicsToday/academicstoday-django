@@ -139,6 +139,7 @@ class AssignmentSubmission(models.Model):
     type = models.PositiveSmallIntegerField()
     marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateField(null=True)
+    is_marked = models.BooleanField(default=False)
     
     @classmethod
     def create(cls, student_id, course_id, assignment_id, type, order_num):
@@ -179,6 +180,7 @@ class EssaySubmission(models.Model):
     course_id = models.PositiveIntegerField()
     file = models.FileField(upload_to='uploads')
     submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
+    is_marked = models.BooleanField(default=False)
     
     @classmethod
     def create(cls, student_id, course_id, assignment_id, file):
@@ -221,6 +223,7 @@ class MultipleChoiceSubmission(models.Model):
     json_answers = models.CharField(max_length=127, default='{}')
     marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
+    is_marked = models.BooleanField(default=False)
     
     @classmethod
     def create(cls, assignment_id, exam_id, course_id, student_id, question_num):
@@ -267,6 +270,7 @@ class TrueFalseSubmission(models.Model):
     answer = models.BooleanField(default=False)
     marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
+    is_marked = models.BooleanField(default=False)
     
     @classmethod
     def create(cls, assignment_id, quiz_id, course_id, student_id, question_num):
@@ -309,7 +313,8 @@ class ResponseSubmission(models.Model):
     answer = models.TextField(default='')
     marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
-    
+    is_marked = models.BooleanField(default=False)
+
     @classmethod
     def create(cls, assignment_id, course_id, student_id, question_num):
         submission = cls(student_id=student_id,
@@ -348,6 +353,7 @@ class QuizSubmission(models.Model):
     type = models.PositiveSmallIntegerField()
     marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateField(null=True)
+    is_marked = models.BooleanField(default=False)
     
     @classmethod
     def create(cls, student_id, course_id, quiz_id, type, order_num):
@@ -374,7 +380,7 @@ class Exam(models.Model):
     type = models.PositiveSmallIntegerField()
     start_date = models.DateField(null=True)
     due_date = models.DateField(null=True)
-    
+  
     def __str__(self):
         return self.course_id + ' ' + self.type;
     
@@ -391,7 +397,8 @@ class ExamSubmission(models.Model):
     type = models.PositiveSmallIntegerField()
     marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateField(null=True)
-    
+    is_marked = models.BooleanField(default=False)
+
     @classmethod
     def create(cls, student_id, course_id, exam_id, type, order_num):
         submission = cls(
