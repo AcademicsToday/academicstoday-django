@@ -1,0 +1,100 @@
+<script>
+/**
+ *  Function will create a checkbox with specified parameters.
+ */
+function create_checkbox(div_id, num, key, value)
+{
+    // Create our question text.
+    var text = " " + value;
+    var id = "Question" + num + "[]";
+    
+    // create the necessary elements
+    var label= document.createElement("label");
+    var description = document.createTextNode(text);
+    var checkbox = document.createElement("input");
+    
+    checkbox.type = "checkbox";    // make the element a checkbox
+    checkbox.name = id;      // give it a name we can check on the server side
+    checkbox.value = text;
+    
+    // We will attach an on-click event handler which will send
+    // the choice that was selected by the student to our server
+    // and asynchronously handle option selection.
+    checkbox.onclick = function(){
+        ajax_submit_multiplechoice_exam_answer(num, key, value);
+    };
+    
+    label.appendChild(checkbox);   // add the box to the element
+    label.appendChild(description);// add the description to the element
+    
+    // add the label element to your div
+    document.getElementById(div_id).appendChild(label);
+}
+
+/**
+ *  Function sends AJAX code to tell the controller to either set the
+ *  particular question as selected or not for the option.
+ */
+function ajax_submit_multiplechoice_exam_answer(num, key, value)
+{
+    // create a FormData Object using your form dom element
+    var data = new FormData();
+    data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+    data.append('exam_id', {{ exam.id }});
+    data.append('student_id', {{ user.id }});
+    data.append('course_id', {{ exam.course_id }});
+    data.append('key', key);
+    data.append('value', value);
+    data.append('num', num);
+    
+    jQuery.ajax({
+        url: 'submit_mc_exam_answer',
+        data: data,
+        cache: false,
+        contentType: false,
+        processData: false,
+        type: 'POST',
+        success: function(result){
+            if (result.status != 'success') // Print errors.
+            {
+                alert(result.message);
+            }
+        }
+    });
+}
+</script>
+<form id="exam_form" name="exam_form">
+    {% for question in questions %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Q{{ question.question_num }}: {{ question.title }}</h3>
+        </div>
+        <div id="panel-body" class="panel-body">
+            <div id="QUESTION_{{ question.question_num }}">
+                <p>{{ question.description }}</p>
+                <script>
+                    // The following script will get the JSON data and generate the UI.
+                    var num = {{ question.question_num }};
+                    var div_id = "QUESTION_"+num;
+                    var jsonObject = {{ question.json_choices|safe }};
+                    for (var key in jsonObject) {
+                        // Get the value of JSON string at the particular key.
+                        var val = jsonObject[key];
+                        
+                        // Create our checkbox row
+                        create_checkbox(div_id, num, key, val);
+                        
+                        // Create two line breaks.
+                        var newline = document.createElement("br");
+                        document.getElementById(div_id).appendChild(newline);
+                        var newline2 = document.createElement("br");
+                        document.getElementById(div_id).appendChild(newline2);
+                    }
+                </script>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <strong>Missing Questions!</strong> It appears we're missing the questions!
+    {% endfor %}
+</form>
