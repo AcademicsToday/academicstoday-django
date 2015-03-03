@@ -868,9 +868,9 @@ def exam_multiplechoice(request, course_id):
             exam = Exam.objects.get(id=exam_id)
             try:
                 questions = MultipleChoiceQuestion.objects.filter(
-                    assignment_id=exam_id,
+                    assignment_id=0,
+                    exam_id=exam_id,
                     course_id=course_id,
-                    exam_id=0,
                 )
             except MultipleChoiceQuestion.DoesNotExist:
                 questions = None
