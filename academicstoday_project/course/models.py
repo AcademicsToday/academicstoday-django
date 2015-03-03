@@ -2,15 +2,15 @@ from django.db import models
 
 class Course(models.Model):
     id = models.AutoField(max_length=11, primary_key=True)
-    image_filename = models.CharField(max_length=31)
-    title = models.CharField(max_length=63)
-    sub_title = models.CharField(max_length=127)
-    category = models.CharField(max_length=31)
-    paragraph_one = models.CharField(max_length=255)
-    paragraph_two = models.CharField(max_length=255)
-    paragraph_three = models.CharField(max_length=255)
-    start_date = models.DateField()
-    finish_date = models.DateField()
+    image_filename = models.CharField(max_length=31, null=True)
+    title = models.CharField(max_length=63, null=True)
+    sub_title = models.CharField(max_length=127, null=True)
+    category = models.CharField(max_length=31, null=True)
+    paragraph_one = models.CharField(max_length=255, null=True)
+    paragraph_two = models.CharField(max_length=255, null=True)
+    paragraph_three = models.CharField(max_length=255, null=True)
+    start_date = models.DateField(null=True)
+    finish_date = models.DateField(null=True)
     
     def __str__(self):
         return self.title
@@ -39,7 +39,7 @@ class Announcement(models.Model):
     course_id = models.PositiveIntegerField(max_length=11)
     title = models.CharField(max_length=31)
     body = models.TextField()
-    post_date = models.DateField()
+    post_date = models.DateField(auto_now=True, auto_now_add=True, null=True)
     
     @classmethod
     def create(cls, course_id, title, body, post_date):
