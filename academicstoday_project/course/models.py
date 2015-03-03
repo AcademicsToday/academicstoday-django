@@ -196,6 +196,7 @@ class EssaySubmission(models.Model):
 
 class MultipleChoiceQuestion(models.Model):
     id = models.AutoField(max_length=11, primary_key=True)
+    exam_id = models.PositiveIntegerField(default=0)
     assignment_id = models.PositiveIntegerField()
     course_id = models.PositiveIntegerField()
     question_num = models.PositiveSmallIntegerField()
@@ -214,6 +215,7 @@ class MultipleChoiceSubmission(models.Model):
     id = models.AutoField(max_length=11, primary_key=True)
     student_id = models.BigIntegerField()
     assignment_id = models.PositiveIntegerField()
+    exam_id = models.PositiveIntegerField(default=0)
     course_id = models.PositiveIntegerField()
     question_num = models.PositiveSmallIntegerField(default=0)
     json_answers = models.CharField(max_length=127, default='{}')
@@ -221,10 +223,11 @@ class MultipleChoiceSubmission(models.Model):
     submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
     
     @classmethod
-    def create(cls, assignment_id, course_id, student_id, question_num):
+    def create(cls, assignment_id, exam_id, course_id, student_id, question_num):
         submission = cls(student_id=student_id,
                          course_id=course_id,
                          assignment_id=assignment_id,
+                         exam_id=exam_id,
                          question_num=question_num)
         return submission
     
@@ -362,3 +365,47 @@ class QuizSubmission(models.Model):
     
     class Meta:
         db_table = 'at_quiz_submissions'
+
+
+class Exam(models.Model):
+    id = models.AutoField(max_length=11, primary_key=True)
+    course_id = models.PositiveIntegerField()
+    order_num = models.PositiveSmallIntegerField(default=0)
+    type = models.PositiveSmallIntegerField()
+    start_date = models.DateField(null=True)
+    due_date = models.DateField(null=True)
+    
+    def __str__(self):
+        return self.course_id + ' ' + self.type;
+    
+    class Meta:
+        db_table = 'at_exams'
+
+
+class ExamSubmission(models.Model):
+    id = models.AutoField(max_length=11, primary_key=True)
+    exam_id = models.PositiveIntegerField()
+    student_id = models.BigIntegerField()
+    course_id = models.PositiveIntegerField()
+    order_num = models.PositiveSmallIntegerField(default=0)
+    type = models.PositiveSmallIntegerField()
+    marks = models.PositiveSmallIntegerField(default=0)
+    submission_date = models.DateField(null=True)
+    
+    @classmethod
+    def create(cls, student_id, course_id, exam_id, type, order_num):
+        submission = cls(
+            student_id=student_id,
+            course_id=course_id,
+            exam_id=exam_id,
+            type=type,
+            order_num=order_num
+        )
+        return submission
+    
+    def __str__(self):
+        return self.quiz_id + ' ' + self.type;
+    
+    class Meta:
+        db_table = 'at_exam_submissions'
+

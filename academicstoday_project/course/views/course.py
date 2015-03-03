@@ -268,6 +268,7 @@ def assignment_delete(request, course_id):
                         assignment_id=assignment_id,
                         student_id=student_id,
                         course_id=course_id,
+                        exam_id=0,
                     ).delete()
                     response_data = {'status' : 'success', 'message' : 'assignment was deleted'}
                 except EssaySubmission.DoesNotExist:
@@ -358,7 +359,8 @@ def assignment_multiplechoice(request, course_id):
             try:
                 questions = MultipleChoiceQuestion.objects.filter(
                     assignment_id=assignment_id,
-                    course_id=course_id
+                    course_id=course_id,
+                    exam_id=0,
                 )
             except MultipleChoiceQuestion.DoesNotExist:
                 questions = None
@@ -376,7 +378,8 @@ def submit_mc_assignment_completion(request, course_id):
     submission = AssignmentSubmission.objects.get(
         assignment_id=int(request.POST['assignment_id']),
         student_id=int(request.POST['student_id']),
-        course_id=int(request.POST['course_id'])
+        course_id=int(request.POST['course_id']),
+        exam_id=0,
     )
     submission.submission_date = datetime.datetime.utcnow()
     submission.save()
@@ -401,6 +404,7 @@ def submit_mc_assignment_answer(request, course_id):
                     assignment_id=assignment_id,
                     course_id=course_id,
                     question_num=question_num,
+                    exam_id=0,
                 )
             except MultipleChoiceQuestion.DoesNotExist:
                 response_data = {'status' : 'failed', 'message' : 'cannot find question'}
@@ -413,6 +417,7 @@ def submit_mc_assignment_answer(request, course_id):
                     assignment_id=assignment_id,
                     course_id=course_id,
                     question_num=question_num,
+                    exam_id=0,
                 )
             except MultipleChoiceSubmission.DoesNotExist:
                 submission = MultipleChoiceSubmission.create(
@@ -420,6 +425,7 @@ def submit_mc_assignment_answer(request, course_id):
                     assignment_id=assignment_id,
                     course_id=course_id,
                     question_num=question_num,
+                    exam_id=0,
                 )
                 submission.save()
                 
