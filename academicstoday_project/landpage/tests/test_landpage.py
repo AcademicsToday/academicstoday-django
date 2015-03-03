@@ -7,4 +7,4 @@ class LandpageTest(TestCase):
 
     def test_root_url_resolves_to_homep_page_view(self):
         found = resolve('/')
-        self.assertEqual(found.func,landpage.load_landpage)
+        self.assertEqual(found.func,landpage.landpage_page)

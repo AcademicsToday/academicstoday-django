@@ -8,8 +8,8 @@ urlpatterns = patterns('',
     url(r'^humans\.txt$', views.load_humans_txt),
             
     # Landpage
-    url(r'^$', views.load_landpage),
-    url(r'^landpage$', views.load_landpage),
+    url(r'^$', views.landpage_page),
+    url(r'^landpage$', views.landpage_page),
     url(r'^get_course_preview$', views.get_course_preview),
     url(r'^get_login$', views.get_login),
     url(r'^get_register$', views.get_register),

@@ -7,6 +7,7 @@ from landpage.models import CoursePreview
 
 import json
 from django.http import HttpResponse
+from django.conf import settings
 
 # Create your views here.
 
@@ -18,26 +19,6 @@ from django.http import HttpResponse
 # https://docs.djangoproject.com/en/1.7/topics/serialization/
 
 
-css_library_urls = ["js/jquery/1.11.1/jquery-ui.css",
-                    "js/bootstrap/3.3.2/css/bootstrap.min.css",
-                    "js/font-awesome/4.2.0/css/font-awesome.css",
-                    "js/font-awesome/4.2.0/css/font-awesome.min.css",
-                    "css/landpage.css",
-                    "css/agency.css"]
-
-js_library_urls = ["js/jquery/1.11.1/jquery.min.js",
-                   "js/jquery/1.11.1/jquery.tablesorter.js",
-                   "js/jquery/1.11.1/jquery-ui.js",
-                   "js/jquery-easing/1.3/jquery.easing.min.js",
-                   "js/bootstrap/3.3.2/js/bootstrap.min.js",
-                   "js/bootstrap/3.3.2/js/bootstrap.js",
-                   "js/classie/1.0.0/classie.js",
-                   "js/cbpanimatedheader/1.0.0/cbpAnimatedHeader.js",
-                   "js/cbpanimatedheader/1.0.0/cbpAnimatedHeader.min.js",
-                   "js/jqbootstrapvalidation/1.3.6/jqBootstrapValidation.js",
-                   "js/misc/agency.js"]
-
-
 def load_robots_txt(request):
     return render(request, 'misc/robots.txt', {}, content_type="text/plain")
 
@@ -46,14 +27,14 @@ def load_humans_txt(request):
     return render(request, 'misc/humans.txt', {}, content_type="text/plain")
 
 
-def load_landpage(request):
+def landpage_page(request):
     course_previews = LandpageCoursePreview.objects.all();
     team_members = LandpageTeamMember.objects.all()
     return render(request, 'landpage/main.html',{
         'course_previews' : course_previews,
         'team_members' : team_members,
-        'local_css_urls' : css_library_urls,
-        'local_js_urls' : js_library_urls
+        'local_css_urls' : settings.AGENCY_CSS_LIBRARY_URLS,
+        'local_js_urls' : settings.AGENCY_JS_LIBRARY_URLS
     })
 
 

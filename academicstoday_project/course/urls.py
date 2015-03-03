@@ -14,21 +14,22 @@ from course.views import discussion
 
 urlpatterns = patterns('',
     # Announcement
-    url(r'^course/(\d)/$', announcement.course),
-    url(r'^course/(\d)/home$', announcement.course_home),
+    url(r'^course/(\d)/$', announcement.announcements_page),
+    url(r'^course/(\d)/home$', announcement.announcements_page),
+    url(r'^course/(\d)/announcement$', announcement.announcements_page),
   
     # Syllabus
-    url(r'^course/(\d)/syllabus$', syllabus.course_syllabus),
+    url(r'^course/(\d)/syllabus$', syllabus.syllabus_page),
    
     # Grades & Policy
-    url(r'^course/(\d)/policy$', policy.course_policy),
+    url(r'^course/(\d)/policy$', policy.policy_page),
 
     # Lecture
-    url(r'^course/(\d)/lectures$', lecture.course_lectures),
+    url(r'^course/(\d)/lectures$', lecture.lectures_page),
     url(r'^course/(\d)/lecture$', lecture.lecture),
                        
     # Assignment
-    url(r'^course/(\d)/assignments$', assignment.assignments),
+    url(r'^course/(\d)/assignments$', assignment.assignments_page),
     url(r'^course/(\d)/assignment_delete$', assignment.assignment_delete),
     url(r'^course/(\d)/assignment_essay$', assignment.assignment_essay),
     url(r'^course/(\d)/assignment_multiplechoice$', assignment.assignment_multiplechoice),
@@ -43,19 +44,19 @@ urlpatterns = patterns('',
     url(r'^course/(\d)/submit_response_assignment_completion$', assignment.submit_response_assignment_completion),
                        
     # Quiz
-    url(r'^course/(\d)/quizzes$', quiz.course_quizzes),
+    url(r'^course/(\d)/quizzes$', quiz.quizzes_page),
     url(r'^course/(\d)/quiz_truefalse$', quiz.quiz_truefalse),
     url(r'^course/(\d)/submit_truefalse_quiz_answer$', quiz.submit_truefalse_quiz_answer),
     url(r'^course/(\d)/submit_truefalse_quiz_completion$', quiz.submit_truefalse_quiz_completion),
     url(r'^course/(\d)/quiz_delete$', quiz.quiz_delete),
     
     # Exam
-    url(r'^course/(\d)/exams$', exam.course_exams),
+    url(r'^course/(\d)/exams$', exam.exams_page),
     url(r'^course/(\d)/exam_multiplechoice$', exam.exam_multiplechoice),
     url(r'^course/(\d)/submit_mc_exam_answer$', exam.submit_mc_exam_answer),
     url(r'^course/(\d)/submit_mc_exam_completion$', exam.submit_mc_exam_completion),
     url(r'^course/(\d)/exam_delete$', exam.exam_delete),
                        
     # Discussion
-    url(r'^course/(\d)/discussion$', discussion.course_discussion),
+    url(r'^course/(\d)/discussion$', discussion.discussion_page),
 )
