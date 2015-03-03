@@ -5,7 +5,7 @@
  */
 function ajax_popup_course_preview(course_preview_id)
 {
-    var url = 'get_course_preview';
+    var url = 'course_preview_modal';
     $.ajax( url, {
         data: {
            'course_preview_id': course_preview_id,
@@ -31,7 +31,7 @@ function ajax_popup_course_preview(course_preview_id)
  */
 function ajax_popup_login()
 {
-    var url = 'get_login';
+    var url = 'login_modal';
             
     $.ajax( url, {
         data: {
@@ -57,7 +57,7 @@ function ajax_popup_login()
  */
 function ajax_popup_register()
 {
-    var url = 'get_register';
+    var url = 'register_modal';
             
     $.ajax( url, {
         data: {

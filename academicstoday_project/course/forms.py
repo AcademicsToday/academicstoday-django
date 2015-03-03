@@ -8,6 +8,7 @@ from course.models import AssignmentSubmission
 class EssaySubmissionForm(forms.ModelForm):
     class Meta:
         model = EssaySubmission
+        fields = '__all__'
 
     # Function will apply validation on the 'file' upload column in the table.
     def clean_file(self):
@@ -24,3 +25,4 @@ class EssaySubmissionForm(forms.ModelForm):
 class AssignmentSubmissionForm(forms.ModelForm):
     class Meta:
         model = AssignmentSubmission
+        fields = '__all__'

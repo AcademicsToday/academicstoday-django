@@ -4,13 +4,13 @@ from . import views
 
 urlpatterns = patterns('',
     # Custom Files
-    url(r'^robots\.txt$', views.load_robots_txt),
-    url(r'^humans\.txt$', views.load_humans_txt),
+    url(r'^robots\.txt$', views.robots_txt_page),
+    url(r'^humans\.txt$', views.humans_txt_page),
             
     # Landpage
     url(r'^$', views.landpage_page),
     url(r'^landpage$', views.landpage_page),
-    url(r'^get_course_preview$', views.get_course_preview),
-    url(r'^get_login$', views.get_login),
-    url(r'^get_register$', views.get_register),
+    url(r'^course_preview_modal$', views.course_preview_modal),
+    url(r'^login_modal$', views.login_modal),
+    url(r'^register_modal$', views.register_modal),
 )

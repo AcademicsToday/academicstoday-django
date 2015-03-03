@@ -19,11 +19,11 @@ from django.conf import settings
 # https://docs.djangoproject.com/en/1.7/topics/serialization/
 
 
-def load_robots_txt(request):
+def robots_txt_page(request):
     return render(request, 'misc/robots.txt', {}, content_type="text/plain")
 
 
-def load_humans_txt(request):
+def humans_txt_page(request):
     return render(request, 'misc/humans.txt', {}, content_type="text/plain")
 
 
@@ -38,7 +38,7 @@ def landpage_page(request):
     })
 
 
-def get_course_preview(request):
+def course_preview_modal(request):
     course_preview = None
     if request.method == u'POST':
         POST = request.POST
@@ -47,9 +47,9 @@ def get_course_preview(request):
     return render(request, 'landpage/course_preview.html',{ 'course_preview' : course_preview })
 
 
-def get_login(request):
+def login_modal(request):
     return render(request, 'landpage/login.html',{})
 
 
-def get_register(request):
+def register_modal(request):
     return render(request, 'landpage/register.html',{})
