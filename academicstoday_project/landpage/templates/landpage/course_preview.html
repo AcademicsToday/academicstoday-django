@@ -7,6 +7,10 @@
                 <h2 class="modal-title" id="myModalLabel">Preview</h2>
             </div>
             <div class="modal-body">
+                {% if course_preview == None %}
+                <h2>ERROR</h2>
+                <p>No course preview entered!</p>
+                {% else %}
                 <div class="row clearfix profile-row">
                     <form id='course_preview_form'>
                         <input type="hidden" id="id" name="id" value="{{ course_preview.id }}">
@@ -22,6 +26,7 @@
                         </div>
                     </form>
                 </div>
+                {% endif %}
             </div>
             <div class="modal-footer">
                 <button type="button"
