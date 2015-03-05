@@ -63,7 +63,7 @@ def quizzes_page(request, course_id):
                 )
                 submission.save()
 
-    return render(request, 'course/quiz/list.html',{
+    return render(request, 'quiz/list.html',{
         'course' : course,
         'user' : request.user,
         'quizzes' : quizzes,
@@ -108,7 +108,7 @@ def quiz_truefalse(request, course_id):
             except TrueFalseSubmission.DoesNotExist:
                 submission = None
     
-    return render(request, 'course/quiz/truefalse_modal.html',{
+    return render(request, 'quiz/truefalse_modal.html',{
         'quiz' : quiz,
         'questions' : questions,
         'submissions' : submissions,

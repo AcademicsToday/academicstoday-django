@@ -4,16 +4,16 @@
         <div class="modal-content">
             <div class="modal-header">
                 <a href="#" class="btn btn-primary pull-right" data-dismiss="modal">×</a>
-                <h4>Multiple Choice Assignment</h4>
+                <h4>Essay Assignment #{{ essay_question.question_num }}: {{ essay_question.title }}</h4>
             </div>
             <div class="modal-body">
-                {% include "course/assignment/response_form.html" %}
+                {% include "assignment/essay_form.html" %}
             </div> <!-- /.modal-body -->
             <div class="modal-footer">
                 <button type="button"
                        class="btn btn-primary"
                         form="assignment_form"
-                     onclick="ajax_submit_assignment()">
+                     onclick="ajax_upload_assignment()">
                     <i class="fa fa-check"></i> Submit
                 </button>
             </div> <!-- /.modal-footer -->
@@ -22,19 +22,21 @@
 </div>
 
 <script>
-    function ajax_submit_assignment()
+    function ajax_upload_assignment()
     {
         // create a FormData Object using your form dom element
         var data = new FormData();
         data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
         data.append('assignment_id', {{ assignment.id }});
+        data.append('file', document.getElementById('file').files[0]);
         data.append('student_id', {{ user.id }});
         data.append('course_id', {{ assignment.course_id }});
         data.append('order_num', {{ assignment.order_num }});
         data.append('type', {{ assignment.type }});
+        data.append('submission_date', '{{ time }}');
         
         jQuery.ajax({
-            url: 'submit_response_assignment_completion',
+            url: 'upload_essay_assignment',
             data: data,
             cache: false,
             contentType: false,

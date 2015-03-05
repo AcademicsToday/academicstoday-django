@@ -68,7 +68,7 @@ def assignments_page(request, course_id):
                 )
                 submission.save()
 
-    return render(request, 'course/assignment/list.html',{
+    return render(request, 'assignment/list.html',{
         'course' : course,
         'user' : request.user,
         'assignments' : assignments,
@@ -170,7 +170,7 @@ def assignment_essay(request, assignment_id):
             except EssaySubmission.DoesNotExist:
                 essay_submission = None
 
-            return render(request, 'course/assignment/essay_modal.html',{
+            return render(request, 'assignment/essay_modal.html',{
                 'assignment' : assignment,
                 'essay_question' : essay_question,
                 'essay_submission' : essay_submission
@@ -218,7 +218,7 @@ def assignment_multiplechoice(request, course_id):
             except MultipleChoiceQuestion.DoesNotExist:
                 questions = None
         
-            return render(request, 'course/assignment/mc_modal.html',{
+            return render(request, 'assignment/mc_modal.html',{
                 'assignment' : assignment,
                 'questions' : questions,
             })
@@ -332,7 +332,7 @@ def assignment_truefalse(request, course_id):
             except TrueFalseSubmission.DoesNotExist:
                 submission = None
 
-            return render(request, 'course/assignment/truefalse_modal.html',{
+            return render(request, 'assignment/truefalse_modal.html',{
                 'assignment' : assignment,
                 'questions' : questions,
                 'submissions' : submissions,
@@ -421,7 +421,7 @@ def assignment_response(request, course_id):
             except ResponseQuestion.DoesNotExist:
                 questions = None
         
-            return render(request, 'course/assignment/response_modal.html',{
+            return render(request, 'assignment/response_modal.html',{
                 'assignment' : assignment,
                 'questions' : questions,
             })

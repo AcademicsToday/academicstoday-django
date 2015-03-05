@@ -4,10 +4,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <a href="#" class="btn btn-primary pull-right" data-dismiss="modal">×</a>
-                <h4>True False Assignment</h4>
+                <h4>Multiple Choice Assignment</h4>
             </div>
             <div class="modal-body">
-                {% include "course/assignment/truefalse_form.html" %}
+                {% include "assignment/response_form.html" %}
             </div> <!-- /.modal-body -->
             <div class="modal-footer">
                 <button type="button"
@@ -34,7 +34,7 @@
         data.append('type', {{ assignment.type }});
         
         jQuery.ajax({
-            url: 'submit_truefalse_assignment_completion',
+            url: 'submit_response_assignment_completion',
             data: data,
             cache: false,
             contentType: false,

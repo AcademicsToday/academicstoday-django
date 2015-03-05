@@ -11,6 +11,7 @@ from course.views import assignment
 from course.views import quiz
 from course.views import exam
 from course.views import discussion
+from course.views import peer_review
 
 urlpatterns = patterns('',
     # Announcement
@@ -56,6 +57,9 @@ urlpatterns = patterns('',
     url(r'^course/(\d)/submit_mc_exam_answer$', exam.submit_mc_exam_answer),
     url(r'^course/(\d)/submit_mc_exam_completion$', exam.submit_mc_exam_completion),
     url(r'^course/(\d)/exam_delete$', exam.exam_delete),
+                       
+    # Peer-Review
+    url(r'^course/(\d)/peer_review$', peer_review.peer_review_page),
                        
     # Discussion
     url(r'^course/(\d)/discussion$', discussion.discussion_page),
