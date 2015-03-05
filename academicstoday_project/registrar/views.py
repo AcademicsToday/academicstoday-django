@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.core import serializers
-from registrar.models import Student
-from registrar.models import CoursePreview
-from registrar.models import Course
+from course.models import Student
+from landpage.models import CoursePreview
+from course.models import Course
 import json
 from django.http import HttpResponse
 from django.contrib.auth.models import User

@@ -1,16 +1,17 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Course(models.Model):
     id = models.AutoField(max_length=11, primary_key=True)
-    image_filename = models.CharField(max_length=31, null=True)
-    title = models.CharField(max_length=63, null=True)
-    sub_title = models.CharField(max_length=127, null=True)
-    category = models.CharField(max_length=31, null=True)
-    paragraph_one = models.CharField(max_length=255, null=True)
-    paragraph_two = models.CharField(max_length=255, null=True)
-    paragraph_three = models.CharField(max_length=255, null=True)
-    start_date = models.DateField(null=True)
-    finish_date = models.DateField(null=True)
+    image_filename = models.CharField(max_length=31)
+    title = models.CharField(max_length=63)
+    sub_title = models.CharField(max_length=127)
+    category = models.CharField(max_length=31)
+    paragraph_one = models.CharField(max_length=255)
+    paragraph_two = models.CharField(max_length=255)
+    paragraph_three = models.CharField(max_length=255)
+    start_date = models.DateField()
+    finish_date = models.DateField()
     
     def __str__(self):
         return self.title
@@ -18,25 +19,21 @@ class Course(models.Model):
     class Meta:
         db_table = 'at_courses'
 
-class CourseEnrollment(models.Model):
-    id = models.AutoField(max_length=11, primary_key=True)
-    course_id = models.IntegerField(max_length=11)
-    user_id = models.BigIntegerField()
-    
-    @classmethod
-    def create(cls, course_id, user_id):
-        enrollment = cls(course_id=course_id, user_id=user_id)
-        return enrollment
+
+class Student(models.Model):
+    user = models.OneToOneField(User, primary_key=True)
+    courses = models.ManyToManyField(Course)
     
     def __str__(self):
-        return self.course_id + ' ' + self.user_id
+        return self.user
     
     class Meta:
-        db_table = 'at_course_enrollments'
+        db_table = 'at_students'
+
 
 class Announcement(models.Model):
-    id = models.AutoField(max_length=11, primary_key=True)
-    course_id = models.PositiveIntegerField(max_length=11)
+    courses = models.ManyToManyField(Course)
+    id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=31)
     body = models.TextField()
     post_date = models.DateField(auto_now=True, auto_now_add=True, null=True)

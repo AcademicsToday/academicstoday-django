@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 
-from registrar.models import Course
+from course.models import Course
 from course.models import MultipleChoiceQuestion
 from course.models import MultipleChoiceSubmission
 from course.models import Exam

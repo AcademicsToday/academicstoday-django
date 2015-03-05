@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
-from registrar.models import Course
+from course.models import Course
 from course.models import Assignment
 from course.models import AssignmentSubmission
 from course.models import AssignmentReview

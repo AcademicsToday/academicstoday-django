@@ -6,8 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 import json
 import datetime
-from registrar.models import Student
-from registrar.models import Course
+from course.models import Student
+from course.models import Course
 from course.models import Announcement
 
 # Forms
@@ -26,7 +26,7 @@ from course.forms import AssignmentSubmissionForm
 def announcements_page(request, course_id):
     course = Course.objects.get(id=course_id)
     try:
-        announcements = Announcement.objects.filter(course_id=course_id).order_by('-post_date')
+        announcements = Announcement.objects.filter(courses__id=course_id).order_by('-post_date')
     except Announcement.DoesNotExist:
         announcements = None
     return render(request, 'course/announcement/list.html',{

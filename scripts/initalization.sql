@@ -12,15 +12,6 @@ INSERT INTO at_course_previews (id, image_filename, title, sub_title, category, 
 VALUES
 (1, 'roundicons.png', 'Comics Book Course', 'The definitive course on comics and western drawings!', 'Liberal Arts', '<p>\nUse this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!\n</p>', '');
 
-
-/*-------------*/
-/* at_courses  */
-/*-------------*/
-INSERT INTO at_courses (id, image_filename, title, sub_title, category, paragraph_one, paragraph_two, paragraph_three, start_date, finish_date)
-VALUES
-(1, 'roundicons-preview.png', 'Comic Book Course', 'The definitive course on comics and western drawings!', '', 'Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum', 'Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum', 'Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum', '2015-01-01', '2015-12-01');
-
-
 /*------------------------------*/
 /* at_landpage_course_previews  */
 /*------------------------------*/
@@ -43,6 +34,14 @@ VALUES
 INSERT INTO at_landpage_team_members (id, full_name, role, twitter_url, facebook_url, image_filename, linkedin_url, email)
 VALUES
 (3, 'Sebastion Rydzewski', 'Developer', 'https://twitter.com/@srydzewski_AT', '', 'sebastionrydzewski.png', 'http://ca.linkedin.com/pub/sebastian-rydzewski/5b/108/160', 'srydzewski.AT@gmail.com');
+
+
+/*-------------*/
+/* at_courses  */
+/*-------------*/
+INSERT INTO at_courses (id, image_filename, title, sub_title, category, paragraph_one, paragraph_two, paragraph_three, start_date, finish_date)
+VALUES
+(1, 'roundicons-preview.png', 'Comic Book Course', 'The definitive course on comics and western drawings!', '', 'Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum', 'Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum', 'Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum', '2015-01-01', '2015-12-01');
 
 
 /*------------------*/
