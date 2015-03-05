@@ -416,3 +416,30 @@ class ExamSubmission(models.Model):
     class Meta:
         db_table = 'at_exam_submissions'
 
+class AssignmentReview(models.Model):
+    id = models.AutoField(max_length=11, primary_key=True)
+    student_id = models.BigIntegerField()
+    assignment_id = models.PositiveIntegerField()
+    course_id = models.PositiveIntegerField()
+    title = models.CharField(max_length=31)
+    comment = models.TextField()
+    marks = models.PositiveSmallIntegerField(default=0)
+    post_date = models.DateField(auto_now=True, auto_now_add=True, null=True)
+    
+    @classmethod
+    def create(cls, student_id, assignment_id, course_id, title, comment, marks):
+        assignment = cls(
+            student_id=student_id,
+            assignment_id=assignment_id,
+            course_id=course_id,
+            title=title,
+            comment=comment,
+            marks=marks
+        )
+        return assignment
+    
+    def __str__(self):
+        return self.id + ' ' + self.title + ' ' + self.comment + ' ' + self.post_date;
+    
+    class Meta:
+        db_table = 'at_assignment_reviews'
