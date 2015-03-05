@@ -5,5 +5,5 @@ from . import views
 urlpatterns = patterns('',
     # Course(s) & Enrolment
     url(r'^courses$', views.courses),
-    url(r'^enroll$', views.enroll),
+    url(r'^enrol$', views.enrol),
 )

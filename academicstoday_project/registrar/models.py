@@ -1,6 +1,5 @@
 from django.db import models
-
-
+from django.contrib.auth.models import User
 
 class CoursePreview(models.Model):
     id = models.AutoField(max_length=11, primary_key=True)
@@ -16,7 +15,6 @@ class CoursePreview(models.Model):
     
     class Meta:
         db_table = 'at_course_previews'
-
 
 
 class Course(models.Model):
@@ -37,19 +35,13 @@ class Course(models.Model):
     class Meta:
         db_table = 'at_courses'
 
-class CourseEnrollment(models.Model):
-    id = models.AutoField(max_length=11, primary_key=True)
-    course_id = models.IntegerField(max_length=11)
-    user_id = models.BigIntegerField()
-    
-    @classmethod
-    def create(cls, course_id, user_id):
-        enrollment = cls(course_id=course_id, user_id=user_id)
-        return enrollment
+
+class Student(models.Model):
+    user = models.OneToOneField(User, primary_key=True)
+    courses = models.ManyToManyField(Course)
     
     def __str__(self):
-        return self.course_id + ' ' + self.user_id
+        return self.user
     
     class Meta:
-        db_table = 'at_course_enrollments'
-
+        db_table = 'at_students'
