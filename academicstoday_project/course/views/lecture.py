@@ -37,7 +37,7 @@ def lectures_page(request, course_id):
         lectures = Lecture.objects.filter(course_id=course_id).order_by('-lecture_num')
     except Lecture.DoesNotExist:
         lectures = None
-    return render(request, 'lecture/list.html',{
+    return render(request, 'course/lecture/list.html',{
         'course' : course,
         'weeks' : weeks,
         'lectures' : lectures,
@@ -60,7 +60,7 @@ def lecture(request, course_id):
                      lecture = Lecture.objects.get(id=lecture_id)
                  except Lecture.DoesNotExist:
                      lecture = None
-                 return render(request, 'lecture/details.html',{
+                 return render(request, 'course/lecture/details.html',{
                     'lecture' : lecture,
                     'user' : request.user,
                     'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,

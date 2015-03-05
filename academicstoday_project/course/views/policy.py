@@ -29,7 +29,7 @@ def policy_page(request, course_id):
         policy = Policy.objects.get(course_id=course_id)
     except Policy.DoesNotExist:
         policy = None
-    return render(request, 'policy/view.html',{
+    return render(request, 'course/policy/view.html',{
         'course' : course,
         'user' : request.user,
         'policy' : policy,

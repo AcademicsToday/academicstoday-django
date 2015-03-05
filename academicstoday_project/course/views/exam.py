@@ -63,7 +63,7 @@ def exams_page(request, course_id):
                 )
                 submission.save()
 
-    return render(request, 'exam/list.html',{
+    return render(request, 'course/exam/list.html',{
         'course' : course,
         'user' : request.user,
         'exams' : exams,
@@ -94,7 +94,7 @@ def exam_multiplechoice(request, course_id):
             except MultipleChoiceQuestion.DoesNotExist:
                 questions = None
             
-            return render(request, 'exam/mc_modal.html',{
+            return render(request, 'course/exam/mc_modal.html',{
                 'exam' : exam,
                 'questions' : questions,
             })
@@ -212,15 +212,3 @@ def exam_delete(request, course_id):
             return HttpResponse(json.dumps(response_data), content_type="application/json")
     response_data = {'status' : 'failed', 'message' : 'unknown error with deletion'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
-
-
-@login_required(login_url='/landpage')
-def course_discussion(request, course_id):
-    course = Course.objects.get(id=course_id)
-    return render(request, 'discussion/discussion.html',{
-        'course' : course,
-        'user' : request.user,
-        'tab' : 'discussion',
-        'local_css_urls' : css_library_urls,
-        'local_js_urls' : js_library_urls
-    })

@@ -25,7 +25,7 @@ from course.forms import AssignmentSubmissionForm
 @login_required(login_url='/landpage')
 def discussion_page(request, course_id):
     course = Course.objects.get(id=course_id)
-    return render(request, 'discussion/discussion.html',{
+    return render(request, 'course/discussion/list.html',{
         'course' : course,
         'user' : request.user,
         'tab' : 'discussion',

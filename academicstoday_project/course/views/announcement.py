@@ -4,10 +4,11 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
-from registrar.models import Course
-from course.models import Announcement
 import json
 import datetime
+from registrar.models import Student
+from registrar.models import Course
+from course.models import Announcement
 
 # Forms
 from course.forms import EssaySubmissionForm
@@ -28,7 +29,7 @@ def announcements_page(request, course_id):
         announcements = Announcement.objects.filter(course_id=course_id).order_by('-post_date')
     except Announcement.DoesNotExist:
         announcements = None
-    return render(request, 'announcement/list.html',{
+    return render(request, 'course/announcement/list.html',{
         'course' : course,
         'announcements' : announcements,
         'user' : request.user,

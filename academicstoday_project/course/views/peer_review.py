@@ -61,7 +61,7 @@ def peer_review_page(request, course_id):
     except AssignmentReview.DoesNotExist:
         reviews = None
 
-    return render(request, 'peer_review/list.html',{
+    return render(request, 'course/peer_review/list.html',{
         'course' : course,
         'assignments' : assignments,
         'submissions' : submissions,

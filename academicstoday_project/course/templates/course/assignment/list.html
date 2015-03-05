@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'course/base.html' %}
 {% load staticfiles %}
 {% block content %}
 
@@ -10,7 +10,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">
-                    Quizzes
+                    Assignments
                     <small></small>
                 </h1>
                 <ol class="breadcrumb">
@@ -21,14 +21,14 @@
                         <i class="fa fa-compass"></i> {{ course.title }}
                     </li>
                     <li class="active">
-                        <i class="fa fa-star-half"></i> Quizzes
+                        <i class="fa fa-book"></i> List Assignments
                     </li>
                 </ol>
             </div>
         </div>
         <!-- /.row -->
         
-        <!-- Quizzes -->
+        <!-- Assignments -->
         <div class="row">
             <div class="col-lg-12">
                 <h2>List</h2>
@@ -44,11 +44,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for quiz in quizzes %}
-                            {% for submission in submitted_quizzes %}
-                            {% if submission.quiz_id == quiz.id %}
+                            {% for assignment in assignments %}
+                            {% for submission in submitted_assignments %}
+                            {% if submission.assignment_id == assignment.id %}
                             <tr>
-                                <td>{{ quiz.order_num }}</td>
+                                <td>{{ assignment.order_num }}</td>
                                 <td>
                                     {% if submission.submission_date != None %}
                                     <span class="badge">Complete</span>
@@ -56,26 +56,26 @@
                                     <span class="badge">Incomplete</span>
                                     {% endif %}
                                 </td>
-                                <td>{{ quiz.due_date }}</td>
+                                <td>{{ assignment.due_date }}</td>
                                 <td>{{ submission.submission_date }} </td>
                                 <td>
                                     {% if submission.submission_date != None %}
-                                    <button type="button"
-                                        onclick=""
-                                        class="btn btn-sm btn-primary" disabled>
-                                        <i class="fa fa-plus"></i> Submit
-                                    </button>
-                                    <button type="button"
-                                        onclick="ajax_delete_quiz({{ quiz.id }}, {{ quiz.type }});"
-                                        class="btn btn-sm btn-danger">
-                                        <i class="fa fa-minus"></i> Delete
-                                    </button>
+                                        <button type="button"
+                                             onclick=""
+                                              class="btn btn-sm btn-primary" disabled>
+                                              <i class="fa fa-plus"></i> Submit
+                                        </button>
+                                        <button type="button"
+                                             onclick="ajax_delete_assignment({{ assignment.id }}, {{ assignment.type }});"
+                                               class="btn btn-sm btn-danger">
+                                               <i class="fa fa-minus"></i> Delete
+                                        </button>
                                     {% else %}
-                                    <button type="button"
-                                        onclick="ajax_quiz({{ quiz.id }}, {{ quiz.type }});"
-                                        class="btn btn-sm btn-primary">
-                                        <i class="fa fa-plus"></i> Submit
-                                    </button>
+                                        <button type="button"
+                                            onclick="ajax_assignment({{ assignment.id }}, {{ assignment.type }});"
+                                            class="btn btn-sm btn-primary">
+                                            <i class="fa fa-plus"></i> Submit
+                                        </button>
                                     {% endif %}
                                 </td>
                             </tr>
@@ -88,34 +88,35 @@
             </div>
         </div>
         <!-- /.row -->
-
+        
     </div>
     
 </div>
 
 <script>
+    
 /**
- *  Function will delete the current logged in users quiz for the
+ *  Function will delete the current logged in users assignment for the
  *  given parameters.
  */
-function ajax_delete_quiz(quiz_id, quiz_type)
+function ajax_delete_assignment(assignment_id, assignment_type)
 {
-    var url = 'quiz_delete';
+    var url = 'assignment_delete';
     
     $.ajax( url, {
            data: {
-               'csrfmiddlewaretoken': '{{ csrf_token }}',
-               'quiz_id': quiz_id,
-               'quiz_type': quiz_type,
-               'student_id' : {{ user.id }},
-               'course_id' : {{ course.id }}
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'assignment_id': assignment_id,
+                'assignment_type': assignment_type,
+                'student_id' : {{ user.id }},
+                'course_id' : {{ course.id }}
            },
            type: 'post',
            success: function(result) {
                 // success code execution here
                 if (result.status == 'success')
                 {
-                    refresh_current_quiz_page(); // Reload UI.
+                    refresh_current_assignments_page(); // Reload UI.
                 }
                 else
                 {
@@ -126,7 +127,7 @@ function ajax_delete_quiz(quiz_id, quiz_type)
                 // error code here
            },
            complete: function(xhr,status) {
-               // completion code here
+                // completion code here
            }
     });
 }
@@ -134,34 +135,46 @@ function ajax_delete_quiz(quiz_id, quiz_type)
 /**
  *  Function makes the current tab refresh the page.
  */
-function refresh_current_quiz_page()
+function refresh_current_assignments_page()
 {
-    window.location = 'quizzes';
+    window.location = 'assignments';
 }
 
 /**
- *  Function will call AJAX function to load the quiz modal.
+ *  Function will call AJAX function to load the assignment modal.
  */
-function ajax_quiz(quiz_id, quiz_type)
+function ajax_assignment(assignment_id, assignment_type)
 {
     var url;
-    if (quiz_type == {{ TRUEFALSE_ASSIGNMENT_TYPE }})
+    if (assignment_type == {{ ESSAY_ASSIGNMENT_TYPE }})
     {
-        url = 'quiz_truefalse';
+        url = 'assignment_essay';
+    }
+    if (assignment_type == {{ MULTIPLECHOICE_ASSIGNMENT_TYPE }})
+    {
+        url = 'assignment_multiplechoice';
+    }
+    if (assignment_type == {{ TRUEFALSE_ASSIGNMENT_TYPE }})
+    {
+        url = 'assignment_truefalse';
+    }
+    if (assignment_type == {{ RESPONSE_ASSIGNMENT_TYPE }})
+    {
+        url = 'assignment_response';
     }
     
     $.ajax( url, {
            data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
-                'quiz_id': quiz_id,
+                'assignment_id': assignment_id,
                 'student_id' : {{ user.id }},
                 'course_id' : {{ course.id }}
            },
            type: 'post',
            success: function(result) {
                 // success code execution here
-                $('#ajax_quiz').html(result); // Update UI.
-                $('#quiz_modal').modal();     // Unhide view.
+                $('#ajax_assignment').html(result); // Update UI.
+                $('#assignment_modal').modal();     // Unhide view.
            },
            error: function(xhr,status,error) {
                 // error code here
@@ -174,9 +187,8 @@ function ajax_quiz(quiz_id, quiz_type)
 </script>
 
 <!-- Modal -->
-<div id="ajax_quiz"
-   name="ajax_quiz"></div>
+<div id="ajax_assignment"
+   name="ajax_assignment"></div>
 <!-- /.Modal -->
-
 
 {% endblock content %}

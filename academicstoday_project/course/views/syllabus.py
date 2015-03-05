@@ -30,7 +30,7 @@ def syllabus_page(request, course_id):
         syllabus = Syllabus.objects.get(course_id=course_id)
     except Syllabus.DoesNotExist:
         syllabus = None
-    return render(request, 'syllabus/view.html',{
+    return render(request, 'course/syllabus/view.html',{
         'course' : course,
         'syllabus' : syllabus,
         'user' : request.user,
