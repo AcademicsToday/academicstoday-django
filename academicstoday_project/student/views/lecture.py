@@ -5,18 +5,11 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
-from course.models import Course
-from course.models import Week
-from course.models import Lecture
+from registrar.models import Course
+from registrar.models import Week
+from registrar.models import Lecture
 import json
 import datetime
-
-
-
-# Forms
-from course.forms import EssaySubmissionForm
-from course.forms import AssignmentSubmissionForm
-
 
 # Developer Notes:
 # (1) Templates

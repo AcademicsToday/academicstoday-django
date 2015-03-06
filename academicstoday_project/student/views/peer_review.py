@@ -4,14 +4,14 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
-from course.models import Course
-from course.models import Assignment
-from course.models import AssignmentSubmission
-from course.models import AssignmentReview
-from course.models import EssayQuestion
-from course.models import EssaySubmission
-from course.models import ResponseQuestion
-from course.models import ResponseSubmission
+from registrar.models import Course
+from registrar.models import Assignment
+from registrar.models import AssignmentSubmission
+from registrar.models import AssignmentReview
+from registrar.models import EssayQuestion
+from registrar.models import EssaySubmission
+from registrar.models import ResponseQuestion
+from registrar.models import ResponseSubmission
 import json
 import datetime
 

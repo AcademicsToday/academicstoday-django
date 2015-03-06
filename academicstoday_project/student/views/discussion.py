@@ -5,14 +5,13 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
-from course.models import Course
-from course.models import Syllabus
+from registrar.models import Course
 import json
 import datetime
 
 # Forms
-from course.forms import EssaySubmissionForm
-from course.forms import AssignmentSubmissionForm
+from student.forms import EssaySubmissionForm
+from student.forms import AssignmentSubmissionForm
 
 
 # Developer Notes:
@@ -24,17 +23,12 @@ from course.forms import AssignmentSubmissionForm
 
 
 @login_required(login_url='/landpage')
-def syllabus_page(request, course_id):
+def discussion_page(request, course_id):
     course = Course.objects.get(id=course_id)
-    try:
-        syllabus = Syllabus.objects.get(course_id=course_id)
-    except Syllabus.DoesNotExist:
-        syllabus = None
-    return render(request, 'course/syllabus/view.html',{
+    return render(request, 'course/discussion/list.html',{
         'course' : course,
-        'syllabus' : syllabus,
         'user' : request.user,
-        'tab' : 'syllabus',
+        'tab' : 'discussion',
         'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
         'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
     })

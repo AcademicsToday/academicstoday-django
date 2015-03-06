@@ -39,7 +39,8 @@ INSTALLED_APPS = (
     'account',
     'landpage',
     'registrar',
-    'course'
+    'student',
+    'teacher',
 )
 
 MIDDLEWARE_CLASSES = (

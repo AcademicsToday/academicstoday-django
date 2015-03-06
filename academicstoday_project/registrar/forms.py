@@ -2,7 +2,7 @@ from django.db import models
 from django import forms
 
 from django.forms import ModelForm, Textarea
-from course.models import Course
+from registrar.models import Course
 
 class CourseForm(forms.ModelForm):
     class Meta:

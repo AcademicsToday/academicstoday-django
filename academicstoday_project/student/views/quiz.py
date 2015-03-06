@@ -5,19 +5,13 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
-from course.models import Course
-from course.models import TrueFalseQuestion
-from course.models import TrueFalseSubmission
-from course.models import Quiz
-from course.models import QuizSubmission
+from registrar.models import Course
+from registrar.models import TrueFalseQuestion
+from registrar.models import TrueFalseSubmission
+from registrar.models import Quiz
+from registrar.models import QuizSubmission
 import json
 import datetime
-
-
-# Forms
-from course.forms import EssaySubmissionForm
-from course.forms import AssignmentSubmissionForm
-
 
 # Developer Notes:
 # (1) Templates
@@ -30,7 +24,7 @@ from course.forms import AssignmentSubmissionForm
 @login_required(login_url='/landpage')
 def quizzes_page(request, course_id):
     course = Course.objects.get(id=course_id)
-    
+
     # Fetch all the quizzes for this course.
     try:
         quizzes = Quiz.objects.filter(course_id=course_id).order_by('order_num')
@@ -86,7 +80,7 @@ def quiz_truefalse(request, course_id):
             student_id = int(request.POST['student_id'])
             quiz_id = int(request.POST['quiz_id'])
             quiz = Quiz.objects.get(id=quiz_id)
-            
+
             # Fetch questions
             try:
                 questions = TrueFalseQuestion.objects.filter(
@@ -96,7 +90,7 @@ def quiz_truefalse(request, course_id):
                 )
             except TrueFalseQuestion.DoesNotExist:
                 questions = None
-        
+
             # Fetch submissions
             try:
                 submissions = TrueFalseSubmission.objects.filter(
@@ -107,7 +101,7 @@ def quiz_truefalse(request, course_id):
                 )
             except TrueFalseSubmission.DoesNotExist:
                 submission = None
-    
+
     return render(request, 'course/quiz/truefalse_modal.html',{
         'quiz' : quiz,
         'questions' : questions,
@@ -124,7 +118,7 @@ def submit_truefalse_quiz_answer(request, course_id):
             course_id = int(request.POST['course_id'])
             question_num = int(request.POST['question_num'])
             key = request.POST['key']
-            
+
             # Fetch submission and create new submission if not found.
             try:
                 submission = TrueFalseSubmission.objects.get(
@@ -142,11 +136,11 @@ def submit_truefalse_quiz_answer(request, course_id):
                 question_num=question_num,
                 quiz_id=quiz_id,
             )
-            
+
             # Save answer
             submission.answer = key == "true"
             submission.save()
-            
+
             response_data = {'status' : 'success', 'message' : 'submitted'}
         return HttpResponse(json.dumps(response_data), content_type="application/json")
 
@@ -165,7 +159,7 @@ def submit_truefalse_quiz_completion(request, course_id):
     )
     submission.submission_date = datetime.datetime.utcnow()
     submission.save()
-                                                  
+
     response_data = {'status' : 'success', 'message' : ''}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
@@ -178,7 +172,7 @@ def quiz_delete(request, course_id):
             student_id = int(request.POST['student_id'])
             quiz_id = int(request.POST['quiz_id'])
             quiz_type = int(request.POST['quiz_type'])
-            
+
             # Update the 'submission_date' of our entry to indicate we
             # have finished the quiz.
             submission = QuizSubmission.objects.get(
@@ -188,7 +182,7 @@ def quiz_delete(request, course_id):
             )
             submission.submission_date = None
             submission.save()
-                                                          
+
             # Delete quiz depending on what type
             if quiz_type == settings.TRUEFALSE_ASSIGNMENT_TYPE:
                 try:
@@ -198,7 +192,7 @@ def quiz_delete(request, course_id):
                         course_id=course_id,
                         quiz_id=quiz_id,
                     ).delete()
-                                                                      
+
                     # Send JSON Response indicating success
                     response_data = {'status' : 'success', 'message' : 'assignment was deleted'}
                 except EssaySubmission.DoesNotExist:

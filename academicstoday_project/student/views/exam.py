@@ -6,17 +6,17 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 
-from course.models import Course
-from course.models import MultipleChoiceQuestion
-from course.models import MultipleChoiceSubmission
-from course.models import Exam
-from course.models import ExamSubmission
+from registrar.models import Course
+from registrar.models import MultipleChoiceQuestion
+from registrar.models import MultipleChoiceSubmission
+from registrar.models import Exam
+from registrar.models import ExamSubmission
 import json
 import datetime
 
 # Forms
-from course.forms import EssaySubmissionForm
-from course.forms import AssignmentSubmissionForm
+from student.forms import EssaySubmissionForm
+from student.forms import AssignmentSubmissionForm
 
 
 # Developer Notes:
@@ -30,20 +30,20 @@ from course.forms import AssignmentSubmissionForm
 @login_required(login_url='/landpage')
 def exams_page(request, course_id):
     course = Course.objects.get(id=course_id)
-    
+
     # Fetch all the assignments for this course.
     try:
         exams = Exam.objects.filter(course_id=course_id).order_by('order_num')
     except Exam.DoesNotExist:
         exams = None
-    
+
     # Fetch all submitted assignments
     try:
         submitted_exams = ExamSubmission.objects.filter(course_id=course_id,
                                                         student_id=request.user.id)
     except ExamSubmission.DoesNotExist:
         submitted_exams = None
-    
+
     # If the submissions & quizzes counts do not equal, then we have to
     # iterate through all the quizzes and create the missing 'submission'
     # entries for our system.
@@ -93,7 +93,7 @@ def exam_multiplechoice(request, course_id):
                 )
             except MultipleChoiceQuestion.DoesNotExist:
                 questions = None
-            
+
             return render(request, 'course/exam/mc_modal.html',{
                 'exam' : exam,
                 'questions' : questions,
@@ -111,7 +111,7 @@ def submit_mc_exam_completion(request, course_id):
     )
     submission.submission_date = datetime.datetime.utcnow()
     submission.save()
-                                                  
+
     response_data = {'status' : 'success', 'message' : ''}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
@@ -137,7 +137,7 @@ def submit_mc_exam_answer(request, course_id):
             except MultipleChoiceQuestion.DoesNotExist:
                 response_data = {'status' : 'failed', 'message' : 'cannot find question'}
                 return HttpResponse(json.dumps(response_data), content_type="application/json")
-        
+
             # Fetch submission and create new submission if not found.
             try:
                 submission = MultipleChoiceSubmission.objects.get(
@@ -156,21 +156,21 @@ def submit_mc_exam_answer(request, course_id):
                     exam_id=exam_id,
                 )
                 submission.save()
-            
+
             # Convert JSON string into Python array
             answers = json.loads(submission.json_answers)
-            
+
             # Append or remove the answers json entry from the submission object.
             found_value = answers.get(key, None)
             if found_value == value:
                 answers.pop(key, None)
             else:
                 answers[key] = value
-            
+
             # Convert back into JSON string and save
             submission.json_answers = json.dumps(answers)
             submission.save()
-            
+
             response_data = {'status' : 'success', 'message' : ''}
             return HttpResponse(json.dumps(response_data), content_type="application/json")
 
@@ -185,7 +185,7 @@ def exam_delete(request, course_id):
             student_id = int(request.POST['student_id'])
             exam_id = int(request.POST['exam_id'])
             exam_type = int(request.POST['exam_type'])
-            
+
             # Update the 'submission_date' of our entry to indicate we
             # have finished the exam.
             submission = ExamSubmission.objects.get(

@@ -1,15 +1,15 @@
 from django.shortcuts import render
 from django.core import serializers
-from course.models import Student
-from course.models import Teacher
-from landpage.models import CoursePreview
-from course.models import Course
 import json
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
+from landpage.models import CoursePreview
+from registrar.models import Student
+from registrar.models import Teacher
+from registrar.models import Course
 
 from registrar.forms import CourseForm
 

@@ -8,11 +8,11 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
-                       
-    # This regex makes the default URL for the website to launch this view.                       
+
+    # This regex makes the default URL for the website to launch this view.
     url(r'', include('landpage.urls')),
     url(r'', include('account.urls')),
     url(r'', include('registrar.urls')),
-    url(r'', include('course.urls')),
-                       
+    url(r'', include('student.urls')),
+
 )+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

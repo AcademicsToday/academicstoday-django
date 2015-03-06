@@ -2,18 +2,13 @@ from django.shortcuts import render
 from django.core import serializers
 from django.http import HttpResponse
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
+from registrar.models import Course
+from registrar.models import Policy
 import json
 import datetime
-from course.models import Student
-from course.models import Course
-from course.models import Announcement
-
-# Forms
-from course.forms import EssaySubmissionForm
-from course.forms import AssignmentSubmissionForm
-
 
 # Developer Notes:
 # (1) Templates
@@ -22,18 +17,19 @@ from course.forms import AssignmentSubmissionForm
 # (2) JSON
 # https://docs.djangoproject.com/en/1.7/topics/serialization/
 
+
 @login_required(login_url='/landpage')
-def announcements_page(request, course_id):
+def policy_page(request, course_id):
     course = Course.objects.get(id=course_id)
     try:
-        announcements = Announcement.objects.filter(course=course).order_by('-post_date')
-    except Announcement.DoesNotExist:
-        announcements = None
-    return render(request, 'course/announcement/list.html',{
+        policy = Policy.objects.get(course_id=course_id)
+    except Policy.DoesNotExist:
+        policy = None
+    return render(request, 'course/policy/view.html',{
         'course' : course,
-        'announcements' : announcements,
         'user' : request.user,
-        'tab' : 'home',
+        'policy' : policy,
+        'tab' : 'policy',
         'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
         'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
     })

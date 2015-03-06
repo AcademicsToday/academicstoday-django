@@ -3,15 +3,15 @@ from django.conf.urls import patterns, include, url
 from . import views
 
 # Import custom views.
-from course.views import announcement
-from course.views import syllabus
-from course.views import policy
-from course.views import lecture
-from course.views import assignment
-from course.views import quiz
-from course.views import exam
-from course.views import discussion
-from course.views import peer_review
+from student.views import announcement
+from student.views import syllabus
+from student.views import policy
+from student.views import lecture
+from student.views import assignment
+from student.views import quiz
+from student.views import exam
+from student.views import discussion
+from student.views import peer_review
 
 urlpatterns = patterns('',
     # Announcement
