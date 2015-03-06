@@ -28,10 +28,11 @@
         // create a FormData Object using your form dom element
         var data = new FormData();
         data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+        data.append('announcement_id', $('#id_announcement_id').val());
         data.append('title', $('#id_title').val());
         data.append('body', $('#id_body').val());
         jQuery.ajax({
-            url: 'save_new_announcement',
+            url: 'save_announcement',
             data: data,
             cache: false,
             contentType: false,

@@ -13,9 +13,9 @@ urlpatterns = patterns('',
     url(r'^teacher/course/(\d+)/$', announcement.announcements_page),
     url(r'^teacher/course/(\d+)/home$', announcement.announcements_page),
     url(r'^teacher/course/(\d+)/announcement$', announcement.announcements_page),
-    url(r'^teacher/course/(\d+)/new_announcement_modal$', announcement.new_announcement_modal),
-    url(r'^teacher/course/(\d+)/save_new_announcement$', announcement.save_new_announcement),
-    url(r'^teacher/course/(\d+)/announcement_delete$', announcement.announcement_delete),
+    url(r'^teacher/course/(\d+)/announcement_modal$', announcement.announcement_modal),
+    url(r'^teacher/course/(\d+)/save_announcement$', announcement.save_announcement),
+    url(r'^teacher/course/(\d+)/delete_announcement$', announcement.delete_announcement),
 
     # Syllabus
     url(r'^teacher/course/(\d+)/syllabus$', syllabus.syllabus_page),

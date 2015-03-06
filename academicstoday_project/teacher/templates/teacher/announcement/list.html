@@ -35,7 +35,7 @@
             <p>Announcements are a great way to communicate with your student important information.</p>
             <p><a href="#"
                  class="btn btn-primary btn-lg"
-               onclick="ajax_new_announcement_modal();"
+               onclick="ajax_announcement_modal(0);"
                   role="button">Annonuncement »</a>
             </p>
         </div>
@@ -56,7 +56,7 @@
                                       <th>
                                           <button type="button"
                                                  class="btn btn-sm btn-success"
-                                               onclick="ajax_new_announcement_modal();">
+                                               onclick="ajax_announcement_modal(0);">
                                             +
                                         </button>
                                       </th>
@@ -64,22 +64,27 @@
                               </thead>
                               <tbody>
                               {% for announcement in announcements %}
-                                  <tr>
-                                      <td align="left" valign="left">{{ announcement.post_date }}</td>
-                                      <td align="left" valign="left">{{ announcement.title }}</td>
-                                      <td align="left" valign="left">{{ announcement.body }}</td>
-                                      <td align="left" valign="left">
-                                        <button type="button"
-                                               class="btn btn-sm btn-danger"
-                                             onclick="ajax_delete_announcement({{ announcement.announcement_id }});">
-                                            Delete
-                                        </button>
-                                      </td>
-                                  </tr>
-                            {% endfor %}
-                            </tbody>
-                          </table>
-                      </div>
+                              <tr>
+                                  <td align="left" valign="left">{{ announcement.post_date }}</td>
+                                  <td align="left" valign="left">{{ announcement.title }}</td>
+                                  <td align="left" valign="left">{{ announcement.body }}</td>
+                                  <td align="left" valign="left">
+                                      <button type="button"
+                                             class="btn btn-sm btn-warning"
+                                           onclick="ajax_announcement_modal({{ announcement.announcement_id }});">
+                                            Edit
+                                      </button>
+                                      <button type="button"
+                                             class="btn btn-sm btn-danger"
+                                           onclick="ajax_delete_announcement({{ announcement.announcement_id }});">
+                                           Delete
+                                      </button>
+                                  </td>
+                              </tr>
+                              {% endfor %}
+                              </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -101,13 +106,14 @@
      *  Function will call AJAX function to load the modal for the new course
      *  creation UI.
      */
-    function ajax_new_announcement_modal()
+    function ajax_announcement_modal(announcement_id)
     {
-        var url = 'new_announcement_modal';
+        var url = 'announcement_modal';
 
         $.ajax( url, {
             data: {
-                'csrfmiddlewaretoken': '{{ csrf_token }}',
+               'csrfmiddlewaretoken': '{{ csrf_token }}',
+               'announcement_id' : announcement_id
             },
             type: 'post',
             success: function(result) {
@@ -129,7 +135,7 @@
      */
     function ajax_delete_announcement(announcement_id)
     {
-        var url = 'announcement_delete';
+        var url = 'delete_announcement';
 
         $.ajax( url, {
             data: {

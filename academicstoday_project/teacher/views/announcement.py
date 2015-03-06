@@ -38,32 +38,48 @@ def announcements_page(request, course_id):
     })
 
 @login_required(login_url='/landpage')
-def new_announcement_modal(request, course_id):
+def announcement_modal(request, course_id):
     if request.method == u'POST':
-        form = AnnouncementForm()
-        return render(request, 'teacher/announcement/modal.html',{
-            'form' : form,
-        })
+        # Get the announcement_id of post and either create a brand new form
+        # for the user, or load up existing one based on the database
+        # data for the particular assignment.
+        announcement_id = int(request.POST['announcement_id'])
+        form = None
+        if announcement_id > 0:
+            announcement = Announcement.objects.get(announcement_id=announcement_id)
+            form = AnnouncementForm(instance=announcement)
+        else:
+            form = AnnouncementForm()
+        return render(request, 'teacher/announcement/modal.html',{'form' : form})
 
 
 @login_required(login_url='/landpage')
-def save_new_announcement(request, course_id):
+def save_announcement(request, course_id):
     response_data = {'status' : 'failed', 'message' : 'unknown error with saving'}
     if request.is_ajax():
         if request.method == 'POST':
-            form = AnnouncementForm(request.POST, request.FILES)
+            course = Course.objects.get(id=course_id)
+            announcement_id = int(request.POST['announcement_id'])
+            form = None
+            # If announcement already exists, then lets update only, else insert.
+            if announcement_id > 0:
+                announcement = Announcement.objects.get(announcement_id=announcement_id)
+                form = AnnouncementForm(instance=announcement, data=request.POST)
+            else:
+                form = AnnouncementForm(request.POST, request.FILES)
+            
             if form.is_valid():
-                course = Course.objects.get(id=course_id)
-                form.instance.course = course
-                form.save()
-                response_data = {'status' : 'success', 'message' : 'unknown error with saving'}
+                instance = form.save(commit=False)
+                instance.course = course
+                instance.save()
+                response_data = {'status' : 'success', 'message' : 'saved'}
             else:
                 response_data = {'status' : 'failed', 'message' : json.dumps(form.errors)}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
 @login_required(login_url='/landpage')
-def announcement_delete(request, course_id):
+def delete_announcement(request, course_id):
     response_data = {'status' : 'failed', 'message' : 'unknown error with deleting'}
     if request.is_ajax():
         if request.method == 'POST':
