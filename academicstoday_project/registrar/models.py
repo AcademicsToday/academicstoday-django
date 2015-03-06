@@ -63,23 +63,18 @@ class Announcement(models.Model):
         db_table = 'at_announcements'
 
 class Syllabus(models.Model):
-    id = models.AutoField(max_length=11, primary_key=True)
-    course_id = models.PositiveIntegerField()
-    url = models.URLField(default='')
-
-    @classmethod
-    def create(cls, course_id, url):
-        syllabus = cls(course_id=course_id, file_url=file_url)
-        return syllabus
+    course = models.ForeignKey(Course)
+    syllabus_id = models.AutoField(primary_key=True)
+    file = models.FileField(upload_to='uploads',null=True)
 
     def __str__(self):
-        return self.course_id + ' ' + self.file_url;
+        return self.file;
 
     class Meta:
         db_table = 'at_syllabus'
 
 class Policy(models.Model):
-    id = models.AutoField(max_length=11, primary_key=True)
+    policy_id = models.AutoField(max_length=11, primary_key=True)
     course_id = models.PositiveIntegerField()
     url = models.URLField(default='')
 
@@ -95,7 +90,7 @@ class Policy(models.Model):
         db_table = 'at_policys'
 
 class Week(models.Model):
-    id = models.AutoField(max_length=11, primary_key=True)
+    week_id = models.AutoField(max_length=11, primary_key=True)
     course_id = models.PositiveIntegerField()
     week_num = models.PositiveSmallIntegerField(max_length=7)
     title = models.CharField(max_length=31)
@@ -108,7 +103,7 @@ class Week(models.Model):
         db_table = 'at_weeks'
 
 class Lecture(models.Model):
-    id = models.AutoField(max_length=11, primary_key=True)
+    lecture_id = models.AutoField(max_length=11, primary_key=True)
     course_id = models.PositiveIntegerField()
     week_num = models.PositiveSmallIntegerField(max_length=7)
     lecture_num = models.PositiveSmallIntegerField(max_length=7, default=0)
@@ -126,7 +121,7 @@ class Lecture(models.Model):
         db_table = 'at_lectures'
 
 class Assignment(models.Model):
-    id = models.AutoField(max_length=11, primary_key=True)
+    assignment_id = models.AutoField(max_length=11, primary_key=True)
     course_id = models.PositiveIntegerField()
     order_num = models.PositiveSmallIntegerField(default=0)
     type = models.PositiveSmallIntegerField()
@@ -140,7 +135,7 @@ class Assignment(models.Model):
 
 
 class AssignmentSubmission(models.Model):
-    id = models.AutoField(max_length=11, primary_key=True)
+    submission_id = models.AutoField(max_length=11, primary_key=True)
     assignment_id = models.PositiveIntegerField()
     student_id = models.BigIntegerField()
     course_id = models.PositiveIntegerField()
@@ -169,7 +164,7 @@ class AssignmentSubmission(models.Model):
 
 
 class EssayQuestion(models.Model):
-    id = models.AutoField(max_length=11, primary_key=True)
+    question_id = models.AutoField(max_length=11, primary_key=True)
     assignment_id = models.PositiveIntegerField()
     course_id = models.PositiveIntegerField()
     question_num = models.PositiveSmallIntegerField()
@@ -183,7 +178,7 @@ class EssayQuestion(models.Model):
         db_table = 'at_essay_questions'
 
 class EssaySubmission(models.Model):
-    id = models.AutoField(max_length=11, primary_key=True)
+    submission_id = models.AutoField(max_length=11, primary_key=True)
     assignment_id = models.BigIntegerField()
     student_id = models.BigIntegerField()
     course_id = models.PositiveIntegerField()
@@ -206,7 +201,7 @@ class EssaySubmission(models.Model):
         db_table = 'at_essay_submissions'
 
 class MultipleChoiceQuestion(models.Model):
-    id = models.AutoField(max_length=11, primary_key=True)
+    question_id = models.AutoField(max_length=11, primary_key=True)
     exam_id = models.PositiveIntegerField(default=0)
     assignment_id = models.PositiveIntegerField()
     course_id = models.PositiveIntegerField()
@@ -223,7 +218,7 @@ class MultipleChoiceQuestion(models.Model):
         db_table = 'at_multiple_choice_questions'
 
 class MultipleChoiceSubmission(models.Model):
-    id = models.AutoField(max_length=11, primary_key=True)
+    submission_id = models.AutoField(max_length=11, primary_key=True)
     student_id = models.BigIntegerField()
     assignment_id = models.PositiveIntegerField()
     exam_id = models.PositiveIntegerField(default=0)
@@ -251,7 +246,7 @@ class MultipleChoiceSubmission(models.Model):
 
 
 class TrueFalseQuestion(models.Model):
-    id = models.AutoField(max_length=11, primary_key=True)
+    question_id = models.AutoField(max_length=11, primary_key=True)
     assignment_id = models.PositiveIntegerField(default=0)
     quiz_id = models.PositiveIntegerField(default=0)
     course_id = models.PositiveIntegerField()
@@ -270,7 +265,7 @@ class TrueFalseQuestion(models.Model):
 
 
 class TrueFalseSubmission(models.Model):
-    id = models.AutoField(max_length=11, primary_key=True)
+    submission_id = models.AutoField(max_length=11, primary_key=True)
     student_id = models.BigIntegerField()
     assignment_id = models.PositiveIntegerField(default=0)
     quiz_id = models.PositiveIntegerField(default=0)
@@ -298,7 +293,7 @@ class TrueFalseSubmission(models.Model):
 
 
 class ResponseQuestion(models.Model):
-    id = models.AutoField(max_length=11, primary_key=True)
+    question_id = models.AutoField(max_length=11, primary_key=True)
     assignment_id = models.PositiveIntegerField()
     course_id = models.PositiveIntegerField()
     question_num = models.PositiveSmallIntegerField()
@@ -314,7 +309,7 @@ class ResponseQuestion(models.Model):
 
 
 class ResponseSubmission(models.Model):
-    id = models.AutoField(max_length=11, primary_key=True)
+    submission_id = models.AutoField(max_length=11, primary_key=True)
     student_id = models.BigIntegerField()
     assignment_id = models.PositiveIntegerField()
     course_id = models.PositiveIntegerField()
@@ -340,7 +335,7 @@ class ResponseSubmission(models.Model):
 
 
 class Quiz(models.Model):
-    id = models.AutoField(max_length=11, primary_key=True)
+    quiz_id = models.AutoField(max_length=11, primary_key=True)
     course_id = models.PositiveIntegerField()
     order_num = models.PositiveSmallIntegerField(default=0)
     type = models.PositiveSmallIntegerField()
@@ -354,7 +349,7 @@ class Quiz(models.Model):
 
 
 class QuizSubmission(models.Model):
-    id = models.AutoField(max_length=11, primary_key=True)
+    submission_id = models.AutoField(max_length=11, primary_key=True)
     quiz_id = models.PositiveIntegerField()
     student_id = models.BigIntegerField()
     course_id = models.PositiveIntegerField()
@@ -383,7 +378,7 @@ class QuizSubmission(models.Model):
 
 
 class Exam(models.Model):
-    id = models.AutoField(max_length=11, primary_key=True)
+    exam_id = models.AutoField(max_length=11, primary_key=True)
     course_id = models.PositiveIntegerField()
     order_num = models.PositiveSmallIntegerField(default=0)
     type = models.PositiveSmallIntegerField()
@@ -398,7 +393,7 @@ class Exam(models.Model):
 
 
 class ExamSubmission(models.Model):
-    id = models.AutoField(max_length=11, primary_key=True)
+    submission_id = models.AutoField(max_length=11, primary_key=True)
     exam_id = models.PositiveIntegerField()
     student_id = models.BigIntegerField()
     course_id = models.PositiveIntegerField()
@@ -426,7 +421,7 @@ class ExamSubmission(models.Model):
         db_table = 'at_exam_submissions'
 
 class AssignmentReview(models.Model):
-    id = models.AutoField(max_length=11, primary_key=True)
+    review_id = models.AutoField(max_length=11, primary_key=True)
     student_id = models.BigIntegerField()
     assignment_id = models.PositiveIntegerField()
     course_id = models.PositiveIntegerField()

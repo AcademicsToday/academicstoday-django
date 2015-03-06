@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
                 ('announcement_id', models.AutoField(serialize=False, primary_key=True)),
                 ('title', models.CharField(max_length=31)),
                 ('body', models.TextField()),
-                ('post_date', models.DateField(auto_now=True, null=True, auto_now_add=True)),
+                ('post_date', models.DateField(auto_now=True, auto_now_add=True, null=True)),
             ],
             options={
                 'db_table': 'at_announcements',
@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Assignment',
             fields=[
-                ('id', models.AutoField(serialize=False, max_length=11, primary_key=True)),
+                ('assignment_id', models.AutoField(serialize=False, primary_key=True, max_length=11)),
                 ('course_id', models.PositiveIntegerField()),
                 ('order_num', models.PositiveSmallIntegerField(default=0)),
                 ('type', models.PositiveSmallIntegerField()),
@@ -42,14 +42,14 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='AssignmentReview',
             fields=[
-                ('id', models.AutoField(serialize=False, max_length=11, primary_key=True)),
+                ('review_id', models.AutoField(serialize=False, primary_key=True, max_length=11)),
                 ('student_id', models.BigIntegerField()),
                 ('assignment_id', models.PositiveIntegerField()),
                 ('course_id', models.PositiveIntegerField()),
                 ('title', models.CharField(max_length=31)),
                 ('comment', models.TextField()),
                 ('marks', models.PositiveSmallIntegerField(default=0)),
-                ('post_date', models.DateField(auto_now=True, null=True, auto_now_add=True)),
+                ('post_date', models.DateField(auto_now=True, auto_now_add=True, null=True)),
             ],
             options={
                 'db_table': 'at_assignment_reviews',
@@ -59,7 +59,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='AssignmentSubmission',
             fields=[
-                ('id', models.AutoField(serialize=False, max_length=11, primary_key=True)),
+                ('submission_id', models.AutoField(serialize=False, primary_key=True, max_length=11)),
                 ('assignment_id', models.PositiveIntegerField()),
                 ('student_id', models.BigIntegerField()),
                 ('course_id', models.PositiveIntegerField()),
@@ -86,7 +86,7 @@ class Migration(migrations.Migration):
                 ('finish_date', models.DateField(null=True)),
                 ('is_official', models.BooleanField(default=False)),
                 ('status', models.PositiveSmallIntegerField(default=0)),
-                ('file', models.FileField(null=True, upload_to='uploads')),
+                ('file', models.FileField(upload_to='uploads', null=True)),
             ],
             options={
                 'db_table': 'at_courses',
@@ -96,7 +96,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='EssayQuestion',
             fields=[
-                ('id', models.AutoField(serialize=False, max_length=11, primary_key=True)),
+                ('question_id', models.AutoField(serialize=False, primary_key=True, max_length=11)),
                 ('assignment_id', models.PositiveIntegerField()),
                 ('course_id', models.PositiveIntegerField()),
                 ('question_num', models.PositiveSmallIntegerField()),
@@ -111,12 +111,12 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='EssaySubmission',
             fields=[
-                ('id', models.AutoField(serialize=False, max_length=11, primary_key=True)),
+                ('submission_id', models.AutoField(serialize=False, primary_key=True, max_length=11)),
                 ('assignment_id', models.BigIntegerField()),
                 ('student_id', models.BigIntegerField()),
                 ('course_id', models.PositiveIntegerField()),
                 ('file', models.FileField(upload_to='uploads')),
-                ('submission_date', models.DateTimeField(auto_now=True, null=True, auto_now_add=True)),
+                ('submission_date', models.DateTimeField(auto_now=True, auto_now_add=True, null=True)),
                 ('is_marked', models.BooleanField(default=False)),
             ],
             options={
@@ -127,7 +127,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Exam',
             fields=[
-                ('id', models.AutoField(serialize=False, max_length=11, primary_key=True)),
+                ('exam_id', models.AutoField(serialize=False, primary_key=True, max_length=11)),
                 ('course_id', models.PositiveIntegerField()),
                 ('order_num', models.PositiveSmallIntegerField(default=0)),
                 ('type', models.PositiveSmallIntegerField()),
@@ -142,7 +142,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ExamSubmission',
             fields=[
-                ('id', models.AutoField(serialize=False, max_length=11, primary_key=True)),
+                ('submission_id', models.AutoField(serialize=False, primary_key=True, max_length=11)),
                 ('exam_id', models.PositiveIntegerField()),
                 ('student_id', models.BigIntegerField()),
                 ('course_id', models.PositiveIntegerField()),
@@ -160,15 +160,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Lecture',
             fields=[
-                ('id', models.AutoField(serialize=False, max_length=11, primary_key=True)),
+                ('lecture_id', models.AutoField(serialize=False, primary_key=True, max_length=11)),
                 ('course_id', models.PositiveIntegerField()),
                 ('week_num', models.PositiveSmallIntegerField(max_length=7)),
                 ('lecture_num', models.PositiveSmallIntegerField(max_length=7, default=0)),
-                ('title', models.CharField(max_length=31, null=True, default='')),
-                ('description', models.TextField(null=True, default='')),
-                ('youtube_url', models.URLField(null=True, default='')),
-                ('vimeo_url', models.URLField(null=True, default='')),
-                ('bliptv_url', models.URLField(null=True, default='')),
+                ('title', models.CharField(max_length=31, default='', null=True)),
+                ('description', models.TextField(default='', null=True)),
+                ('youtube_url', models.URLField(default='', null=True)),
+                ('vimeo_url', models.URLField(default='', null=True)),
+                ('bliptv_url', models.URLField(default='', null=True)),
                 ('preferred_service', models.CharField(max_length=31)),
             ],
             options={
@@ -179,7 +179,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='MultipleChoiceQuestion',
             fields=[
-                ('id', models.AutoField(serialize=False, max_length=11, primary_key=True)),
+                ('question_id', models.AutoField(serialize=False, primary_key=True, max_length=11)),
                 ('exam_id', models.PositiveIntegerField(default=0)),
                 ('assignment_id', models.PositiveIntegerField()),
                 ('course_id', models.PositiveIntegerField()),
@@ -197,7 +197,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='MultipleChoiceSubmission',
             fields=[
-                ('id', models.AutoField(serialize=False, max_length=11, primary_key=True)),
+                ('submission_id', models.AutoField(serialize=False, primary_key=True, max_length=11)),
                 ('student_id', models.BigIntegerField()),
                 ('assignment_id', models.PositiveIntegerField()),
                 ('exam_id', models.PositiveIntegerField(default=0)),
@@ -205,7 +205,7 @@ class Migration(migrations.Migration):
                 ('question_num', models.PositiveSmallIntegerField(default=0)),
                 ('json_answers', models.CharField(max_length=127, default='{}')),
                 ('marks', models.PositiveSmallIntegerField(default=0)),
-                ('submission_date', models.DateTimeField(auto_now=True, null=True, auto_now_add=True)),
+                ('submission_date', models.DateTimeField(auto_now=True, auto_now_add=True, null=True)),
                 ('is_marked', models.BooleanField(default=False)),
             ],
             options={
@@ -216,7 +216,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Policy',
             fields=[
-                ('id', models.AutoField(serialize=False, max_length=11, primary_key=True)),
+                ('policy_id', models.AutoField(serialize=False, primary_key=True, max_length=11)),
                 ('course_id', models.PositiveIntegerField()),
                 ('url', models.URLField(default='')),
             ],
@@ -228,7 +228,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Quiz',
             fields=[
-                ('id', models.AutoField(serialize=False, max_length=11, primary_key=True)),
+                ('quiz_id', models.AutoField(serialize=False, primary_key=True, max_length=11)),
                 ('course_id', models.PositiveIntegerField()),
                 ('order_num', models.PositiveSmallIntegerField(default=0)),
                 ('type', models.PositiveSmallIntegerField()),
@@ -242,7 +242,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='QuizSubmission',
             fields=[
-                ('id', models.AutoField(serialize=False, max_length=11, primary_key=True)),
+                ('submission_id', models.AutoField(serialize=False, primary_key=True, max_length=11)),
                 ('quiz_id', models.PositiveIntegerField()),
                 ('student_id', models.BigIntegerField()),
                 ('course_id', models.PositiveIntegerField()),
@@ -260,7 +260,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ResponseQuestion',
             fields=[
-                ('id', models.AutoField(serialize=False, max_length=11, primary_key=True)),
+                ('question_id', models.AutoField(serialize=False, primary_key=True, max_length=11)),
                 ('assignment_id', models.PositiveIntegerField()),
                 ('course_id', models.PositiveIntegerField()),
                 ('question_num', models.PositiveSmallIntegerField()),
@@ -276,14 +276,14 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ResponseSubmission',
             fields=[
-                ('id', models.AutoField(serialize=False, max_length=11, primary_key=True)),
+                ('submission_id', models.AutoField(serialize=False, primary_key=True, max_length=11)),
                 ('student_id', models.BigIntegerField()),
                 ('assignment_id', models.PositiveIntegerField()),
                 ('course_id', models.PositiveIntegerField()),
                 ('question_num', models.PositiveSmallIntegerField(default=0)),
                 ('answer', models.TextField(default='')),
                 ('marks', models.PositiveSmallIntegerField(default=0)),
-                ('submission_date', models.DateTimeField(auto_now=True, null=True, auto_now_add=True)),
+                ('submission_date', models.DateTimeField(auto_now=True, auto_now_add=True, null=True)),
                 ('is_marked', models.BooleanField(default=False)),
             ],
             options={
@@ -294,7 +294,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Student',
             fields=[
-                ('user', models.OneToOneField(serialize=False, primary_key=True, to=settings.AUTH_USER_MODEL)),
+                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL, serialize=False, primary_key=True)),
                 ('courses', models.ManyToManyField(to='registrar.Course')),
             ],
             options={
@@ -305,9 +305,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Syllabus',
             fields=[
-                ('id', models.AutoField(serialize=False, max_length=11, primary_key=True)),
-                ('course_id', models.PositiveIntegerField()),
+                ('syllabus_id', models.AutoField(serialize=False, primary_key=True)),
+                ('file', models.FileField(upload_to='uploads', null=True)),
                 ('url', models.URLField(default='')),
+                ('course', models.ForeignKey(to='registrar.Course')),
             ],
             options={
                 'db_table': 'at_syllabus',
@@ -317,7 +318,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Teacher',
             fields=[
-                ('user', models.OneToOneField(serialize=False, primary_key=True, to=settings.AUTH_USER_MODEL)),
+                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL, serialize=False, primary_key=True)),
                 ('courses', models.ManyToManyField(to='registrar.Course')),
             ],
             options={
@@ -328,7 +329,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='TrueFalseQuestion',
             fields=[
-                ('id', models.AutoField(serialize=False, max_length=11, primary_key=True)),
+                ('question_id', models.AutoField(serialize=False, primary_key=True, max_length=11)),
                 ('assignment_id', models.PositiveIntegerField(default=0)),
                 ('quiz_id', models.PositiveIntegerField(default=0)),
                 ('course_id', models.PositiveIntegerField()),
@@ -347,7 +348,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='TrueFalseSubmission',
             fields=[
-                ('id', models.AutoField(serialize=False, max_length=11, primary_key=True)),
+                ('submission_id', models.AutoField(serialize=False, primary_key=True, max_length=11)),
                 ('student_id', models.BigIntegerField()),
                 ('assignment_id', models.PositiveIntegerField(default=0)),
                 ('quiz_id', models.PositiveIntegerField(default=0)),
@@ -355,7 +356,7 @@ class Migration(migrations.Migration):
                 ('question_num', models.PositiveSmallIntegerField(default=0)),
                 ('answer', models.BooleanField(default=False)),
                 ('marks', models.PositiveSmallIntegerField(default=0)),
-                ('submission_date', models.DateTimeField(auto_now=True, null=True, auto_now_add=True)),
+                ('submission_date', models.DateTimeField(auto_now=True, auto_now_add=True, null=True)),
                 ('is_marked', models.BooleanField(default=False)),
             ],
             options={
@@ -366,7 +367,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Week',
             fields=[
-                ('id', models.AutoField(serialize=False, max_length=11, primary_key=True)),
+                ('week_id', models.AutoField(serialize=False, primary_key=True, max_length=11)),
                 ('course_id', models.PositiveIntegerField()),
                 ('week_num', models.PositiveSmallIntegerField(max_length=7)),
                 ('title', models.CharField(max_length=31)),

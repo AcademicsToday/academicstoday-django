@@ -4,6 +4,7 @@ from . import views
 
 # Import custom views.
 from teacher.views import announcement
+from teacher.views import syllabus
 
 urlpatterns = patterns('',
     # Announcement
@@ -14,4 +15,10 @@ urlpatterns = patterns('',
     url(r'^teacher/course/(\d+)/save_new_announcement$', announcement.save_new_announcement),
     url(r'^teacher/course/(\d+)/announcement_delete$', announcement.announcement_delete),
 
+    # Syllabus
+    url(r'^teacher/course/(\d+)/syllabus$', syllabus.syllabus_page),
+    url(r'^teacher/course/(\d+)/syllabus_modal$', syllabus.syllabus_modal),
+    url(r'^teacher/course/(\d+)/save_syllabus$', syllabus.save_syllabus),
+    url(r'^teacher/course/(\d+)/delete_syllabus$', syllabus.delete_syllabus),                   
+                       
 )

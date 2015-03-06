@@ -7,8 +7,10 @@ from registrar.models import Course
 from registrar.models import Student
 from registrar.models import Teacher
 from registrar.models import Announcement
+from registrar.models import Syllabus
 
 admin.site.register(Course)
 admin.site.register(Student)
 admin.site.register(Teacher)
 admin.site.register(Announcement)
+admin.site.register(Syllabus)

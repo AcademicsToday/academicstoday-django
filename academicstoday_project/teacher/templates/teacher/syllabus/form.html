@@ -1,0 +1,17 @@
+<form enctype="multipart/form-data" name="syllabus_form" id="syllabus_form">
+    {% for field in form %}
+    <div class="row">
+        <div class="form-group">
+            <div class="fieldWrapper">
+                <label class="col-sm-3 control-label">
+                    {{ field.label }}
+                </label>
+                <div class="col-sm-9">
+                    {{ field }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <br/>
+    {% endfor %}
+</form>
