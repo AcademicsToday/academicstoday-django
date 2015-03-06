@@ -5,6 +5,7 @@ from django.forms import ModelForm, Textarea
 from registrar.models import Announcement
 from registrar.models import Syllabus
 from registrar.models import Policy
+from registrar.models import Lecture
 
 
 class AnnouncementForm(forms.ModelForm):
@@ -31,3 +32,9 @@ class PolicyForm(forms.ModelForm):
     class Meta:
         model = Policy
         fields = ['file']
+
+
+class LectureForm(forms.ModelForm):
+    class Meta:
+        model = Lecture
+        fields = ['lecture_id', 'lecture_num', 'week_num', 'title', 'description', 'youtube_url', 'vimeo_url', 'preferred_service']

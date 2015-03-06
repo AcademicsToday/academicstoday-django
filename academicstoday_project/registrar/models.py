@@ -98,10 +98,10 @@ class Week(models.Model):
         db_table = 'at_weeks'
 
 class Lecture(models.Model):
-    lecture_id = models.AutoField(max_length=11, primary_key=True)
-    course_id = models.PositiveIntegerField()
-    week_num = models.PositiveSmallIntegerField(max_length=7)
+    course = models.ForeignKey(Course)
+    lecture_id = models.AutoField(primary_key=True)
     lecture_num = models.PositiveSmallIntegerField(max_length=7, default=0)
+    week_num = models.PositiveSmallIntegerField(max_length=7)
     title = models.CharField(max_length=31, default='',null=True)
     description = models.TextField(default='',null=True)
     youtube_url = models.URLField(default='',null=True)

@@ -6,6 +6,7 @@ from . import views
 from teacher.views import announcement
 from teacher.views import syllabus
 from teacher.views import policy
+from teacher.views import lecture
 
 urlpatterns = patterns('',
     # Announcement
@@ -27,4 +28,10 @@ urlpatterns = patterns('',
     url(r'^teacher/course/(\d+)/policy_modal$', policy.policy_modal),
     url(r'^teacher/course/(\d+)/save_policy$', policy.save_policy),
     url(r'^teacher/course/(\d+)/delete_policy$', policy.delete_policy),
+                       
+    # Lecture
+    url(r'^teacher/course/(\d+)/lectures$', lecture.lecture_page),
+    url(r'^teacher/course/(\d+)/lecture_modal$', lecture.lecture_modal),
+    url(r'^teacher/course/(\d+)/save_lecture$', lecture.save_lecture),
+    url(r'^teacher/course/(\d+)/delete_lecture$', lecture.delete_lecture),
 )

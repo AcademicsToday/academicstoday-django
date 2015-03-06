@@ -1,0 +1,28 @@
+<form enctype="multipart/form-data" name="new_course_form" id="new_course_form">
+    {% if form.instance.lecture_id == None %}
+    <input type="hidden"
+        id="id_lecture_id"
+        name="lecture_id"
+        value="0">
+    {% else %}
+    <input type="hidden"
+             id="id_lecture_id"
+           name="lecture_id"
+          value="{{ form.instance.lecture_id }}">
+    {% endif %}
+    {% for field in form %}
+    <div class="row">
+        <div class="form-group">
+            <div class="fieldWrapper">
+                <label class="col-sm-3 control-label">
+                    {{ field.label }}
+                </label>
+                <div class="col-sm-9">
+                    {{ field }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <br/>
+    {% endfor %}
+</form>
