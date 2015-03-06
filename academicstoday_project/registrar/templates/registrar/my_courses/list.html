@@ -1,0 +1,89 @@
+{% extends 'registrar/base.html' %}
+{% load staticfiles %}
+{% block content %}
+
+<div id="page-wrapper">
+    
+    <div class="container-fluid">
+        
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    My Courses
+                    <small>Instructors Portal</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li class="active">
+                        <i class="fa fa-bookmark"></i> My Courses
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+        
+        {% if teacher.courses.count == 0 %}
+        <div class="jumbotron">
+            <h1>Become a Teacher!</h1>
+            <p>Help spread the knowledge to the rest of humankind as a teacher.</p>
+            <p><a href="#"
+                 class="btn btn-primary btn-lg"
+               onclick="ajax_new_course_modal();"
+                  role="button">Create Course »</a>
+            </p>
+        </div>
+        {% else %}
+        <!-- Course Rows -->
+        {% for course in courses %}
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <p>TODO</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <!-- /.Course Rows -->
+        {% endif %}
+        
+    </div>
+    <!-- /.container-fluid -->
+    
+</div>
+
+<!-- Modal -->
+<div id="ajax_new_course_modal"
+   name="ajax_new_course_modal"></div>
+<!-- end modal -->
+
+<script>
+    /**
+     *  Function will call AJAX function to enroll into a specific course for the
+     *  current logged on user.
+     */
+    function ajax_new_course_modal()
+    {
+        var url = 'new_course_modal';
+    
+        $.ajax( url, {
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+            },
+            type: 'post',
+            success: function(result) {
+                // success code execution here
+                $('#ajax_new_course_modal').html(result); // Update UI.
+                $('#new_course_modal').modal();           // Unhide view.
+            },
+            error: function(xhr,status,error) {
+                // error code here
+            },
+            complete: function(xhr,status) {
+               // completion code here
+            }
+        });
+    }
+</script>
+{% endblock content %}

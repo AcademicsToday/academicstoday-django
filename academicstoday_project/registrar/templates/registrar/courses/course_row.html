@@ -1,0 +1,32 @@
+<div class="row">
+    <div class="col-lg-12 text-center">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <!-- Course Info -->
+                <div class="col-lg-8 text-left">
+                    <h2>{{ course.title }}</h2>
+                    <p>{{ course.description }}<p>
+                    <p>Durration: {{ course.start_date }} to {{ course.finish_date }}</p>
+                    <p align="right">
+                    <button type="button"
+                        class="btn btn-lg btn-primary"
+                        onclick="ajax_enrol({{ course.id }});">
+                        {% comment %}
+                        If the student does not have the current course
+                        then that means this student has not been
+                        enrolled in the course so therefore print
+                        UI acordingly.
+                        {% endcomment %}
+                        {% if course not in student.courses.all %}
+                        Enrol
+                        {% else %}
+                        Continue
+                        {% endif %}
+                    </button>
+                    </p>
+                </div>
+                <!-- /.Course Info -->
+            </div>
+        </div>
+    </div>
+</div>

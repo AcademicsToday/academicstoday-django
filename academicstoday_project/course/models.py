@@ -2,16 +2,15 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Course(models.Model):
-    id = models.AutoField(max_length=11, primary_key=True)
-    image_filename = models.CharField(max_length=31)
-    title = models.CharField(max_length=63)
+    id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=127)
     sub_title = models.CharField(max_length=127)
-    category = models.CharField(max_length=31)
-    paragraph_one = models.CharField(max_length=255)
-    paragraph_two = models.CharField(max_length=255)
-    paragraph_three = models.CharField(max_length=255)
-    start_date = models.DateField()
-    finish_date = models.DateField()
+    category = models.CharField(max_length=127)
+    description = models.TextField(null=True)
+    start_date = models.DateField(null=True)
+    finish_date = models.DateField(null=True)
+    is_official = models.BooleanField(default=False)
+    is_available = models.BooleanField(default=False)
     
     def __str__(self):
         return self.title
@@ -29,6 +28,17 @@ class Student(models.Model):
     
     class Meta:
         db_table = 'at_students'
+
+
+class Teacher(models.Model):
+    user = models.OneToOneField(User, primary_key=True)
+    courses = models.ManyToManyField(Course)
+    
+    def __str__(self):
+        return self.user
+    
+    class Meta:
+        db_table = 'at_teachers'
 
 
 class Announcement(models.Model):

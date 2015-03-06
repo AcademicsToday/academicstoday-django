@@ -1,0 +1,73 @@
+{% extends 'registrar/base.html' %}
+{% load staticfiles %}
+{% block content %}
+
+<div id="page-wrapper">
+    
+    <div class="container-fluid">
+        
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    Courses
+                    <small>The following are the available courses on Academics Today</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li class="active">
+                        <i class="fa fa-university"></i> Courses
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+        
+        {% if courses.count == 0 %}
+        <div class="jumbotron">
+            <h1>Courses Unavailable</h1>
+            <p>Please check back at a later time when the course become available.</p>
+        </div>
+        {% else %}
+        <!-- Course Rows -->
+        {% for course in courses %}
+            {% include 'registrar/courses/course_row.html' %}
+        {% endfor %}
+        <!-- /.Course Rows -->
+        {% endif %}
+        
+    </div>
+    <!-- /.container-fluid -->
+    
+</div>
+<script>
+    /**
+     *  Function will call AJAX function to enroll into a specific course for the
+     *  current logged on user.
+     */
+    function ajax_enrol(course_id)
+    {
+        var url = 'enrol';
+    
+        $.ajax( url, {
+           data: {
+               'course_id' : course_id,
+               'csrfmiddlewaretoken': '{{ csrf_token }}',
+           },
+           type: 'post',
+           success: function(result) {
+               // success code execution here
+               if (result.status == 'success')
+               {
+                window.location = 'course/' + course_id + '/announcement';
+               }
+           },
+           error: function(xhr,status,error) {
+               // error code here
+           },
+           complete: function(xhr,status) {
+               // completion code here
+           }
+        });
+    }
+</script>
+{% endblock content %}

@@ -36,8 +36,11 @@
     <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
     <div class="collapse navbar-collapse navbar-ex1-collapse">
         <ul class="nav navbar-nav side-nav">
-            <li class="active">
+            <li {% if tab == 'courses' %}class="active"{% endif %}>
                 <a href="courses"><i class="fa fa-fw fa-university"></i> Courses</a>
+            </li>
+            <li {% if tab == 'my_courses' %}class="active"{% endif %}>
+                <a href="my_courses"><i class="fa fa-fw fa-bookmark"></i> My Courses</a>
             </li>
         </ul>
     </div>
