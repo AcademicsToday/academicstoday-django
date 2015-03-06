@@ -53,9 +53,9 @@
                               <tbody>
                               {% for course in teacher.courses.all %}
                                   <tr>
-                                      <td>{{ course.id }}</td>
-                                      <td>{{ course.title }}</td>
-                                      <td>
+                                      <td align="left" valign="left">{{ course.id }}</td>
+                                      <td align="left" valign="left">{{ course.title }}</td>
+                                      <td align="left" valign="left">
                                         <button type="button"
                                                class="btn btn-lg btn-primary"
                                              onclick="view_course_page({{ course.id }});">

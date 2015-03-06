@@ -14,5 +14,5 @@ class AnnouncementForm(forms.ModelForm):
         }
 
         widgets = {
-            'body': Textarea(attrs={'cols': 72, 'rows':10}),
+            'body': Textarea(attrs={'cols': 70, 'rows':10}),
         }
