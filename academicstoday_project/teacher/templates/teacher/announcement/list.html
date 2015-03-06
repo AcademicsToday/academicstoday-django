@@ -1,4 +1,4 @@
-{% extends 'registrar/base.html' %}
+{% extends 'teacher/base.html' %}
 {% load staticfiles %}
 {% block content %}
 
@@ -10,33 +10,38 @@
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">
-                    My Courses
-                    <small>Instructors Portal</small>
+                    Announcements
                 </h1>
                 <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-university"></i>  <a href="../../courses">Courses</a>
+                    </li>
+                    <li>
+                        <i class="fa fa-compass"></i> {{ course.title }}
+                    </li>
                     <li class="active">
-                        <i class="fa fa-bookmark"></i> My Courses
+                        <i class="fa fa-home"></i> Home
                     </li>
                 </ol>
             </div>
         </div>
         <!-- /.row -->
 
-        {% if teacher.courses.count == 0 %}
-
+        {% if announcements.count == 0 %}
+        <!-- Announcements Banner -->
         <div class="jumbotron">
-            <h1>Become a Teacher!</h1>
-            <p>Help spread the knowledge to the rest of humankind as a teacher.</p>
+            <h1>Create Announcement!</h1>
+            <p>Create the first announcement for your course here. This announcement will be seen by all students who enrol in your course.</p>
+            <p>Announcements are a great way to communicate with your student important information.</p>
             <p><a href="#"
                  class="btn btn-primary btn-lg"
-               onclick="ajax_new_course_modal();"
-                  role="button">Create Course »</a>
+               onclick="ajax_new_announcement_modal();"
+                  role="button">Annonuncement »</a>
             </p>
         </div>
-
+        <!-- /.row -->
         {% else %}
-
-        <!-- Course Rows -->
+        <!-- Announcements -->
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="panel panel-default">
@@ -45,30 +50,34 @@
                           <table class="table table-hover table-striped">
                               <thead>
                                   <tr>
-                                      <th>Course #</th>
+                                      <th>Posted</th>
                                       <th>Title</th>
-                                      <th>Actions</th>
+                                      <th>Message</th>
+                                      <th>
+                                          <button type="button"
+                                                 class="btn btn-sm btn-success"
+                                               onclick="ajax_new_announcement_modal();">
+                                            +
+                                        </button>
+
+                                      </th>
                                   </tr>
                               </thead>
                               <tbody>
-                              {% for course in teacher.courses.all %}
+                              {% for announcement in announcements %}
                                   <tr>
-                                      <td>{{ course.id }}</td>
-                                      <td>{{ course.title }}</td>
+                                      <td>{{ announcement.post_date }}</td>
+                                      <td>{{ announcement.title }}</td>
+                                      <td>{{ announcement.body }}</td>
                                       <td>
                                         <button type="button"
-                                               class="btn btn-lg btn-primary"
-                                             onclick="view_course_page({{ course.id }});">
-                                            View
-                                        </button>
-                                        <button type="button"
-                                               class="btn btn-lg btn-danger"
-                                             onclick="ajax_delete_course({{ course.id }})">
+                                               class="btn btn-sm btn-danger"
+                                             onclick="ajax_delete_announcement({{ announcement.announcement_id }});">
                                             Delete
                                         </button>
                                       </td>
                                   </tr>
-                              {% endfor %}
+                            {% endfor %}
                             </tbody>
                           </table>
                       </div>
@@ -76,18 +85,16 @@
                 </div>
             </div>
         </div>
-        <!-- /.Course Rows -->
-
+        <!-- /.row -->
         {% endif %}
 
     </div>
-    <!-- /.container-fluid -->
 
 </div>
 
 <!-- Modal -->
-<div id="ajax_new_course_modal"
-   name="ajax_new_course_modal"></div>
+<div id="ajax_announcement_modal"
+   name="ajax_announcement_modal"></div>
 <!-- end modal -->
 
 <script>
@@ -95,9 +102,9 @@
      *  Function will call AJAX function to load the modal for the new course
      *  creation UI.
      */
-    function ajax_new_course_modal()
+    function ajax_new_announcement_modal()
     {
-        var url = 'new_course_modal';
+        var url = 'new_announcement_modal';
 
         $.ajax( url, {
             data: {
@@ -106,8 +113,8 @@
             type: 'post',
             success: function(result) {
                 // success code execution here
-                $('#ajax_new_course_modal').html(result); // Update UI.
-                $('#new_course_modal').modal();           // Unhide view.
+                $('#ajax_announcement_modal').html(result); // Update UI.
+                $('#announcement_modal').modal();           // Unhide view.
             },
             error: function(xhr,status,error) {
                 // error code here
@@ -119,16 +126,16 @@
     }
 
     /**
-     *  Function will call AJAX function to delete the teacher's course.
+     *  Function will call AJAX function to delete the teacher's announcement.
      */
-    function ajax_delete_course(course_id)
+    function ajax_delete_announcement(announcement_id)
     {
-        var url = 'course_delete';
+        var url = 'announcement_delete';
 
         $.ajax( url, {
             data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
-                'course_id' : course_id
+                'announcement_id' : announcement_id
             },
             type: 'post',
             success: function(result) {
@@ -154,10 +161,6 @@
     {
         window.location = '{{ tab }}';
     }
-
-    function view_course_page(course_id)
-    {
-        window.location = 'teacher/course/' + course_id + '/announcement';
-    }
 </script>
+
 {% endblock content %}

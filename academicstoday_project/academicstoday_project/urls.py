@@ -14,5 +14,6 @@ urlpatterns = patterns('',
     url(r'', include('account.urls')),
     url(r'', include('registrar.urls')),
     url(r'', include('student.urls')),
+    url(r'', include('teacher.urls')),
 
 )+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
