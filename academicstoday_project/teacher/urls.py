@@ -5,6 +5,7 @@ from . import views
 # Import custom views.
 from teacher.views import announcement
 from teacher.views import syllabus
+from teacher.views import policy
 
 urlpatterns = patterns('',
     # Announcement
@@ -20,5 +21,10 @@ urlpatterns = patterns('',
     url(r'^teacher/course/(\d+)/syllabus_modal$', syllabus.syllabus_modal),
     url(r'^teacher/course/(\d+)/save_syllabus$', syllabus.save_syllabus),
     url(r'^teacher/course/(\d+)/delete_syllabus$', syllabus.delete_syllabus),                   
-                       
+ 
+    # Policy
+    url(r'^teacher/course/(\d+)/policy$', policy.policy_page),
+    url(r'^teacher/course/(\d+)/policy_modal$', policy.policy_modal),
+    url(r'^teacher/course/(\d+)/save_policy$', policy.save_policy),
+    url(r'^teacher/course/(\d+)/delete_policy$', policy.delete_policy),
 )

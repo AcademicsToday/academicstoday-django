@@ -74,17 +74,12 @@ class Syllabus(models.Model):
         db_table = 'at_syllabus'
 
 class Policy(models.Model):
-    policy_id = models.AutoField(max_length=11, primary_key=True)
-    course_id = models.PositiveIntegerField()
-    url = models.URLField(default='')
-
-    @classmethod
-    def create(cls, course_id, url):
-        syllabus = cls(course_id=course_id, file_url=file_url)
-        return syllabus
+    course = models.ForeignKey(Course)
+    policy_id = models.AutoField(primary_key=True)
+    file = models.FileField(upload_to='uploads',null=True)
 
     def __str__(self):
-        return self.course_id + ' ' + self.file_url;
+        return self.policy_id + ' ' + self.file.url;
 
     class Meta:
         db_table = 'at_policys'
