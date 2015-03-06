@@ -25,19 +25,25 @@
      */
     function ajax_create_course()
     {
-        var url = 'save_new_course';
-        $.ajax( url, {
-            data: {
-                'title': $('#id_title').val(),
-                'sub_title': $('#id_sub_title').val(),
-                'category': $('#id_category').val(),
-                'description': $('#id_description').val(),
-                'start_date': $('#id_start_date').val(),
-                'finish_date': $('#id_finish_date').val(),
-                'csrfmiddlewaretoken': '{{ csrf_token }}'
-            },
+        // create a FormData Object using your form dom element
+        var data = new FormData($();
+        data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+        data.append('title', $('#id_title').val());
+        data.append('sub_title', $('#id_title').val());
+        data.append('category', $('#id_category').val());
+        data.append('description', $('#id_description').val());
+        data.append('start_date', $('#id_start_date').val());
+        data.append('finish_date', $('#id_finish_date').val());
+        data.append('image', document.getElementById('id_image').files[0]);
+        
+        jQuery.ajax({
+            url: 'save_new_course',
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
             type: 'POST',
-            success: function(json_result) {
+            success: function(json_result){
                 // success code execution here
                 if (json_result.status == "success")
                 {
@@ -47,13 +53,8 @@
                 {
                     alert(json_result.message);
                 }
-            },
-            error: function(xhr,status,error) {
-                // error code here
-            },
-            complete: function(xhr,status) {
-                // completion code here
             }
         });
+        
     }
 </script>

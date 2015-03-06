@@ -87,14 +87,14 @@ def new_course_modal(request):
         course_form = CourseForm()
     
     return render(request, 'registrar/my_courses/new_course_modal.html',{
-            'course_form' : course_form,
+        'course_form' : course_form,
     })
 
 def save_new_course(request):
     response_data = {'status' : 'failed', 'message' : 'unknown error with saving'}
     if request.is_ajax():
         if request.method == 'POST':
-            form = CourseForm(request.POST)
+            form = CourseForm(request.POST, request.FILES)
             if form.is_valid():
                 form.save()
                 response_data = {'status' : 'success', 'message' : 'unknown error with saving'}
