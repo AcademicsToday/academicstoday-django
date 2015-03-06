@@ -11,7 +11,7 @@ class Course(models.Model):
     finish_date = models.DateField(null=True)
     is_official = models.BooleanField(default=False)
     is_available = models.BooleanField(default=False)
-    image = models.FileField(upload_to='uploads',default=False)
+    file = models.FileField(upload_to='uploads',default=False)
     
     def __str__(self):
         return self.title

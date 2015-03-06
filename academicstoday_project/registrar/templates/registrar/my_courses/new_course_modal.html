@@ -26,7 +26,7 @@
     function ajax_create_course()
     {
         // create a FormData Object using your form dom element
-        var data = new FormData($();
+        var data = new FormData();
         data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
         data.append('title', $('#id_title').val());
         data.append('sub_title', $('#id_title').val());
@@ -34,7 +34,7 @@
         data.append('description', $('#id_description').val());
         data.append('start_date', $('#id_start_date').val());
         data.append('finish_date', $('#id_finish_date').val());
-        data.append('image', document.getElementById('id_image').files[0]);
+        data.append('file', document.getElementById('id_file').files[0]);
         
         jQuery.ajax({
             url: 'save_new_course',

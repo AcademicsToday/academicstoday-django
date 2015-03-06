@@ -7,11 +7,11 @@ from course.models import Course
 class CourseForm(forms.ModelForm):
     class Meta:
         model = Course
-        fields = ['title', 'sub_title', 'category', 'description', 'start_date', 'finish_date', 'image']
+        fields = ['title', 'sub_title', 'category', 'description', 'start_date', 'finish_date', 'file']
 
     # Function will apply validation on the 'file' upload column in the table.
-    def clean_image(self):
-        upload = self.cleaned_data['image']
+    def clean_file(self):
+        upload = self.cleaned_data['file']
         content_type = upload.content_type
         if content_type in ['application/png', 'application/x-png']:
             if upload._size <= 20971520:
