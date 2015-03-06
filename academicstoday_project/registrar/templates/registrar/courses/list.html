@@ -3,9 +3,9 @@
 {% block content %}
 
 <div id="page-wrapper">
-    
+
     <div class="container-fluid">
-        
+
         <!-- Page Heading -->
         <div class="row">
             <div class="col-lg-12">
@@ -21,7 +21,7 @@
             </div>
         </div>
         <!-- /.row -->
-        
+
         {% if courses.count == 0 %}
         <div class="jumbotron">
             <h1>Courses Unavailable</h1>
@@ -34,10 +34,10 @@
         {% endfor %}
         <!-- /.Course Rows -->
         {% endif %}
-        
+
     </div>
     <!-- /.container-fluid -->
-    
+
 </div>
 <script>
     /**
@@ -47,7 +47,7 @@
     function ajax_enrol(course_id)
     {
         var url = 'enrol';
-    
+
         $.ajax( url, {
            data: {
                'course_id' : course_id,
@@ -58,7 +58,7 @@
                // success code execution here
                if (result.status == 'success')
                {
-                window.location = 'course/' + course_id + '/announcement';
+                   window.location = 'course/' + course_id + '/announcement';
                }
            },
            error: function(xhr,status,error) {

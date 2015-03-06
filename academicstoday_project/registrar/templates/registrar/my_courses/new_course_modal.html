@@ -35,7 +35,7 @@
         data.append('start_date', $('#id_start_date').val());
         data.append('finish_date', $('#id_finish_date').val());
         data.append('file', document.getElementById('id_file').files[0]);
-        
+
         jQuery.ajax({
             url: 'save_new_course',
             data: data,
@@ -48,13 +48,20 @@
                 if (json_result.status == "success")
                 {
                     $('#new_course_modal').modal('hide');
+                    refresh_page();
                 }
                 else
                 {
                     alert(json_result.message);
                 }
+            },
+            error: function(xhr,status,error) {
+                // error code here
+            },
+            complete: function(xhr,status) {
+               // completion code here
             }
         });
-        
+
     }
 </script>
