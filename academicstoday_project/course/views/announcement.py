@@ -26,7 +26,7 @@ from course.forms import AssignmentSubmissionForm
 def announcements_page(request, course_id):
     course = Course.objects.get(id=course_id)
     try:
-        announcements = Announcement.objects.filter(courses__id=course_id).order_by('-post_date')
+        announcements = Announcement.objects.filter(course=course).order_by('-post_date')
     except Announcement.DoesNotExist:
         announcements = None
     return render(request, 'course/announcement/list.html',{

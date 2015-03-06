@@ -44,8 +44,8 @@ class Teacher(models.Model):
 
 
 class Announcement(models.Model):
-    courses = models.ManyToManyField(Course)
-    id = models.AutoField(primary_key=True)
+    course = models.ForeignKey(Course)
+    announcement_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=31)
     body = models.TextField()
     post_date = models.DateField(auto_now=True, auto_now_add=True, null=True)

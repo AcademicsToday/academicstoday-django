@@ -82,8 +82,8 @@ DATABASES = {
 $ python manage.py startapp account
 $ python manage.py startapp landpage
 $ python manage.py startapp registrar
-$ python manage.py startapp course
-
+$ python manage.py startapp student
+$ python manage.py startapp teacher
 
 
 (11) Then go to academicstoday_project/settings.py and make sure to include ‘py-academicstoday’ in the file.
@@ -98,7 +98,8 @@ INSTALLED_APPS = (
 'account',
 'landpage',
 'registrar',
-'course'
+'student',
+'teacher',
 )
 - - - - - - - - - - - - - - - - - - - - - - - - - -
 
