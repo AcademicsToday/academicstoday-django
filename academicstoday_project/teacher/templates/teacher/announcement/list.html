@@ -57,7 +57,7 @@
                                           <button type="button"
                                                  class="btn btn-sm btn-success"
                                                onclick="ajax_announcement_modal(0);">
-                                            +
+                                            <i class="fa fa-plus"></i> Add
                                         </button>
                                       </th>
                                   </tr>
@@ -72,12 +72,12 @@
                                       <button type="button"
                                              class="btn btn-sm btn-warning"
                                            onclick="ajax_announcement_modal({{ announcement.announcement_id }});">
-                                            Edit
+                                           <i class="fa fa-pencil"></i> Edit
                                       </button>
                                       <button type="button"
                                              class="btn btn-sm btn-danger"
                                            onclick="ajax_delete_announcement({{ announcement.announcement_id }});">
-                                           Delete
+                                          <i class="fa fa-minus"></i> Delete
                                       </button>
                                   </td>
                               </tr>
