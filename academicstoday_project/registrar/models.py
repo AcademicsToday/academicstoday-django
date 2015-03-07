@@ -222,6 +222,7 @@ class EssayQuestion(models.Model):
     question_num = models.PositiveSmallIntegerField()
     title = models.CharField(max_length=31, default='')
     description = models.TextField(default='')
+    question_type = settings.ESSAY_QUESTION_TYPE
 
     def __str__(self):
         return self.question_id + ' ' + self.title + ' ' + self.description;
@@ -252,8 +253,19 @@ class MultipleChoiceQuestion(models.Model):
     question_num = models.PositiveSmallIntegerField()
     title = models.CharField(max_length=31, default='')
     description = models.TextField(default='')
-    json_choices = models.CharField(max_length=1055, default='{}')
-    json_answers = models.CharField(max_length=127, default='{}')
+    a = models.CharField(max_length=255, null=True)
+    a_is_correct = models.BooleanField(default=False)
+    b = models.CharField(max_length=255, null=True)
+    b_is_correct = models.BooleanField(default=False)
+    c = models.CharField(max_length=255, null=True)
+    c_is_correct = models.BooleanField(default=False)
+    d = models.CharField(max_length=255, null=True)
+    d_is_correct = models.BooleanField(default=False)
+    e = models.CharField(max_length=255, null=True)
+    e_is_correct = models.BooleanField(default=False)
+    f = models.CharField(max_length=255, null=True)
+    f_is_correct = models.BooleanField(default=False)
+    question_type = settings.MULTIPLECHOICE_QUESTION_TYPE
 
     def __str__(self):
         return self.course_id + ' ' + self.title + ' ' + self.description;
@@ -300,6 +312,7 @@ class TrueFalseQuestion(models.Model):
     true_choice = models.CharField(max_length=127, null=True)
     false_choice = models.CharField(max_length=127, null=True)
     answer = models.BooleanField(default=False)
+    question_type = settings.TRUEFALSE_QUESTION_TYPE
 
     def __str__(self):
         return self.course_id + ' ' + self.title + ' ' + self.description;
@@ -335,6 +348,7 @@ class ResponseQuestion(models.Model):
     title = models.CharField(max_length=31, default='')
     description = models.TextField(default='')
     answer = models.TextField(default='')
+    question_type = settings.RESPONSE_QUESTION_TYPE
 
     def __str__(self):
         return self.course_id + ' ' + self.title + ' ' + self.description;

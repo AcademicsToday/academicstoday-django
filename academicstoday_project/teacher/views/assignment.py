@@ -153,6 +153,10 @@ def question_type_modal(request, course_id, assignment_id):
                 return render(request, 'teacher/assignment/question_modal.html',{
                     'assignment' : assignment,
                     'form' : form,
+                    'ESSAY_QUESTION_TYPE': settings.ESSAY_QUESTION_TYPE,
+                    'MULTIPLECHOICE_QUESTION_TYPE': settings.MULTIPLECHOICE_QUESTION_TYPE,
+                    'TRUEFALSE_QUESTION_TYPE': settings.TRUEFALSE_QUESTION_TYPE,
+                    'RESPONSE_QUESTION_TYPE': settings.RESPONSE_QUESTION_TYPE,
                     'user' : request.user,
                     'title' : 'New Question',
                     'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
@@ -170,6 +174,10 @@ def question_essay_modal(request, course_id, assignment_id):
                 return render(request, 'teacher/assignment/question_modal.html',{
                     'assignment' : assignment,
                     'form' : form,
+                    'ESSAY_QUESTION_TYPE': settings.ESSAY_QUESTION_TYPE,
+                    'MULTIPLECHOICE_QUESTION_TYPE': settings.MULTIPLECHOICE_QUESTION_TYPE,
+                    'TRUEFALSE_QUESTION_TYPE': settings.TRUEFALSE_QUESTION_TYPE,
+                    'RESPONSE_QUESTION_TYPE': settings.RESPONSE_QUESTION_TYPE,
                     'user' : request.user,
                     'title' : 'Essay Question',
                     'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
@@ -187,6 +195,10 @@ def question_multiple_choice_modal(request, course_id, assignment_id):
                 return render(request, 'teacher/assignment/question_modal.html',{
                     'assignment' : assignment,
                     'form' : form,
+                    'ESSAY_QUESTION_TYPE': settings.ESSAY_QUESTION_TYPE,
+                    'MULTIPLECHOICE_QUESTION_TYPE': settings.MULTIPLECHOICE_QUESTION_TYPE,
+                    'TRUEFALSE_QUESTION_TYPE': settings.TRUEFALSE_QUESTION_TYPE,
+                    'RESPONSE_QUESTION_TYPE': settings.RESPONSE_QUESTION_TYPE,
                     'user' : request.user,
                     'title' : 'Multiple Choice Question',
                     'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
@@ -204,6 +216,10 @@ def question_true_false_modal(request, course_id, assignment_id):
                 return render(request, 'teacher/assignment/question_modal.html',{
                     'assignment' : assignment,
                     'form' : form,
+                    'ESSAY_QUESTION_TYPE': settings.ESSAY_QUESTION_TYPE,
+                    'MULTIPLECHOICE_QUESTION_TYPE': settings.MULTIPLECHOICE_QUESTION_TYPE,
+                    'TRUEFALSE_QUESTION_TYPE': settings.TRUEFALSE_QUESTION_TYPE,
+                    'RESPONSE_QUESTION_TYPE': settings.RESPONSE_QUESTION_TYPE,
                     'user' : request.user,
                     'title' : 'True False Question',
                     'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
@@ -221,6 +237,10 @@ def question_response_modal(request, course_id, assignment_id):
                 return render(request, 'teacher/assignment/question_modal.html',{
                     'assignment' : assignment,
                     'form' : form,
+                    'ESSAY_QUESTION_TYPE': settings.ESSAY_QUESTION_TYPE,
+                    'MULTIPLECHOICE_QUESTION_TYPE': settings.MULTIPLECHOICE_QUESTION_TYPE,
+                    'TRUEFALSE_QUESTION_TYPE': settings.TRUEFALSE_QUESTION_TYPE,
+                    'RESPONSE_QUESTION_TYPE': settings.RESPONSE_QUESTION_TYPE,
                     'user' : request.user,
                     'title' : 'Response Question',
                     'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
@@ -229,53 +249,82 @@ def question_response_modal(request, course_id, assignment_id):
 
 
 @login_required(login_url='/landpage')
-def insert_question(request, course_id, assignment_id):
+def save_question(request, course_id, assignment_id):
     response_data = {'status' : 'failed', 'message' : 'unknown error with saving'}
     if request.is_ajax():
         if request.method == 'POST':
+            # Fetch objects
             course = Course.objects.get(id=course_id)
             teacher = Teacher.objects.get(user=request.user)
             assignment = Assignment.objects.get(assignment_id=assignment_id)
-            question_type = int(request.POST['type'])
-            question_num = int(request.POST['num'])
+
+            # Fetch variables
+            question_type = int(request.POST['question_type'])
+            question_num = int(request.POST['question_num'])
+            question_id = int(request.POST['question_id'])
 
             # DC: If question type is unsupported then error
             if question_type not in settings.QUESTION_TYPES:
                 response_data = {'status' : 'failed', 'message' : 'question type not supported'}
                 return HttpResponse(json.dumps(response_data), content_type="application/json")
 
-            # Create the question for the assignment depending on the question
-            # type selected.
-            if question_type == settings.ESSAY_QUESTION_TYPE:
-                question = EssayQuestion.objects.create(
-                    course=course,
-                    assignment=assignment,
-                    question_num=question_num
-                )
-                question.save()
-            elif question_type == settings.MULTIPLECHOICE_QUESTION_TYPE:
-                question = MultipleChoiceQuestion.objects.create(
-                    course=course,
-                    assignment=assignment,
-                    question_num=question_num
-                )
-                question.save()
-            elif question_type == settings.TRUEFALSE_QUESTION_TYPE:
-                question = TrueFalseQuestion.objects.create(
-                    course=course,
-                    assignment=assignment,
-                    question_num=question_num
-                )
-                question.save()
-            elif question_type == settings.RESPONSE_QUESTION_TYPE:
-                question = ResponseQuestion.objects.create(
-                    course=course,
-                    assignment=assignment,
-                    question_num=question_num
-                )
-                question.save()
-
-            response_data = {'status' : 'success', 'message' : 'question was inserted'}
+            # If question_id equals zero then that means we need to create a new
+            # entry, else we simply update the existing entry.
+            if question_id == 0:
+                # Create the question for the assignment depending on the
+                # question type selected.
+                if question_type == settings.ESSAY_QUESTION_TYPE:
+                    question = EssayQuestion.objects.create(
+                        course=course,
+                        assignment=assignment,
+                        question_num=question_num
+                    )
+                    question.save()
+                elif question_type == settings.MULTIPLECHOICE_QUESTION_TYPE:
+                    question = MultipleChoiceQuestion.objects.create(
+                        course=course,
+                        assignment=assignment,
+                        question_num=question_num
+                    )
+                    question.save()
+                elif question_type == settings.TRUEFALSE_QUESTION_TYPE:
+                    question = TrueFalseQuestion.objects.create(
+                        course=course,
+                        assignment=assignment,
+                        question_num=question_num
+                    )
+                    question.save()
+                elif question_type == settings.RESPONSE_QUESTION_TYPE:
+                    question = ResponseQuestion.objects.create(
+                        course=course,
+                        assignment=assignment,
+                        question_num=question_num
+                    )
+                    question.save()
+                # Return positive response.
+                response_data = {'status' : 'success', 'message' : 'question was saved'}
+            else:
+                # Update the question for the assignment depending on the
+                # question type selected.
+                question = None
+                form = None
+                if question_type == settings.ESSAY_QUESTION_TYPE:
+                    question = EssayQuestion.objects.get(question_id=question_id)
+                    form = EssayQuestionForm(instance=question, data=request.POST)
+                elif question_type == settings.MULTIPLECHOICE_QUESTION_TYPE:
+                    question = MultipleChoiceQuestion.objects.get(question_id=question_id)
+                    form = MultipleChoiceQuestionForm(instance=question, data=request.POST)
+                elif question_type == settings.TRUEFALSE_QUESTION_TYPE:
+                    question = TrueFalseQuestion.objects.get(question_id=question_id)
+                    form = TrueFalseQuestionForm(instance=question, data=request.POST)
+                elif question_type == settings.RESPONSE_QUESTION_TYPE:
+                    question = ResponseQuestion.objects.get(question_id=question_id)
+                    form = ResponseQuestionForm(instance=question, data=request.POST)
+                if form.is_valid():
+                    form.save()
+                    response_data = {'status' : 'success', 'message' : 'question was saved'}
+                else:
+                    response_data = {'status' : 'failed', 'message' : form.errors}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 

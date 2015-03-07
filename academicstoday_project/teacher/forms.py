@@ -67,8 +67,8 @@ QUESTION_TYPE_CHOICES = ((settings.ESSAY_QUESTION_TYPE, 'Essay'),
                          (settings.RESPONSE_QUESTION_TYPE, 'Response'))
 
 class QuestionTypeForm(forms.Form):
-    num = forms.IntegerField(label='Question #', initial=1, widget=forms.NumberInput(attrs={'min': '0', 'max': '100', 'step': '1'}))
-    type = forms.CharField(label='Question Type', widget=forms.Select(choices=QUESTION_TYPE_CHOICES))
+    question_num = forms.IntegerField(label='Question #', initial=1, widget=forms.NumberInput(attrs={'min': '0', 'max': '100', 'step': '1'}))
+    question_type = forms.CharField(label='Question Type', widget=forms.Select(choices=QUESTION_TYPE_CHOICES))
 
 
 class EssayQuestionForm(forms.ModelForm):
@@ -83,11 +83,15 @@ class EssayQuestionForm(forms.ModelForm):
 class MultipleChoiceQuestionForm(forms.ModelForm):
     class Meta:
         model = MultipleChoiceQuestion
-        fields = ['question_num', 'title', 'description', 'json_choices', 'json_answers']
+        fields = ['question_num', 'title', 'description', 'a', 'a_is_correct', 'b', 'b_is_correct', 'c', 'c_is_correct', 'd', 'd_is_correct', 'e', 'e_is_correct', 'f', 'f_is_correct']
         labels = {
             'question_num': 'Question #',
-            'json_choices': 'Choices',
-            'json_answers': 'Answers',
+            'a': 'Option A)',
+            'b': 'Option B)',
+            'c': 'Option C)',
+            'd': 'Option D)',
+            'e': 'Option E)',
+            'f': 'Option F)',
         }
 
 

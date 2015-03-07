@@ -3,6 +3,12 @@
              id="id_assignment_id"
            name="assignment_id"
           value={% if form.instance.assignment_id != None %}"{{ form.instance.assignment_id }}"{% else %}0{% endif %}>
+    {% if form.instance.question_type != None %}
+    <input type="hidden"
+             id="id_question_type"
+           name="question_type"
+          value="{{ form.instance.question_type }}">
+    {% endif %}
     {% for field in form %}
     <div class="row">
         <div class="form-group">
