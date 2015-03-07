@@ -185,6 +185,8 @@ class Assignment(models.Model):
     course = models.ForeignKey(Course)
     assignment_id = models.AutoField(primary_key=True)
     assignment_num = models.PositiveSmallIntegerField(default=0)
+    title = models.CharField(max_length=31, null=True)
+    description = models.TextField(null=True)
     type = models.PositiveSmallIntegerField()
     due_date = models.DateField(null=True)
 

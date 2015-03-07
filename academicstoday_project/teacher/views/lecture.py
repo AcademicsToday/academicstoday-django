@@ -19,7 +19,7 @@ from teacher.forms import LectureForm
 
 
 @login_required(login_url='/landpage')
-def lecture_page(request, course_id):
+def lectures_page(request, course_id):
     course = Course.objects.get(id=course_id)
     teacher = Teacher.objects.get(user=request.user)
 

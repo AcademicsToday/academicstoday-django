@@ -20,7 +20,7 @@
                         <i class="fa fa-compass"></i> {{ course.title }}
                     </li>
                     <li class="active">
-                        <i class="fa fa-home"></i> Home
+                        <i class="fa fa-book"></i> Assignments
                     </li>
                 </ol>
             </div>
@@ -34,7 +34,7 @@
             <p>Create the first assignment for your course here.</p>
             <p><a href="#"
                  class="btn btn-primary btn-lg"
-               onclick="ajax_assignment_modal();"
+               onclick="view_assignment(0);"
                   role="button">Assignment »</a>
             </p>
         </div>
@@ -50,13 +50,11 @@
                               <thead>
                                   <tr>
                                       <th>Assignment #</th>
-                                      <th>Week #</th>
                                       <th>Title</th>
-                                      <th>Preferred Service</th>
                                       <th>
                                           <button type="button"
                                                  class="btn btn-sm btn-success"
-                                               onclick="ajax_assignment_modal(0);">
+                                               onclick="view_assignment(0);">
                                             <i class="fa fa-plus"></i> Add
                                         </button>
                                       </th>
@@ -66,13 +64,11 @@
                               {% for assignment in assignments %}
                                   <tr>
                                       <td align="left" valign="left">{{ assignment.assignment_num }}</td>
-                                      <td align="left" valign="left">{{ assignment.week_num }}</td>
                                       <td align="left" valign="left">{{ assignment.title }}</td>
-                                      <td align="left" valign="left">{{ assignment.preferred_service }}</td>
                                       <td align="left" valign="left">
                                           <button type="button"
                                               class="btn btn-sm btn-warning"
-                                              onclick="ajax_assignment_modal({{ assignment.assignment_id }});">
+                                              onclick="view_assignment({{ assignment.assignment_id }});">
                                               <i class="fa fa-pencil"></i> Edit
                                           </button>
                                         <button type="button"
@@ -107,10 +103,10 @@
      *  Function will call AJAX function to load the modal for the new assignment
      *  creation UI.
      */
-    function ajax_assignment_modal(assignment_id)
+    function view_assignment(assignment_id)
     {
+        //window.location = "assignment/" + assignment_id;
         var url = 'assignment_modal';
-
         $.ajax( url, {
             data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
@@ -118,7 +114,7 @@
             },
             type: 'post',
             success: function(result) {
-                // success code execution here
+                // success code execution here-->
                 $('#ajax_assignment_modal').html(result); // Update UI.
                 $('#assignment_modal').modal();           // Unhide view.
             },

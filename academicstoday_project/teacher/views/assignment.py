@@ -17,9 +17,8 @@ from teacher.forms import AssignmentForm
 # https://docs.djangoproject.com/en/1.7/ref/templates
 #
 
-
 @login_required(login_url='/landpage')
-def assignment_page(request, course_id):
+def assignments_page(request, course_id):
     course = Course.objects.get(id=course_id)
     teacher = Teacher.objects.get(user=request.user)
 
@@ -91,3 +90,21 @@ def delete_assignment(request, course_id):
             assignment.delete()
             response_data = {'status' : 'success', 'message' : 'deleted'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+def assignment_page(request, course_id, assignment_id):
+    course = Course.objects.get(id=course_id)
+    teacher = Teacher.objects.get(user=request.user)
+    
+    try:
+        assignments = Assignment.objects.filter(course=course).order_by('-assignment_num')
+    except Assignment.DoesNotExist:
+        assignments = None
+    return render(request, 'teacher/assignment/details.html',{
+        'teacher' : teacher,
+        'course' : course,
+        'assignments' : assignments,
+        'user' : request.user,
+        'tab' : 'assignments',
+        'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
+        'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+    })

@@ -31,14 +31,15 @@ urlpatterns = patterns('',
     url(r'^teacher/course/(\d+)/delete_policy$', policy.delete_policy),
                        
     # Lecture
-    url(r'^teacher/course/(\d+)/lectures$', lecture.lecture_page),
+    url(r'^teacher/course/(\d+)/lectures$', lecture.lectures_page),
     url(r'^teacher/course/(\d+)/lecture_modal$', lecture.lecture_modal),
     url(r'^teacher/course/(\d+)/save_lecture$', lecture.save_lecture),
     url(r'^teacher/course/(\d+)/delete_lecture$', lecture.delete_lecture),
                        
     # Assignment
-    url(r'^teacher/course/(\d+)/lectures$', assignment.assignment_page),
-    url(r'^teacher/course/(\d+)/lecture_modal$', assignment.assignment_modal),
-    url(r'^teacher/course/(\d+)/save_lecture$', assignment.save_assignment),
-    url(r'^teacher/course/(\d+)/delete_lecture$', assignment.delete_assignment),
+    url(r'^teacher/course/(\d+)/assignments$', assignment.assignments_page),
+    url(r'^teacher/course/(\d+)/assignment_modal$', assignment.assignment_modal),
+    url(r'^teacher/course/(\d+)/save_assignment$', assignment.save_assignment),
+    url(r'^teacher/course/(\d+)/delete_assignment$', assignment.delete_assignment),
+    url(r'^teacher/course/(\d+)/assignment/(\d+)$', assignment.assignment_page),
 )
