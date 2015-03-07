@@ -89,3 +89,22 @@ class MultipleChoiceQuestionForm(forms.ModelForm):
             'json_choices': 'Choices',
             'json_answers': 'Answers',
         }
+
+
+class TrueFalseQuestionForm(forms.ModelForm):
+    class Meta:
+        model = TrueFalseQuestion
+        fields = ['question_num', 'title', 'description', 'true_choice', 'false_choice', 'answer']
+        labels = {
+            'question_num': 'Question #',
+            'answer': 'Answer is True?',
+        }
+
+
+class ResponseQuestionForm(forms.ModelForm):
+    class Meta:
+        model = ResponseQuestion
+        fields = ['question_num', 'title', 'description', 'answer']
+        labels = {
+            'question_num': 'Question #',
+        }

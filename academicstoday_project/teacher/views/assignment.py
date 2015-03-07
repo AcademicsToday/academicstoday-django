@@ -18,11 +18,9 @@ from teacher.forms import AssignmentForm
 from teacher.forms import QuestionTypeForm
 from teacher.forms import EssayQuestionForm
 from teacher.forms import MultipleChoiceQuestionForm
+from teacher.forms import TrueFalseQuestionForm
+from teacher.forms import ResponseQuestionForm
 
-# Developer Notes:
-# (1) Templates
-# https://docs.djangoproject.com/en/1.7/ref/templates
-#
 
 @login_required(login_url='/landpage')
 def assignments_page(request, course_id):
@@ -42,6 +40,7 @@ def assignments_page(request, course_id):
         'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
         'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
     })
+
 
 @login_required(login_url='/landpage')
 def assignment_modal(request, course_id):
@@ -116,14 +115,30 @@ def assignment_page(request, course_id, assignment_id):
     except MultipleChoiceQuestion.DoesNotExist:
         mc_questions = None
 
+    # Load all true/false type questions for this assignment.
+    try:
+        tf_questions = TrueFalseQuestion.objects.filter(assignment=assignment).order_by('question_num')
+    except TrueFalseQuestion.DoesNotExist:
+        tf_questions = None
+
+    # Load all response type questions for this assignment.
+    try:
+        r_questions = ResponseQuestion.objects.filter(assignment=assignment).order_by('question_num')
+    except ResponseQuestion.DoesNotExist:
+        r_questions = None
+
     return render(request, 'teacher/assignment/question_list.html',{
         'teacher' : teacher,
         'course' : course,
         'assignment' : assignment,
         'essay_questions' : essay_questions,
         'mc_questions' : mc_questions,
+        'tf_questions' : tf_questions,
+        'r_questions' : r_questions,
         'ESSAY_QUESTION_TYPE': settings.ESSAY_QUESTION_TYPE,
         'MULTIPLECHOICE_QUESTION_TYPE': settings.MULTIPLECHOICE_QUESTION_TYPE,
+        'TRUEFALSE_QUESTION_TYPE': settings.TRUEFALSE_QUESTION_TYPE,
+        'RESPONSE_QUESTION_TYPE': settings.RESPONSE_QUESTION_TYPE,
         'user' : request.user,
         'tab' : 'assignments',
         'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
@@ -174,6 +189,40 @@ def question_multiple_choice_modal(request, course_id, assignment_id):
                     'form' : form,
                     'user' : request.user,
                     'title' : 'Multiple Choice Question',
+                    'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
+                    'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+                })
+
+
+def question_true_false_modal(request, course_id, assignment_id):
+    if request.is_ajax():
+        if request.method == 'POST':
+                assignment = Assignment.objects.get(assignment_id=assignment_id)
+                question_id = int(request.POST['question_id'])
+                question = TrueFalseQuestion.objects.get(question_id=question_id)
+                form = TrueFalseQuestionForm(instance=question)
+                return render(request, 'teacher/assignment/question_modal.html',{
+                    'assignment' : assignment,
+                    'form' : form,
+                    'user' : request.user,
+                    'title' : 'True False Question',
+                    'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
+                    'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+                })
+
+
+def question_response_modal(request, course_id, assignment_id):
+    if request.is_ajax():
+        if request.method == 'POST':
+                assignment = Assignment.objects.get(assignment_id=assignment_id)
+                question_id = int(request.POST['question_id'])
+                question = ResponseQuestion.objects.get(question_id=question_id)
+                form = ResponseQuestionForm(instance=question)
+                return render(request, 'teacher/assignment/question_modal.html',{
+                    'assignment' : assignment,
+                    'form' : form,
+                    'user' : request.user,
+                    'title' : 'Response Question',
                     'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
                     'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
                 })

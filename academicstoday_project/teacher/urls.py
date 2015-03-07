@@ -47,6 +47,8 @@ urlpatterns = patterns('',
     url(r'^teacher/course/(\d+)/assignment/(\d+)/question_type_modal$', assignment.question_type_modal),
     url(r'^teacher/course/(\d+)/assignment/(\d+)/question_essay_modal$', assignment.question_essay_modal),
     url(r'^teacher/course/(\d+)/assignment/(\d+)/question_multiple_choice_modal$', assignment.question_multiple_choice_modal),
+    url(r'^teacher/course/(\d+)/assignment/(\d+)/question_true_false_modal$', assignment.question_true_false_modal),
+    url(r'^teacher/course/(\d+)/assignment/(\d+)/question_response_modal$', assignment.question_response_modal),
     url(r'^teacher/course/(\d+)/assignment/(\d+)/insert_question$', assignment.insert_question),
     url(r'^teacher/course/(\d+)/assignment/(\d+)/delete_question$', assignment.delete_question),
 
