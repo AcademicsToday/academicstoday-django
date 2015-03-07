@@ -62,10 +62,10 @@ def quizzes_page(request, course_id):
         'user' : request.user,
         'quizzes' : quizzes,
         'submitted_quizzes' : submitted_quizzes,
-        'ESSAY_ASSIGNMENT_TYPE' : settings.ESSAY_ASSIGNMENT_TYPE,
-        'MULTIPLECHOICE_ASSIGNMENT_TYPE' : settings.MULTIPLECHOICE_ASSIGNMENT_TYPE,
-        'TRUEFALSE_ASSIGNMENT_TYPE' : settings.TRUEFALSE_ASSIGNMENT_TYPE,
-        'RESPONSE_ASSIGNMENT_TYPE' : settings.RESPONSE_ASSIGNMENT_TYPE,
+        'ESSAY_QUESTION_TYPE' : settings.ESSAY_QUESTION_TYPE,
+        'MULTIPLECHOICE_QUESTION_TYPE' : settings.MULTIPLECHOICE_QUESTION_TYPE,
+        'TRUEFALSE_QUESTION_TYPE' : settings.TRUEFALSE_QUESTION_TYPE,
+        'RESPONSE_QUESTION_TYPE' : settings.RESPONSE_QUESTION_TYPE,
         'tab' : 'quizzes',
         'subtab' : '',
         'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
@@ -184,7 +184,7 @@ def quiz_delete(request, course_id):
             submission.save()
 
             # Delete quiz depending on what type
-            if quiz_type == settings.TRUEFALSE_ASSIGNMENT_TYPE:
+            if quiz_type == settings.TRUEFALSE_QUESTION_TYPE:
                 try:
                     TrueFalseSubmission.objects.get(
                         assignment_id=0,

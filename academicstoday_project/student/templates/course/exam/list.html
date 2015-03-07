@@ -146,7 +146,7 @@ function refresh_current_exams_page()
 function ajax_exam(exam_id, exam_type)
 {
     var url;
-    if (exam_type == {{ MULTIPLECHOICE_ASSIGNMENT_TYPE }})
+    if (exam_type == {{ MULTIPLECHOICE_QUESTION_TYPE }})
     {
         url = 'exam_multiplechoice';
     }

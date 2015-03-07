@@ -73,10 +73,10 @@ def assignments_page(request, course_id):
         'user' : request.user,
         'assignments' : assignments,
         'submitted_assignments' : submitted_assignments,
-        'ESSAY_ASSIGNMENT_TYPE' : settings.ESSAY_ASSIGNMENT_TYPE,
-        'MULTIPLECHOICE_ASSIGNMENT_TYPE' : settings.MULTIPLECHOICE_ASSIGNMENT_TYPE,
-        'TRUEFALSE_ASSIGNMENT_TYPE' : settings.TRUEFALSE_ASSIGNMENT_TYPE,
-        'RESPONSE_ASSIGNMENT_TYPE' : settings.RESPONSE_ASSIGNMENT_TYPE,
+        'ESSAY_QUESTION_TYPE' : settings.ESSAY_QUESTION_TYPE,
+        'MULTIPLECHOICE_QUESTION_TYPE' : settings.MULTIPLECHOICE_QUESTION_TYPE,
+        'TRUEFALSE_QUESTION_TYPE' : settings.TRUEFALSE_QUESTION_TYPE,
+        'RESPONSE_QUESTION_TYPE' : settings.RESPONSE_QUESTION_TYPE,
         'tab' : 'assignments',
         'subtab' : '',
         'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
@@ -103,7 +103,7 @@ def assignment_delete(request, course_id):
             submission.save()
 
             # Delete assignments depending on what type
-            if assignment_type == settings.ESSAY_ASSIGNMENT_TYPE:
+            if assignment_type == settings.ESSAY_QUESTION_TYPE:
                 try:
                     EssaySubmission.objects.get(
                         assignment_id=assignment_id,
@@ -115,7 +115,7 @@ def assignment_delete(request, course_id):
                     response_data = {'status' : 'success', 'message' : 'assignment was deleted'}
                 except EssaySubmission.DoesNotExist:
                     response_data = {'status' : 'failed', 'message' : 'assignment not found'}
-            elif assignment_type == settings.MULTIPLECHOICE_ASSIGNMENT_TYPE:
+            elif assignment_type == settings.MULTIPLECHOICE_QUESTION_TYPE:
                 try:
                     MultipleChoiceSubmission.objects.filter(
                         assignment_id=assignment_id,
@@ -126,7 +126,7 @@ def assignment_delete(request, course_id):
                     response_data = {'status' : 'success', 'message' : 'assignment was deleted'}
                 except MultipleChoiceSubmission.DoesNotExist:
                     response_data = {'status' : 'failed', 'message' : 'assignment not found'}
-            elif assignment_type == settings.TRUEFALSE_ASSIGNMENT_TYPE:
+            elif assignment_type == settings.TRUEFALSE_QUESTION_TYPE:
                 try:
                     TrueFalseSubmission.objects.filter(
                         assignment_id=assignment_id,
@@ -137,7 +137,7 @@ def assignment_delete(request, course_id):
                     response_data = {'status' : 'success', 'message' : 'assignment was deleted'}
                 except TrueFalseSubmission.DoesNotExist:
                     response_data = {'status' : 'failed', 'message' : 'assignment not found'}
-            elif assignment_type == settings.RESPONSE_ASSIGNMENT_TYPE:
+            elif assignment_type == settings.RESPONSE_QUESTION_TYPE:
                 try:
                     ResponseSubmission.objects.filter(
                         assignment_id=assignment_id,

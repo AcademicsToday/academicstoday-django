@@ -146,19 +146,19 @@ function refresh_current_assignments_page()
 function ajax_assignment(assignment_id, assignment_type)
 {
     var url;
-    if (assignment_type == {{ ESSAY_ASSIGNMENT_TYPE }})
+    if (assignment_type == {{ ESSAY_QUESTION_TYPE }})
     {
         url = 'assignment_essay';
     }
-    if (assignment_type == {{ MULTIPLECHOICE_ASSIGNMENT_TYPE }})
+    if (assignment_type == {{ MULTIPLECHOICE_QUESTION_TYPE }})
     {
         url = 'assignment_multiplechoice';
     }
-    if (assignment_type == {{ TRUEFALSE_ASSIGNMENT_TYPE }})
+    if (assignment_type == {{ TRUEFALSE_QUESTION_TYPE }})
     {
         url = 'assignment_truefalse';
     }
-    if (assignment_type == {{ RESPONSE_ASSIGNMENT_TYPE }})
+    if (assignment_type == {{ RESPONSE_QUESTION_TYPE }})
     {
         url = 'assignment_response';
     }

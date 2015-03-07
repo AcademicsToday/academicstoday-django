@@ -139,13 +139,13 @@ def insert_question(request, course_id, assignment_id):
             # Create the question for the assignment depending on the question
             # type selected. If the appropriate question type has not been
             # found then return with an error.
-            if question_type == settings.ESSAY_ASSIGNMENT_TYPE:
+            if question_type == settings.ESSAY_QUESTION_TYPE:
                 response_data = {'status' : 'success', 'message' : 'inserted'}
-            elif question_type == settings.MULTIPLECHOICE_ASSIGNMENT_TYPE:
+            elif question_type == settings.MULTIPLECHOICE_QUESTION_TYPE:
                 response_data = {'status' : 'success', 'message' : 'inserted'}
-            elif question_type == settings.TRUEFALSE_ASSIGNMENT_TYPE:
+            elif question_type == settings.TRUEFALSE_QUESTION_TYPE:
                 response_data = {'status' : 'success', 'message' : 'inserted'}
-            elif question_type == settings.RESPONSE_ASSIGNMENT_TYPE:
+            elif question_type == settings.RESPONSE_QUESTION_TYPE:
                 response_data = {'status' : 'success', 'message' : 'inserted'}
             else:
                 response_data = {'status' : 'failed', 'message' : 'question type not supported'}

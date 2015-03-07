@@ -60,10 +60,10 @@ class AssignmentForm(forms.ModelForm):
         }
 
 
-QUESTION_TYPE_CHOICES = ((settings.ESSAY_ASSIGNMENT_TYPE, 'Essay'),
-                         (settings.MULTIPLECHOICE_ASSIGNMENT_TYPE, 'Multiple-Choice'),
-                         (settings.TRUEFALSE_ASSIGNMENT_TYPE, 'True/False'),
-                         (settings.RESPONSE_ASSIGNMENT_TYPE, 'Response'))
+QUESTION_TYPE_CHOICES = ((settings.ESSAY_QUESTION_TYPE, 'Essay'),
+                         (settings.MULTIPLECHOICE_QUESTION_TYPE, 'Multiple-Choice'),
+                         (settings.TRUEFALSE_QUESTION_TYPE, 'True/False'),
+                         (settings.RESPONSE_QUESTION_TYPE, 'Response'))
 
 class QuestionTypeForm(forms.Form):
     num = forms.IntegerField(label='Question #', initial=1, widget=forms.NumberInput(attrs={'min': '0', 'max': '100', 'step': '1'}))

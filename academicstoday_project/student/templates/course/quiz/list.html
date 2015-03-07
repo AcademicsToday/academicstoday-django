@@ -145,7 +145,7 @@ function refresh_current_quiz_page()
 function ajax_quiz(quiz_id, quiz_type)
 {
     var url;
-    if (quiz_type == {{ TRUEFALSE_ASSIGNMENT_TYPE }})
+    if (quiz_type == {{ TRUEFALSE_QUESTION_TYPE }})
     {
         url = 'quiz_truefalse';
     }
