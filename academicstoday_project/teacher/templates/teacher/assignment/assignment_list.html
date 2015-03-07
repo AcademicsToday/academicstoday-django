@@ -66,11 +66,16 @@
                                       <td align="left" valign="left">{{ assignment.assignment_num }}</td>
                                       <td align="left" valign="left">{{ assignment.title }}</td>
                                       <td align="left" valign="left">
-                                          <button type="button"
-                                              class="btn btn-sm btn-warning"
+                                        <button type="button"
+                                              class="btn btn-sm btn-primary"
                                               onclick="view_assignment({{ assignment.assignment_id }});">
+                                              <i class="fa fa-file"></i> Questions
+                                        </button>
+                                        <button type="button"
+                                              class="btn btn-sm btn-warning"
+                                              onclick="ajax_assignment({{ assignment.assignment_id }});">
                                               <i class="fa fa-pencil"></i> Edit
-                                          </button>
+                                        </button>
                                         <button type="button"
                                                class="btn btn-sm btn-danger"
                                              onclick="ajax_delete_assignment({{ assignment.assignment_id }});">
@@ -100,12 +105,19 @@
 
 <script>
     /**
-     *  Function will call AJAX function to load the modal for the new assignment
-     *  creation UI.
+     *  This function will load up the assignment question creator/editor page.
      */
     function view_assignment(assignment_id)
     {
-        //window.location = "assignment/" + assignment_id;
+        window.location = "assignment/" + assignment_id;
+    }
+    
+    /**
+     *  Function will call AJAX function to load the modal for the new assignment
+     *  creation UI and load up the existing assignment.
+     */
+    function ajax_assignment(assignment_id)
+    {
         var url = 'assignment_modal';
         $.ajax( url, {
             data: {

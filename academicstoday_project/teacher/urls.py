@@ -22,24 +22,28 @@ urlpatterns = patterns('',
     url(r'^teacher/course/(\d+)/syllabus$', syllabus.syllabus_page),
     url(r'^teacher/course/(\d+)/syllabus_modal$', syllabus.syllabus_modal),
     url(r'^teacher/course/(\d+)/save_syllabus$', syllabus.save_syllabus),
-    url(r'^teacher/course/(\d+)/delete_syllabus$', syllabus.delete_syllabus),                   
- 
+    url(r'^teacher/course/(\d+)/delete_syllabus$', syllabus.delete_syllabus),
+
     # Policy
     url(r'^teacher/course/(\d+)/policy$', policy.policy_page),
     url(r'^teacher/course/(\d+)/policy_modal$', policy.policy_modal),
     url(r'^teacher/course/(\d+)/save_policy$', policy.save_policy),
     url(r'^teacher/course/(\d+)/delete_policy$', policy.delete_policy),
-                       
+
     # Lecture
     url(r'^teacher/course/(\d+)/lectures$', lecture.lectures_page),
     url(r'^teacher/course/(\d+)/lecture_modal$', lecture.lecture_modal),
     url(r'^teacher/course/(\d+)/save_lecture$', lecture.save_lecture),
     url(r'^teacher/course/(\d+)/delete_lecture$', lecture.delete_lecture),
-                       
-    # Assignment
+
+    # Assignment(s)
     url(r'^teacher/course/(\d+)/assignments$', assignment.assignments_page),
     url(r'^teacher/course/(\d+)/assignment_modal$', assignment.assignment_modal),
     url(r'^teacher/course/(\d+)/save_assignment$', assignment.save_assignment),
     url(r'^teacher/course/(\d+)/delete_assignment$', assignment.delete_assignment),
+
+    # Assignment
     url(r'^teacher/course/(\d+)/assignment/(\d+)$', assignment.assignment_page),
+    url(r'^teacher/course/(\d+)/assignment/(\d+)/question_modal$', assignment.question_modal),
+    url(r'^teacher/course/(\d+)/assignment/(\d+)/insert_question$', assignment.insert_question),
 )

@@ -187,7 +187,7 @@ class Assignment(models.Model):
     assignment_num = models.PositiveSmallIntegerField(default=0)
     title = models.CharField(max_length=31, null=True)
     description = models.TextField(null=True)
-    type = models.PositiveSmallIntegerField()
+    start_date = models.DateField(null=True)
     due_date = models.DateField(null=True)
 
     def __str__(self):

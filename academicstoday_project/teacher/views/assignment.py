@@ -11,6 +11,7 @@ from registrar.models import Student
 from registrar.models import Course
 from registrar.models import Assignment
 from teacher.forms import AssignmentForm
+from teacher.forms import QuestionTypeForm
 
 # Developer Notes:
 # (1) Templates
@@ -26,7 +27,7 @@ def assignments_page(request, course_id):
         assignments = Assignment.objects.filter(course=course).order_by('-assignment_num')
     except Assignment.DoesNotExist:
         assignments = None
-    return render(request, 'teacher/assignment/list.html',{
+    return render(request, 'teacher/assignment/assignment_list.html',{
         'teacher' : teacher,
         'course' : course,
         'assignments' : assignments,
@@ -49,7 +50,7 @@ def assignment_modal(request, course_id):
             form = AssignmentForm(instance=assignment)
         else:
             form = AssignmentForm()
-        return render(request, 'teacher/assignment/modal.html',{
+        return render(request, 'teacher/assignment/assignment_modal.html',{
             'form' : form,
         })
 
@@ -62,7 +63,7 @@ def save_assignment(request, course_id):
             course = Course.objects.get(id=course_id)
             assignment_id = int(request.POST['assignment_id'])
             form = None
-            
+
             # If assignment already exists, then lets update only, else insert.
             if assignment_id > 0:
                 assignment = Assignment.objects.get(assignment_id=assignment_id)
@@ -86,25 +87,66 @@ def delete_assignment(request, course_id):
     if request.is_ajax():
         if request.method == 'POST':
             assignment_id = int(request.POST['assignment_id'])
-            lassignment = Assignment.objects.get(assignment_id=assignment_id)
+            assignment = Assignment.objects.get(assignment_id=assignment_id)
             assignment.delete()
             response_data = {'status' : 'success', 'message' : 'deleted'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
+
 def assignment_page(request, course_id, assignment_id):
     course = Course.objects.get(id=course_id)
     teacher = Teacher.objects.get(user=request.user)
-    
+
     try:
-        assignments = Assignment.objects.filter(course=course).order_by('-assignment_num')
+        assignment = Assignment.objects.get(assignment_id=assignment_id)
     except Assignment.DoesNotExist:
-        assignments = None
-    return render(request, 'teacher/assignment/details.html',{
+        assignment = None
+    return render(request, 'teacher/assignment/question_list.html',{
         'teacher' : teacher,
         'course' : course,
-        'assignments' : assignments,
+        'assignment' : assignment,
         'user' : request.user,
         'tab' : 'assignments',
         'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
         'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
     })
+
+def question_modal(request, course_id, assignment_id):
+    assignment = Assignment.objects.get(assignment_id=assignment_id)
+    form = QuestionTypeForm()
+
+    return render(request, 'teacher/assignment/question_modal.html',{
+        'assignment' : assignment,
+        'form' : form,
+        'user' : request.user,
+        'tab' : 'assignments',
+        'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
+        'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+    })
+
+
+@login_required(login_url='/landpage')
+def insert_question(request, course_id, assignment_id):
+    response_data = {'status' : 'failed', 'message' : 'unknown error with saving'}
+    if request.is_ajax():
+        if request.method == 'POST':
+            course = Course.objects.get(id=course_id)
+            teacher = Teacher.objects.get(user=request.user)
+            assignment = Assignment.objects.get(assignment_id=assignment_id)
+            question_type = int(request.POST['type'])
+            question_num = int(request.POST['num'])
+
+            # Create the question for the assignment depending on the question
+            # type selected. If the appropriate question type has not been
+            # found then return with an error.
+            if question_type == settings.ESSAY_ASSIGNMENT_TYPE:
+                response_data = {'status' : 'success', 'message' : 'inserted'}
+            elif question_type == settings.MULTIPLECHOICE_ASSIGNMENT_TYPE:
+                response_data = {'status' : 'success', 'message' : 'inserted'}
+            elif question_type == settings.TRUEFALSE_ASSIGNMENT_TYPE:
+                response_data = {'status' : 'success', 'message' : 'inserted'}
+            elif question_type == settings.RESPONSE_ASSIGNMENT_TYPE:
+                response_data = {'status' : 'success', 'message' : 'inserted'}
+            else:
+                response_data = {'status' : 'failed', 'message' : 'question type not supported'}
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
