@@ -123,10 +123,10 @@ class Exam(models.Model):
     type = models.PositiveSmallIntegerField()
     start_date = models.DateField(null=True)
     due_date = models.DateField(null=True)
-    
+
     def __str__(self):
         return self.course_id + ' ' + self.type;
-    
+
     class Meta:
         db_table = 'at_exams'
 
@@ -141,10 +141,10 @@ class ExamSubmission(models.Model):
     marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateField(null=True)
     is_marked = models.BooleanField(default=False)
-    
+
     def __str__(self):
         return self.submission_id + ' ' + self.type;
-    
+
     class Meta:
         db_table = 'at_exam_submissions'
 
@@ -155,10 +155,10 @@ class Quiz(models.Model):
     quiz_num = models.PositiveSmallIntegerField(default=0)
     type = models.PositiveSmallIntegerField()
     due_date = models.DateField(null=True)
-    
+
     def __str__(self):
         return self.quiz_id + ' ' + self.type;
-    
+
     class Meta:
         db_table = 'at_quizzes'
 
@@ -173,10 +173,10 @@ class QuizSubmission(models.Model):
     marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateField(null=True)
     is_marked = models.BooleanField(default=False)
-    
+
     def __str__(self):
         return self.quiz_id + ' ' + self.type;
-    
+
     class Meta:
         db_table = 'at_quiz_submissions'
 
@@ -207,7 +207,7 @@ class AssignmentSubmission(models.Model):
     marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateField(null=True)
     is_marked = models.BooleanField(default=False)
-    
+
     def __str__(self):
         return self.submission_id + ' ' + self.type;
 
@@ -224,7 +224,7 @@ class EssayQuestion(models.Model):
     description = models.TextField(default='')
 
     def __str__(self):
-        return self.course_id + ' ' + self.title + ' ' + self.description;
+        return self.question_id + ' ' + self.title + ' ' + self.description;
 
     class Meta:
         db_table = 'at_essay_questions'

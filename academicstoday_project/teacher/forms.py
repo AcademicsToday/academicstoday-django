@@ -9,6 +9,10 @@ from registrar.models import Syllabus
 from registrar.models import Policy
 from registrar.models import Lecture
 from registrar.models import Assignment
+from registrar.models import EssayQuestion
+from registrar.models import MultipleChoiceQuestion
+from registrar.models import TrueFalseQuestion
+from registrar.models import ResponseQuestion
 
 # Django Forms
 # https://docs.djangoproject.com/en/1.7/topics/forms/
@@ -21,11 +25,9 @@ class AnnouncementForm(forms.ModelForm):
     class Meta:
         model = Announcement
         fields = ['title','body']
-
         labels = {
 
         }
-
         widgets = {
             'body': Textarea(attrs={'cols': 70, 'rows':10}),
         }
@@ -53,7 +55,6 @@ class AssignmentForm(forms.ModelForm):
     class Meta:
         model = Assignment
         fields = ['assignment_id', 'assignment_num', 'title', 'description', 'start_date', 'due_date']
-
         widgets = {
             'start_date': SelectDateWidget(),
             'due_date': SelectDateWidget(),
@@ -68,3 +69,23 @@ QUESTION_TYPE_CHOICES = ((settings.ESSAY_QUESTION_TYPE, 'Essay'),
 class QuestionTypeForm(forms.Form):
     num = forms.IntegerField(label='Question #', initial=1, widget=forms.NumberInput(attrs={'min': '0', 'max': '100', 'step': '1'}))
     type = forms.CharField(label='Question Type', widget=forms.Select(choices=QUESTION_TYPE_CHOICES))
+
+
+class EssayQuestionForm(forms.ModelForm):
+    class Meta:
+        model = EssayQuestion
+        fields = ['question_num', 'title', 'description']
+        labels = {
+            'question_num': 'Question #',
+        }
+
+
+class MultipleChoiceQuestionForm(forms.ModelForm):
+    class Meta:
+        model = MultipleChoiceQuestion
+        fields = ['question_num', 'title', 'description', 'json_choices', 'json_answers']
+        labels = {
+            'question_num': 'Question #',
+            'json_choices': 'Choices',
+            'json_answers': 'Answers',
+        }
