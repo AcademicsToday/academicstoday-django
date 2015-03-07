@@ -20,6 +20,17 @@
     </div>
 </div>
 <script>
+    /**
+     * Dynamic UI Code.
+     *  To give our application a dynamic feel, the following jQuery code will be
+     *  used to perform various UI changes.
+     */
+     $(document).ready(function(){
+        $('#assignment_modal').on('hidden.bs.modal', function (e) {
+            $('#assignment_modal').html('');
+        });
+    });
+    
     function ajax_save_assignment()
     {
         // create a FormData Object using your form dom element

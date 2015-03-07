@@ -21,6 +21,17 @@
 </div>
 <script>
     /**
+     * Dynamic UI Code.
+     *  To give our application a dynamic feel, the following jQuery code will be
+     *  used to perform various UI changes.
+     */
+     $(document).ready(function(){
+        $('#policy_modal').on('hidden.bs.modal', function (e) {
+            $('#policy_modal').html('');
+        });
+    });
+    
+    /**
      *  Function will call AJAX function to load the register.
      */
 function ajax_save_policy()

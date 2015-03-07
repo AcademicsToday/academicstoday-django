@@ -21,6 +21,23 @@
 </div>
 <script>
     /**
+     * Dynamic UI Code.
+     *  To give our application a dynamic feel, the following jQuery code will be
+     *  used to perform various UI changes.
+     */
+     $(document).ready(function(){
+        //
+        // IMPORTANT:
+        //  The following block of code will run when finished running this modal.
+        //  Please put all jQuery unbinding code here.
+        //
+        // When this model hides, we will clear the contents of it.
+        $('#announcement_modal').on('hidden.bs.modal', function (e) {
+            $('#announcement_modal').html('');
+        });
+    });
+    
+    /**
      *  Function will call AJAX function to load the register.
      */
     function ajax_create_announcement()
@@ -43,7 +60,6 @@
                 if (json_result.status == "success")
                 {
                     $('#new_course_modal').modal('hide');
-                    refresh_page();
                 }
                 else
                 {
