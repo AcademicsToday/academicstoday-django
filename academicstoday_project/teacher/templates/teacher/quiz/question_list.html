@@ -1,0 +1,223 @@
+{% extends 'teacher/base.html' %}
+{% load staticfiles %}
+{% block content %}
+
+<div id="page-wrapper">
+
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    Assignment
+                </h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-university"></i> <a href="../../courses">Courses</a>
+                    </li>
+                    <li>
+                        <i class="fa fa-compass"></i> {{ course.title }}
+                    </li>
+                    <li>
+                        <i class="fa fa-book"></i> <a href="../assignments">Assignments</a>
+                    </li>
+                    <li class="active">
+                        <i class="fa fa-book"></i> New Assignment
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+
+
+        <!-- Questions -->
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h2 align="left" valign="left">Questions</h2>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Question #</th>
+                                        <th>Type</th>
+                                        <th>
+                                          <button type="button"
+                                              class="btn btn-sm btn-success"
+                                              onclick="ajax_question(0,0);">
+                                              <i class="fa fa-plus"></i> Question
+                                          </button>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for essay_question in essay_questions %}
+                                    <tr>
+                                        <td align="left" valign="left">{{ essay_question.question_num }}</td>
+                                        <td align="left" valign="left">Essay</td>
+                                        <td align="left" valign="left">
+                                            <button type="button"
+                                                  class="btn btn-sm btn-warning"
+                                                  onclick="ajax_question({{ essay_question.question_id }},{{ ESSAY_QUESTION_TYPE }});">
+                                                  <i class="fa fa-pencil"></i> Edit
+                                            </button>
+                                            <button type="button"
+                                                   class="btn btn-sm btn-danger"
+                                                 onclick="ajax_delete_question({{ essay_question.question_id }},{{ ESSAY_QUESTION_TYPE }});">
+                                               <i class="fa fa-minus"></i> Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% for mc_question in mc_questions %}
+                                    <tr>
+                                        <td align="left" valign="left">{{ mc_question.question_num }}</td>
+                                        <td align="left" valign="left">Multiple Choice</td>
+                                        <td align="left" valign="left">
+                                            <button type="button"
+                                                  class="btn btn-sm btn-warning"
+                                                  onclick="ajax_question({{ mc_question.question_id }},{{ MULTIPLECHOICE_QUESTION_TYPE }});">
+                                                  <i class="fa fa-pencil"></i> Edit
+                                            </button>
+                                            <button type="button"
+                                                   class="btn btn-sm btn-danger"
+                                                 onclick="ajax_delete_question({{ mc_question.question_id }},{{ MULTIPLECHOICE_QUESTION_TYPE }});">
+                                               <i class="fa fa-minus"></i> Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% for tf_question in tf_questions %}
+                                    <tr>
+                                        <td align="left" valign="left">{{ tf_question.question_num }}</td>
+                                        <td align="left" valign="left">True/False</td>
+                                        <td align="left" valign="left">
+                                            <button type="button"
+                                                  class="btn btn-sm btn-warning"
+                                                  onclick="ajax_question({{ tf_question.question_id }},{{ TRUEFALSE_QUESTION_TYPE }});">
+                                                  <i class="fa fa-pencil"></i> Edit
+                                            </button>
+                                            <button type="button"
+                                                   class="btn btn-sm btn-danger"
+                                                 onclick="ajax_delete_question({{ tf_question.question_id }},{{ TRUEFALSE_QUESTION_TYPE }});">
+                                               <i class="fa fa-minus"></i> Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% for r_question in r_questions %}
+                                    <tr>
+                                        <td align="left" valign="left">{{ r_question.question_num }}</td>
+                                        <td align="left" valign="left">Response</td>
+                                        <td align="left" valign="left">
+                                            <button type="button"
+                                                  class="btn btn-sm btn-warning"
+                                                  onclick="ajax_question({{ r_question.question_id }},{{ RESPONSE_QUESTION_TYPE }});">
+                                                  <i class="fa fa-pencil"></i> Edit
+                                            </button>
+                                            <button type="button"
+                                                   class="btn btn-sm btn-danger"
+                                                 onclick="ajax_delete_question({{ r_question.question_id }},{{ RESPONSE_QUESTION_TYPE }});">
+                                               <i class="fa fa-minus"></i> Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+
+    </div>
+
+</div>
+<!-- Modal -->
+<div id="ajax_question_modal"
+   name="ajax_question_modal"></div>
+<!-- end modal -->
+<script>
+    function ajax_question(question_id, question_type)
+    {
+        var url;
+        if (question_type == 0)
+        {
+            url = {{ assignment.assignment_id }} + '/question_type_modal';
+        }
+        else if (question_type == {{ ESSAY_QUESTION_TYPE }})
+        {
+            url = {{ assignment.assignment_id }} + '/question_essay_modal'
+        }
+        else if (question_type == {{ MULTIPLECHOICE_QUESTION_TYPE }})
+        {
+            url = {{ assignment.assignment_id }} + '/question_multiple_choice_modal'
+        }
+        else if (question_type == {{ TRUEFALSE_QUESTION_TYPE }})
+        {
+            url = {{ assignment.assignment_id }} + '/question_true_false_modal'
+        }
+        else if (question_type == {{ RESPONSE_QUESTION_TYPE }})
+        {
+            url = {{ assignment.assignment_id }} + '/question_response_modal'
+        }
+
+
+        $.ajax( url, {
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'question_id': question_id,
+                'question_type': question_type,
+            },
+            type: 'post',
+            success: function(result) {
+                // success code execution here-->
+                $('#ajax_question_modal').html(result); // Update UI.
+                $('#question_modal').modal();           // Unhide view.
+            },
+            error: function(xhr,status,error) {
+                // error code here
+            },
+            complete: function(xhr,status) {
+                // completion code here
+            }
+        });
+    }
+
+    function ajax_delete_question(question_id, question_type)
+    {
+        var url = {{ assignment.assignment_id }} + '/delete_question';
+
+        $.ajax( url, {
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'question_id' : question_id,
+                'question_type' : question_type,
+            },
+            type: 'post',
+            success: function(result) {
+                // success code execution here
+                if (result.status == 'success')
+                {
+                    refresh_page();
+                }
+            },
+            error: function(xhr,status,error) {
+                // error code here
+            },
+            complete: function(xhr,status) {
+               // completion code here
+            }
+        });
+    }
+
+    function refresh_page()
+    {
+        window.location = '{{ assignment.assignment_id }}';
+    }
+</script>
+{% endblock content %}

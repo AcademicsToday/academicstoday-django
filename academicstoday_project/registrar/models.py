@@ -153,7 +153,9 @@ class Quiz(models.Model):
     course = models.ForeignKey(Course)
     quiz_id = models.AutoField(primary_key=True)
     quiz_num = models.PositiveSmallIntegerField(default=0)
-    type = models.PositiveSmallIntegerField()
+    title = models.CharField(max_length=31, null=True)
+    description = models.TextField(null=True)
+    start_date = models.DateField(null=True)
     due_date = models.DateField(null=True)
 
     def __str__(self):

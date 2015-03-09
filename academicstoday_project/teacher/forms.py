@@ -13,6 +13,7 @@ from registrar.models import EssayQuestion
 from registrar.models import MultipleChoiceQuestion
 from registrar.models import TrueFalseQuestion
 from registrar.models import ResponseQuestion
+from registrar.models import Quiz
 
 # Django Forms
 # https://docs.djangoproject.com/en/1.7/topics/forms/
@@ -112,3 +113,13 @@ class ResponseQuestionForm(forms.ModelForm):
         labels = {
             'question_num': 'Question #',
         }
+
+
+class QuizForm(forms.ModelForm):
+    class Meta:
+        model = Quiz
+        fields = ['quiz_num', 'title', 'description', 'start_date', 'due_date']
+        widgets = {
+            'start_date': SelectDateWidget(),
+            'due_date': SelectDateWidget(),
+    }

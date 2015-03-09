@@ -8,6 +8,7 @@ from teacher.views import syllabus
 from teacher.views import policy
 from teacher.views import lecture
 from teacher.views import assignment
+from teacher.views import quiz
 
 urlpatterns = patterns('',
     # Announcement
@@ -52,4 +53,19 @@ urlpatterns = patterns('',
     url(r'^teacher/course/(\d+)/assignment/(\d+)/save_question$', assignment.save_question),
     url(r'^teacher/course/(\d+)/assignment/(\d+)/delete_question$', assignment.delete_question),
 
+    # Quiz(es)
+    url(r'^teacher/course/(\d+)/quizzes$', quiz.quizzes_page),
+    url(r'^teacher/course/(\d+)/quiz_modal$', quiz.quiz_modal),
+#    url(r'^teacher/course/(\d+)/save_assignment$', assignment.save_assignment),
+#    url(r'^teacher/course/(\d+)/delete_assignment$', assignment.delete_assignment),
+                       
+    # Quiz
+#    url(r'^teacher/course/(\d+)/quiz/(\d+)$', quiz.quiz_page),
+#    url(r'^teacher/course/(\d+)/assignment/(\d+)/question_type_modal$', assignment.question_type_modal),
+#    url(r'^teacher/course/(\d+)/assignment/(\d+)/question_essay_modal$', assignment.question_essay_modal),
+#    url(r'^teacher/course/(\d+)/assignment/(\d+)/question_multiple_choice_modal$', assignment.question_multiple_choice_modal),
+#    url(r'^teacher/course/(\d+)/assignment/(\d+)/question_true_false_modal$', assignment.question_true_false_modal),
+#    url(r'^teacher/course/(\d+)/assignment/(\d+)/question_response_modal$', assignment.question_response_modal),
+#    url(r'^teacher/course/(\d+)/assignment/(\d+)/save_question$', assignment.save_question),
+#    url(r'^teacher/course/(\d+)/assignment/(\d+)/delete_question$', assignment.delete_question),
 )
