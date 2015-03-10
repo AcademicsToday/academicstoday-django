@@ -3,9 +3,9 @@
 {% block content %}
 
 <div id="page-wrapper">
-    
+
     <div class="container-fluid">
-        
+
         <!-- Page Heading -->
         <div class="row">
             <div class="col-lg-12">
@@ -28,17 +28,24 @@
             </div>
         </div>
         <!-- /.row -->
-        
+
         <!-- PDF RESULT -->
+        {% if syllabus == None %}
+        <div class="jumbotron">
+            <h1>Syllabus</h1>
+            <p>The syllabus appears to be missing. It will be up eventually.</p>
+        </div>
+        {% else %}
         <div class="row">
             <div class="col-lg-12">
-                <iframe id="baseline_pdf_response" src="{{ syllabus.url }}" width="100%" height="640px"></iframe>
+                <iframe id="pdf_response" src="{{ syllabus.file.url }}" width="100%" height="640px"></iframe>
             </div>
         </div>
         <!-- /.row -->
-        
+        {% endif %}
+
     </div>
-    
+
 </div>
 
 {% endblock content %}

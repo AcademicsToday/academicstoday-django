@@ -22,7 +22,7 @@ import datetime
 def syllabus_page(request, course_id):
     course = Course.objects.get(id=course_id)
     try:
-        syllabus = Syllabus.objects.get(course_id=course_id)
+        syllabus = Syllabus.objects.get(course=course)
     except Syllabus.DoesNotExist:
         syllabus = None
     return render(request, 'course/syllabus/view.html',{

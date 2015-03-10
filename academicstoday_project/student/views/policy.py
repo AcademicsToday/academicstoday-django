@@ -22,7 +22,7 @@ import datetime
 def policy_page(request, course_id):
     course = Course.objects.get(id=course_id)
     try:
-        policy = Policy.objects.get(course_id=course_id)
+        policy = Policy.objects.get(course=course)
     except Policy.DoesNotExist:
         policy = None
     return render(request, 'course/policy/view.html',{
