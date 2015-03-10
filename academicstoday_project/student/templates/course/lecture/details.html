@@ -7,22 +7,24 @@
                 <h4>Lecture #{{ lecture.lecture_num }}: {{ lecture.title }}</h4>
             </div>
             <div class="modal-body">
-                <form method="post"
-                      action='/learn'
+                <form method=''
+                      action=''
                         name="learnForm">
-                        {% if lecture.preferred_service == 'youtube' %} <!-- YouTube -->
+                {% if lecture.preferred_service == YOUTUBE_VIDEO_PLAYER %} <!-- YouTube -->
                         <iframe width="720"
                                height="480"
                                   src="{{ lecture.youtube_url }}"
                           frameborder="0"
                       allowfullscreen></iframe>
-                        {% elif lecture.preferred_service == 'vimeo' %} <!-- Vimeo -->
+                {% elif lecture.preferred_service == VIMEO_VIDEO_PLAYER %} <!-- Vimeo -->
                         <iframe src="{{ lecture.vimeo_url }}"
                               width="720"
                              height="480"
                         frameborder="0"
                             webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-                        {% endif %}
+                {% else %}
+                ERROR {{ lecture.preferred_service }}
+                {% endif %}
                 </form>
             </div>
         </div>

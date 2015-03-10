@@ -120,10 +120,14 @@ class Lecture(models.Model):
     week_num = models.PositiveSmallIntegerField(max_length=7)
     title = models.CharField(max_length=31, default='',null=True)
     description = models.TextField(default='',null=True)
-    youtube_url = models.URLField(default='',null=True)
-    vimeo_url = models.URLField(default='',null=True)
-    bliptv_url = models.URLField(default='',null=True)
-    preferred_service = models.CharField(max_length=31)
+    youtube_url = models.URLField(null=True, blank=True)
+    vimeo_url = models.URLField(null=True, blank=True)
+    bliptv_url = models.URLField(null=True, blank=True)
+    VIDEO_PLAYER_CHOICES = (
+        (settings.YOUTUBE_VIDEO_PLAYER, 'YouTube'),
+        (settings.VIMEO_VIDEO_PLAYER, 'Vimeo')
+    )
+    preferred_service = models.CharField(max_length=1, choices=VIDEO_PLAYER_CHOICES, default=settings.YOUTUBE_VIDEO_PLAYER)
 
     def __str__(self):
         return 'Week: ' + str(self.week_num) + ' Lecture: ' + str(self.lecture_num) + ' Title: ' +self.title;

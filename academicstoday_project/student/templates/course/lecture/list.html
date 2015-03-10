@@ -41,30 +41,29 @@
                     <table class="table table-hover table-striped">
                         <thead>
                             <tr>
+                                <th>Week #</th>
                                 <th>Lecture #</th>
                                 <th>Title</th>
-                                <th>Description</th>
                                 <th>Watch</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for lecture in lectures %}
                             <tr>
-
+                                <td>{{ lecture.week_num }}</td>
                                 <td>{{ lecture.lecture_num }}</td>
                                 <td>{{ lecture.title }}</td>
-                                <td>{{ lecture.description }}</td>
                                 <td>
-                                    {% if lecture.preferred_service == 'youtube' %}
+                                    {% if lecture.preferred_service == YOUTUBE_VIDEO_PLAYER %}
                                     <button type="button"
                                            class="btn btn-sm btn-primary"
-                                         onclick="ajax_learn_lecture({{ lecture.id }});">
+                                         onclick="ajax_learn_lecture({{ lecture.lecture_id }});">
                                         <i class="fa fa-youtube"></i> Learn
                                     </button>
-                                    {% elif lecture.preferred_service == 'vimeo' %}
+                                    {% elif lecture.preferred_service == VIMEO_VIDEO_PLAYER %}
                                     <button type="button"
                                            class="btn btn-sm btn-primary"
-                                         onclick="ajax_learn_lecture({{ lecture.id }});">
+                                         onclick="ajax_learn_lecture({{ lecture.lecture_id }});">
                                         <i class="fa fa-vimeo-square"></i> Learn
                                     </button>
                                     {% else %}

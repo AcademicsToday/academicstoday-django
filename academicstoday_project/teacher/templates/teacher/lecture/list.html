@@ -64,24 +64,32 @@
                               </thead>
                               <tbody>
                               {% for lecture in lectures %}
-                                  <tr>
-                                      <td align="left" valign="left">{{ lecture.lecture_num }}</td>
-                                      <td align="left" valign="left">{{ lecture.week_num }}</td>
-                                      <td align="left" valign="left">{{ lecture.title }}</td>
-                                      <td align="left" valign="left">{{ lecture.preferred_service }}</td>
-                                      <td align="left" valign="left">
-                                          <button type="button"
-                                              class="btn btn-sm btn-warning"
-                                              onclick="ajax_lecture_modal({{ lecture.lecture_id }});">
-                                              <i class="fa fa-pencil"></i> Edit
-                                          </button>
-                                        <button type="button"
+                              <tr>
+                                  <td align="left" valign="left">{{ lecture.lecture_num }}</td>
+                                  <td align="left" valign="left">{{ lecture.week_num }}</td>
+                                  <td align="left" valign="left">{{ lecture.title }}</td>
+                                  <td align="left" valign="left">
+                                  {% if lecture.preferred_service == YOUTUBE_VIDEO_PLAYER %}
+                                    <i class="fa fa-youtube"></i> YouTube
+                                  {% elif lecture.preferred_service == VIMEO_VIDEO_PLAYER %}
+                                    <i class="fa fa-vimeo-square"></i> Vimeo
+                                  {% else %}
+                                    <i class="fa fa-vimeo-square"></i> Vimeo
+                                  {% endif %}
+                                  </td>
+                                  <td align="left" valign="left">
+                                      <button type="button"
+                                             class="btn btn-sm btn-warning"
+                                           onclick="ajax_lecture_modal({{ lecture.lecture_id }});">
+                                          <i class="fa fa-pencil"></i> Edit
+                                      </button>
+                                      <button type="button"
                                                class="btn btn-sm btn-danger"
                                              onclick="ajax_delete_lecture({{ lecture.lecture_id }});">
                                            <i class="fa fa-minus"></i> Delete
-                                        </button>
-                                      </td>
-                                  </tr>
+                                      </button>
+                                  </td>
+                              </tr>
                             {% endfor %}
                             </tbody>
                           </table>

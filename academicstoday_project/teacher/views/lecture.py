@@ -31,6 +31,10 @@ def lectures_page(request, course_id):
         'teacher' : teacher,
         'course' : course,
         'lectures' : lectures,
+        'NO_VIDEO_PLAYER': settings.NO_VIDEO_PLAYER,
+        'YOUTUBE_VIDEO_PLAYER': settings.YOUTUBE_VIDEO_PLAYER,
+        'VIMEO_VIDEO_PLAYER': settings.VIMEO_VIDEO_PLAYER,
+        'BLIPTV_VIDEO_PLAYER': settings.BLIPTV_VIDEO_PLAYER,
         'user' : request.user,
         'tab' : 'lectures',
         'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
@@ -63,7 +67,7 @@ def save_lecture(request, course_id):
             course = Course.objects.get(id=course_id)
             lecture_id = int(request.POST['lecture_id'])
             form = None
-            
+
             # If lecture already exists, then lets update only, else insert.
             if lecture_id > 0:
                 lecture = Lecture.objects.get(lecture_id=lecture_id)

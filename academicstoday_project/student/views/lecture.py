@@ -34,6 +34,10 @@ def lectures_page(request, course_id):
         'course' : course,
         'weeks' : weeks,
         'lectures' : lectures,
+        'NO_VIDEO_PLAYER': settings.NO_VIDEO_PLAYER,
+        'YOUTUBE_VIDEO_PLAYER': settings.YOUTUBE_VIDEO_PLAYER,
+        'VIMEO_VIDEO_PLAYER': settings.VIMEO_VIDEO_PLAYER,
+        'BLIPTV_VIDEO_PLAYER': settings.BLIPTV_VIDEO_PLAYER,
         'user' : request.user,
         'tab' : 'lectures',
         'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
@@ -49,12 +53,16 @@ def lecture(request, course_id):
              # Check to see if any fields where missing from the form.
              if request.POST['lecture_id'] != '':
                  try:
-                     lecture_id = request.POST['lecture_id']
-                     lecture = Lecture.objects.get(id=lecture_id)
+                     lecture_id = int(request.POST['lecture_id'])
+                     lecture = Lecture.objects.get(lecture_id=lecture_id)
                  except Lecture.DoesNotExist:
                      lecture = None
                  return render(request, 'course/lecture/details.html',{
                     'lecture' : lecture,
+                    'NO_VIDEO_PLAYER': settings.NO_VIDEO_PLAYER,
+                    'YOUTUBE_VIDEO_PLAYER': settings.YOUTUBE_VIDEO_PLAYER,
+                    'VIMEO_VIDEO_PLAYER': settings.VIMEO_VIDEO_PLAYER,
+                    'BLIPTV_VIDEO_PLAYER': settings.BLIPTV_VIDEO_PLAYER,
                     'user' : request.user,
                     'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
                     'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
