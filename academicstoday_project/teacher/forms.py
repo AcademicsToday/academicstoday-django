@@ -62,14 +62,16 @@ class AssignmentForm(forms.ModelForm):
         }
 
 
-QUESTION_TYPE_CHOICES = ((settings.ESSAY_QUESTION_TYPE, 'Essay'),
-                         (settings.MULTIPLECHOICE_QUESTION_TYPE, 'Multiple-Choice'),
-                         (settings.TRUEFALSE_QUESTION_TYPE, 'True/False'),
-                         (settings.RESPONSE_QUESTION_TYPE, 'Response'))
+ASSIGNMENT_QUESTION_TYPE_CHOICES = (
+    (settings.ESSAY_QUESTION_TYPE, 'Essay'),
+    (settings.MULTIPLECHOICE_QUESTION_TYPE, 'Multiple-Choice'),
+    (settings.TRUEFALSE_QUESTION_TYPE, 'True/False'),
+    (settings.RESPONSE_QUESTION_TYPE, 'Response')
+)
 
-class QuestionTypeForm(forms.Form):
+class AssignmentQuestionTypeForm(forms.Form):
     question_num = forms.IntegerField(label='Question #', initial=1, widget=forms.NumberInput(attrs={'min': '0', 'max': '100', 'step': '1'}))
-    question_type = forms.CharField(label='Question Type', widget=forms.Select(choices=QUESTION_TYPE_CHOICES))
+    question_type = forms.CharField(label='Question Type', widget=forms.Select(choices=ASSIGNMENT_QUESTION_TYPE_CHOICES))
 
 
 class EssayQuestionForm(forms.ModelForm):
@@ -113,6 +115,14 @@ class ResponseQuestionForm(forms.ModelForm):
         labels = {
             'question_num': 'Question #',
         }
+
+QUIZ_QUESTION_TYPE_CHOICES = (
+    (settings.TRUEFALSE_QUESTION_TYPE, 'True/False'),
+)
+
+class QuizQuestionTypeForm(forms.Form):
+    question_num = forms.IntegerField(label='Question #', initial=1, widget=forms.NumberInput(attrs={'min': '0', 'max': '100', 'step': '1'}))
+    question_type = forms.CharField(label='Question Type', widget=forms.Select(choices=QUIZ_QUESTION_TYPE_CHOICES))
 
 
 class QuizForm(forms.ModelForm):

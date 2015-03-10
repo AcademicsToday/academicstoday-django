@@ -15,7 +15,7 @@ from registrar.models import MultipleChoiceQuestion
 from registrar.models import TrueFalseQuestion
 from registrar.models import ResponseQuestion
 from teacher.forms import AssignmentForm
-from teacher.forms import QuestionTypeForm
+from teacher.forms import AssignmentQuestionTypeForm
 from teacher.forms import EssayQuestionForm
 from teacher.forms import MultipleChoiceQuestionForm
 from teacher.forms import TrueFalseQuestionForm
@@ -149,7 +149,7 @@ def question_type_modal(request, course_id, assignment_id):
     if request.is_ajax():
         if request.method == 'POST':
                 assignment = Assignment.objects.get(assignment_id=assignment_id)
-                form = QuestionTypeForm()
+                form = AssignmentQuestionTypeForm()
                 return render(request, 'teacher/assignment/question_modal.html',{
                     'assignment' : assignment,
                     'form' : form,

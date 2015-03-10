@@ -6,7 +6,7 @@
                 <h2 class="modal-title" id="myModalLabel">{{ title }}</h2>
             </div>
             <div class="modal-body">
-                {% include "teacher/assignment/form.html" with form=form %}
+                {% include "teacher/quiz/form.html" with form=form %}
             </div>
             <div class="modal-footer">
                 <button type="button"
@@ -52,33 +52,13 @@
         data.append('title', $('#id_title').val());
         data.append('description', $('#id_description').val());
 
-        // Multiple Choice
-        data.append('a', $('#id_a').val());
-        data.append('b', $('#id_b').val());
-        data.append('c', $('#id_c').val());
-        data.append('d', $('#id_d').val());
-        data.append('e', $('#id_e').val());
-        data.append('f', $('#id_f').val());
-        data.append('a_is_correct', $('#id_a_is_correct').is(':checked'));
-        data.append('b_is_correct', $('#id_b_is_correct').is(':checked'));
-        data.append('c_is_correct', $('#id_c_is_correct').is(':checked'));
-        data.append('d_is_correct', $('#id_d_is_correct').is(':checked'));
-        data.append('e_is_correct', $('#id_e_is_correct').is(':checked'));
-        data.append('f_is_correct', $('#id_f_is_correct').is(':checked'));
-
         // True/False Choice
         data.append('true_choice', $('#id_true_choice').val());
         data.append('false_choice', $('#id_false_choice').val());
         data.append('answer', $('#id_answer').is(':checked'));
 
-        // Response
-        if ($('#id_question_type').val() == {{ RESPONSE_QUESTION_TYPE }})
-        {
-            data.append('answer', $('#id_answer').val());
-        }
-
         jQuery.ajax({
-            url: {{ assignment.assignment_id }} + '/save_question',
+            url: {{ quiz.quiz_id }} + '/save_question',
             data: data,
             cache: false,
             contentType: false,

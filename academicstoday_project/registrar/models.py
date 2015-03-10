@@ -159,7 +159,7 @@ class Quiz(models.Model):
     due_date = models.DateField(null=True)
 
     def __str__(self):
-        return self.quiz_id + ' ' + self.type;
+        return str(self.quiz_id) + ' ' + str(self.type);
 
     class Meta:
         db_table = 'at_quizzes'
@@ -317,7 +317,7 @@ class TrueFalseQuestion(models.Model):
     question_type = settings.TRUEFALSE_QUESTION_TYPE
 
     def __str__(self):
-        return self.course_id + ' ' + self.title + ' ' + self.description;
+        return str(self.question_num) + ' ' + self.title + ' ' + self.description;
 
     class Meta:
         db_table = 'at_true_false_questions'

@@ -57,15 +57,12 @@ urlpatterns = patterns('',
     url(r'^teacher/course/(\d+)/quizzes$', quiz.quizzes_page),
     url(r'^teacher/course/(\d+)/quiz_modal$', quiz.quiz_modal),
     url(r'^teacher/course/(\d+)/save_quiz$', quiz.save_quiz),
-#    url(r'^teacher/course/(\d+)/delete_assignment$', assignment.delete_assignment),
-                       
+    url(r'^teacher/course/(\d+)/delete_quiz$', quiz.delete_quiz),
+
     # Quiz
-#    url(r'^teacher/course/(\d+)/quiz/(\d+)$', quiz.quiz_page),
-#    url(r'^teacher/course/(\d+)/assignment/(\d+)/question_type_modal$', assignment.question_type_modal),
-#    url(r'^teacher/course/(\d+)/assignment/(\d+)/question_essay_modal$', assignment.question_essay_modal),
-#    url(r'^teacher/course/(\d+)/assignment/(\d+)/question_multiple_choice_modal$', assignment.question_multiple_choice_modal),
-#    url(r'^teacher/course/(\d+)/assignment/(\d+)/question_true_false_modal$', assignment.question_true_false_modal),
-#    url(r'^teacher/course/(\d+)/assignment/(\d+)/question_response_modal$', assignment.question_response_modal),
-#    url(r'^teacher/course/(\d+)/assignment/(\d+)/save_question$', assignment.save_question),
-#    url(r'^teacher/course/(\d+)/assignment/(\d+)/delete_question$', assignment.delete_question),
+    url(r'^teacher/course/(\d+)/quiz/(\d+)$', quiz.quiz_page),
+    url(r'^teacher/course/(\d+)/quiz/(\d+)/question_type_modal$', quiz.question_type_modal),
+    url(r'^teacher/course/(\d+)/quiz/(\d+)/question_true_false_modal$', quiz.question_true_false_modal),
+    url(r'^teacher/course/(\d+)/quiz/(\d+)/save_question$', quiz.save_question),
+    url(r'^teacher/course/(\d+)/quiz/(\d+)/delete_question$', quiz.delete_question),
 )

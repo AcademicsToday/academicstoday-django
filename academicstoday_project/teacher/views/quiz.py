@@ -10,12 +10,10 @@ from registrar.models import Teacher
 from registrar.models import Student
 from registrar.models import Course
 from registrar.models import Quiz
-from registrar.models import EssayQuestion
-from registrar.models import MultipleChoiceQuestion
 from registrar.models import TrueFalseQuestion
-from registrar.models import ResponseQuestion
 from teacher.forms import QuizForm
-
+from teacher.forms import QuizQuestionTypeForm
+from teacher.forms import TrueFalseQuestionForm
 
 @login_required(login_url='/landpage')
 def quizzes_page(request, course_id):
@@ -42,7 +40,7 @@ def quiz_modal(request, course_id):
     if request.method == u'POST':
         # Get the quiz_id of post and either create a brand new form
         # for the user, or load up existing one based on the database
-        # data for the particular assignment.
+        # data for the particular quiz.
         quiz_id = int(request.POST['quiz_id'])
         form = None
         if quiz_id > 0:
@@ -81,275 +79,155 @@ def save_quiz(request, course_id):
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
-#@login_required(login_url='/landpage')
-#def delete_assignment(request, course_id):
-#    response_data = {'status' : 'failed', 'message' : 'unknown error with deleting'}
-#    if request.is_ajax():
-#        if request.method == 'POST':
-#            assignment_id = int(request.POST['assignment_id'])
-#            assignment = Assignment.objects.get(assignment_id=assignment_id)
-#            assignment.delete()
-#            response_data = {'status' : 'success', 'message' : 'deleted'}
-#    return HttpResponse(json.dumps(response_data), content_type="application/json")
-#
-#
-#def assignment_page(request, course_id, assignment_id):
-#    course = Course.objects.get(id=course_id)
-#    teacher = Teacher.objects.get(user=request.user)
-#    assignment = Assignment.objects.get(assignment_id=assignment_id)
-#
-#    # Load all essay type questions for this assignment.
-#    try:
-#        essay_questions = EssayQuestion.objects.filter(assignment=assignment).order_by('question_num')
-#    except EssayQuestion.DoesNotExist:
-#        essay_questions = None
-#
-#    # Load all multiple-choice type questions for this assignment.
-#    try:
-#        mc_questions = MultipleChoiceQuestion.objects.filter(assignment=assignment).order_by('question_num')
-#    except MultipleChoiceQuestion.DoesNotExist:
-#        mc_questions = None
-#
-#    # Load all true/false type questions for this assignment.
-#    try:
-#        tf_questions = TrueFalseQuestion.objects.filter(assignment=assignment).order_by('question_num')
-#    except TrueFalseQuestion.DoesNotExist:
-#        tf_questions = None
-#
-#    # Load all response type questions for this assignment.
-#    try:
-#        r_questions = ResponseQuestion.objects.filter(assignment=assignment).order_by('question_num')
-#    except ResponseQuestion.DoesNotExist:
-#        r_questions = None
-#
-#    return render(request, 'teacher/assignment/question_list.html',{
-#        'teacher' : teacher,
-#        'course' : course,
-#        'assignment' : assignment,
-#        'essay_questions' : essay_questions,
-#        'mc_questions' : mc_questions,
-#        'tf_questions' : tf_questions,
-#        'r_questions' : r_questions,
-#        'ESSAY_QUESTION_TYPE': settings.ESSAY_QUESTION_TYPE,
-#        'MULTIPLECHOICE_QUESTION_TYPE': settings.MULTIPLECHOICE_QUESTION_TYPE,
-#        'TRUEFALSE_QUESTION_TYPE': settings.TRUEFALSE_QUESTION_TYPE,
-#        'RESPONSE_QUESTION_TYPE': settings.RESPONSE_QUESTION_TYPE,
-#        'user' : request.user,
-#        'tab' : 'assignments',
-#        'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
-#        'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
-#    })
-#
-#def question_type_modal(request, course_id, assignment_id):
-#    if request.is_ajax():
-#        if request.method == 'POST':
-#                assignment = Assignment.objects.get(assignment_id=assignment_id)
-#                form = QuestionTypeForm()
-#                return render(request, 'teacher/assignment/question_modal.html',{
-#                    'assignment' : assignment,
-#                    'form' : form,
-#                    'ESSAY_QUESTION_TYPE': settings.ESSAY_QUESTION_TYPE,
-#                    'MULTIPLECHOICE_QUESTION_TYPE': settings.MULTIPLECHOICE_QUESTION_TYPE,
-#                    'TRUEFALSE_QUESTION_TYPE': settings.TRUEFALSE_QUESTION_TYPE,
-#                    'RESPONSE_QUESTION_TYPE': settings.RESPONSE_QUESTION_TYPE,
-#                    'user' : request.user,
-#                    'title' : 'New Question',
-#                    'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
-#                    'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
-#                })
-#
-#
-#def question_essay_modal(request, course_id, assignment_id):
-#    if request.is_ajax():
-#        if request.method == 'POST':
-#                assignment = Assignment.objects.get(assignment_id=assignment_id)
-#                question_id = int(request.POST['question_id'])
-#                question = EssayQuestion.objects.get(question_id=question_id)
-#                form = EssayQuestionForm(instance=question)
-#                return render(request, 'teacher/assignment/question_modal.html',{
-#                    'assignment' : assignment,
-#                    'form' : form,
-#                    'ESSAY_QUESTION_TYPE': settings.ESSAY_QUESTION_TYPE,
-#                    'MULTIPLECHOICE_QUESTION_TYPE': settings.MULTIPLECHOICE_QUESTION_TYPE,
-#                    'TRUEFALSE_QUESTION_TYPE': settings.TRUEFALSE_QUESTION_TYPE,
-#                    'RESPONSE_QUESTION_TYPE': settings.RESPONSE_QUESTION_TYPE,
-#                    'user' : request.user,
-#                    'title' : 'Essay Question',
-#                    'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
-#                    'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
-#                })
-#
-#
-#def question_multiple_choice_modal(request, course_id, assignment_id):
-#    if request.is_ajax():
-#        if request.method == 'POST':
-#                assignment = Assignment.objects.get(assignment_id=assignment_id)
-#                question_id = int(request.POST['question_id'])
-#                question = MultipleChoiceQuestion.objects.get(question_id=question_id)
-#                form = MultipleChoiceQuestionForm(instance=question)
-#                return render(request, 'teacher/assignment/question_modal.html',{
-#                    'assignment' : assignment,
-#                    'form' : form,
-#                    'ESSAY_QUESTION_TYPE': settings.ESSAY_QUESTION_TYPE,
-#                    'MULTIPLECHOICE_QUESTION_TYPE': settings.MULTIPLECHOICE_QUESTION_TYPE,
-#                    'TRUEFALSE_QUESTION_TYPE': settings.TRUEFALSE_QUESTION_TYPE,
-#                    'RESPONSE_QUESTION_TYPE': settings.RESPONSE_QUESTION_TYPE,
-#                    'user' : request.user,
-#                    'title' : 'Multiple Choice Question',
-#                    'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
-#                    'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
-#                })
-#
-#
-#def question_true_false_modal(request, course_id, assignment_id):
-#    if request.is_ajax():
-#        if request.method == 'POST':
-#                assignment = Assignment.objects.get(assignment_id=assignment_id)
-#                question_id = int(request.POST['question_id'])
-#                question = TrueFalseQuestion.objects.get(question_id=question_id)
-#                form = TrueFalseQuestionForm(instance=question)
-#                return render(request, 'teacher/assignment/question_modal.html',{
-#                    'assignment' : assignment,
-#                    'form' : form,
-#                    'ESSAY_QUESTION_TYPE': settings.ESSAY_QUESTION_TYPE,
-#                    'MULTIPLECHOICE_QUESTION_TYPE': settings.MULTIPLECHOICE_QUESTION_TYPE,
-#                    'TRUEFALSE_QUESTION_TYPE': settings.TRUEFALSE_QUESTION_TYPE,
-#                    'RESPONSE_QUESTION_TYPE': settings.RESPONSE_QUESTION_TYPE,
-#                    'user' : request.user,
-#                    'title' : 'True False Question',
-#                    'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
-#                    'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
-#                })
-#
-#
-#def question_response_modal(request, course_id, assignment_id):
-#    if request.is_ajax():
-#        if request.method == 'POST':
-#                assignment = Assignment.objects.get(assignment_id=assignment_id)
-#                question_id = int(request.POST['question_id'])
-#                question = ResponseQuestion.objects.get(question_id=question_id)
-#                form = ResponseQuestionForm(instance=question)
-#                return render(request, 'teacher/assignment/question_modal.html',{
-#                    'assignment' : assignment,
-#                    'form' : form,
-#                    'ESSAY_QUESTION_TYPE': settings.ESSAY_QUESTION_TYPE,
-#                    'MULTIPLECHOICE_QUESTION_TYPE': settings.MULTIPLECHOICE_QUESTION_TYPE,
-#                    'TRUEFALSE_QUESTION_TYPE': settings.TRUEFALSE_QUESTION_TYPE,
-#                    'RESPONSE_QUESTION_TYPE': settings.RESPONSE_QUESTION_TYPE,
-#                    'user' : request.user,
-#                    'title' : 'Response Question',
-#                    'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
-#                    'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
-#                })
-#
-#
-#@login_required(login_url='/landpage')
-#def save_question(request, course_id, assignment_id):
-#    response_data = {'status' : 'failed', 'message' : 'unknown error with saving'}
-#    if request.is_ajax():
-#        if request.method == 'POST':
-#            # Fetch objects
-#            course = Course.objects.get(id=course_id)
-#            teacher = Teacher.objects.get(user=request.user)
-#            assignment = Assignment.objects.get(assignment_id=assignment_id)
-#
-#            # Fetch variables
-#            question_type = int(request.POST['question_type'])
-#            question_num = int(request.POST['question_num'])
-#            question_id = int(request.POST['question_id'])
-#
-#            # DC: If question type is unsupported then error
-#            if question_type not in settings.QUESTION_TYPES:
-#                response_data = {'status' : 'failed', 'message' : 'question type not supported'}
-#                return HttpResponse(json.dumps(response_data), content_type="application/json")
-#
-#            # If question_id equals zero then that means we need to create a new
-#            # entry, else we simply update the existing entry.
-#            if question_id == 0:
-#                # Create the question for the assignment depending on the
-#                # question type selected.
-#                if question_type == settings.ESSAY_QUESTION_TYPE:
-#                    question = EssayQuestion.objects.create(
-#                        course=course,
-#                        assignment=assignment,
-#                        question_num=question_num
-#                    )
-#                    question.save()
-#                elif question_type == settings.MULTIPLECHOICE_QUESTION_TYPE:
-#                    question = MultipleChoiceQuestion.objects.create(
-#                        course=course,
-#                        assignment=assignment,
-#                        question_num=question_num
-#                    )
-#                    question.save()
-#                elif question_type == settings.TRUEFALSE_QUESTION_TYPE:
-#                    question = TrueFalseQuestion.objects.create(
-#                        course=course,
-#                        assignment=assignment,
-#                        question_num=question_num
-#                    )
-#                    question.save()
-#                elif question_type == settings.RESPONSE_QUESTION_TYPE:
-#                    question = ResponseQuestion.objects.create(
-#                        course=course,
-#                        assignment=assignment,
-#                        question_num=question_num
-#                    )
-#                    question.save()
-#                # Return positive response.
-#                response_data = {'status' : 'success', 'message' : 'question was saved'}
-#            else:
-#                # Update the question for the assignment depending on the
-#                # question type selected.
-#                question = None
-#                form = None
-#                if question_type == settings.ESSAY_QUESTION_TYPE:
-#                    question = EssayQuestion.objects.get(question_id=question_id)
-#                    form = EssayQuestionForm(instance=question, data=request.POST)
-#                elif question_type == settings.MULTIPLECHOICE_QUESTION_TYPE:
-#                    question = MultipleChoiceQuestion.objects.get(question_id=question_id)
-#                    form = MultipleChoiceQuestionForm(instance=question, data=request.POST)
-#                elif question_type == settings.TRUEFALSE_QUESTION_TYPE:
-#                    question = TrueFalseQuestion.objects.get(question_id=question_id)
-#                    form = TrueFalseQuestionForm(instance=question, data=request.POST)
-#                elif question_type == settings.RESPONSE_QUESTION_TYPE:
-#                    question = ResponseQuestion.objects.get(question_id=question_id)
-#                    form = ResponseQuestionForm(instance=question, data=request.POST)
-#                if form.is_valid():
-#                    form.save()
-#                    response_data = {'status' : 'success', 'message' : 'question was saved'}
-#                else:
-#                    response_data = {'status' : 'failed', 'message' : form.errors}
-#    return HttpResponse(json.dumps(response_data), content_type="application/json")
-#
-#
-#@login_required(login_url='/landpage')
-#def delete_question(request, course_id, assignment_id):
-#    response_data = {'status' : 'failed', 'message' : 'unknown error with deleting'}
-#    if request.is_ajax():
-#        if request.method == 'POST':
-#            course = Course.objects.get(id=course_id)
-#            teacher = Teacher.objects.get(user=request.user)
-#            assignment = Assignment.objects.get(assignment_id=assignment_id)
-#            question_type = int(request.POST['question_type'])
-#            question_id = int(request.POST['question_id'])
-#
-#            # DC: If question type is unsupported then error
-#            if question_type not in settings.QUESTION_TYPES:
-#                response_data = {'status' : 'failed', 'message' : 'question type not supported'}
-#                return HttpResponse(json.dumps(response_data), content_type="application/json")
-#
-#            # Delete our question.
-#            question = None
-#            if question_type == settings.ESSAY_QUESTION_TYPE:
-#                question = EssayQuestion.objects.get(question_id=question_id)
-#            elif question_type == settings.MULTIPLECHOICE_QUESTION_TYPE:
-#                question = MultipleChoiceQuestion.objects.get(question_id=question_id)
-#            elif question_type == settings.TRUEFALSE_QUESTION_TYPE:
-#                question = TrueFalseQuestion.objects.get(question_id=question_id)
-#            elif question_type == settings.RESPONSE_QUESTION_TYPE:
-#                question = ResponseQuestion.objects.get(question_id=question_id)
-#            question.delete()
-#
-#            response_data = {'status' : 'success', 'message' : 'question was inserted'}
-#    return HttpResponse(json.dumps(response_data), content_type="application/json")
+@login_required(login_url='/landpage')
+def delete_quiz(request, course_id):
+    response_data = {'status' : 'failed', 'message' : 'unknown error with deleting'}
+    if request.is_ajax():
+        if request.method == 'POST':
+            quiz_id = int(request.POST['quiz_id'])
+            quiz = Quiz.objects.get(quiz_id=quiz_id)
+            quiz.delete()
+            response_data = {'status' : 'success', 'message' : 'deleted'}
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
+def quiz_page(request, course_id, quiz_id):
+    course = Course.objects.get(id=course_id)
+    teacher = Teacher.objects.get(user=request.user)
+    quiz = Quiz.objects.get(quiz_id=quiz_id)
+
+    # Load all true/false type questions for this quiz.
+    try:
+        tf_questions = TrueFalseQuestion.objects.filter(quiz=quiz).order_by('question_num')
+    except TrueFalseQuestion.DoesNotExist:
+        tf_questions = None
+
+    return render(request, 'teacher/quiz/question_list.html',{
+        'teacher' : teacher,
+        'course' : course,
+        'quiz' : quiz,
+        'tf_questions' : tf_questions,
+        'ESSAY_QUESTION_TYPE': settings.ESSAY_QUESTION_TYPE,
+        'MULTIPLECHOICE_QUESTION_TYPE': settings.MULTIPLECHOICE_QUESTION_TYPE,
+        'TRUEFALSE_QUESTION_TYPE': settings.TRUEFALSE_QUESTION_TYPE,
+        'RESPONSE_QUESTION_TYPE': settings.RESPONSE_QUESTION_TYPE,
+        'user' : request.user,
+        'tab' : 'quizzes',
+        'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
+        'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+    })
+
+
+def question_type_modal(request, course_id, quiz_id):
+    if request.is_ajax():
+        if request.method == 'POST':
+                quiz = Quiz.objects.get(quiz_id=quiz_id)
+                form = QuizQuestionTypeForm()
+                return render(request, 'teacher/quiz/question_modal.html',{
+                    'quiz' : quiz,
+                    'form' : form,
+                    'ESSAY_QUESTION_TYPE': settings.ESSAY_QUESTION_TYPE,
+                    'MULTIPLECHOICE_QUESTION_TYPE': settings.MULTIPLECHOICE_QUESTION_TYPE,
+                    'TRUEFALSE_QUESTION_TYPE': settings.TRUEFALSE_QUESTION_TYPE,
+                    'RESPONSE_QUESTION_TYPE': settings.RESPONSE_QUESTION_TYPE,
+                    'user' : request.user,
+                    'title' : 'New Question',
+                    'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
+                    'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+                })
+
+
+def question_true_false_modal(request, course_id, quiz_id):
+    if request.is_ajax():
+        if request.method == 'POST':
+                quiz = Quiz.objects.get(quiz_id=quiz_id)
+                question_id = int(request.POST['question_id'])
+                question = TrueFalseQuestion.objects.get(question_id=question_id)
+                form = TrueFalseQuestionForm(instance=question)
+                return render(request, 'teacher/quiz/question_modal.html',{
+                    'quiz' : quiz,
+                    'form' : form,
+                    'ESSAY_QUESTION_TYPE': settings.ESSAY_QUESTION_TYPE,
+                    'MULTIPLECHOICE_QUESTION_TYPE': settings.MULTIPLECHOICE_QUESTION_TYPE,
+                    'TRUEFALSE_QUESTION_TYPE': settings.TRUEFALSE_QUESTION_TYPE,
+                    'RESPONSE_QUESTION_TYPE': settings.RESPONSE_QUESTION_TYPE,
+                    'user' : request.user,
+                    'title' : 'True False Question',
+                    'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
+                    'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+                })
+
+
+@login_required(login_url='/landpage')
+def save_question(request, course_id, quiz_id):
+    response_data = {'status' : 'failed', 'message' : 'unknown error with saving'}
+    if request.is_ajax():
+        if request.method == 'POST':
+            # Fetch objects
+            course = Course.objects.get(id=course_id)
+            teacher = Teacher.objects.get(user=request.user)
+            quiz = Quiz.objects.get(quiz_id=quiz_id)
+
+            # Fetch variables
+            question_type = int(request.POST['question_type'])
+            question_num = int(request.POST['question_num'])
+            question_id = int(request.POST['question_id'])
+
+            # DC: If question type is unsupported then error
+            if question_type not in [settings.TRUEFALSE_QUESTION_TYPE]:
+                response_data = {'status' : 'failed', 'message' : 'question type not supported'}
+                return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+            # If question_id equals zero then that means we need to create a new
+            # entry, else we simply update the existing entry.
+            if question_id == 0:
+                # Create the question for the quiz depending on the
+                # question type selected.
+                if question_type == settings.TRUEFALSE_QUESTION_TYPE:
+                    question = TrueFalseQuestion.objects.create(
+                        course=course,
+                        quiz=quiz,
+                        question_num=question_num
+                    )
+                    question.save()
+                    response_data = {'status' : 'success', 'message' : 'question was saved'}
+            else:
+                # Update the question for the quiz depending on the
+                # question type selected.
+                question = None
+                form = None
+                if question_type == settings.TRUEFALSE_QUESTION_TYPE:
+                    question = TrueFalseQuestion.objects.get(question_id=question_id)
+                    form = TrueFalseQuestionForm(instance=question, data=request.POST)
+                if form.is_valid():
+                    form.save()
+                    response_data = {'status' : 'success', 'message' : 'question was saved'}
+                else:
+                    response_data = {'status' : 'failed', 'message' : form.errors}
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
+@login_required(login_url='/landpage')
+def delete_question(request, course_id, quiz_id):
+    response_data = {'status' : 'failed', 'message' : 'unknown error with deleting'}
+    if request.is_ajax():
+        if request.method == 'POST':
+            course = Course.objects.get(id=course_id)
+            teacher = Teacher.objects.get(user=request.user)
+            quiz = Quiz.objects.get(quiz_id=quiz_id)
+            question_type = int(request.POST['question_type'])
+            question_id = int(request.POST['question_id'])
+
+            # DC: If question type is unsupported then error
+            if question_type not in [settings.TRUEFALSE_QUESTION_TYPE]:
+                response_data = {'status' : 'failed', 'message' : 'question type not supported'}
+                return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+            # Delete our question.
+            question = None
+            if question_type == settings.TRUEFALSE_QUESTION_TYPE:
+                question = TrueFalseQuestion.objects.get(question_id=question_id)
+            question.delete()
+
+            response_data = {'status' : 'success', 'message' : 'question was inserted'}
+    return HttpResponse(json.dumps(response_data), content_type="application/json")

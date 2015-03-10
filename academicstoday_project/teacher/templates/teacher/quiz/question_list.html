@@ -53,7 +53,24 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    
+                                    {% for tf_question in tf_questions %}
+                                    <tr>
+                                        <td align="left" valign="left">{{ tf_question.question_num }}</td>
+                                        <td align="left" valign="left">True/False</td>
+                                        <td align="left" valign="left">
+                                            <button type="button"
+                                                  class="btn btn-sm btn-warning"
+                                                  onclick="ajax_question({{ tf_question.question_id }},{{ TRUEFALSE_QUESTION_TYPE }});">
+                                                  <i class="fa fa-pencil"></i> Edit
+                                            </button>
+                                            <button type="button"
+                                                   class="btn btn-sm btn-danger"
+                                                 onclick="ajax_delete_question({{ tf_question.question_id }},{{ TRUEFALSE_QUESTION_TYPE }});">
+                                               <i class="fa fa-minus"></i> Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
                                 </tbody>
                             </table>
                         </div>
@@ -76,25 +93,12 @@
         var url;
         if (question_type == 0)
         {
-            url = {{ assignment.assignment_id }} + '/question_type_modal';
-        }
-        else if (question_type == {{ ESSAY_QUESTION_TYPE }})
-        {
-            url = {{ assignment.assignment_id }} + '/question_essay_modal'
-        }
-        else if (question_type == {{ MULTIPLECHOICE_QUESTION_TYPE }})
-        {
-            url = {{ assignment.assignment_id }} + '/question_multiple_choice_modal'
+            url = {{ quiz.quiz_id }} + '/question_type_modal';
         }
         else if (question_type == {{ TRUEFALSE_QUESTION_TYPE }})
         {
-            url = {{ assignment.assignment_id }} + '/question_true_false_modal'
+            url = {{ quiz.quiz_id }} + '/question_true_false_modal'
         }
-        else if (question_type == {{ RESPONSE_QUESTION_TYPE }})
-        {
-            url = {{ assignment.assignment_id }} + '/question_response_modal'
-        }
-
 
         $.ajax( url, {
             data: {
@@ -119,7 +123,7 @@
 
     function ajax_delete_question(question_id, question_type)
     {
-        var url = {{ assignment.assignment_id }} + '/delete_question';
+        var url = {{ quiz.quiz_id }} + '/delete_question';
 
         $.ajax( url, {
             data: {
@@ -146,7 +150,7 @@
 
     function refresh_page()
     {
-        window.location = '{{ assignment.assignment_id }}';
+        window.location = '{{ quiz.quiz_id }}';
     }
 </script>
 {% endblock content %}
