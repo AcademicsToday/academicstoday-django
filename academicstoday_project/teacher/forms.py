@@ -119,6 +119,9 @@ class QuizForm(forms.ModelForm):
     class Meta:
         model = Quiz
         fields = ['quiz_num', 'title', 'description', 'start_date', 'due_date']
+        labels = {
+            'quiz_num': 'Quiz #',
+        }
         widgets = {
             'start_date': SelectDateWidget(),
             'due_date': SelectDateWidget(),

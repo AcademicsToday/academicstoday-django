@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
                 ('announcement_id', models.AutoField(primary_key=True, serialize=False)),
                 ('title', models.CharField(max_length=31)),
                 ('body', models.TextField()),
-                ('post_date', models.DateField(null=True, auto_now_add=True, auto_now=True)),
+                ('post_date', models.DateField(auto_now_add=True, auto_now=True, null=True)),
             ],
             options={
                 'db_table': 'at_announcements',
@@ -30,7 +30,9 @@ class Migration(migrations.Migration):
             fields=[
                 ('assignment_id', models.AutoField(primary_key=True, serialize=False)),
                 ('assignment_num', models.PositiveSmallIntegerField(default=0)),
-                ('type', models.PositiveSmallIntegerField()),
+                ('title', models.CharField(max_length=31, null=True)),
+                ('description', models.TextField(null=True)),
+                ('start_date', models.DateField(null=True)),
                 ('due_date', models.DateField(null=True)),
             ],
             options={
@@ -45,8 +47,8 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(max_length=31)),
                 ('comment', models.TextField()),
                 ('marks', models.PositiveSmallIntegerField(default=0)),
-                ('post_date', models.DateField(null=True, auto_now_add=True, auto_now=True)),
-                ('assignment', models.ForeignKey(null=True, to='registrar.Assignment')),
+                ('post_date', models.DateField(auto_now_add=True, auto_now=True, null=True)),
+                ('assignment', models.ForeignKey(to='registrar.Assignment', null=True)),
             ],
             options={
                 'db_table': 'at_assignment_reviews',
@@ -81,7 +83,7 @@ class Migration(migrations.Migration):
                 ('finish_date', models.DateField(null=True)),
                 ('is_official', models.BooleanField(default=False)),
                 ('status', models.PositiveSmallIntegerField(default=0)),
-                ('file', models.FileField(null=True, upload_to='uploads')),
+                ('file', models.FileField(upload_to='uploads', null=True)),
             ],
             options={
                 'db_table': 'at_courses',
@@ -108,7 +110,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('submission_id', models.AutoField(max_length=11, primary_key=True, serialize=False)),
                 ('file', models.FileField(upload_to='uploads')),
-                ('submission_date', models.DateTimeField(null=True, auto_now_add=True, auto_now=True)),
+                ('submission_date', models.DateTimeField(auto_now_add=True, auto_now=True, null=True)),
                 ('is_marked', models.BooleanField(default=False)),
                 ('assignment', models.ForeignKey(to='registrar.Assignment')),
                 ('course', models.ForeignKey(to='registrar.Course')),
@@ -156,7 +158,7 @@ class Migration(migrations.Migration):
                 ('lecture_id', models.AutoField(primary_key=True, serialize=False)),
                 ('lecture_num', models.PositiveSmallIntegerField(max_length=7, default=0)),
                 ('week_num', models.PositiveSmallIntegerField(max_length=7)),
-                ('title', models.CharField(null=True, max_length=31, default='')),
+                ('title', models.CharField(max_length=31, null=True, default='')),
                 ('description', models.TextField(null=True, default='')),
                 ('youtube_url', models.URLField(null=True, default='')),
                 ('vimeo_url', models.URLField(null=True, default='')),
@@ -176,11 +178,21 @@ class Migration(migrations.Migration):
                 ('question_num', models.PositiveSmallIntegerField()),
                 ('title', models.CharField(max_length=31, default='')),
                 ('description', models.TextField(default='')),
-                ('json_choices', models.CharField(max_length=1055, default='{}')),
-                ('json_answers', models.CharField(max_length=127, default='{}')),
-                ('assignment', models.ForeignKey(null=True, to='registrar.Assignment')),
+                ('a', models.CharField(max_length=255, null=True)),
+                ('a_is_correct', models.BooleanField(default=False)),
+                ('b', models.CharField(max_length=255, null=True)),
+                ('b_is_correct', models.BooleanField(default=False)),
+                ('c', models.CharField(max_length=255, null=True)),
+                ('c_is_correct', models.BooleanField(default=False)),
+                ('d', models.CharField(max_length=255, null=True)),
+                ('d_is_correct', models.BooleanField(default=False)),
+                ('e', models.CharField(max_length=255, null=True)),
+                ('e_is_correct', models.BooleanField(default=False)),
+                ('f', models.CharField(max_length=255, null=True)),
+                ('f_is_correct', models.BooleanField(default=False)),
+                ('assignment', models.ForeignKey(to='registrar.Assignment', null=True)),
                 ('course', models.ForeignKey(to='registrar.Course')),
-                ('exam', models.ForeignKey(null=True, to='registrar.Exam')),
+                ('exam', models.ForeignKey(to='registrar.Exam', null=True)),
             ],
             options={
                 'db_table': 'at_multiple_choice_questions',
@@ -194,11 +206,11 @@ class Migration(migrations.Migration):
                 ('question_num', models.PositiveSmallIntegerField(default=0)),
                 ('json_answers', models.CharField(max_length=127, default='{}')),
                 ('marks', models.PositiveSmallIntegerField(default=0)),
-                ('submission_date', models.DateTimeField(null=True, auto_now_add=True, auto_now=True)),
+                ('submission_date', models.DateTimeField(auto_now_add=True, auto_now=True, null=True)),
                 ('is_marked', models.BooleanField(default=False)),
-                ('assignment', models.ForeignKey(null=True, to='registrar.Assignment')),
+                ('assignment', models.ForeignKey(to='registrar.Assignment', null=True)),
                 ('course', models.ForeignKey(to='registrar.Course')),
-                ('exam', models.ForeignKey(null=True, to='registrar.Exam')),
+                ('exam', models.ForeignKey(to='registrar.Exam', null=True)),
             ],
             options={
                 'db_table': 'at_multiple_choice_submissions',
@@ -209,7 +221,7 @@ class Migration(migrations.Migration):
             name='Policy',
             fields=[
                 ('policy_id', models.AutoField(primary_key=True, serialize=False)),
-                ('file', models.FileField(null=True, upload_to='uploads')),
+                ('file', models.FileField(upload_to='uploads', null=True)),
                 ('course', models.ForeignKey(to='registrar.Course')),
             ],
             options={
@@ -222,7 +234,9 @@ class Migration(migrations.Migration):
             fields=[
                 ('quiz_id', models.AutoField(primary_key=True, serialize=False)),
                 ('quiz_num', models.PositiveSmallIntegerField(default=0)),
-                ('type', models.PositiveSmallIntegerField()),
+                ('title', models.CharField(max_length=31, null=True)),
+                ('description', models.TextField(null=True)),
+                ('start_date', models.DateField(null=True)),
                 ('due_date', models.DateField(null=True)),
                 ('course', models.ForeignKey(to='registrar.Course')),
             ],
@@ -256,7 +270,7 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(max_length=31, default='')),
                 ('description', models.TextField(default='')),
                 ('answer', models.TextField(default='')),
-                ('assignment', models.ForeignKey(null=True, to='registrar.Assignment')),
+                ('assignment', models.ForeignKey(to='registrar.Assignment', null=True)),
                 ('course', models.ForeignKey(to='registrar.Course')),
             ],
             options={
@@ -271,9 +285,9 @@ class Migration(migrations.Migration):
                 ('question_num', models.PositiveSmallIntegerField(default=0)),
                 ('answer', models.TextField(default='')),
                 ('marks', models.PositiveSmallIntegerField(default=0)),
-                ('submission_date', models.DateTimeField(null=True, auto_now_add=True, auto_now=True)),
+                ('submission_date', models.DateTimeField(auto_now_add=True, auto_now=True, null=True)),
                 ('is_marked', models.BooleanField(default=False)),
-                ('assignment', models.ForeignKey(null=True, to='registrar.Assignment')),
+                ('assignment', models.ForeignKey(to='registrar.Assignment', null=True)),
                 ('course', models.ForeignKey(to='registrar.Course')),
             ],
             options={
@@ -284,7 +298,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Student',
             fields=[
-                ('user', models.OneToOneField(serialize=False, to=settings.AUTH_USER_MODEL, primary_key=True)),
+                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL, primary_key=True, serialize=False)),
                 ('courses', models.ManyToManyField(to='registrar.Course')),
             ],
             options={
@@ -296,7 +310,7 @@ class Migration(migrations.Migration):
             name='Syllabus',
             fields=[
                 ('syllabus_id', models.AutoField(primary_key=True, serialize=False)),
-                ('file', models.FileField(null=True, upload_to='uploads')),
+                ('file', models.FileField(upload_to='uploads', null=True)),
                 ('course', models.ForeignKey(to='registrar.Course')),
             ],
             options={
@@ -307,7 +321,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Teacher',
             fields=[
-                ('user', models.OneToOneField(serialize=False, to=settings.AUTH_USER_MODEL, primary_key=True)),
+                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL, primary_key=True, serialize=False)),
                 ('courses', models.ManyToManyField(to='registrar.Course')),
             ],
             options={
@@ -322,12 +336,12 @@ class Migration(migrations.Migration):
                 ('question_num', models.PositiveSmallIntegerField()),
                 ('title', models.CharField(max_length=31, default='')),
                 ('description', models.TextField(default='')),
-                ('true_choice', models.CharField(null=True, max_length=127)),
-                ('false_choice', models.CharField(null=True, max_length=127)),
+                ('true_choice', models.CharField(max_length=127, null=True)),
+                ('false_choice', models.CharField(max_length=127, null=True)),
                 ('answer', models.BooleanField(default=False)),
-                ('assignment', models.ForeignKey(null=True, to='registrar.Assignment')),
+                ('assignment', models.ForeignKey(to='registrar.Assignment', null=True)),
                 ('course', models.ForeignKey(to='registrar.Course')),
-                ('quiz', models.ForeignKey(null=True, to='registrar.Quiz')),
+                ('quiz', models.ForeignKey(to='registrar.Quiz', null=True)),
             ],
             options={
                 'db_table': 'at_true_false_questions',
@@ -341,11 +355,11 @@ class Migration(migrations.Migration):
                 ('question_num', models.PositiveSmallIntegerField(default=0)),
                 ('answer', models.BooleanField(default=False)),
                 ('marks', models.PositiveSmallIntegerField(default=0)),
-                ('submission_date', models.DateTimeField(null=True, auto_now_add=True, auto_now=True)),
+                ('submission_date', models.DateTimeField(auto_now_add=True, auto_now=True, null=True)),
                 ('is_marked', models.BooleanField(default=False)),
-                ('assignment', models.ForeignKey(null=True, to='registrar.Assignment')),
+                ('assignment', models.ForeignKey(to='registrar.Assignment', null=True)),
                 ('course', models.ForeignKey(to='registrar.Course')),
-                ('quiz', models.ForeignKey(null=True, to='registrar.Quiz')),
+                ('quiz', models.ForeignKey(to='registrar.Quiz', null=True)),
                 ('student', models.ForeignKey(to='registrar.Student')),
             ],
             options={

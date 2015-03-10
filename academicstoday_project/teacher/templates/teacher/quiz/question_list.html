@@ -10,7 +10,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">
-                    Assignment
+                    Quiz
                 </h1>
                 <ol class="breadcrumb">
                     <li>
@@ -20,10 +20,10 @@
                         <i class="fa fa-compass"></i> {{ course.title }}
                     </li>
                     <li>
-                        <i class="fa fa-book"></i> <a href="../assignments">Assignments</a>
+                        <i class="fa fa-book"></i> <a href="../quizzes">Quizzes</a>
                     </li>
                     <li class="active">
-                        <i class="fa fa-book"></i> New Assignment
+                        <i class="fa fa-book"></i> New Quiz
                     </li>
                 </ol>
             </div>
@@ -53,78 +53,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for essay_question in essay_questions %}
-                                    <tr>
-                                        <td align="left" valign="left">{{ essay_question.question_num }}</td>
-                                        <td align="left" valign="left">Essay</td>
-                                        <td align="left" valign="left">
-                                            <button type="button"
-                                                  class="btn btn-sm btn-warning"
-                                                  onclick="ajax_question({{ essay_question.question_id }},{{ ESSAY_QUESTION_TYPE }});">
-                                                  <i class="fa fa-pencil"></i> Edit
-                                            </button>
-                                            <button type="button"
-                                                   class="btn btn-sm btn-danger"
-                                                 onclick="ajax_delete_question({{ essay_question.question_id }},{{ ESSAY_QUESTION_TYPE }});">
-                                               <i class="fa fa-minus"></i> Delete
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                    {% for mc_question in mc_questions %}
-                                    <tr>
-                                        <td align="left" valign="left">{{ mc_question.question_num }}</td>
-                                        <td align="left" valign="left">Multiple Choice</td>
-                                        <td align="left" valign="left">
-                                            <button type="button"
-                                                  class="btn btn-sm btn-warning"
-                                                  onclick="ajax_question({{ mc_question.question_id }},{{ MULTIPLECHOICE_QUESTION_TYPE }});">
-                                                  <i class="fa fa-pencil"></i> Edit
-                                            </button>
-                                            <button type="button"
-                                                   class="btn btn-sm btn-danger"
-                                                 onclick="ajax_delete_question({{ mc_question.question_id }},{{ MULTIPLECHOICE_QUESTION_TYPE }});">
-                                               <i class="fa fa-minus"></i> Delete
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                    {% for tf_question in tf_questions %}
-                                    <tr>
-                                        <td align="left" valign="left">{{ tf_question.question_num }}</td>
-                                        <td align="left" valign="left">True/False</td>
-                                        <td align="left" valign="left">
-                                            <button type="button"
-                                                  class="btn btn-sm btn-warning"
-                                                  onclick="ajax_question({{ tf_question.question_id }},{{ TRUEFALSE_QUESTION_TYPE }});">
-                                                  <i class="fa fa-pencil"></i> Edit
-                                            </button>
-                                            <button type="button"
-                                                   class="btn btn-sm btn-danger"
-                                                 onclick="ajax_delete_question({{ tf_question.question_id }},{{ TRUEFALSE_QUESTION_TYPE }});">
-                                               <i class="fa fa-minus"></i> Delete
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                    {% for r_question in r_questions %}
-                                    <tr>
-                                        <td align="left" valign="left">{{ r_question.question_num }}</td>
-                                        <td align="left" valign="left">Response</td>
-                                        <td align="left" valign="left">
-                                            <button type="button"
-                                                  class="btn btn-sm btn-warning"
-                                                  onclick="ajax_question({{ r_question.question_id }},{{ RESPONSE_QUESTION_TYPE }});">
-                                                  <i class="fa fa-pencil"></i> Edit
-                                            </button>
-                                            <button type="button"
-                                                   class="btn btn-sm btn-danger"
-                                                 onclick="ajax_delete_question({{ r_question.question_id }},{{ RESPONSE_QUESTION_TYPE }});">
-                                               <i class="fa fa-minus"></i> Delete
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
+                                    
                                 </tbody>
                             </table>
                         </div>

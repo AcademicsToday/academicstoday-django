@@ -56,7 +56,7 @@ urlpatterns = patterns('',
     # Quiz(es)
     url(r'^teacher/course/(\d+)/quizzes$', quiz.quizzes_page),
     url(r'^teacher/course/(\d+)/quiz_modal$', quiz.quiz_modal),
-#    url(r'^teacher/course/(\d+)/save_assignment$', assignment.save_assignment),
+    url(r'^teacher/course/(\d+)/save_quiz$', quiz.save_quiz),
 #    url(r'^teacher/course/(\d+)/delete_assignment$', assignment.delete_assignment),
                        
     # Quiz

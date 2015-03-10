@@ -1,8 +1,8 @@
 <form>
     <input type="hidden"
-             id="id_assignment_id"
-           name="assignment_id"
-          value={% if form.instance.assignment_id != None %}"{{ form.instance.assignment_id }}"{% else %}0{% endif %}>
+             id="id_quiz_id"
+           name="quiz_id"
+          value={% if form.instance.quiz_id != None %}"{{ form.instance.quiz_id }}"{% else %}0{% endif %}>
     {% if form.instance.question_type != None %}
     <input type="hidden"
              id="id_question_type"

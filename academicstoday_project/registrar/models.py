@@ -110,7 +110,7 @@ class Lecture(models.Model):
     preferred_service = models.CharField(max_length=31)
 
     def __str__(self):
-        return self.course_id + ' ' + self.file_url;
+        return 'Week: ' + str(self.week_num) + ' Lecture: ' + str(self.lecture_num) + ' Title: ' +self.title;
 
     class Meta:
         db_table = 'at_lectures'

@@ -23,7 +23,7 @@ def quizzes_page(request, course_id):
     teacher = Teacher.objects.get(user=request.user)
 
     try:
-        quizzes = Quiz.objects.filter(course=course).order_by('-assignment_num')
+        quizzes = Quiz.objects.filter(course=course).order_by('-quiz_num')
     except Quiz.DoesNotExist:
         quizzes = None
     return render(request, 'teacher/quiz/quiz_list.html',{
@@ -55,32 +55,32 @@ def quiz_modal(request, course_id):
         })
 
 
-#@login_required(login_url='/landpage')
-#def save_assignment(request, course_id):
-#    response_data = {'status' : 'failed', 'message' : 'unknown error with saving'}
-#    if request.is_ajax():
-#        if request.method == 'POST':
-#            course = Course.objects.get(id=course_id)
-#            assignment_id = int(request.POST['assignment_id'])
-#            form = None
-#
-#            # If assignment already exists, then lets update only, else insert.
-#            if assignment_id > 0:
-#                assignment = Assignment.objects.get(assignment_id=assignment_id)
-#                form = AssignmentForm(instance=assignment, data=request.POST)
-#            else:
-#                form = AssignmentForm(request.POST, request.FILES)
-#
-#            if form.is_valid():
-#                instance = form.save(commit=False)
-#                instance.course = course
-#                instance.save()
-#                response_data = {'status' : 'success', 'message' : 'saved'}
-#            else:
-#                response_data = {'status' : 'failed', 'message' : json.dumps(form.errors)}
-#    return HttpResponse(json.dumps(response_data), content_type="application/json")
-#
-#
+@login_required(login_url='/landpage')
+def save_quiz(request, course_id):
+    response_data = {'status' : 'failed', 'message' : 'unknown error with saving'}
+    if request.is_ajax():
+        if request.method == 'POST':
+            course = Course.objects.get(id=course_id)
+            quiz_id = int(request.POST['quiz_id'])
+            form = None
+
+            # If quiz already exists, then lets update only, else insert.
+            if quiz_id > 0:
+                quiz = Quiz.objects.get(quiz_id=quiz_id)
+                form = QuizForm(instance=quiz, data=request.POST)
+            else:
+                form = QuizForm(request.POST, request.FILES)
+
+            if form.is_valid():
+                instance = form.save(commit=False)
+                instance.course = course
+                instance.save()
+                response_data = {'status' : 'success', 'message' : 'saved'}
+            else:
+                response_data = {'status' : 'failed', 'message' : json.dumps(form.errors)}
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
 #@login_required(login_url='/landpage')
 #def delete_assignment(request, course_id):
 #    response_data = {'status' : 'failed', 'message' : 'unknown error with deleting'}
