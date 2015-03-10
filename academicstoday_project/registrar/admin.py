@@ -14,6 +14,7 @@ from registrar.models import EssayQuestion
 from registrar.models import MultipleChoiceQuestion
 from registrar.models import TrueFalseQuestion
 from registrar.models import ResponseQuestion
+from registrar.models import CourseSubmission
 
 admin.site.register(Course)
 admin.site.register(Student)
@@ -26,3 +27,4 @@ admin.site.register(EssayQuestion)
 admin.site.register(MultipleChoiceQuestion)
 admin.site.register(TrueFalseQuestion)
 admin.site.register(ResponseQuestion)
+admin.site.register(CourseSubmission)
