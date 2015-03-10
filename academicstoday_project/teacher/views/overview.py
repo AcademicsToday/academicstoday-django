@@ -124,7 +124,7 @@ def submit_course_for_review(request, course_id):
     # Validate assignments
     try:
         assignments = Assignment.objects.filter(course=course).order_by('-assignment_num')
-        if assignments.count() < 2:
+        if assignments.count() < 1:
             response_data['message'] = 'minimum 1 assignment required'
             return HttpResponse(json.dumps(response_data), content_type="application/json")
     except Assignment.DoesNotExist:
