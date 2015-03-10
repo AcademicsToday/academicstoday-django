@@ -1,0 +1,234 @@
+{% extends 'teacher/base.html' %}
+{% load staticfiles %}
+{% block content %}
+
+<div id="page-wrapper">
+
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    Overview
+                    <small>Teacher's Course Overview Page</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-university"></i>  <a href="../../courses">Courses</a>
+                    </li>
+                    <li>
+                        <i class="fa fa-compass"></i> {{ course.title }}
+                    </li>
+                    <li class="active">
+                        <i class="fa fa-sitemap"></i> Overview
+                    </li>
+                </ol>
+
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <!-- Registrar Information -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-bar-chart-o fa-university"></i> Registrar Status Information</h3>
+                    </div>
+                    <div class="panel-body">
+                        <h2>Requirements</h2>
+                        <p>These requirements must be met to be considered acceptable course by the registrar</p>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Requirement</th>
+                                        <th>Needs</th>
+                                        <th>Meets Requirement</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% if announcements.count >= 1 %}
+                                    <tr class="success">
+                                        <td>Announcements</td>
+                                        <td>1 Announcement</td>
+                                        <td>Yes</td>
+                                    </tr>
+                                {% else %}
+                                    <tr class="danger">
+                                        <td>Announcements</td>
+                                        <td>1 Announcement</td>
+                                        <td>No</td>
+                                    </tr>
+                                {% endif %}
+
+                                {% if syllabus == None %}
+                                    <tr class="danger">
+                                        <td>Syllabus</td>
+                                        <td>1 PDF Document</td>
+                                        <td>No</td>
+                                    </tr>
+                                {% else %}
+                                    <tr class="success">
+                                        <td>Syllabus</td>
+                                        <td>1 PDF Document</td>
+                                        <td>Yes</td>
+                                </tr>
+                                {% endif %}
+
+                                {% if policy == None %}
+                                    <tr class="danger">
+                                        <td>Grades and Policy</td>
+                                        <td>1 PDF Document</td>
+                                        <td>No</td>
+                                    </tr>
+                                {% else %}
+                                    <tr class="success">
+                                        <td>Grades and Policy</td>
+                                        <td>1 PDF Document</td>
+                                        <td>Yes</td>
+                                    </tr>
+                                {% endif %}
+
+                                {% if lectures.count >= 2 %}
+                                    <tr class="success">
+                                        <td>Lectures</td>
+                                        <td>2 Lectures</td>
+                                        <td>Yes</td>
+                                    </tr>
+                                {% else %}
+                                    <tr class="danger">
+                                        <td>Lectures</td>
+                                        <td>2 Lectures</td>
+                                        <td>No</td>
+                                    </tr>
+                                {% endif %}
+
+                                {% if assignments.count >= 2 %}
+                                    <tr class="success">
+                                        <td>Assignments</td>
+                                        <td>1 Assignment</td>
+                                        <td>Yes</td>
+                                    </tr>
+                                {% else %}
+                                    <tr class="danger">
+                                        <td>Assignments</td>
+                                        <td>1 Assignment</td>
+                                        <td>No</td>
+                                    </tr>
+                                {% endif %}
+
+                                {% if quizzes.count >= 1 %}
+                                    <tr class="success">
+                                        <td>Quizzes</td>
+                                        <td>2 Quizzes</td>
+                                        <td>Yes</td>
+                                    </tr>
+                                {% else %}
+                                    <tr class="danger">
+                                        <td>Quizzes</td>
+                                        <td>2 Quizzes</td>
+                                        <td>No</td>
+                                        <td></td>
+                                    </tr>
+                                {% endif %}
+
+                                {% if exams.count >= 1 %}
+                                    <tr class="success">
+                                        <td>Exams</td>
+                                        <td>1 Exam</td>
+                                        <td>Yes</td>
+                                    </tr>
+                                {% else %}
+                                    <tr class="danger">
+                                        <td>Exams</td>
+                                        <td>1 Exam</td>
+                                        <td>No</td>
+                                    </tr>
+                                {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+
+    </div>
+
+</div>
+<!-- Modal -->
+<div id="ajax_syllabus_modal"
+   name="ajax_syllabus_modal"></div>
+<!-- end modal -->
+
+<script>
+    /**
+     *  Function will call AJAX function to load the modal for the new course
+     *  creation UI.
+     */
+    function ajax_syllabus_modal()
+    {
+        var url = 'syllabus_modal';
+
+        $.ajax( url, {
+           data: {
+               'csrfmiddlewaretoken': '{{ csrf_token }}',
+           },
+           type: 'post',
+           success: function(result) {
+               // success code execution here
+               $('#ajax_syllabus_modal').html(result); // Update UI.
+               $('#syllabus_modal').modal();           // Unhide view.
+           },
+           error: function(xhr,status,error) {
+               // error code here
+           },
+           complete: function(xhr,status) {
+               // completion code here
+           }
+        });
+    }
+
+    /**
+     *  Function will call AJAX function to delete the teacher's syllabus.
+     */
+    function ajax_delete_syllabus(syllabus_id)
+    {
+        var url = 'delete_syllabus';
+
+        $.ajax( url, {
+               data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    'syllabus_id' : syllabus_id
+               },
+               type: 'post',
+               success: function(result) {
+                    // success code execution here
+                    if (result.status == 'success')
+                    {
+                        refresh_page();
+                    }
+               },
+               error: function(xhr,status,error) {
+                    // error code here
+               },
+               complete: function(xhr,status) {
+                    // completion code here
+               }
+        });
+    }
+
+    /**
+     *  Function makes the current tab refresh the page.
+     */
+    function refresh_page()
+    {
+        window.location = '{{ tab }}';
+    }
+    </script>
+
+
+{% endblock content %}

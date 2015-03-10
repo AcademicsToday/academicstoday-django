@@ -36,6 +36,9 @@
     <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
     <div class="collapse navbar-collapse navbar-ex1-collapse">
         <ul class="nav navbar-nav side-nav">
+            <li {% if tab == 'overview' %}class="active"{% endif %}>
+                <a href="overview"><i class="fa fa-fw fa-sitemap"></i> Overview</a>
+            </li>
             <li {% if tab == 'home' %}class="active"{% endif %}>
                 <a href="home"><i class="fa fa-fw fa-bullhorn"></i> Announcements</a>
             </li>

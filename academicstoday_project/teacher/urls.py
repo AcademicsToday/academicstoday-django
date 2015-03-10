@@ -10,8 +10,12 @@ from teacher.views import lecture
 from teacher.views import assignment
 from teacher.views import quiz
 from teacher.views import exam
+from teacher.views import overview
 
 urlpatterns = patterns('',
+    # Syllabus
+    url(r'^teacher/course/(\d+)/overview$', overview.overview_page),
+
     # Announcement
     url(r'^teacher/course/(\d+)/$', announcement.announcements_page),
     url(r'^teacher/course/(\d+)/home$', announcement.announcements_page),

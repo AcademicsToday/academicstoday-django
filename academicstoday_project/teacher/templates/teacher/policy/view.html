@@ -1,11 +1,11 @@
-{% extends 'course/base.html' %}
+{% extends 'teacher/base.html' %}
 {% load staticfiles %}
 {% block content %}
 
 <div id="page-wrapper">
-    
+
     <div class="container-fluid">
-        
+
         <!-- Page Heading -->
         <div class="row">
             <div class="col-lg-12">
@@ -28,7 +28,7 @@
             </div>
         </div>
         <!-- /.row -->
-        
+
         {% if policy == None %}
         <!-- Banner -->
         <div class="jumbotron">
@@ -54,9 +54,9 @@
         </div>
         <!-- /.row -->
         {% endif %}
-        
+
     </div>
-    
+
 </div>
 <!-- Modal -->
 <div id="ajax_policy_modal"
@@ -71,7 +71,7 @@
     function ajax_policy_modal()
     {
         var url = 'policy_modal';
-    
+
         $.ajax( url, {
            data: {
                'csrfmiddlewaretoken': '{{ csrf_token }}',
@@ -97,7 +97,7 @@
     function ajax_delete_policy(policy_id)
     {
         var url = 'delete_policy';
-    
+
         $.ajax( url, {
                data: {
                     'csrfmiddlewaretoken': '{{ csrf_token }}',

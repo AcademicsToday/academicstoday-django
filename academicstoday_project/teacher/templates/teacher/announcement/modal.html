@@ -34,9 +34,10 @@
         // When this model hides, we will clear the contents of it.
         $('#announcement_modal').on('hidden.bs.modal', function (e) {
             $('#announcement_modal').html('');
+            refresh_page();
         });
     });
-    
+
     /**
      *  Function will call AJAX function to load the register.
      */
