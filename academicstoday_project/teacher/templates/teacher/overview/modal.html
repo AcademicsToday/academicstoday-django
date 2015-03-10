@@ -30,7 +30,7 @@
             $('#policy_modal').html('');
         });
     });
-    
+
     /**
      *  Function will call AJAX function to load the register.
      */
@@ -40,7 +40,7 @@ function ajax_save_syllabus()
     var data = new FormData();
     data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
     data.append('file', document.getElementById('id_file').files[0]);
-    
+
     jQuery.ajax({
         url: 'save_syllabus',
         data: data,
