@@ -9,6 +9,7 @@ from teacher.views import policy
 from teacher.views import lecture
 from teacher.views import assignment
 from teacher.views import quiz
+from teacher.views import exam
 
 urlpatterns = patterns('',
     # Announcement
@@ -65,4 +66,17 @@ urlpatterns = patterns('',
     url(r'^teacher/course/(\d+)/quiz/(\d+)/question_true_false_modal$', quiz.question_true_false_modal),
     url(r'^teacher/course/(\d+)/quiz/(\d+)/save_question$', quiz.save_question),
     url(r'^teacher/course/(\d+)/quiz/(\d+)/delete_question$', quiz.delete_question),
+
+    # Exam(s)
+    url(r'^teacher/course/(\d+)/exams$', exam.exams_page),
+    url(r'^teacher/course/(\d+)/exam_modal$', exam.exam_modal),
+    url(r'^teacher/course/(\d+)/save_exam$', exam.save_exam),
+    url(r'^teacher/course/(\d+)/delete_exam$', exam.delete_exam),
+    #
+    # # Exam
+    url(r'^teacher/course/(\d+)/exam/(\d+)$', exam.exam_page),
+    url(r'^teacher/course/(\d+)/exam/(\d+)/question_type_modal$', exam.question_type_modal),
+    url(r'^teacher/course/(\d+)/exam/(\d+)/question_multiple_choice_modal$', exam.question_multiple_choice_modal),
+    url(r'^teacher/course/(\d+)/exam/(\d+)/save_question$', exam.save_question),
+    url(r'^teacher/course/(\d+)/exam/(\d+)/delete_question$', exam.delete_question),
 )

@@ -14,6 +14,7 @@ from registrar.models import MultipleChoiceQuestion
 from registrar.models import TrueFalseQuestion
 from registrar.models import ResponseQuestion
 from registrar.models import Quiz
+from registrar.models import Exam
 
 # Django Forms
 # https://docs.djangoproject.com/en/1.7/topics/forms/
@@ -131,6 +132,27 @@ class QuizForm(forms.ModelForm):
         fields = ['quiz_num', 'title', 'description', 'start_date', 'due_date']
         labels = {
             'quiz_num': 'Quiz #',
+        }
+        widgets = {
+            'start_date': SelectDateWidget(),
+            'due_date': SelectDateWidget(),
+    }
+
+EXAM_QUESTION_TYPE_CHOICES = (
+    (settings.MULTIPLECHOICE_QUESTION_TYPE, 'Multiple-Choice'),
+)
+
+class ExamQuestionTypeForm(forms.Form):
+    question_num = forms.IntegerField(label='Question #', initial=1, widget=forms.NumberInput(attrs={'min': '0', 'max': '100', 'step': '1'}))
+    question_type = forms.CharField(label='Question Type', widget=forms.Select(choices=EXAM_QUESTION_TYPE_CHOICES))
+
+
+class ExamForm(forms.ModelForm):
+    class Meta:
+        model = Exam
+        fields = ['exam_num', 'title', 'description', 'start_date', 'due_date']
+        labels = {
+            'exam_num': 'Exam #',
         }
         widgets = {
             'start_date': SelectDateWidget(),

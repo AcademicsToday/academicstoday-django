@@ -1,0 +1,107 @@
+<div class="modal fade" id="question_modal" role="dialog">
+    <div class="modal-dialog" style="width:50%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h2 class="modal-title" id="myModalLabel">{{ title }}</h2>
+            </div>
+            <div class="modal-body">
+                {% include "teacher/exam/form.html" with form=form %}
+            </div>
+            <div class="modal-footer">
+                <button type="button"
+                       class="btn btn-primary"
+                     onclick="ajax_save_question({{ form.instance.question_id }});">
+                    <i class="fa fa-check-circle"></i> Submit
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    /**
+     * Dynamic UI Code.
+     *  To give our application a dynamic feel, the following jQuery code will be
+     *  used to perform various UI changes.
+     */
+     $(document).ready(function(){
+        $('#question_modal').on('hidden.bs.modal', function (e) {
+            $('#question_modal').html('');
+            refresh_page();
+        });
+    });
+
+    function ajax_save_question(question_id)
+    {
+        // If no question_id was entered then set it to zero to tell our
+        // controller that we are inserting a new question.
+        if (typeof(question_id)==='undefined')
+        {
+            question_id = 0;
+        }
+
+        // Create a FormData Object using your form dom element and load
+        // up the initial data first, then update it on question type.
+
+        // Basic
+        var data = new FormData();
+        data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+        data.append('question_type', $('#id_question_type').val());
+        data.append('question_num', $('#id_question_num').val());
+        data.append('question_id', question_id);
+        data.append('title', $('#id_title').val());
+        data.append('description', $('#id_description').val());
+
+        // Multiple Choice
+        data.append('a', $('#id_a').val());
+        data.append('b', $('#id_b').val());
+        data.append('c', $('#id_c').val());
+        data.append('d', $('#id_d').val());
+        data.append('e', $('#id_e').val());
+        data.append('f', $('#id_f').val());
+        data.append('a_is_correct', $('#id_a_is_correct').is(':checked'));
+        data.append('b_is_correct', $('#id_b_is_correct').is(':checked'));
+        data.append('c_is_correct', $('#id_c_is_correct').is(':checked'));
+        data.append('d_is_correct', $('#id_d_is_correct').is(':checked'));
+        data.append('e_is_correct', $('#id_e_is_correct').is(':checked'));
+        data.append('f_is_correct', $('#id_f_is_correct').is(':checked'));
+
+        // True/False Choice
+        data.append('true_choice', $('#id_true_choice').val());
+        data.append('false_choice', $('#id_false_choice').val());
+        data.append('answer', $('#id_answer').is(':checked'));
+
+        // Response
+        if ($('#id_question_type').val() == {{ RESPONSE_QUESTION_TYPE }})
+        {
+            data.append('answer', $('#id_answer').val());
+        }
+
+        jQuery.ajax({
+            url: {{ exam.exam_id }} + '/save_question',
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: 'POST',
+            success: function(json_result){
+                // success code execution here
+                if (json_result.status == "success")
+                {
+                    $('#question_modal').modal('hide');
+                }
+                else
+                {
+                    alert(json_result.message);
+                }
+            },
+            error: function(xhr,status,error) {
+                // error code here
+            },
+            complete: function(xhr,status) {
+               // completion code here
+            }
+        });
+
+    }
+</script>

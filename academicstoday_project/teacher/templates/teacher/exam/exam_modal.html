@@ -1,0 +1,81 @@
+<div class="modal fade" id="exam_modal" role="dialog">
+    <div class="modal-dialog" style="width:50%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h2 class="modal-title" id="myModalLabel">New Exam</h2>
+            </div>
+            <div class="modal-body">
+                {% include "teacher/exam/form.html" with form=form %}
+            </div>
+            <div class="modal-footer">
+                <button type="button"
+                    class="btn btn-primary"
+                     form="register_form"
+                  onclick="ajax_save_exam();">
+                    <i class="fa fa-check-circle"></i> Submit
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    /**
+     * Dynamic UI Code.
+     *  To give our application a dynamic feel, the following jQuery code will be
+     *  used to perform various UI changes.
+     */
+     $(document).ready(function(){
+        $('#exam_modal').on('hidden.bs.modal', function (e) {
+            $('#exam_modal').html('');
+        });
+    });
+
+    function ajax_save_exam()
+    {
+        // create a FormData Object using your form dom element
+        var data = new FormData();
+        data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+        data.append('exam_id', $('#id_exam_id').val());
+        data.append('title', $('#id_title').val());
+        data.append('description', $('#id_description').val());
+        data.append('exam_num', $('#id_exam_num').val());
+        var date = '';
+        date  = $('#id_start_date_year').val() + '-';
+        date += $('#id_start_date_month').val() + '-';
+        date += $('#id_start_date_day').val();
+        data.append('start_date', date);
+        date  = $('#id_due_date_year').val() + '-';
+        date += $('#id_due_date_month').val() + '-';
+        date += $('#id_due_date_day').val();
+        data.append('due_date', date);
+
+        jQuery.ajax({
+            url: 'save_exam',
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: 'POST',
+            success: function(json_result){
+                // success code execution here
+                if (json_result.status == "success")
+                {
+                    $('#exam_modal').modal('hide');
+                    refresh_page();
+                }
+                else
+                {
+                    alert(json_result.message);
+                }
+            },
+            error: function(xhr,status,error) {
+                // error code here
+            },
+            complete: function(xhr,status) {
+               // completion code here
+            }
+        });
+
+    }
+</script>

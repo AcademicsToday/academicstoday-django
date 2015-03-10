@@ -120,12 +120,13 @@ class Exam(models.Model):
     course = models.ForeignKey(Course)
     exam_id = models.AutoField(primary_key=True)
     exam_num = models.PositiveSmallIntegerField(default=0)
-    type = models.PositiveSmallIntegerField()
+    title = models.CharField(max_length=31, null=True)
+    description = models.TextField(null=True)
     start_date = models.DateField(null=True)
     due_date = models.DateField(null=True)
 
     def __str__(self):
-        return self.course_id + ' ' + self.type;
+        return str(self.exam_num) + ' ' + self.title + ' ' + self.description;
 
     class Meta:
         db_table = 'at_exams'

@@ -1,0 +1,180 @@
+{% extends 'teacher/base.html' %}
+{% load staticfiles %}
+{% block content %}
+
+<div id="page-wrapper">
+
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    Exams
+                </h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-university"></i>  <a href="../../courses">Courses</a>
+                    </li>
+                    <li>
+                        <i class="fa fa-compass"></i> {{ course.title }}
+                    </li>
+                    <li class="active">
+                        <i class="fa fa-star"></i> Exams
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        {% if exams.count <= 0 %}
+        <!-- Exams Banner -->
+        <div class="jumbotron">
+            <h1>Create an Exam!</h1>
+            <p>Create the first exam for your course here.</p>
+            <p><a href="#"
+                 class="btn btn-primary btn-lg"
+               onclick="ajax_exam(0);"
+                  role="button">Exam »</a>
+            </p>
+        </div>
+        <!-- /.row -->
+        {% else %}
+        <!-- Exams -->
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                      <div class="table-responsive">
+                          <table class="table table-hover table-striped">
+                              <thead>
+                                  <tr>
+                                      <th>Exam #</th>
+                                      <th>Title</th>
+                                      <th>
+                                          <button type="button"
+                                                 class="btn btn-sm btn-success"
+                                               onclick="ajax_exam(0);">
+                                            <i class="fa fa-plus"></i> Add
+                                        </button>
+                                      </th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                              {% for exam in exams %}
+                                  <tr>
+                                      <td align="left" valign="left">{{ exam.exam_num }}</td>
+                                      <td align="left" valign="left">{{ exam.title }}</td>
+                                      <td align="left" valign="left">
+                                        <button type="button"
+                                              class="btn btn-sm btn-primary"
+                                              onclick="view_exam({{ exam.exam_id }});">
+                                              <i class="fa fa-file"></i> Questions
+                                        </button>
+                                        <button type="button"
+                                              class="btn btn-sm btn-warning"
+                                              onclick="ajax_exam({{ exam.exam_id }});">
+                                              <i class="fa fa-pencil"></i> Edit
+                                        </button>
+                                        <button type="button"
+                                               class="btn btn-sm btn-danger"
+                                             onclick="ajax_delete_exam({{ exam.exam_id }});">
+                                           <i class="fa fa-minus"></i> Delete
+                                        </button>
+                                      </td>
+                                  </tr>
+                            {% endfor %}
+                            </tbody>
+                          </table>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+        {% endif %}
+
+    </div>
+
+</div>
+
+<!-- Modal -->
+<div id="ajax_exam_modal"
+   name="ajax_exam_modal"></div>
+<!-- end modal -->
+
+<script>
+    /**
+     *  This function will load up the exam question creator/editor page.
+     */
+    function view_exam(exam_id)
+    {
+        window.location = "exam/" + exam_id;
+    }
+
+    /**
+     *  Function will call AJAX function to load the modal for the new exam
+     *  creation UI and load up the existing exam.
+     */
+    function ajax_exam(exam_id)
+    {
+        var url = 'exam_modal';
+        $.ajax( url, {
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'exam_id': exam_id
+            },
+            type: 'post',
+            success: function(result) {
+                // success code execution here-->
+                $('#ajax_exam_modal').html(result); // Update UI.
+                $('#exam_modal').modal();           // Unhide view.
+            },
+            error: function(xhr,status,error) {
+                // error code here
+            },
+            complete: function(xhr,status) {
+               // completion code here
+            }
+        });
+    }
+
+    /**
+     *  Function will call AJAX function to delete the teacher's exam.
+     */
+    function ajax_delete_exam(exam_id)
+    {
+        var url = 'delete_exam';
+
+        $.ajax( url, {
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'exam_id' : exam_id
+            },
+            type: 'post',
+            success: function(result) {
+                // success code execution here
+                if (result.status == 'success')
+                {
+                    refresh_page();
+                }
+            },
+            error: function(xhr,status,error) {
+                // error code here
+            },
+            complete: function(xhr,status) {
+               // completion code here
+            }
+        });
+    }
+
+    /**
+     *  Function makes the current tab refresh the page.
+     */
+    function refresh_page()
+    {
+        window.location = '{{ tab }}';
+    }
+</script>
+
+{% endblock content %}

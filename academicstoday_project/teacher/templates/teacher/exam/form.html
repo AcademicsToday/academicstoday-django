@@ -1,0 +1,27 @@
+<form>
+    <input type="hidden"
+             id="id_exam_id"
+           name="exam_id"
+          value={% if form.instance.exam_id != None %}"{{ form.instance.exam_id }}"{% else %}0{% endif %}>
+    {% if form.instance.question_type != None %}
+    <input type="hidden"
+             id="id_question_type"
+           name="question_type"
+          value="{{ form.instance.question_type }}">
+    {% endif %}
+    {% for field in form %}
+    <div class="row">
+        <div class="form-group">
+            <div class="fieldWrapper">
+                <label class="col-sm-3 control-label">
+                    {{ field.label }}
+                </label>
+                <div class="col-sm-9">
+                    {{ field }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <br/>
+    {% endfor %}
+</form>
