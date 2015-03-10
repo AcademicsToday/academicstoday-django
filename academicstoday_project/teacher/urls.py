@@ -15,6 +15,7 @@ from teacher.views import overview
 urlpatterns = patterns('',
     # Syllabus
     url(r'^teacher/course/(\d+)/overview$', overview.overview_page),
+    url(r'^teacher/course/(\d+)/submit_course_for_review$', overview.submit_course_for_review),
 
     # Announcement
     url(r'^teacher/course/(\d+)/$', announcement.announcements_page),

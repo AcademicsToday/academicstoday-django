@@ -21,6 +21,22 @@ class Course(models.Model):
         db_table = 'at_courses'
 
 
+class CourseSubmission(models.Model):
+    review_id = models.AutoField(primary_key=True)
+    course = models.ForeignKey(Course)
+    status = models.PositiveSmallIntegerField(default=settings.COURSE_SUBMITTED_FOR_REVIEW_STATUS)
+    from_submitter = models.TextField(null=True)
+    from_reviewer = models.TextField(null=True)
+    review_date = models.DateField(auto_now=True, null=True)
+    submission_date = models.DateField(auto_now_add=True, null=True)
+
+    def __str__(self):
+        return str(self.review_date) + ' ' + str(self.review)
+
+    class Meta:
+        db_table = 'at_course_submissions'
+
+
 class Student(models.Model):
     user = models.OneToOneField(User, primary_key=True)
     courses = models.ManyToManyField(Course)

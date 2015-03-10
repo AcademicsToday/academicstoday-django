@@ -29,7 +29,19 @@
         </div>
         <!-- /.row -->
 
-        <!-- Registrar Information -->
+        <!-- Submit course for Review -->
+        {% if review == None %}
+        <div class="jumbotron">
+            <h1>Course Registration</h1>
+                <p>To have your course available on AcademicsToday, you must first submit your course for review. We will look over it and either accept it or provide feedback on how to improve the course before release.</p>
+                <p>Please not illegal stuff will be outrightly rejected.</p>
+                <p><a onclick="ajax_submit_course();" class="btn btn-primary btn-lg" role="button">Submit for Review »</a>
+            </p>
+        </div>
+        {% endif %}
+        <!-- /.row -->
+
+        <!-- Registrar Status Information -->
         <div class="row">
             <div class="col-lg-12">
                 <div class="panel panel-default">
@@ -37,7 +49,7 @@
                         <h3 class="panel-title"><i class="fa fa-bar-chart-o fa-university"></i> Registrar Status Information</h3>
                     </div>
                     <div class="panel-body">
-                        <h2>Requirements</h2>
+                        <h2>Course Requirements</h2>
                         <p>These requirements must be met to be considered acceptable course by the registrar</p>
                         <div class="table-responsive">
                             <table class="table table-bordered table-hover table-striped">
@@ -150,6 +162,42 @@
                                 </tbody>
                             </table>
                         </div>
+                        {% if review != None %}
+                        <h2>Review Status</h2>
+                        <p>These requirements must be met to be considered acceptable course by the registrar</p>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Submission Date</th>
+                                        <th>Status</th>
+                                        <th>Message</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{ review.submission_date }}</td>
+                                        <td>
+                                        {% if review.status == COURSE_SUBMITTED_FOR_REVIEW_STATUS %}
+                                            Waiting for Review
+                                        {% elif review.status == COURSE_IN_REVIEW_STATUS %}
+                                            In Review
+                                        {% elif review.status == COURSE_REJECTED_STATUS %}
+                                            Rejected
+                                        {% elif review.status == COURSE_AVAILABLE_STATUS %}
+                                            Accepted
+                                        {% elif review.status == COURSE_AVAILABLE_STATUS %}
+                                            Unavailable
+                                        {% else %}
+                                            Unknown State
+                                        {% endif %}
+                                        </td>
+                                        <td>{{ review.from_reviewer }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -165,44 +213,13 @@
 <!-- end modal -->
 
 <script>
-    /**
-     *  Function will call AJAX function to load the modal for the new course
-     *  creation UI.
-     */
-    function ajax_syllabus_modal()
+    function ajax_submit_course()
     {
-        var url = 'syllabus_modal';
-
-        $.ajax( url, {
-           data: {
-               'csrfmiddlewaretoken': '{{ csrf_token }}',
-           },
-           type: 'post',
-           success: function(result) {
-               // success code execution here
-               $('#ajax_syllabus_modal').html(result); // Update UI.
-               $('#syllabus_modal').modal();           // Unhide view.
-           },
-           error: function(xhr,status,error) {
-               // error code here
-           },
-           complete: function(xhr,status) {
-               // completion code here
-           }
-        });
-    }
-
-    /**
-     *  Function will call AJAX function to delete the teacher's syllabus.
-     */
-    function ajax_delete_syllabus(syllabus_id)
-    {
-        var url = 'delete_syllabus';
+        var url = 'submit_course_for_review';
 
         $.ajax( url, {
                data: {
                     'csrfmiddlewaretoken': '{{ csrf_token }}',
-                    'syllabus_id' : syllabus_id
                },
                type: 'post',
                success: function(result) {
