@@ -106,12 +106,16 @@ def assignment_page(request, course_id, assignment_id):
     except MultipleChoiceSubmission.DoesNotExist:
         mc_submissions = None
 
-    # Load all true/false type questions for this assignment.
+    # Load all true/false type questions/submissions for this assignment.
     try:
         tf_questions = TrueFalseQuestion.objects.filter(assignment=assignment).order_by('question_num')
     except TrueFalseQuestion.DoesNotExist:
         tf_questions = None
-    
+    try:
+        tf_submissions = TrueFalseSubmission.objects.filter(assignment=assignment,student=student)
+    except tf_submissions.DoesNotExist:
+        tf_submissions = None
+
     # Load all response type questions for this assignment.
     try:
         r_questions = ResponseQuestion.objects.filter(assignment=assignment).order_by('question_num')
@@ -126,6 +130,7 @@ def assignment_page(request, course_id, assignment_id):
         'mc_questions': mc_questions,
         'mc_submissions': mc_submissions,
         'tf_questions' : tf_questions,
+        'tf_submissions': tf_submissions,
         'r_questions' : r_questions,
         'ESSAY_QUESTION_TYPE': settings.ESSAY_QUESTION_TYPE,
         'MULTIPLECHOICE_QUESTION_TYPE': settings.MULTIPLECHOICE_QUESTION_TYPE,
@@ -210,29 +215,6 @@ def assignment_page(request, course_id, assignment_id):
 #
 #
 #@login_required()
-#def assignment_essay(request, assignment_id):
-#    response_data = {}
-#    if request.is_ajax():
-#        if request.method == 'POST':
-#            assignment = Assignment.objects.get(id=assignment_id)
-#            try:
-#                essay_question = EssayQuestion.objects.get(assignment_id=assignment_id)
-#            except EssayQuestion.DoesNotExist:
-#                essay_question = None
-#
-#            try:
-#                essay_submission = EssaySubmission.objects.get(assignment_id=assignment_id)
-#            except EssaySubmission.DoesNotExist:
-#                essay_submission = None
-#
-#            return render(request, 'course/assignment/essay_modal.html',{
-#                'assignment' : assignment,
-#                'essay_question' : essay_question,
-#                'essay_submission' : essay_submission
-#             })
-#
-#
-#@login_required()
 #def upload_essay_assignment(request, course_id):
 #    response_data = {'status' : 'failed', 'message' : 'error submitting'}
 #    if request.is_ajax():
@@ -256,27 +238,6 @@ def assignment_page(request, course_id, assignment_id):
 #            else:
 #                response_data = {'status' : 'failed', 'message' : form.errors}
 #    return HttpResponse(json.dumps(response_data), content_type="application/json")
-#
-#
-#@login_required()
-#def assignment_multiplechoice(request, course_id):
-#    if request.is_ajax():
-#        if request.method == 'POST':
-#            assignment_id = int(request.POST['assignment_id'])
-#            assignment = Assignment.objects.get(id=assignment_id)
-#            try:
-#                questions = MultipleChoiceQuestion.objects.filter(
-#                    assignment_id=assignment_id,
-#                    course_id=course_id,
-#                    exam_id=0,
-#                )
-#            except MultipleChoiceQuestion.DoesNotExist:
-#                questions = None
-#
-#            return render(request, 'assignment/mc_modal.html',{
-#                'assignment' : assignment,
-#                'questions' : questions,
-#            })
 #
 #
 #@login_required()
@@ -358,42 +319,6 @@ def submit_mc_assignment_answer(request, course_id, assignment_id):
 
 
 #@login_required()
-#def assignment_truefalse(request, course_id):
-#    if request.is_ajax():
-#        if request.method == 'POST':
-#            student_id = int(request.POST['student_id'])
-#            assignment_id = int(request.POST['assignment_id'])
-#            assignment = Assignment.objects.get(id=assignment_id)
-#
-#            # Fetch questions
-#            try:
-#                questions = TrueFalseQuestion.objects.filter(
-#                    assignment_id=assignment_id,
-#                    course_id=course_id,
-#                    quiz_id=0,
-#                )
-#            except TrueFalseQuestion.DoesNotExist:
-#                questions = None
-#
-#            # Fetch submissions
-#            try:
-#                submissions = TrueFalseSubmission.objects.filter(
-#                    student_id=student_id,
-#                    assignment_id=assignment_id,
-#                    course_id=course_id,
-#                    quiz_id=0,
-#                )
-#            except TrueFalseSubmission.DoesNotExist:
-#                submission = None
-#
-#            return render(request, 'course/assignment/truefalse_modal.html',{
-#                'assignment' : assignment,
-#                'questions' : questions,
-#                'submissions' : submissions,
-#            })
-#
-#
-#@login_required()
 #def submit_truefalse_assignment_completion(request, course_id):
 #    # Update the 'submission_date' of our entry to indicate we
 #    # have finished the assignment.
@@ -409,58 +334,52 @@ def submit_mc_assignment_answer(request, course_id, assignment_id):
 #    return HttpResponse(json.dumps(response_data), content_type="application/json")
 #
 #
-#@login_required()
-#def submit_truefalse_assignment_answer(request, course_id):
-#    if request.is_ajax():
-#        if request.method == 'POST':
-#            assignment_id = int(request.POST['assignment_id'])
-#            student_id = int(request.POST['student_id'])
-#            course_id = int(request.POST['course_id'])
-#            question_num = int(request.POST['num'])
-#            key = request.POST['key']
-#            value = request.POST['value']
-#
-#            # Fetch question and error if not found.
-#            try:
-#                question = TrueFalseQuestion.objects.get(
-#                    assignment_id=assignment_id,
-#                    quiz_id=0,
-#                    course_id=course_id,
-#                    question_num=question_num,
-#                )
-#            except MultipleChoiceQuestion.DoesNotExist:
-#                response_data = {'status' : 'failed', 'message' : 'cannot find question'}
-#                return HttpResponse(json.dumps(response_data), content_type="application/json")
-#
-#            # Fetch submission and create new submission if not found.
-#            try:
-#                submission = TrueFalseSubmission.objects.get(
-#                    student_id=student_id,
-#                    assignment_id=assignment_id,
-#                    quiz_id=0,
-#                    course_id=course_id,
-#                    question_num=question_num,
-#                )
-#            except TrueFalseSubmission.DoesNotExist:
-#                submission = TrueFalseSubmission.create(
-#                    student_id=student_id,
-#                    assignment_id=assignment_id,
-#                    quiz_id=0,
-#                    course_id=course_id,
-#                    question_num=question_num,
-#                )
-#
-#            # Save answer
-#            submission.answer = key == "true"
-#            submission.save()
-#
-#            response_data = {'status' : 'success', 'message' : 'submitted'}
-#            return HttpResponse(json.dumps(response_data), content_type="application/json")
-#
-#    response_data = {'status' : 'failed', 'message' : 'error submitting'}
-#    return HttpResponse(json.dumps(response_data), content_type="application/json")
-#
-#
+@login_required()
+def submit_tf_assignment_answer(request, course_id, assignment_id):
+    if request.is_ajax():
+        if request.method == 'POST':
+            # Extract parameters from post
+            question_id = int(request.POST['question_id'])
+            answer = request.POST['answer']
+            
+            # Fetch from database
+            course = Course.objects.get(id=course_id)
+            assignment = Assignment.objects.get(assignment_id=assignment_id)
+            student = Student.objects.get(user=request.user)
+
+            # Fetch question and error if not found.
+            try:
+                question = TrueFalseQuestion.objects.get(
+                    assignment=assignment,
+                    course=course,
+                    question_id=question_id,
+                )
+            except MultipleChoiceQuestion.DoesNotExist:
+                response_data = {'status' : 'failed', 'message' : 'cannot find question'}
+                return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+            # Fetch submission and create new submission if not found.
+            try:
+                submission = TrueFalseSubmission.objects.get(
+                    student=student,
+                    assignment=assignment,
+                    question_id=question_id,
+                )
+            except TrueFalseSubmission.DoesNotExist:
+                submission = TrueFalseSubmission.objects.create(
+                    student=student,
+                    assignment=assignment,
+                    question_id=question_id,
+                )
+
+            # Process the answer
+            # Return success results
+            submission.answer = answer == "true"
+            submission.save()
+
+            response_data = {'status' : 'success', 'message' : 'submitted'}
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+
 #@login_required()
 #def assignment_response(request, course_id):
 #    if request.is_ajax():

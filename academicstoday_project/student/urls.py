@@ -31,24 +31,11 @@ urlpatterns = patterns('',
 
     # Assignment(s)
     url(r'^course/(\d+)/assignments$', assignment.assignments_page),
-#    url(r'^course/(\d+)/assignment_delete$', assignment.assignment_delete),
-#    url(r'^course/(\d+)/upload_essay_assignment$', assignment.upload_essay_assignment),
-#    url(r'^course/(\d+)/submit_truefalse_assignment_answer$', assignment.submit_truefalse_assignment_answer),
-#    url(r'^course/(\d+)/submit_response_assignment_answer$', assignment.submit_response_assignment_answer),
-#    url(r'^course/(\d+)/submit_mc_assignment_completion$', assignment.submit_mc_assignment_completion),
-#    url(r'^course/(\d+)/submit_truefalse_assignment_completion$', assignment.submit_truefalse_assignment_completion),
-#    url(r'^course/(\d+)/submit_response_assignment_completion$', assignment.submit_response_assignment_completion),
 
     # Assignment
     url(r'^course/(\d+)/assignment/(\d+)$', assignment.assignment_page),
     url(r'^course/(\d+)/assignment/(\d+)/submit_mc_assignment_answer$', assignment.submit_mc_assignment_answer),
-#    url(r'^teacher/course/(\d+)/assignment/(\d+)/question_type_modal$', assignment.question_type_modal),
-#    url(r'^teacher/course/(\d+)/assignment/(\d+)/question_essay_modal$', assignment.question_essay_modal),
-#    url(r'^teacher/course/(\d+)/assignment/(\d+)/question_multiple_choice_modal$', assignment.question_multiple_choice_modal),
-#    url(r'^teacher/course/(\d+)/assignment/(\d+)/question_true_false_modal$', assignment.question_true_false_modal),
-#    url(r'^teacher/course/(\d+)/assignment/(\d+)/question_response_modal$', assignment.question_response_modal),
-#    url(r'^teacher/course/(\d+)/assignment/(\d+)/save_question$', assignment.save_question),
-#    url(r'^teacher/course/(\d+)/assignment/(\d+)/delete_question$', assignment.delete_question),
+    url(r'^course/(\d+)/assignment/(\d+)/submit_tf_assignment_answer$', assignment.submit_tf_assignment_answer),
                        
     # Quiz
     url(r'^course/(\d+)/quizzes$', quiz.quizzes_page),

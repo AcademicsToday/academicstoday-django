@@ -297,8 +297,8 @@ class MultipleChoiceQuestion(models.Model):
 
 class MultipleChoiceSubmission(models.Model):
     student = models.ForeignKey(Student)
-    question = models.ForeignKey(MultipleChoiceQuestion)
     assignment = models.ForeignKey(Assignment, null=True)
+    question = models.ForeignKey(MultipleChoiceQuestion)
     exam = models.ForeignKey(Exam, null=True)
     submission_id = models.AutoField(max_length=11, primary_key=True)
     a = models.BooleanField(default=False)
@@ -348,12 +348,12 @@ class TrueFalseQuestion(models.Model):
 
 
 class TrueFalseSubmission(models.Model):
-    course = models.ForeignKey(Course)
-    assignment = models.ForeignKey(Assignment, null=True)
-    quiz = models.ForeignKey(Quiz, null=True)
     student = models.ForeignKey(Student)
-    submission_id = models.AutoField(primary_key=True)
-    question_num = models.PositiveSmallIntegerField(default=0)
+    assignment = models.ForeignKey(Assignment, null=True)
+    question = models.ForeignKey(TrueFalseQuestion)
+    quiz = models.ForeignKey(Quiz, null=True)
+    exam = models.ForeignKey(Exam, null=True)
+    submission_id = models.AutoField(max_length=11, primary_key=True)
     answer = models.BooleanField(default=False)
     marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)

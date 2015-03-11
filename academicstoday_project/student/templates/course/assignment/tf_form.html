@@ -1,0 +1,30 @@
+<div id="QUESTION_{{ question.question_num }}">
+    <p>{{ tf_question.description }}</p>
+    <br/>
+    <p>
+        <input onclick="ajax_submit_tf_assignment_answer({{ tf_question.question_id }}, true);"
+                  type="radio"
+                  name="tf"
+                 value="true"
+        {% for tf_submission in tf_submissions %}
+        {% if tf_submission.question == tf_question %}
+        {% if tf_submission.answer == True %}
+                 checked
+        {% endif %}
+        {% endif %}
+        {% endfor %}> {{ tf_question.true_choice }}<br>
+    </p>
+    <p>
+        <input onclick="ajax_submit_tf_assignment_answer({{ tf_question.question_id }}, false);"
+                  type="radio"
+                  name="tf"
+                 value="false"
+        {% for tf_submission in tf_submissions %}
+        {% if tf_submission.question == tf_question %}
+        {% if tf_submission.answer == False %}
+                 checked
+        {% endif %}
+        {% endif %}
+        {% endfor %}> {{ tf_question.false_choice }}<br>
+    </p>
+</div>
