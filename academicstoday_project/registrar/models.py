@@ -226,13 +226,12 @@ class AssignmentSubmission(models.Model):
     student = models.ForeignKey(Student)
     submission_id = models.AutoField(primary_key=True)
     assignment_num = models.PositiveSmallIntegerField(default=0)
-    type = models.PositiveSmallIntegerField()
     marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateField(null=True)
     is_marked = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.submission_id + ' ' + self.type;
+        return str(assignment_num) + ' ' + str(marks);
 
     class Meta:
         db_table = 'at_assignment_submissions'
@@ -297,13 +296,17 @@ class MultipleChoiceQuestion(models.Model):
         db_table = 'at_multiple_choice_questions'
 
 class MultipleChoiceSubmission(models.Model):
-    course = models.ForeignKey(Course)
-    assignment = models.ForeignKey(Assignment, null=True)
     student = models.ForeignKey(Student)
+    question = models.ForeignKey(MultipleChoiceQuestion)
+    assignment = models.ForeignKey(Assignment, null=True)
     exam = models.ForeignKey(Exam, null=True)
     submission_id = models.AutoField(max_length=11, primary_key=True)
-    question_num = models.PositiveSmallIntegerField(default=0)
-    json_answers = models.CharField(max_length=127, default='{}')
+    a = models.BooleanField(default=False)
+    b = models.BooleanField(default=False)
+    c = models.BooleanField(default=False)
+    d = models.BooleanField(default=False)
+    e = models.BooleanField(default=False)
+    f = models.BooleanField(default=False)
     marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
     is_marked = models.BooleanField(default=False)

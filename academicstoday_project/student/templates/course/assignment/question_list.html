@@ -1,0 +1,161 @@
+{% extends 'course/base.html' %}
+{% load staticfiles %}
+{% block content %}
+
+<div id="page-wrapper">
+
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    Assignment
+                </h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-university"></i> <a href="../../../courses">Courses</a>
+                    </li>
+                    <li>
+                        <i class="fa fa-compass"></i> {{ course.title }}
+                    </li>
+                    <li>
+                        <i class="fa fa-book"></i> <a href="../assignments">Assignments</a>
+                    </li>
+                    <li class="active">
+                        <i class="fa fa-book"></i> Assignment #{{ assignment.assignment_num }}
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <!-- Assignment description -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Assignment #{{ assignment.assignment_num }}: {{ assignment.title }}</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>{{ assignment.description }}</p>
+                        <p>Due: {{ assignment.due_date }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <!-- Essay Questions -->
+        {% for essay_question in essay_questions %}
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Question #{{ essay_question.question_num }}</h3>
+                    </div>
+                    <div class="panel-body">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <!-- /.Essay Questions -->
+        
+        <!-- Multiple-Choice Questions -->
+        {% for mc_question in mc_questions %}
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Question #{{ mc_question.question_num }}</h3>
+                    </div>
+                    <div class="panel-body">
+                        {% include "course/assignment/mc_form.html" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <!-- /.Multiple-Choice Questions -->
+        
+        <!-- True/False Questions -->
+        {% for tf_question in tf_questions %}
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Question #{{ tf_question.question_num }}</h3>
+                    </div>
+                    <div class="panel-body">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <!-- /.True/False  Questions -->
+        
+        <!-- Response Questions -->
+        {% for r_question in r_questions %}
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Question #{{ r_question.question_num }}</h3>
+                    </div>
+                    <div class="panel-body">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <!-- /.Response  Questions -->
+        
+    </div><!-- /.container -->
+
+</div>
+
+<script>
+    //------------------------------------------------------------------------//
+    //                                 ESSAY                                  //
+    //------------------------------------------------------------------------//
+    
+    
+    //------------------------------------------------------------------------//
+    //                           MULTIPLE CHOICE                              //
+    //------------------------------------------------------------------------//
+
+    /**
+     *  Function sends AJAX code to tell the controller to either set the
+     *  particular question as selected or not for the option.
+     */
+    function ajax_submit_mc_assignment_answer(question_id, answer)
+    {
+        var url = {{ course.id }} + '/submit_mc_assignment_answer';
+        
+        // create a FormData Object using your form dom element
+        var data = new FormData();
+        data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+        data.append('question_id', question_id);
+        data.append('answer', answer);
+    
+        jQuery.ajax({
+            url: url,
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: 'POST',
+            success: function(result){
+                if (result.status != 'success') // Print errors.
+                {
+                    alert(result.message);
+                }
+            }
+        });
+    }
+</script>
+{% endblock content %}
