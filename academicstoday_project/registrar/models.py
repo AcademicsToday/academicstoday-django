@@ -225,9 +225,8 @@ class AssignmentSubmission(models.Model):
     assignment = models.ForeignKey(Assignment)
     student = models.ForeignKey(Student)
     submission_id = models.AutoField(primary_key=True)
-    assignment_num = models.PositiveSmallIntegerField(default=0)
     marks = models.PositiveSmallIntegerField(default=0)
-    submission_date = models.DateField(null=True)
+    submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
     is_marked = models.BooleanField(default=False)
 
     def __str__(self):

@@ -92,9 +92,9 @@ def assignment_page(request, course_id, assignment_id):
     
     # Load all essay type questions for this assignment.
     try:
-        essay_questions = EssayQuestion.objects.filter(assignment=assignment).order_by('question_num')
+        e_questions = EssayQuestion.objects.filter(assignment=assignment).order_by('question_num')
     except EssayQuestion.DoesNotExist:
-        essay_questions = None
+        e_questions = None
     
     # Load all multiple-choice type questions/submissions for this assignment.
     try:
@@ -130,7 +130,7 @@ def assignment_page(request, course_id, assignment_id):
         'student': student,
         'course': course,
         'assignment': assignment,
-        'essay_questions': essay_questions,
+        'e_questions': e_questions,
         'mc_questions': mc_questions,
         'mc_submissions': mc_submissions,
         'tf_questions': tf_questions,
@@ -398,54 +398,31 @@ def submit_r_assignment_answer(request, course_id, assignment_id):
             
             response_data = {'status' : 'success', 'message' : 'submitted'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
-#@login_required()
-#def submit_response_assignment_answer(request, course_id):
-#    if request.is_ajax():
-#        if request.method == 'POST':
-#            assignment_id = int(request.POST['assignment_id'])
-#            student_id = int(request.POST['student_id'])
-#            course_id = int(request.POST['course_id'])
-#            question_num = int(request.POST['question_num'])
-#            response = request.POST[u'response']
-#
-#            # Fetch submission and create new submission if not found.
-#            try:
-#                submission = ResponseSubmission.objects.get(
-#                    student_id=student_id,
-#                    assignment_id=assignment_id,
-#                    course_id=course_id,
-#                    question_num=question_num,
-#                )
-#            except ResponseSubmission.DoesNotExist:
-#                submission = ResponseSubmission.create(
-#                    student_id=student_id,
-#                    assignment_id=assignment_id,
-#                    course_id=course_id,
-#                    question_num=question_num,
-#                )
-#
-#            # Save answer
-#            submission.answer = response
-#            submission.save()
-#
-#            response_data = {'status' : 'success', 'message' : response}
-#            return HttpResponse(json.dumps(response_data), content_type="application/json")
-#
-#    response_data = {'status' : 'failed', 'message' : 'error submitting'}
-#    return HttpResponse(json.dumps(response_data), content_type="application/json")
-#
-#
-#@login_required()
-#def submit_response_assignment_completion(request, course_id):
-#    # Update the 'submission_date' of our entry to indicate we
-#    # have finished the assignment.
-#    submission = AssignmentSubmission.objects.get(
-#        assignment_id=int(request.POST['assignment_id']),
-#        student_id=int(request.POST['student_id']),
-#        course_id=int(request.POST['course_id'])
-#    )
-#    submission.submission_date = datetime.datetime.utcnow()
-#    submission.save()
-#
-#    response_data = {'status' : 'success', 'message' : ''}
-#    return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
+@login_required()
+def submit_assignment(request, course_id, assignment_id):
+    if request.is_ajax():
+        if request.method == 'POST':
+            # Fetch from database
+            course = Course.objects.get(id=course_id)
+            assignment = Assignment.objects.get(assignment_id=assignment_id)
+            student = Student.objects.get(user=request.user)
+
+
+            # Fetch submission and create new submission if not found.
+            try:
+                submission = AssignmentSubmission.objects.get(
+                    student=student,
+                    assignment=assignment,
+                    course=course,
+                )
+            except AssignmentSubmission.DoesNotExist:
+                submission = AssignmentSubmission.objects.create(
+                    student=student,
+                    assignment=assignment,
+                    course=course,
+                )
+            submission.save()
+            response_data = {'status' : 'success', 'message' : 'submitted'}
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
