@@ -1,0 +1,12 @@
+<div id="QUESTION_{{ r_question.question_num }}">
+    <p>{{ r_question.description }}</p>
+    <br/>
+    <p>
+        <textarea onfocusout="ajax_submit_r_assignment_answer({{ r_question.question_id }}, '#id_q{{ r_question.question_num }}');"
+                          id="id_q{{ r_question.question_num }}"
+                        name="q{{ r_question.question_num }}"
+                 placeholder="Enter Your Answer"
+                        cols="68"
+                        rows="5">{% for r_submission in r_submissions %}{% if r_submission.question == r_question %}{% if r_submission.answer != None %}{{ r_submission.answer }}{% endif %}{% endif %}{% endfor %}</textarea>
+    </p>
+</div>

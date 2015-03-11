@@ -112,7 +112,7 @@ def assignment_page(request, course_id, assignment_id):
     except TrueFalseQuestion.DoesNotExist:
         tf_questions = None
     try:
-        tf_submissions = TrueFalseSubmission.objects.filter(assignment=assignment,student=student)
+        tf_submissions = TrueFalseSubmission.objects.filter(assignment=assignment, student=student)
     except tf_submissions.DoesNotExist:
         tf_submissions = None
 
@@ -121,25 +121,30 @@ def assignment_page(request, course_id, assignment_id):
         r_questions = ResponseQuestion.objects.filter(assignment=assignment).order_by('question_num')
     except ResponseQuestion.DoesNotExist:
         r_questions = None
-    
+    try:
+        r_submissions = ResponseSubmission.objects.filter(assignment=assignment, student=student)
+    except ResponseQuestion.DoesNotExist:
+        r_submissions = None
+
     return render(request, 'course/assignment/question_list.html',{
-        'student' : student,
-        'course' : course,
-        'assignment' : assignment,
-        'essay_questions' : essay_questions,
+        'student': student,
+        'course': course,
+        'assignment': assignment,
+        'essay_questions': essay_questions,
         'mc_questions': mc_questions,
         'mc_submissions': mc_submissions,
-        'tf_questions' : tf_questions,
+        'tf_questions': tf_questions,
         'tf_submissions': tf_submissions,
-        'r_questions' : r_questions,
+        'r_questions': r_questions,
+        'r_submissions': r_submissions,
         'ESSAY_QUESTION_TYPE': settings.ESSAY_QUESTION_TYPE,
         'MULTIPLECHOICE_QUESTION_TYPE': settings.MULTIPLECHOICE_QUESTION_TYPE,
         'TRUEFALSE_QUESTION_TYPE': settings.TRUEFALSE_QUESTION_TYPE,
         'RESPONSE_QUESTION_TYPE': settings.RESPONSE_QUESTION_TYPE,
-        'user' : request.user,
-        'tab' : 'assignment',
-        'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
-        'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+        'user': request.user,
+        'tab': 'assignment',
+        'local_css_urls': settings.SB_ADMIN_CSS_LIBRARY_URLS,
+        'local_js_urls': settings.SB_ADMIN_JS_LIBRARY_URLS,
     })
 
 
@@ -238,25 +243,8 @@ def assignment_page(request, course_id, assignment_id):
 #            else:
 #                response_data = {'status' : 'failed', 'message' : form.errors}
 #    return HttpResponse(json.dumps(response_data), content_type="application/json")
-#
-#
-#@login_required()
-#def submit_mc_assignment_completion(request, course_id):
-#    # Update the 'submission_date' of our entry to indicate we
-#    # have finished the assignment.
-#    submission = AssignmentSubmission.objects.get(
-#        assignment_id=int(request.POST['assignment_id']),
-#        student_id=int(request.POST['student_id']),
-#        course_id=int(request.POST['course_id']),
-#        exam_id=0,
-#    )
-#    submission.submission_date = datetime.datetime.utcnow()
-#    submission.save()
-#
-#    response_data = {'status' : 'success', 'message' : ''}
-#    return HttpResponse(json.dumps(response_data), content_type="application/json")
-#
-#
+
+
 @login_required()
 def submit_mc_assignment_answer(request, course_id, assignment_id):
     if request.is_ajax():
@@ -318,22 +306,6 @@ def submit_mc_assignment_answer(request, course_id, assignment_id):
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
-#@login_required()
-#def submit_truefalse_assignment_completion(request, course_id):
-#    # Update the 'submission_date' of our entry to indicate we
-#    # have finished the assignment.
-#    submission = AssignmentSubmission.objects.get(
-#        assignment_id=int(request.POST['assignment_id']),
-#        student_id=int(request.POST['student_id']),
-#        course_id=int(request.POST['course_id'])
-#    )
-#    submission.submission_date = datetime.datetime.utcnow()
-#    submission.save()
-#
-#    response_data = {'status' : 'success', 'message' : ''}
-#    return HttpResponse(json.dumps(response_data), content_type="application/json")
-#
-#
 @login_required()
 def submit_tf_assignment_answer(request, course_id, assignment_id):
     if request.is_ajax():
@@ -380,26 +352,52 @@ def submit_tf_assignment_answer(request, course_id, assignment_id):
             response_data = {'status' : 'success', 'message' : 'submitted'}
             return HttpResponse(json.dumps(response_data), content_type="application/json")
 
-#@login_required()
-#def assignment_response(request, course_id):
-#    if request.is_ajax():
-#        if request.method == 'POST':
-#            assignment_id = int(request.POST['assignment_id'])
-#            assignment = Assignment.objects.get(id=assignment_id)
-#            try:
-#                questions = ResponseQuestion.objects.filter(
-#                    assignment_id=assignment_id,
-#                    course_id=course_id
-#                )
-#            except ResponseQuestion.DoesNotExist:
-#                questions = None
-#
-#            return render(request, 'course/assignment/response_modal.html',{
-#                'assignment' : assignment,
-#                'questions' : questions,
-#            })
-#
-#
+
+@login_required()
+def submit_r_assignment_answer(request, course_id, assignment_id):
+    if request.is_ajax():
+        if request.method == 'POST':
+            # Extract parameters from post
+            question_id = int(request.POST['question_id'])
+            answer = request.POST['answer']
+            
+            # Fetch from database
+            course = Course.objects.get(id=course_id)
+            assignment = Assignment.objects.get(assignment_id=assignment_id)
+            student = Student.objects.get(user=request.user)
+            
+            # Fetch question and error if not found.
+            try:
+                question = ResponseQuestion.objects.get(
+                    assignment=assignment,
+                    course=course,
+                    question_id=question_id,
+                )
+            except ResponseQuestion.DoesNotExist:
+                response_data = {'status' : 'failed', 'message' : 'cannot find question'}
+                return HttpResponse(json.dumps(response_data), content_type="application/json")
+        
+            # Fetch submission and create new submission if not found.
+            try:
+                submission = ResponseSubmission.objects.get(
+                    student=student,
+                    assignment=assignment,
+                    question_id=question_id,
+                )
+            except ResponseSubmission.DoesNotExist:
+                submission = ResponseSubmission.objects.create(
+                    student=student,
+                    assignment=assignment,
+                    question_id=question_id,
+                )
+        
+            # Process the answer
+            # Return success results
+            submission.answer = answer
+            submission.save()
+            
+            response_data = {'status' : 'success', 'message' : 'submitted'}
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
 #@login_required()
 #def submit_response_assignment_answer(request, course_id):
 #    if request.is_ajax():

@@ -384,11 +384,10 @@ class ResponseQuestion(models.Model):
 
 
 class ResponseSubmission(models.Model):
-    course = models.ForeignKey(Course)
-    assignment = models.ForeignKey(Assignment, null=True)
     student = models.ForeignKey(Student)
+    assignment = models.ForeignKey(Assignment, null=True)
+    question = models.ForeignKey(ResponseQuestion)
     submission_id = models.AutoField(primary_key=True)
-    question_num = models.PositiveSmallIntegerField(default=0)
     answer = models.TextField(default='')
     marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
