@@ -65,7 +65,6 @@ def assignments_page(request, course_id):
                     student=student,
                     course=course,
                     assignment=assignment,
-                    assignment_num=assignment.assignment_num
                 )
                 submission.save()
 
@@ -148,77 +147,48 @@ def assignment_page(request, course_id, assignment_id):
     })
 
 
-#
-#@login_required()
-#def assignment_delete(request, course_id):
-#    if request.is_ajax():
-#        if request.method == 'POST':
-#            student_id = int(request.POST['student_id'])
-#            assignment_id = int(request.POST['assignment_id'])
-#            assignment_type = int(request.POST['assignment_type'])
-#
-#            # Update the 'submission_date' of our entry to indicate we
-#            # have finished the assignment.
-#            submission = AssignmentSubmission.objects.get(
-#                assignment_id=int(request.POST['assignment_id']),
-#                student_id=int(request.POST['student_id']),
-#                course_id=int(request.POST['course_id'])
-#            )
-#            submission.submission_date = None
-#            submission.save()
-#
-#            # Delete assignments depending on what type
-#            if assignment_type == settings.ESSAY_QUESTION_TYPE:
-#                try:
-#                    EssaySubmission.objects.get(
-#                        assignment_id=assignment_id,
-#                        student_id=student_id,
-#                        course_id=course_id
-#                    ).delete()
-#
-#                    # Send JSON Response indicating success
-#                    response_data = {'status' : 'success', 'message' : 'assignment was deleted'}
-#                except EssaySubmission.DoesNotExist:
-#                    response_data = {'status' : 'failed', 'message' : 'assignment not found'}
-#            elif assignment_type == settings.MULTIPLECHOICE_QUESTION_TYPE:
-#                try:
-#                    MultipleChoiceSubmission.objects.filter(
-#                        assignment_id=assignment_id,
-#                        student_id=student_id,
-#                        course_id=course_id,
-#                        exam_id=0,
-#                    ).delete()
-#                    response_data = {'status' : 'success', 'message' : 'assignment was deleted'}
-#                except MultipleChoiceSubmission.DoesNotExist:
-#                    response_data = {'status' : 'failed', 'message' : 'assignment not found'}
-#            elif assignment_type == settings.TRUEFALSE_QUESTION_TYPE:
-#                try:
-#                    TrueFalseSubmission.objects.filter(
-#                        assignment_id=assignment_id,
-#                        student_id=student_id,
-#                        course_id=course_id,
-#                        quiz_id=0,
-#                    ).delete()
-#                    response_data = {'status' : 'success', 'message' : 'assignment was deleted'}
-#                except TrueFalseSubmission.DoesNotExist:
-#                    response_data = {'status' : 'failed', 'message' : 'assignment not found'}
-#            elif assignment_type == settings.RESPONSE_QUESTION_TYPE:
-#                try:
-#                    ResponseSubmission.objects.filter(
-#                        assignment_id=assignment_id,
-#                        student_id=student_id,
-#                        course_id=course_id,
-#                    ).delete()
-#                    response_data = {'status' : 'success', 'message' : 'assignment was deleted'}
-#                except ResponseSubmission.DoesNotExist:
-#                    response_data = {'status' : 'failed', 'message' : 'assignment not found'}
-#            else:
-#                response_data = {'status' : 'success', 'message' : ''}
-#            return HttpResponse(json.dumps(response_data), content_type="application/json")
-#    response_data = {'status' : 'failed', 'message' : 'unknown error with deletion'}
-#    return HttpResponse(json.dumps(response_data), content_type="application/json")
-#
-#
+
+@login_required()
+def delete_assignment(request, course_id):
+    response_data = {'status' : 'failed', 'message' : 'unknown error with deletion'}
+    if request.is_ajax():
+        if request.method == 'POST':
+            assignment_id = int(request.POST['assignment_id'])
+            course = Course.objects.get(id=course_id)
+            student = Student.objects.get(user=request.user)
+            assignment = Assignment.objects.get(assignment_id=assignment_id)
+
+            # Set 'is_finished' to false to indicate we need to take the
+            # assignment all over.
+            submission = AssignmentSubmission.objects.get(
+                course=course,
+                student=student,
+                assignment=assignment,
+            )
+            submission.is_finished = False
+            submission.save()
+            
+            # Delete all previous entries.
+            try:
+                mc_submissions = MultipleChoiceSubmission.objects.filter(assignment=assignment,student=student)
+                mc_submissions.delete()
+            except MultipleChoiceSubmission.DoesNotExist:
+                pass
+            try:
+                tf_submissions = TrueFalseSubmission.objects.filter(assignment=assignment, student=student)
+                tf_submissions.delete()
+            except tf_submissions.DoesNotExist:
+                pass
+            try:
+                r_submissions = ResponseSubmission.objects.filter(assignment=assignment, student=student)
+                r_submissions.delete()
+            except ResponseQuestion.DoesNotExist:
+                pass
+
+            response_data = {'status' : 'success', 'message' : ''}
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
 #@login_required()
 #def upload_essay_assignment(request, course_id):
 #    response_data = {'status' : 'failed', 'message' : 'error submitting'}
@@ -409,7 +379,6 @@ def submit_assignment(request, course_id, assignment_id):
             assignment = Assignment.objects.get(assignment_id=assignment_id)
             student = Student.objects.get(user=request.user)
 
-
             # Fetch submission and create new submission if not found.
             try:
                 submission = AssignmentSubmission.objects.get(
@@ -423,6 +392,7 @@ def submit_assignment(request, course_id, assignment_id):
                     assignment=assignment,
                     course=course,
                 )
+            submission.is_finished = True
             submission.save()
             response_data = {'status' : 'success', 'message' : 'submitted'}
             return HttpResponse(json.dumps(response_data), content_type="application/json")

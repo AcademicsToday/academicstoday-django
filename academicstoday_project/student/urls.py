@@ -31,7 +31,8 @@ urlpatterns = patterns('',
 
     # Assignment(s)
     url(r'^course/(\d+)/assignments$', assignment.assignments_page),
-
+    url(r'^course/(\d+)/delete_assignment$', assignment.delete_assignment),
+                       
     # Assignment
     url(r'^course/(\d+)/assignment/(\d+)$', assignment.assignment_page),
     url(r'^course/(\d+)/assignment/(\d+)/submit_assignment$', assignment.submit_assignment),

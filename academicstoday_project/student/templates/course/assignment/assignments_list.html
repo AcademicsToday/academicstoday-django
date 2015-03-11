@@ -45,39 +45,48 @@
                         </thead>
                         <tbody>
                             {% for assignment in assignments %}
+                            {% for submission in submitted_assignments %}
+                            {% if submission.assignment == assignment %}
+                            {% if submission.is_finished == True %}
                             <tr>
                                 <td>{{ assignment.assignment_num }}</td>
                                 <td>
-                                    {% if submission.submission_date != None %}
                                     <span class="badge">Complete</span>
-                                    {% else %}
-                                    <span class="badge">Incomplete</span>
-                                    {% endif %}
                                 </td>
                                 <td>{{ assignment.due_date }}</td>
                                 <td>{{ submission.submission_date }}</td>
                                 <td>
-                                    {% if submission.submission_date != None %}
                                     <button type="button"
                                         onclick=""
                                         class="btn btn-sm btn-primary" disabled>
                                         <i class="fa fa-file"></i> Continue
                                     </button>
                                     <button type="button"
-                                        onclick="ajax_delete_assignment({{ assignment.id }}, {{ assignment.type }});"
+                                        onclick="ajax_delete_assignment_submission({{ assignment.assignment_id }});"
                                         class="btn btn-sm btn-danger">
                                         <i class="fa fa-minus"></i> Delete
                                     </button>
-                                    {% else %}
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td>{{ assignment.assignment_num }}</td>
+                                <td>
+                                    <span class="badge">Incomplete</span>
+                                </td>
+                                <td>{{ assignment.due_date }}</td>
+                                <td></td>
+                                <td>
                                     <button type="button"
                                         onclick="view_assignment({{ assignment.assignment_id }});"
                                         class="btn btn-sm btn-primary">
                                         <i class="fa fa-file"></i> Begin
                                     </button>
-                                    {% endif %}
                                 </td>
                             </tr>
-                            {% empty %}
+                            {% endif %}
+                            {% endif %}
+                            {% endfor %}
                             {% endfor %}
                         </tbody>
                     </table>
@@ -96,15 +105,14 @@
  *  Function will delete the current logged in users assignment for the
  *  given parameters.
  */
-function ajax_delete_assignment(assignment_id, assignment_type)
+function ajax_delete_assignment_submission(assignment_id)
 {
-    var url = 'assignment_delete';
+    var url = 'delete_assignment';
     
     $.ajax( url, {
            data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
                 'assignment_id': assignment_id,
-                'assignment_type': assignment_type,
                 'student_id' : {{ user.id }},
                 'course_id' : {{ course.id }}
            },
