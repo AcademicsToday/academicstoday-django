@@ -41,7 +41,7 @@ def exams_page(request, course_id):
 
     # Fetch all submitted assignments
     try:
-        submitted_exams = ExamSubmission.objects.filter(course=course,
+        submitted_exams = ExamSubmission.objects.filter(exam__course=course,
                                                         student=student)
     except ExamSubmission.DoesNotExist:
         submitted_exams = None
@@ -92,7 +92,6 @@ def delete_exam(request, course_id):
             # Set 'is_finished' to false to indicate we need to take the
             # exam all over.
             submission = ExamSubmission.objects.get(
-                course=course,
                 student=student,
                 exam=exam,
             )
@@ -101,7 +100,7 @@ def delete_exam(request, course_id):
                                                     
             # Delete all previous entries.
             try:
-                 MultipleChoiceSubmission.objects.filter(exam=exam, student=student).delete()
+                 MultipleChoiceSubmission.objects.filter(question__exam=exam, student=student).delete()
             except MultipleChoiceSubmission.DoesNotExist:
                 pass
             response_data = {'status' : 'success', 'message' : ''}
@@ -121,7 +120,7 @@ def exam_page(request, course_id, exam_id):
     except MultipleChoiceQuestion.DoesNotExist:
         mc_questions = None
     try:
-        mc_submissions = MultipleChoiceSubmission.objects.filter(exam=exam, student=student)
+        mc_submissions = MultipleChoiceSubmission.objects.filter(question__exam=exam, student=student)
     except MultipleChoiceSubmission.DoesNotExist:
         mc_submissions = None
     
@@ -160,7 +159,6 @@ def submit_mc_exam_answer(request, course_id, exam_id):
             try:
                 question = MultipleChoiceQuestion.objects.get(
                     exam=exam,
-                    course=course,
                     question_id=question_id,
                 )
             except MultipleChoiceQuestion.DoesNotExist:
@@ -171,13 +169,11 @@ def submit_mc_exam_answer(request, course_id, exam_id):
             try:
                 submission = MultipleChoiceSubmission.objects.get(
                     student=student,
-                    exam=exam,
                     question=question,
                 )
             except MultipleChoiceSubmission.DoesNotExist:
                 submission = MultipleChoiceSubmission.objects.create(
                     student=student,
-                    exam=exam,
                     question=question,
                 )
 
@@ -215,13 +211,11 @@ def submit_exam(request, course_id, exam_id):
                 submission = ExamSubmission.objects.get(
                     student=student,
                     exam=exam,
-                    course=course,
                 )
             except ExamSubmission.DoesNotExist:
                 submission = ExamSubmission.objects.create(
                     student=student,
                     exam=exam,
-                    course=course,
                 )
             submission.is_finished = True
             submission.save()
