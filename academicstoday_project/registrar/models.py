@@ -243,6 +243,29 @@ class EssayQuestion(models.Model):
     class Meta:
         db_table = 'at_essay_questions'
 
+
+class PeerReview(models.Model):
+    review_id = models.AutoField(max_length=11, primary_key=True)
+    MARK_CHOICES = (
+        (0, '0 Star'),
+        (1, '1 Star'),
+        (2, '2 Stars'),
+        (3, '3 Stars'),
+        (4, '4 Stars'),
+        (5, '5 Stars'),
+    )
+    marks = models.PositiveSmallIntegerField(default=0, choices=MARK_CHOICES)
+    text = models.TextField(null=True, blank=True)
+    date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
+    user = models.ForeignKey(User)
+                          
+    def __str__(self):
+        return self.course_id + ' ' + self.file_path;
+
+    class Meta:
+        db_table = 'at_peer_reviews'
+
+
 class EssaySubmission(models.Model):
     submission_id = models.AutoField(max_length=11, primary_key=True)
     file = models.FileField(upload_to='uploads')
@@ -250,7 +273,8 @@ class EssaySubmission(models.Model):
     is_marked = models.BooleanField(default=False)
     student = models.ForeignKey(Student)
     question = models.ForeignKey(EssayQuestion)
-   
+    reviews = models.ManyToManyField(PeerReview)
+    
     def __str__(self):
         return self.course_id + ' ' + self.file_path;
 
@@ -377,33 +401,10 @@ class ResponseSubmission(models.Model):
     is_marked = models.BooleanField(default=False)
     student = models.ForeignKey(Student)
     question = models.ForeignKey(ResponseQuestion)
+    reviews = models.ManyToManyField(PeerReview)
 
     def __str__(self):
         return self.course_id + ' ' + self.response;
 
     class Meta:
         db_table = 'at_response_submissions'
-
-
-class EssaySubmissionReview(models.Model):
-    review_id = models.AutoField(max_length=11, primary_key=True)
-    ESSAY_MARK_CHOICES = (
-        (0, '0 Star'),
-        (1, '1 Star'),
-        (2, '2 Stars'),
-        (3, '3 Stars'),
-        (4, '4 Stars'),
-        (5, '5 Stars'),
-    )
-    marks = models.PositiveSmallIntegerField(default=0, choices=ESSAY_MARK_CHOICES)
-    text = models.TextField(null=True, blank=True)
-    date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
-    student = models.ForeignKey(Student)
-    submission = models.ForeignKey(EssaySubmission)
-    
-    def __str__(self):
-        return self.course_id + ' ' + self.file_path;
-    
-    class Meta:
-        db_table = 'at_essay_submission_reviews'
-

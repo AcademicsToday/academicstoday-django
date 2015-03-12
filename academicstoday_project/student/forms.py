@@ -4,6 +4,8 @@ from django import forms
 from django.forms import ModelForm
 from registrar.models import EssaySubmission
 from registrar.models import AssignmentSubmission
+from registrar.models import PeerReview
+
 
 class EssaySubmissionForm(forms.ModelForm):
     class Meta:
@@ -22,7 +24,18 @@ class EssaySubmissionForm(forms.ModelForm):
         else:
             raise forms.ValidationError("Only accepting PDF files for essays.")
 
+
 class AssignmentSubmissionForm(forms.ModelForm):
     class Meta:
         model = AssignmentSubmission
         fields = '__all__'
+
+
+class PeerReviewForm(forms.ModelForm):
+    class Meta:
+        model = PeerReview
+        fields = ['marks', 'text']
+        labels = {
+            'marks': 'Rating',
+            'text': 'Review',
+         }

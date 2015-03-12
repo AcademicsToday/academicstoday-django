@@ -233,5 +233,102 @@
             }
         });
     }
+
+    /**
+     *  Function will call AJAX function to load the video player modal for the lecture.
+     */
+    function ajax_peer_review_modal(question_id)
+    {
+        var url = {{ assignment.assignment_id }} + '/peer_review_modal';
+    
+        $.ajax( url, {
+               data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    'question_id': question_id
+               },
+               type: 'post',
+               success: function(result) {
+                    // success code execution here
+                    $('#ajax_peer_review').html(result); // Update UI.
+                    $('#peer_review_modal').modal();               // Unhide view.
+               },
+               error: function(xhr,status,error) {
+                    // error code here
+               },
+               complete: function(xhr,status) {
+                    // completion code here
+               }
+        });
+    }
+
+    function ajax_save_peer_review(question_id)
+    {
+        var url = {{ assignment.assignment_id }} + '/save_peer_review';
+        var marks = $('#id_marks').val();
+        var text = $('#id_text').val();
+        
+        $.ajax( url, {
+            data: {
+               'csrfmiddlewaretoken': '{{ csrf_token }}',
+               'question_id': question_id,
+               'marks': marks,
+               'text': text,
+            },
+            type: 'post',
+            success: function(result) {
+               if (result.status == 'success')
+               {
+                    $('#peer_review_modal').modal('hide');
+               }
+               else
+               {
+                    alert(result.message);
+               }
+            },
+            error: function(xhr,status,error) {
+               // error code here
+            },
+            complete: function(xhr,status) {
+               // completion code here
+            }
+        });
+    }
+
+    function ajax_delete_peer_review(review_id)
+    {
+        var url = {{ assignment.assignment_id }} + '/delete_peer_review';
+        var marks = $('#id_marks').val();
+        var text = $('#id_text').val();
+    
+        $.ajax( url, {
+           data: {
+               'csrfmiddlewaretoken': '{{ csrf_token }}',
+               'review_id': review_id,
+           },
+           type: 'post',
+           success: function(result) {
+               if (result.status == 'success')
+               {
+                    window.location = ''
+               }
+               else
+               {
+                    alert(result.message);
+               }
+           },
+           error: function(xhr,status,error) {
+                // error code here
+           },
+           complete: function(xhr,status) {
+                // completion code here
+           }
+        });
+    }
+
 </script>
+
+<!-- Modal -->
+<div id="ajax_peer_review"
+   name="ajax_peer_review"></div>
+<!-- /.Modal -->
 {% endblock content %}
