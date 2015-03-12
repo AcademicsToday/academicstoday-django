@@ -50,12 +50,14 @@ urlpatterns = patterns('',
     url(r'^course/(\d+)/quiz/(\d+)/submit_quiz$', quiz.submit_quiz),
     url(r'^course/(\d+)/quiz/(\d+)/submit_tf_quiz_answer$', quiz.submit_tf_assignment_answer),
 
-    # Exam
+    # Exam(s)
     url(r'^course/(\d+)/exams$', exam.exams_page),
-    url(r'^course/(\d+)/exam_multiplechoice$', exam.exam_multiplechoice),
-    url(r'^course/(\d+)/submit_mc_exam_answer$', exam.submit_mc_exam_answer),
-    url(r'^course/(\d+)/submit_mc_exam_completion$', exam.submit_mc_exam_completion),
-    url(r'^course/(\d+)/exam_delete$', exam.exam_delete),
+    url(r'^course/(\d+)/delete_exam$', exam.delete_exam),
+                       
+    # Exam
+    url(r'^course/(\d+)/exam/(\d+)$', exam.exam_page),
+    url(r'^course/(\d+)/exam/(\d+)/submit_exam$', exam.submit_exam),
+    url(r'^course/(\d+)/exam/(\d+)/submit_mc_exam_answer$', exam.submit_mc_exam_answer),
 
     # Peer-Review
     url(r'^course/(\d+)/peer_review$', peer_review.peer_review_page),

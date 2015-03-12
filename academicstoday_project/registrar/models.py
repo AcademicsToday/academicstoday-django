@@ -157,11 +157,10 @@ class ExamSubmission(models.Model):
     exam = models.ForeignKey(Exam)
     student = models.ForeignKey(Student)
     submission_id = models.AutoField(primary_key=True)
-    exam_num = models.PositiveSmallIntegerField(default=0)
-    type = models.PositiveSmallIntegerField()
     marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateField(null=True)
     is_marked = models.BooleanField(default=False)
+    is_finished = models.BooleanField(default=False)
 
     def __str__(self):
         return self.submission_id + ' ' + self.type;

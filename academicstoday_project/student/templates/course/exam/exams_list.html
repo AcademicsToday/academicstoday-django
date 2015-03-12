@@ -46,39 +46,45 @@
                         <tbody>
                             {% for exam in exams %}
                             {% for submission in submitted_exams %}
-                            {% if submission.exam_id == exam.id %}
+                            {% if submission.exam == exam %}
+                            {% if submission.is_finished == True %}
                             <tr>
-                                <td>{{ exam.order_num }}</td>
+                                <td>{{ exam.exam_num }}</td>
                                 <td>
-                                    {% if submission.submission_date != None %}
                                     <span class="badge">Complete</span>
-                                    {% else %}
-                                    <span class="badge">Incomplete</span>
-                                    {% endif %}
                                 </td>
                                 <td>{{ exam.due_date }}</td>
-                                <td>{{ submission.submission_date }} </td>
+                                <td>{{ submission.submission_date }}</td>
                                 <td>
-                                    {% if submission.submission_date != None %}
-                                        <button type="button"
-                                             onclick=""
-                                              class="btn btn-sm btn-primary" disabled>
-                                              <i class="fa fa-plus"></i> Submit
-                                        </button>
-                                        <button type="button"
-                                             onclick="ajax_delete_exam({{ exam.id }}, {{ exam.type }});"
-                                               class="btn btn-sm btn-danger">
-                                               <i class="fa fa-minus"></i> Delete
-                                        </button>
-                                    {% else %}
-                                        <button type="button"
-                                            onclick="ajax_exam({{ exam.id }}, {{ exam.type }});"
-                                            class="btn btn-sm btn-primary">
-                                            <i class="fa fa-plus"></i> Submit
-                                        </button>
-                                    {% endif %}
+                                    <button type="button"
+                                        onclick=""
+                                        class="btn btn-sm btn-primary" disabled>
+                                        <i class="fa fa-file"></i> Continue
+                                    </button>
+                                    <button type="button"
+                                        onclick="ajax_delete_exam_submission({{ exam.exam_id }});"
+                                        class="btn btn-sm btn-danger">
+                                        <i class="fa fa-minus"></i> Delete
+                                    </button>
                                 </td>
                             </tr>
+                            {% else %}
+                            <tr>
+                                <td>{{ exam.exam_num }}</td>
+                                <td>
+                                    <span class="badge">Incomplete</span>
+                                </td>
+                                <td>{{ exam.due_date }}</td>
+                                <td></td>
+                                <td>
+                                    <button type="button"
+                                        onclick="view_exam({{ exam.exam_id }});"
+                                        class="btn btn-sm btn-primary">
+                                        <i class="fa fa-file"></i> Begin
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endif %}
                             {% endif %}
                             {% endfor %}
                             {% endfor %}
@@ -94,22 +100,14 @@
 </div>
 
 <script>
-    
-/**
- *  Function will delete the current logged in users exam for the
- *  given parameters.
- */
-function ajax_delete_exam(exam_id, exam_type)
+function ajax_delete_exam_submission(exam_id)
 {
-    var url = 'exam_delete';
+    var url = 'delete_exam';
     
     $.ajax( url, {
            data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
                 'exam_id': exam_id,
-                'exam_type': exam_type,
-                'student_id' : {{ user.id }},
-                'course_id' : {{ course.id }}
            },
            type: 'post',
            success: function(result) {
@@ -141,42 +139,11 @@ function refresh_current_exams_page()
 }
 
 /**
- *  Function will call AJAX function to load the exams modal.
+ *  Function will load up the exams view
  */
-function ajax_exam(exam_id, exam_type)
+function view_exam(exam_id)
 {
-    var url;
-    if (exam_type == {{ MULTIPLECHOICE_QUESTION_TYPE }})
-    {
-        url = 'exam_multiplechoice';
-    }
-    
-    $.ajax( url, {
-           data: {
-                'csrfmiddlewaretoken': '{{ csrf_token }}',
-                'exam_id': exam_id,
-                'student_id' : {{ user.id }},
-                'course_id' : {{ course.id }}
-           },
-           type: 'post',
-           success: function(result) {
-                // success code execution here
-                $('#ajax_exam').html(result); // Update UI.
-                $('#exam_modal').modal();     // Unhide view.
-           },
-           error: function(xhr,status,error) {
-                // error code here
-           },
-           complete: function(xhr,status) {
-                // completion code here
-           }
-    });
+    window.location = "exam/" + exam_id;
 }
 </script>
-
-<!-- Modal -->
-<div id="ajax_exam"
-   name="ajax_exam"></div>
-<!-- /.Modal -->
-
 {% endblock content %}
