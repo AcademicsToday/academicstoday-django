@@ -94,14 +94,18 @@ def assignment_page(request, course_id, assignment_id):
         e_questions = EssayQuestion.objects.filter(assignment=assignment).order_by('question_num')
     except EssayQuestion.DoesNotExist:
         e_questions = None
-    
+    try:
+        e_submissions = EssaySubmission.objects.filter(assignment=assignment, student=student)
+    except EssayQuestion.DoesNotExist:
+        e_submissions = None
+
     # Load all multiple-choice type questions/submissions for this assignment.
     try:
         mc_questions = MultipleChoiceQuestion.objects.filter(assignment=assignment).order_by('question_num')
     except MultipleChoiceQuestion.DoesNotExist:
         mc_questions = None
     try:
-        mc_submissions = MultipleChoiceSubmission.objects.filter(assignment=assignment,student=student)
+        mc_submissions = MultipleChoiceSubmission.objects.filter(assignment=assignment, student=student)
     except MultipleChoiceSubmission.DoesNotExist:
         mc_submissions = None
 
@@ -130,6 +134,7 @@ def assignment_page(request, course_id, assignment_id):
         'course': course,
         'assignment': assignment,
         'e_questions': e_questions,
+        'e_submissions': e_submissions,
         'mc_questions': mc_questions,
         'mc_submissions': mc_submissions,
         'tf_questions': tf_questions,
@@ -170,7 +175,12 @@ def delete_assignment(request, course_id):
             
             # Delete all previous entries.
             try:
-                mc_submissions = MultipleChoiceSubmission.objects.filter(assignment=assignment,student=student)
+                e_submissions = EssaySubmission.objects.filter(assignment=assignment, student=student)
+                e_submissions.delete()
+            except EssayQuestion.DoesNotExist:
+                pass
+            try:
+                mc_submissions = MultipleChoiceSubmission.objects.filter(assignment=assignment, student=student)
                 mc_submissions.delete()
             except MultipleChoiceSubmission.DoesNotExist:
                 pass
@@ -190,29 +200,59 @@ def delete_assignment(request, course_id):
 
 
 #@login_required()
-#def upload_essay_assignment(request, course_id):
-#    response_data = {'status' : 'failed', 'message' : 'error submitting'}
-#    if request.is_ajax():
-#        if request.method == 'POST':
-#            form = EssaySubmissionForm(request.POST, request.FILES)
-#
+def submit_e_assignment_answer(request, course_id, assignment_id):
+    response_data = {'status' : 'failed', 'message' : 'error submitting'}
+    if request.is_ajax():
+        if request.method == 'POST':
+            # Extract parameters from post
+            question_id = int(request.POST['question_id'])
+            try:
+                file = request.FILES["file"]
+            except:
+                response_data = {'status' : 'failed', 'message' : 'missing file'}
+                return HttpResponse(json.dumps(response_data), content_type="application/json")
+        
+            # Fetch from database
+            course = Course.objects.get(id=course_id)
+            student = Student.objects.get(user=request.user)
+            assignment = Assignment.objects.get(assignment_id=assignment_id)
+
+            # Fetch question and error if not found.
+            try:
+                question = EssayQuestion.objects.get(
+                    assignment=assignment,
+                    course=course,
+                    question_id=question_id,
+                )
+            except MultipleChoiceQuestion.DoesNotExist:
+                response_data = {'status' : 'failed', 'message' : 'cannot find question'}
+                return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+            try:
+                submission = EssaySubmission.objects.get(
+                    course=course,
+                    student=student,
+                    assignment=assignment,
+                    question=question,
+                )
+            except EssaySubmission.DoesNotExist:
+                submission = EssaySubmission.objects.create(
+                    course=course,
+                    student=student,
+                    assignment=assignment,
+                    question=question,
+                )
+            submission.file = file
+            submission.save()
+            response_data = {'status' : 'success', 'message' : 'submitted'}
+
+#            form = EssaySubmissionForm(instance=submission, files=request.FILES)
 #            if form.is_valid():
 #                form.save()  # Save the form contents to the model
-#
-#                # Update the 'submission_date' of our entry to indicate we
-#                # have finished the assignment.
-#                submission = AssignmentSubmission.objects.get(
-#                    assignment_id=int(request.POST['assignment_id']),
-#                    student_id=int(request.POST['student_id']),
-#                    course_id=int(request.POST['course_id'])
-#                )
-#                submission.submission_date = datetime.datetime.utcnow()
-#                submission.save()
-#
 #                response_data = {'status' : 'success', 'message' : 'submitted'}
 #            else:
 #                response_data = {'status' : 'failed', 'message' : form.errors}
-#    return HttpResponse(json.dumps(response_data), content_type="application/json")
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
 @login_required()

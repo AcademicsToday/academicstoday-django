@@ -1,0 +1,80 @@
+<form name="assignment_form" enctype="multipart/form-data" action="upload_essay" method="post" >
+    <!-- DESCRIPTION -->
+    <div class="row">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">
+                Description
+            </label>
+        </div>
+    </div><!-- /.row -->
+    
+    <div class="row">
+        <div class="form-group">
+            <label class="col-sm-12" style="font-weight:normal;">
+                <p>{{ e_question.description }}</p>
+            </label>
+        </div>
+    </div><!-- /.row -->
+    
+    
+    <!-- SUBMISSION -->
+    <br/>
+    <div class="row">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">
+                PDF:
+            </label>
+        </div>
+    </div><!-- /.row -->
+    
+    <div class="row">
+        <div class="col-sm-6">
+            <input type="file"
+                     id="id_file_{{ e_question.question_id }}"
+                   name="file_{{ e_question.question_id }}"
+                  class="form-control">
+            </input>
+            <br />
+            <button onclick="ajax_submit_e_assignment_answer({{ e_question.question_id }});"
+                       type="button"
+                      class="btn btn-primary">
+                <i class="fa fa-cloud-upload"></i> Upload
+            </button>
+        </div>
+    </div><!-- /.row -->
+    
+    <br/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="alert alert-success"
+                id="success_status_info"
+                name="success_status_info"
+                hidden>
+                <strong>Well done!</strong> You successfully uploaded your essay.
+            </div>
+            <div class="alert alert-warning"
+                id="warning_status_info"
+                name="warning_status_info"
+                hidden>
+                <strong>Warning:</strong> Please upload your assignment before proceeding.
+            </div>
+            <div class="alert alert-danger"
+                id="danger_status_info"
+                name="danger_status_info"
+                hidden>
+                <div id="danger_status_msg" name="danger_status_msg">
+                    <strong>Failed!</strong> There was a problem uploading your resume.
+                </div>
+            </div>
+        </div>
+    </div><!-- /.row -->
+</form>
+<script>
+    {% for e_submission in e_submissions %}
+    {% if e_submission.question == e_question %}
+    {% if e_submission.file != None %}
+    $("#success_status_info").show();
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+</script>

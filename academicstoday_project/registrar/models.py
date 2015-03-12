@@ -256,6 +256,7 @@ class EssaySubmission(models.Model):
     course = models.ForeignKey(Course)
     assignment = models.ForeignKey(Assignment)
     student = models.ForeignKey(Student)
+    question = models.ForeignKey(EssayQuestion)
     submission_id = models.AutoField(max_length=11, primary_key=True)
     file = models.FileField(upload_to='uploads')
     submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
