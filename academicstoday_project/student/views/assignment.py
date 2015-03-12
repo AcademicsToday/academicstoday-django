@@ -38,7 +38,7 @@ def assignments_page(request, course_id):
 
     # Fetch all submitted assignments
     try:
-        submitted_assignments = AssignmentSubmission.objects.filter(course=course,
+        submitted_assignments = AssignmentSubmission.objects.filter(assignment__course=course,
                                                                     student=student)
     except AssignmentSubmission.DoesNotExist:
         submitted_assignments = None
@@ -63,7 +63,6 @@ def assignments_page(request, course_id):
     return render(request, 'course/assignment/assignments_list.html',{
         'course' : course,
         'user' : request.user,
-        'assignments' : assignments,
         'submitted_assignments' : submitted_assignments,
         'ESSAY_QUESTION_TYPE' : settings.ESSAY_QUESTION_TYPE,
         'MULTIPLECHOICE_QUESTION_TYPE' : settings.MULTIPLECHOICE_QUESTION_TYPE,
@@ -88,7 +87,7 @@ def assignment_page(request, course_id, assignment_id):
     except EssayQuestion.DoesNotExist:
         e_questions = None
     try:
-        e_submissions = EssaySubmission.objects.filter(assignment=assignment, student=student)
+        e_submissions = EssaySubmission.objects.filter(question__assignment=assignment, student=student)
     except EssayQuestion.DoesNotExist:
         e_submissions = None
 
@@ -98,7 +97,7 @@ def assignment_page(request, course_id, assignment_id):
     except MultipleChoiceQuestion.DoesNotExist:
         mc_questions = None
     try:
-        mc_submissions = MultipleChoiceSubmission.objects.filter(assignment=assignment, student=student)
+        mc_submissions = MultipleChoiceSubmission.objects.filter(question__assignment=assignment, student=student)
     except MultipleChoiceSubmission.DoesNotExist:
         mc_submissions = None
 
@@ -108,7 +107,7 @@ def assignment_page(request, course_id, assignment_id):
     except TrueFalseQuestion.DoesNotExist:
         tf_questions = None
     try:
-        tf_submissions = TrueFalseSubmission.objects.filter(assignment=assignment, student=student)
+        tf_submissions = TrueFalseSubmission.objects.filter(question__assignment=assignment, student=student)
     except tf_submissions.DoesNotExist:
         tf_submissions = None
 
@@ -118,7 +117,7 @@ def assignment_page(request, course_id, assignment_id):
     except ResponseQuestion.DoesNotExist:
         r_questions = None
     try:
-        r_submissions = ResponseSubmission.objects.filter(assignment=assignment, student=student)
+        r_submissions = ResponseSubmission.objects.filter(question__assignment=assignment, student=student)
     except ResponseQuestion.DoesNotExist:
         r_submissions = None
 
@@ -159,7 +158,6 @@ def delete_assignment(request, course_id):
             # Set 'is_finished' to false to indicate we need to take the
             # assignment all over.
             submission = AssignmentSubmission.objects.get(
-                course=course,
                 student=student,
                 assignment=assignment,
             )
@@ -168,22 +166,22 @@ def delete_assignment(request, course_id):
             
             # Delete all previous entries.
             try:
-                e_submissions = EssaySubmission.objects.filter(assignment=assignment, student=student)
+                e_submissions = EssaySubmission.objects.filter(question__assignment=assignment, student=student)
                 e_submissions.delete()
             except EssayQuestion.DoesNotExist:
                 pass
             try:
-                mc_submissions = MultipleChoiceSubmission.objects.filter(assignment=assignment, student=student)
+                mc_submissions = MultipleChoiceSubmission.objects.filter(question__assignment=assignment, student=student)
                 mc_submissions.delete()
             except MultipleChoiceSubmission.DoesNotExist:
                 pass
             try:
-                tf_submissions = TrueFalseSubmission.objects.filter(assignment=assignment, student=student)
+                tf_submissions = TrueFalseSubmission.objects.filter(question__assignment=assignment, student=student)
                 tf_submissions.delete()
             except tf_submissions.DoesNotExist:
                 pass
             try:
-                r_submissions = ResponseSubmission.objects.filter(assignment=assignment, student=student)
+                r_submissions = ResponseSubmission.objects.filter(question__assignment=assignment, student=student)
                 r_submissions.delete()
             except ResponseQuestion.DoesNotExist:
                 pass
@@ -214,7 +212,6 @@ def submit_e_assignment_answer(request, course_id, assignment_id):
             try:
                 question = EssayQuestion.objects.get(
                     assignment=assignment,
-                    course=course,
                     question_id=question_id,
                 )
             except MultipleChoiceQuestion.DoesNotExist:
@@ -223,16 +220,12 @@ def submit_e_assignment_answer(request, course_id, assignment_id):
 
             try:
                 submission = EssaySubmission.objects.get(
-                    course=course,
                     student=student,
-                    assignment=assignment,
                     question=question,
                 )
             except EssaySubmission.DoesNotExist:
                 submission = EssaySubmission.objects.create(
-                    course=course,
                     student=student,
-                    assignment=assignment,
                     question=question,
                 )
             submission.file = file
@@ -265,7 +258,6 @@ def submit_mc_assignment_answer(request, course_id, assignment_id):
             try:
                 question = MultipleChoiceQuestion.objects.get(
                     assignment=assignment,
-                    course=course,
                     question_id=question_id,
                 )
             except MultipleChoiceQuestion.DoesNotExist:
@@ -276,13 +268,11 @@ def submit_mc_assignment_answer(request, course_id, assignment_id):
             try:
                 submission = MultipleChoiceSubmission.objects.get(
                     student=student,
-                    assignment=assignment,
                     question=question,
                 )
             except MultipleChoiceSubmission.DoesNotExist:
                 submission = MultipleChoiceSubmission.objects.create(
                     student=student,
-                    assignment=assignment,
                     question=question,
                 )
 
@@ -326,7 +316,6 @@ def submit_tf_assignment_answer(request, course_id, assignment_id):
             try:
                 question = TrueFalseQuestion.objects.get(
                     assignment=assignment,
-                    course=course,
                     question_id=question_id,
                 )
             except MultipleChoiceQuestion.DoesNotExist:
@@ -337,13 +326,11 @@ def submit_tf_assignment_answer(request, course_id, assignment_id):
             try:
                 submission = TrueFalseSubmission.objects.get(
                     student=student,
-                    assignment=assignment,
                     question_id=question_id,
                 )
             except TrueFalseSubmission.DoesNotExist:
                 submission = TrueFalseSubmission.objects.create(
                     student=student,
-                    assignment=assignment,
                     question_id=question_id,
                 )
 
@@ -373,7 +360,6 @@ def submit_r_assignment_answer(request, course_id, assignment_id):
             try:
                 question = ResponseQuestion.objects.get(
                     assignment=assignment,
-                    course=course,
                     question_id=question_id,
                 )
             except ResponseQuestion.DoesNotExist:
@@ -384,13 +370,11 @@ def submit_r_assignment_answer(request, course_id, assignment_id):
             try:
                 submission = ResponseSubmission.objects.get(
                     student=student,
-                    assignment=assignment,
                     question_id=question_id,
                 )
             except ResponseSubmission.DoesNotExist:
                 submission = ResponseSubmission.objects.create(
                     student=student,
-                    assignment=assignment,
                     question_id=question_id,
                 )
         
@@ -417,13 +401,11 @@ def submit_assignment(request, course_id, assignment_id):
                 submission = AssignmentSubmission.objects.get(
                     student=student,
                     assignment=assignment,
-                    course=course,
                 )
             except AssignmentSubmission.DoesNotExist:
                 submission = AssignmentSubmission.objects.create(
                     student=student,
                     assignment=assignment,
-                    course=course,
                 )
             submission.is_finished = True
             submission.save()

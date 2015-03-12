@@ -44,16 +44,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for assignment in assignments %}
                             {% for submission in submitted_assignments %}
-                            {% if submission.assignment == assignment %}
                             {% if submission.is_finished == True %}
                             <tr>
-                                <td>{{ assignment.assignment_num }}</td>
+                                <td>{{ submission.assignment.assignment_num }}</td>
                                 <td>
                                     <span class="badge">Complete</span>
                                 </td>
-                                <td>{{ assignment.due_date }}</td>
+                                <td>{{ submission.assignment.due_date }}</td>
                                 <td>{{ submission.submission_date }}</td>
                                 <td>
                                     <button type="button"
@@ -62,7 +60,7 @@
                                         <i class="fa fa-file"></i> Continue
                                     </button>
                                     <button type="button"
-                                        onclick="ajax_delete_assignment_submission({{ assignment.assignment_id }});"
+                                        onclick="ajax_delete_assignment_submission({{ submission.assignment.assignment_id }});"
                                         class="btn btn-sm btn-danger">
                                         <i class="fa fa-minus"></i> Delete
                                     </button>
@@ -70,23 +68,21 @@
                             </tr>
                             {% else %}
                             <tr>
-                                <td>{{ assignment.assignment_num }}</td>
+                                <td>{{ submission.assignment.assignment_num }}</td>
                                 <td>
                                     <span class="badge">Incomplete</span>
                                 </td>
-                                <td>{{ assignment.due_date }}</td>
+                                <td>{{ submission.assignment.due_date }}</td>
                                 <td></td>
                                 <td>
                                     <button type="button"
-                                        onclick="view_assignment({{ assignment.assignment_id }});"
+                                        onclick="view_assignment({{ submission.assignment.assignment_id }});"
                                         class="btn btn-sm btn-primary">
                                         <i class="fa fa-file"></i> Begin
                                     </button>
                                 </td>
                             </tr>
                             {% endif %}
-                            {% endif %}
-                            {% endfor %}
                             {% endfor %}
                         </tbody>
                     </table>

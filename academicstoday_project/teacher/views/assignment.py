@@ -275,28 +275,24 @@ def save_question(request, course_id, assignment_id):
                 # question type selected.
                 if question_type == settings.ESSAY_QUESTION_TYPE:
                     question = EssayQuestion.objects.create(
-                        course=course,
                         assignment=assignment,
                         question_num=question_num
                     )
                     question.save()
                 elif question_type == settings.MULTIPLECHOICE_QUESTION_TYPE:
                     question = MultipleChoiceQuestion.objects.create(
-                        course=course,
                         assignment=assignment,
                         question_num=question_num
                     )
                     question.save()
                 elif question_type == settings.TRUEFALSE_QUESTION_TYPE:
                     question = TrueFalseQuestion.objects.create(
-                        course=course,
                         assignment=assignment,
                         question_num=question_num
                     )
                     question.save()
                 elif question_type == settings.RESPONSE_QUESTION_TYPE:
                     question = ResponseQuestion.objects.create(
-                        course=course,
                         assignment=assignment,
                         question_num=question_num
                     )

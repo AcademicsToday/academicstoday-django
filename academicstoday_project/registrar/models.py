@@ -219,7 +219,6 @@ class AssignmentSubmission(models.Model):
     submission_date = models.DateTimeField(auto_now=True, null=True)
     is_marked = models.BooleanField(default=False)
     is_finished = models.BooleanField(default=False)
-    course = models.ForeignKey(Course)
     student = models.ForeignKey(Student)
     assignment = models.ForeignKey(Assignment)
 
@@ -236,7 +235,6 @@ class EssayQuestion(models.Model):
     title = models.CharField(max_length=31, default='')
     description = models.TextField(default='')
     question_type = settings.ESSAY_QUESTION_TYPE
-    course = models.ForeignKey(Course)
     assignment = models.ForeignKey(Assignment, null=True)
     quiz = models.ForeignKey(Quiz, null=True)
     exam = models.ForeignKey(Exam, null=True)
@@ -252,13 +250,9 @@ class EssaySubmission(models.Model):
     file = models.FileField(upload_to='uploads')
     submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
     is_marked = models.BooleanField(default=False)
-    course = models.ForeignKey(Course)
     student = models.ForeignKey(Student)
     question = models.ForeignKey(EssayQuestion)
-    assignment = models.ForeignKey(Assignment, null=True)
-    quiz = models.ForeignKey(Quiz, null=True)
-    exam = models.ForeignKey(Exam, null=True)
-
+   
     def __str__(self):
         return self.course_id + ' ' + self.file_path;
 
@@ -283,7 +277,6 @@ class MultipleChoiceQuestion(models.Model):
     f = models.CharField(max_length=255, null=True, blank=True)
     f_is_correct = models.BooleanField(default=False)
     question_type = settings.MULTIPLECHOICE_QUESTION_TYPE
-    course = models.ForeignKey(Course)
     assignment = models.ForeignKey(Assignment, null=True)
     quiz = models.ForeignKey(Quiz, null=True)
     exam = models.ForeignKey(Exam, null=True)
@@ -305,13 +298,9 @@ class MultipleChoiceSubmission(models.Model):
     marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
     is_marked = models.BooleanField(default=False)
-    course = models.ForeignKey(Course)
     student = models.ForeignKey(Student)
     question = models.ForeignKey(MultipleChoiceQuestion)
-    assignment = models.ForeignKey(Assignment, null=True)
-    quiz = models.ForeignKey(Quiz, null=True)
-    exam = models.ForeignKey(Exam, null=True)
-
+  
     @classmethod
     def create(cls, assignment_id, exam_id, course_id, student_id, question_num):
         submission = cls(student_id=student_id,
@@ -337,7 +326,6 @@ class TrueFalseQuestion(models.Model):
     false_choice = models.CharField(max_length=127, null=True)
     answer = models.BooleanField(default=False)
     question_type = settings.TRUEFALSE_QUESTION_TYPE
-    course = models.ForeignKey(Course)
     assignment = models.ForeignKey(Assignment, null=True)
     quiz = models.ForeignKey(Quiz, null=True)
     exam = models.ForeignKey(Exam, null=True)
@@ -355,13 +343,9 @@ class TrueFalseSubmission(models.Model):
     marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
     is_marked = models.BooleanField(default=False)
-    course = models.ForeignKey(Course)
     student = models.ForeignKey(Student)
     question = models.ForeignKey(TrueFalseQuestion)
-    assignment = models.ForeignKey(Assignment, null=True)
-    quiz = models.ForeignKey(Quiz, null=True)
-    exam = models.ForeignKey(Exam, null=True)
-
+    
     def __str__(self):
         return self.course_id + ' ' + self.selected;
 
@@ -376,7 +360,6 @@ class ResponseQuestion(models.Model):
     description = models.TextField(default='')
     answer = models.TextField(default='')
     question_type = settings.RESPONSE_QUESTION_TYPE
-    course = models.ForeignKey(Course)
     assignment = models.ForeignKey(Assignment, null=True)
     quiz = models.ForeignKey(Quiz, null=True)
     exam = models.ForeignKey(Exam, null=True)
@@ -394,12 +377,8 @@ class ResponseSubmission(models.Model):
     marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
     is_marked = models.BooleanField(default=False)
-    course = models.ForeignKey(Course)
     student = models.ForeignKey(Student)
     question = models.ForeignKey(ResponseQuestion)
-    assignment = models.ForeignKey(Assignment, null=True)
-    quiz = models.ForeignKey(Quiz, null=True)
-    exam = models.ForeignKey(Exam, null=True)
 
     def __str__(self):
         return self.course_id + ' ' + self.response;
