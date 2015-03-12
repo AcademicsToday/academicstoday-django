@@ -1,5 +1,6 @@
 from django.db import models
 from django import forms
+from django.forms.extras.widgets import Select, SelectDateWidget
 
 from django.forms import ModelForm, Textarea
 from registrar.models import Course
@@ -8,13 +9,13 @@ class CourseForm(forms.ModelForm):
     class Meta:
         model = Course
         fields = ['title', 'sub_title', 'category', 'description', 'start_date', 'finish_date', 'file']
-
         labels = {
             'file': 'Image',
         }
-
         widgets = {
             'description': Textarea(attrs={'cols': 70, 'rows':10}),
+            'start_date': SelectDateWidget(),
+            'finish_date': SelectDateWidget(),
         }
 
     # Function will apply validation on the 'file' upload column in the table.

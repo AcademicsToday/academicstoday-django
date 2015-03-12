@@ -12,11 +12,6 @@ from registrar.models import Course
 from registrar.models import Lecture
 from teacher.forms import LectureForm
 
-# Developer Notes:
-# (1) Templates
-# https://docs.djangoproject.com/en/1.7/ref/templates
-#
-
 
 @login_required(login_url='/landpage')
 def lectures_page(request, course_id):

@@ -43,9 +43,16 @@
         data.append('sub_title', $('#id_title').val());
         data.append('category', $('#id_category').val());
         data.append('description', $('#id_description').val());
-        data.append('start_date', $('#id_start_date').val());
-        data.append('finish_date', $('#id_finish_date').val());
         data.append('file', document.getElementById('id_file').files[0]);
+        var date = '';
+        date  = $('#id_start_date_year').val() + '-';
+        date += $('#id_start_date_month').val() + '-';
+        date += $('#id_start_date_day').val();
+        data.append('start_date', date);
+        date  = $('#id_finish_date_year').val() + '-';
+        date += $('#id_finish_date_month').val() + '-';
+        date += $('#id_finish_date_day').val();
+        data.append('finish_date', date);
 
         jQuery.ajax({
             url: 'save_new_course',

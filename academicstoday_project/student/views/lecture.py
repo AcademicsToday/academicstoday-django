@@ -6,7 +6,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from registrar.models import Course
-from registrar.models import Week
 from registrar.models import Lecture
 import json
 import datetime
@@ -23,16 +22,11 @@ import datetime
 def lectures_page(request, course_id):
     course = Course.objects.get(id=course_id)
     try:
-        weeks = Week.objects.filter(course_id=course_id)
-    except Week.DoesNotExist:
-        weeks = None
-    try:
         lectures = Lecture.objects.filter(course_id=course_id).order_by('-lecture_num')
     except Lecture.DoesNotExist:
         lectures = None
     return render(request, 'course/lecture/list.html',{
         'course' : course,
-        'weeks' : weeks,
         'lectures' : lectures,
         'NO_VIDEO_PLAYER': settings.NO_VIDEO_PLAYER,
         'YOUTUBE_VIDEO_PLAYER': settings.YOUTUBE_VIDEO_PLAYER,

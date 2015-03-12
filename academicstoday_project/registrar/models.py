@@ -2,11 +2,16 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
 
+
+
 class Course(models.Model):
+    COURSE_CATEGORY_TYPES = (
+        ('Liberal Arts', 'Liberal Arts'),
+    )
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=127)
     sub_title = models.CharField(max_length=127)
-    category = models.CharField(max_length=127)
+    category = models.CharField(max_length=127, choices=COURSE_CATEGORY_TYPES)
     description = models.TextField(null=True)
     start_date = models.DateField(null=True)
     finish_date = models.DateField(null=True)
@@ -23,12 +28,12 @@ class Course(models.Model):
 
 class CourseSubmission(models.Model):
     review_id = models.AutoField(primary_key=True)
-    course = models.ForeignKey(Course)
     status = models.PositiveSmallIntegerField(default=settings.COURSE_SUBMITTED_FOR_REVIEW_STATUS)
     from_submitter = models.TextField(null=True)
     from_reviewer = models.TextField(null=True)
     review_date = models.DateField(auto_now=True, null=True)
     submission_date = models.DateField(auto_now_add=True, null=True)
+    course = models.ForeignKey(Course)
 
     def __str__(self):
         return str(self.review_date) + ' ' + str(self.review)
@@ -60,12 +65,12 @@ class Teacher(models.Model):
 
 
 class Announcement(models.Model):
-    course = models.ForeignKey(Course)
     announcement_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=31)
     body = models.TextField()
     post_date = models.DateField(auto_now=True, auto_now_add=True, null=True)
-
+    course = models.ForeignKey(Course)
+    
     @classmethod
     def create(cls, course_id, title, body, post_date):
         announcement = cls(course_id=course_id, title=title,
@@ -78,10 +83,11 @@ class Announcement(models.Model):
     class Meta:
         db_table = 'at_announcements'
 
+
 class Syllabus(models.Model):
-    course = models.ForeignKey(Course)
     syllabus_id = models.AutoField(primary_key=True)
     file = models.FileField(upload_to='uploads',null=True)
+    course = models.ForeignKey(Course)
 
     def __str__(self):
         return self.file;
@@ -89,10 +95,11 @@ class Syllabus(models.Model):
     class Meta:
         db_table = 'at_syllabus'
 
+
 class Policy(models.Model):
-    course = models.ForeignKey(Course)
     policy_id = models.AutoField(primary_key=True)
     file = models.FileField(upload_to='uploads',null=True)
+    course = models.ForeignKey(Course)
 
     def __str__(self):
         return self.policy_id + ' ' + self.file.url;
@@ -100,21 +107,8 @@ class Policy(models.Model):
     class Meta:
         db_table = 'at_policys'
 
-class Week(models.Model):
-    week_id = models.AutoField(max_length=11, primary_key=True)
-    course_id = models.PositiveIntegerField()
-    week_num = models.PositiveSmallIntegerField(max_length=7)
-    title = models.CharField(max_length=31)
-    description = models.TextField()
-
-    def __str__(self):
-        return self.course_id + ' ' + self.file_url;
-
-    class Meta:
-        db_table = 'at_weeks'
 
 class Lecture(models.Model):
-    course = models.ForeignKey(Course)
     lecture_id = models.AutoField(primary_key=True)
     lecture_num = models.PositiveSmallIntegerField(max_length=7, default=0)
     week_num = models.PositiveSmallIntegerField(max_length=7)
@@ -128,6 +122,7 @@ class Lecture(models.Model):
         (settings.VIMEO_VIDEO_PLAYER, 'Vimeo')
     )
     preferred_service = models.CharField(max_length=1, choices=VIDEO_PLAYER_CHOICES, default=settings.YOUTUBE_VIDEO_PLAYER)
+    course = models.ForeignKey(Course)
 
     def __str__(self):
         return 'Week: ' + str(self.week_num) + ' Lecture: ' + str(self.lecture_num) + ' Title: ' +self.title;
@@ -137,13 +132,13 @@ class Lecture(models.Model):
 
 
 class Exam(models.Model):
-    course = models.ForeignKey(Course)
     exam_id = models.AutoField(primary_key=True)
     exam_num = models.PositiveSmallIntegerField(default=0)
     title = models.CharField(max_length=31, null=True)
     description = models.TextField(null=True)
     start_date = models.DateField(null=True)
     due_date = models.DateField(null=True)
+    course = models.ForeignKey(Course)
 
     def __str__(self):
         return str(self.exam_num) + ' ' + self.title + ' ' + self.description;
@@ -153,14 +148,14 @@ class Exam(models.Model):
 
 
 class ExamSubmission(models.Model):
-    course = models.ForeignKey(Course)
-    exam = models.ForeignKey(Exam)
-    student = models.ForeignKey(Student)
     submission_id = models.AutoField(primary_key=True)
     marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateField(null=True)
     is_marked = models.BooleanField(default=False)
     is_finished = models.BooleanField(default=False)
+    course = models.ForeignKey(Course)
+    student = models.ForeignKey(Student)
+    exam = models.ForeignKey(Exam)
 
     def __str__(self):
         return self.submission_id + ' ' + self.type;
@@ -170,13 +165,13 @@ class ExamSubmission(models.Model):
 
 
 class Quiz(models.Model):
-    course = models.ForeignKey(Course)
     quiz_id = models.AutoField(primary_key=True)
     quiz_num = models.PositiveSmallIntegerField(default=0)
     title = models.CharField(max_length=31, null=True)
     description = models.TextField(null=True)
     start_date = models.DateField(null=True)
     due_date = models.DateField(null=True)
+    course = models.ForeignKey(Course)
 
     def __str__(self):
         return str(self.quiz_id) + ' ' + str(self.type);
@@ -186,14 +181,14 @@ class Quiz(models.Model):
 
 
 class QuizSubmission(models.Model):
-    course = models.ForeignKey(Course)
-    quiz = models.ForeignKey(Quiz)
-    student = models.ForeignKey(Student)
     submission_id = models.AutoField(primary_key=True)
     marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateField(null=True)
     is_marked = models.BooleanField(default=False)
     is_finished = models.BooleanField(default=False)
+    course = models.ForeignKey(Course)
+    student = models.ForeignKey(Student)
+    quiz = models.ForeignKey(Quiz)
 
     def __str__(self):
         return self.quiz_id + ' ' + self.type;
@@ -203,13 +198,13 @@ class QuizSubmission(models.Model):
 
 
 class Assignment(models.Model):
-    course = models.ForeignKey(Course)
     assignment_id = models.AutoField(primary_key=True)
     assignment_num = models.PositiveSmallIntegerField(default=0)
     title = models.CharField(max_length=31, null=True)
     description = models.TextField(null=True)
     start_date = models.DateField(null=True)
     due_date = models.DateField(null=True)
+    course = models.ForeignKey(Course)
 
     def __str__(self):
         return self.assignment_id + ' ' + self.type;
@@ -219,14 +214,14 @@ class Assignment(models.Model):
 
 
 class AssignmentSubmission(models.Model):
-    course = models.ForeignKey(Course)
-    assignment = models.ForeignKey(Assignment)
-    student = models.ForeignKey(Student)
     submission_id = models.AutoField(primary_key=True)
     marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateTimeField(auto_now=True, null=True)
     is_marked = models.BooleanField(default=False)
     is_finished = models.BooleanField(default=False)
+    course = models.ForeignKey(Course)
+    student = models.ForeignKey(Student)
+    assignment = models.ForeignKey(Assignment)
 
     def __str__(self):
         return str(assignment_num) + ' ' + str(marks);
@@ -236,13 +231,15 @@ class AssignmentSubmission(models.Model):
 
 
 class EssayQuestion(models.Model):
-    course = models.ForeignKey(Course)
-    assignment = models.ForeignKey(Assignment)
     question_id = models.AutoField(max_length=11, primary_key=True)
     question_num = models.PositiveSmallIntegerField()
     title = models.CharField(max_length=31, default='')
     description = models.TextField(default='')
     question_type = settings.ESSAY_QUESTION_TYPE
+    course = models.ForeignKey(Course)
+    assignment = models.ForeignKey(Assignment, null=True)
+    quiz = models.ForeignKey(Quiz, null=True)
+    exam = models.ForeignKey(Exam, null=True)
 
     def __str__(self):
         return self.question_id + ' ' + self.title + ' ' + self.description;
@@ -251,14 +248,16 @@ class EssayQuestion(models.Model):
         db_table = 'at_essay_questions'
 
 class EssaySubmission(models.Model):
-    course = models.ForeignKey(Course)
-    assignment = models.ForeignKey(Assignment)
-    student = models.ForeignKey(Student)
-    question = models.ForeignKey(EssayQuestion)
     submission_id = models.AutoField(max_length=11, primary_key=True)
     file = models.FileField(upload_to='uploads')
     submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
     is_marked = models.BooleanField(default=False)
+    course = models.ForeignKey(Course)
+    student = models.ForeignKey(Student)
+    question = models.ForeignKey(EssayQuestion)
+    assignment = models.ForeignKey(Assignment, null=True)
+    quiz = models.ForeignKey(Quiz, null=True)
+    exam = models.ForeignKey(Exam, null=True)
 
     def __str__(self):
         return self.course_id + ' ' + self.file_path;
@@ -267,9 +266,6 @@ class EssaySubmission(models.Model):
         db_table = 'at_essay_submissions'
 
 class MultipleChoiceQuestion(models.Model):
-    course = models.ForeignKey(Course)
-    assignment = models.ForeignKey(Assignment, null=True)
-    exam = models.ForeignKey(Exam, null=True)
     question_id = models.AutoField(primary_key=True)
     question_num = models.PositiveSmallIntegerField()
     title = models.CharField(max_length=31, default='', blank=True)
@@ -287,6 +283,10 @@ class MultipleChoiceQuestion(models.Model):
     f = models.CharField(max_length=255, null=True, blank=True)
     f_is_correct = models.BooleanField(default=False)
     question_type = settings.MULTIPLECHOICE_QUESTION_TYPE
+    course = models.ForeignKey(Course)
+    assignment = models.ForeignKey(Assignment, null=True)
+    quiz = models.ForeignKey(Quiz, null=True)
+    exam = models.ForeignKey(Exam, null=True)
 
     def __str__(self):
         return self.course_id + ' ' + self.title + ' ' + self.description;
@@ -295,10 +295,6 @@ class MultipleChoiceQuestion(models.Model):
         db_table = 'at_multiple_choice_questions'
 
 class MultipleChoiceSubmission(models.Model):
-    student = models.ForeignKey(Student)
-    assignment = models.ForeignKey(Assignment, null=True)
-    question = models.ForeignKey(MultipleChoiceQuestion)
-    exam = models.ForeignKey(Exam, null=True)
     submission_id = models.AutoField(max_length=11, primary_key=True)
     a = models.BooleanField(default=False)
     b = models.BooleanField(default=False)
@@ -309,6 +305,12 @@ class MultipleChoiceSubmission(models.Model):
     marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
     is_marked = models.BooleanField(default=False)
+    course = models.ForeignKey(Course)
+    student = models.ForeignKey(Student)
+    question = models.ForeignKey(MultipleChoiceQuestion)
+    assignment = models.ForeignKey(Assignment, null=True)
+    quiz = models.ForeignKey(Quiz, null=True)
+    exam = models.ForeignKey(Exam, null=True)
 
     @classmethod
     def create(cls, assignment_id, exam_id, course_id, student_id, question_num):
@@ -327,9 +329,6 @@ class MultipleChoiceSubmission(models.Model):
 
 
 class TrueFalseQuestion(models.Model):
-    course = models.ForeignKey(Course)
-    assignment = models.ForeignKey(Assignment, null=True)
-    quiz = models.ForeignKey(Quiz, null=True)
     question_id = models.AutoField(primary_key=True)
     question_num = models.PositiveSmallIntegerField()
     title = models.CharField(max_length=31, default='')
@@ -338,6 +337,10 @@ class TrueFalseQuestion(models.Model):
     false_choice = models.CharField(max_length=127, null=True)
     answer = models.BooleanField(default=False)
     question_type = settings.TRUEFALSE_QUESTION_TYPE
+    course = models.ForeignKey(Course)
+    assignment = models.ForeignKey(Assignment, null=True)
+    quiz = models.ForeignKey(Quiz, null=True)
+    exam = models.ForeignKey(Exam, null=True)
 
     def __str__(self):
         return str(self.question_num) + ' ' + self.title + ' ' + self.description;
@@ -347,16 +350,17 @@ class TrueFalseQuestion(models.Model):
 
 
 class TrueFalseSubmission(models.Model):
-    student = models.ForeignKey(Student)
-    assignment = models.ForeignKey(Assignment, null=True)
-    question = models.ForeignKey(TrueFalseQuestion)
-    quiz = models.ForeignKey(Quiz, null=True)
-    exam = models.ForeignKey(Exam, null=True)
     submission_id = models.AutoField(max_length=11, primary_key=True)
     answer = models.BooleanField(default=False)
     marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
     is_marked = models.BooleanField(default=False)
+    course = models.ForeignKey(Course)
+    student = models.ForeignKey(Student)
+    question = models.ForeignKey(TrueFalseQuestion)
+    assignment = models.ForeignKey(Assignment, null=True)
+    quiz = models.ForeignKey(Quiz, null=True)
+    exam = models.ForeignKey(Exam, null=True)
 
     def __str__(self):
         return self.course_id + ' ' + self.selected;
@@ -366,14 +370,16 @@ class TrueFalseSubmission(models.Model):
 
 
 class ResponseQuestion(models.Model):
-    course = models.ForeignKey(Course)
-    assignment = models.ForeignKey(Assignment, null=True)
     question_id = models.AutoField(primary_key=True)
     question_num = models.PositiveSmallIntegerField()
     title = models.CharField(max_length=31, default='')
     description = models.TextField(default='')
     answer = models.TextField(default='')
     question_type = settings.RESPONSE_QUESTION_TYPE
+    course = models.ForeignKey(Course)
+    assignment = models.ForeignKey(Assignment, null=True)
+    quiz = models.ForeignKey(Quiz, null=True)
+    exam = models.ForeignKey(Exam, null=True)
 
     def __str__(self):
         return self.course_id + ' ' + self.title + ' ' + self.description;
@@ -383,14 +389,17 @@ class ResponseQuestion(models.Model):
 
 
 class ResponseSubmission(models.Model):
-    student = models.ForeignKey(Student)
-    assignment = models.ForeignKey(Assignment, null=True)
-    question = models.ForeignKey(ResponseQuestion)
     submission_id = models.AutoField(primary_key=True)
     answer = models.TextField(default='')
     marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
     is_marked = models.BooleanField(default=False)
+    course = models.ForeignKey(Course)
+    student = models.ForeignKey(Student)
+    question = models.ForeignKey(ResponseQuestion)
+    assignment = models.ForeignKey(Assignment, null=True)
+    quiz = models.ForeignKey(Quiz, null=True)
+    exam = models.ForeignKey(Exam, null=True)
 
     def __str__(self):
         return self.course_id + ' ' + self.response;
@@ -400,14 +409,16 @@ class ResponseSubmission(models.Model):
 
 
 class AssignmentReview(models.Model):
-    course = models.ForeignKey(Course)
-    assignment = models.ForeignKey(Assignment, null=True)
-    student = models.ForeignKey(Student)
     review_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=31)
     comment = models.TextField()
     marks = models.PositiveSmallIntegerField(default=0)
     post_date = models.DateField(auto_now=True, auto_now_add=True, null=True)
+    student = models.ForeignKey(Student)
+    course = models.ForeignKey(Course)
+    assignment = models.ForeignKey(Assignment, null=True)
+    quiz = models.ForeignKey(Quiz, null=True)
+    exam = models.ForeignKey(Exam, null=True)
 
     @classmethod
     def create(cls, student_id, assignment_id, course_id, title, comment, marks):

@@ -26,50 +26,8 @@ import datetime
 def peer_review_page(request, course_id):
     course = Course.objects.get(id=course_id)
 
-    try:
-        assignments = Assignment.objects.filter(course_id=course_id).order_by('-order_num')
-    except Assignment.DoesNotExist:
-        assignments = None
-
-    try:
-        submissions = AssignmentSubmission.objects.filter(course_id=course_id).order_by('-order_num')
-    except AssignmentSubmission.DoesNotExist:
-        announcements = None
-
-    try:
-        essay_questions = EssayQuestion.objects.filter(course_id=course_id).order_by('-order_num')
-    except EssayQuestion.DoesNotExist:
-        essay_questions = None
-
-    try:
-        essay_submissions = EssaySubmission.objects.filter(course_id=course_id).order_by('-order_num')
-    except EssaySubmission.DoesNotExist:
-        essay_submissions = None
-
-    try:
-        mc_questions = ResponseQuestion.objects.filter(course_id=course_id).order_by('-order_num')
-    except ResponseQuestion.DoesNotExist:
-        mc_questions = None
-
-    try:
-        mc_submissions = ResponseSubmission.objects.filter(course_id=course_id).order_by('-order_num')
-    except ResponseSubmission.DoesNotExist:
-        mc_submissions = None
-
-    try:
-        reviews = AssignmentReview.objects.filter(course_id=course_id).order_by('-order_num')
-    except AssignmentReview.DoesNotExist:
-        reviews = None
-
     return render(request, 'course/peer_review/list.html',{
         'course' : course,
-        'assignments' : assignments,
-        'submissions' : submissions,
-        'essay_questions' : essay_questions,
-        'essay_submissions' : essay_submissions,
-        'mc_questions' : mc_questions,
-        'mc_submissions' : mc_submissions,
-        'reviews' : reviews,
         'user' : request.user,
         'tab' : 'peer_review',
         'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
