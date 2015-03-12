@@ -46,39 +46,45 @@
                         <tbody>
                             {% for quiz in quizzes %}
                             {% for submission in submitted_quizzes %}
-                            {% if submission.quiz_id == quiz.id %}
+                            {% if submission.quiz == quiz %}
+                            {% if submission.is_finished == True %}
                             <tr>
-                                <td>{{ quiz.order_num }}</td>
+                                <td>{{ quiz.quiz_num }}</td>
                                 <td>
-                                    {% if submission.submission_date != None %}
                                     <span class="badge">Complete</span>
-                                    {% else %}
-                                    <span class="badge">Incomplete</span>
-                                    {% endif %}
                                 </td>
                                 <td>{{ quiz.due_date }}</td>
-                                <td>{{ submission.submission_date }} </td>
+                                <td>{{ submission.submission_date }}</td>
                                 <td>
-                                    {% if submission.submission_date != None %}
                                     <button type="button"
                                         onclick=""
                                         class="btn btn-sm btn-primary" disabled>
-                                        <i class="fa fa-plus"></i> Submit
+                                        <i class="fa fa-file"></i> Continue
                                     </button>
                                     <button type="button"
-                                        onclick="ajax_delete_quiz({{ quiz.id }}, {{ quiz.type }});"
+                                        onclick="ajax_delete_quiz_submission({{ quiz.quiz_id }});"
                                         class="btn btn-sm btn-danger">
                                         <i class="fa fa-minus"></i> Delete
                                     </button>
-                                    {% else %}
-                                    <button type="button"
-                                        onclick="ajax_quiz({{ quiz.id }}, {{ quiz.type }});"
-                                        class="btn btn-sm btn-primary">
-                                        <i class="fa fa-plus"></i> Submit
-                                    </button>
-                                    {% endif %}
                                 </td>
                             </tr>
+                            {% else %}
+                            <tr>
+                                <td>{{ quiz.quiz_num }}</td>
+                                <td>
+                                    <span class="badge">Incomplete</span>
+                                </td>
+                                <td>{{ quiz.due_date }}</td>
+                                <td></td>
+                                <td>
+                                    <button type="button"
+                                        onclick="view_quiz({{ quiz.quiz_id }});"
+                                        class="btn btn-sm btn-primary">
+                                        <i class="fa fa-file"></i> Begin
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endif %}
                             {% endif %}
                             {% endfor %}
                             {% endfor %}
@@ -98,7 +104,7 @@
  *  Function will delete the current logged in users quiz for the
  *  given parameters.
  */
-function ajax_delete_quiz(quiz_id, quiz_type)
+function ajax_delete_quiz_submission(quiz_id)
 {
     var url = 'quiz_delete';
     
@@ -106,9 +112,6 @@ function ajax_delete_quiz(quiz_id, quiz_type)
            data: {
                'csrfmiddlewaretoken': '{{ csrf_token }}',
                'quiz_id': quiz_id,
-               'quiz_type': quiz_type,
-               'student_id' : {{ user.id }},
-               'course_id' : {{ course.id }}
            },
            type: 'post',
            success: function(result) {
@@ -142,34 +145,9 @@ function refresh_current_quiz_page()
 /**
  *  Function will call AJAX function to load the quiz modal.
  */
-function ajax_quiz(quiz_id, quiz_type)
+function view_quiz(quiz_id)
 {
-    var url;
-    if (quiz_type == {{ TRUEFALSE_QUESTION_TYPE }})
-    {
-        url = 'quiz_truefalse';
-    }
-    
-    $.ajax( url, {
-           data: {
-                'csrfmiddlewaretoken': '{{ csrf_token }}',
-                'quiz_id': quiz_id,
-                'student_id' : {{ user.id }},
-                'course_id' : {{ course.id }}
-           },
-           type: 'post',
-           success: function(result) {
-                // success code execution here
-                $('#ajax_quiz').html(result); // Update UI.
-                $('#quiz_modal').modal();     // Unhide view.
-           },
-           error: function(xhr,status,error) {
-                // error code here
-           },
-           complete: function(xhr,status) {
-                // completion code here
-           }
-    });
+    window.location = "quiz/" + quiz_id;
 }
 </script>
 

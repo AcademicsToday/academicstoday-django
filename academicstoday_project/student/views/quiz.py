@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from registrar.models import Course
+from registrar.models import Student
 from registrar.models import TrueFalseQuestion
 from registrar.models import TrueFalseSubmission
 from registrar.models import Quiz
@@ -13,28 +14,21 @@ from registrar.models import QuizSubmission
 import json
 import datetime
 
-# Developer Notes:
-# (1) Templates
-# https://docs.djangoproject.com/en/1.7/ref/templates
-#
-# (2) JSON
-# https://docs.djangoproject.com/en/1.7/topics/serialization/
-
-
 @login_required(login_url='/landpage')
 def quizzes_page(request, course_id):
     course = Course.objects.get(id=course_id)
+    student = Student.objects.get(user=request.user)
 
     # Fetch all the quizzes for this course.
     try:
-        quizzes = Quiz.objects.filter(course_id=course_id).order_by('order_num')
+        quizzes = Quiz.objects.filter(course_id=course_id).order_by('quiz_num')
     except Quiz.DoesNotExist:
         quizzes = None
 
     # Fetch all submitted quizzes
     try:
-        submitted_quizzes = QuizSubmission.objects.filter(course_id=course_id,
-                                                          student_id=request.user.id)
+        submitted_quizzes = QuizSubmission.objects.filter(course=course,
+                                                          student=student)
     except QuizSubmission.DoesNotExist:
         submitted_quizzes = None
 
@@ -45,19 +39,17 @@ def quizzes_page(request, course_id):
         for quiz in quizzes:
             found_quiz = False
             for submitted_quiz in submitted_quizzes:
-                if quiz.id == submitted_quiz.quiz_id:
+                if quiz == submitted_quiz:
                     found_quiz = True
             if not found_quiz:
-                submission = QuizSubmission.create(
-                    student_id=request.user.id,
-                    course_id=course_id,
-                    quiz_id=quiz.id,
-                    type=quiz.type,
-                    order_num=quiz.order_num
+                submission = QuizSubmission.objects.create(
+                    student=student,
+                    course=course,
+                    quiz=quiz,
                 )
                 submission.save()
 
-    return render(request, 'course/quiz/list.html',{
+    return render(request, 'course/quiz/quizzes_list.html',{
         'course' : course,
         'user' : request.user,
         'quizzes' : quizzes,
@@ -74,127 +66,139 @@ def quizzes_page(request, course_id):
 
 
 @login_required()
-def quiz_truefalse(request, course_id):
+def delete_quiz(request, course_id):
+    response_data = {'status' : 'failed', 'message' : 'unknown error with deletion'}
     if request.is_ajax():
         if request.method == 'POST':
-            student_id = int(request.POST['student_id'])
             quiz_id = int(request.POST['quiz_id'])
-            quiz = Quiz.objects.get(id=quiz_id)
-
-            # Fetch questions
+            course = Course.objects.get(id=course_id)
+            student = Student.objects.get(user=request.user)
+            quiz = Quiz.objects.get(quiz_id=quiz_id)
+            
+            # Set 'is_finished' to false to indicate we need to take the
+            # assignment all over.
+            submission = QuizSubmission.objects.get(
+                course=course,
+                student=student,
+                quiz=quiz,
+            )
+            submission.is_finished = False
+            submission.save()
+                                                          
+            # Delete all previous entries.
             try:
-                questions = TrueFalseQuestion.objects.filter(
-                    assignment_id=0,
-                    course_id=course_id,
-                    quiz_id=quiz.id,
-                )
-            except TrueFalseQuestion.DoesNotExist:
-                questions = None
+                tf_submissions = TrueFalseSubmission.objects.filter(quiz=quiz, student=student)
+                tf_submissions.delete()
+            except tf_submissions.DoesNotExist:
+                pass
+            response_data = {'status' : 'success', 'message' : ''}
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
 
-            # Fetch submissions
-            try:
-                submissions = TrueFalseSubmission.objects.filter(
-                    student_id=student_id,
-                    assignment_id=0,
-                    course_id=course_id,
-                    quiz_id=quiz.id,
-                )
-            except TrueFalseSubmission.DoesNotExist:
-                submission = None
 
-    return render(request, 'course/quiz/truefalse_modal.html',{
+@login_required(login_url='/landpage')
+def quiz_page(request, course_id, quiz_id):
+    course = Course.objects.get(id=course_id)
+    student = Student.objects.get(user=request.user)
+    quiz = Quiz.objects.get(quiz_id=quiz_id)
+    
+    # Load all true/false type questions/submissions for this assignment.
+    try:
+        tf_questions = TrueFalseQuestion.objects.filter(quiz=quiz).order_by('question_num')
+    except TrueFalseQuestion.DoesNotExist:
+        tf_questions = None
+    try:
+        tf_submissions = TrueFalseSubmission.objects.filter(quiz=quiz, student=student)
+    except tf_submissions.DoesNotExist:
+        tf_submissions = None
+    
+    return render(request, 'course/quiz/question_list.html',{
+        'course' : course,
+        'student': student,
+        'user' : request.user,
         'quiz' : quiz,
-        'questions' : questions,
-        'submissions' : submissions,
+        'tf_questions': tf_questions,
+        'tf_submissions': tf_submissions,
+        'ESSAY_QUESTION_TYPE' : settings.ESSAY_QUESTION_TYPE,
+        'MULTIPLECHOICE_QUESTION_TYPE' : settings.MULTIPLECHOICE_QUESTION_TYPE,
+        'TRUEFALSE_QUESTION_TYPE' : settings.TRUEFALSE_QUESTION_TYPE,
+        'RESPONSE_QUESTION_TYPE' : settings.RESPONSE_QUESTION_TYPE,
+        'tab' : 'quiz',
+        'subtab' : '',
+        'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
+        'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
     })
 
 
 @login_required()
-def submit_truefalse_quiz_answer(request, course_id):
+def submit_tf_assignment_answer(request, course_id, quiz_id):
     if request.is_ajax():
         if request.method == 'POST':
-            quiz_id = int(request.POST['quiz_id'])
-            student_id = int(request.POST['student_id'])
-            course_id = int(request.POST['course_id'])
-            question_num = int(request.POST['question_num'])
-            key = request.POST['key']
-
+            # Extract parameters from post
+            question_id = int(request.POST['question_id'])
+            answer = request.POST['answer']
+            
+            # Fetch from database
+            course = Course.objects.get(id=course_id)
+            quiz = Quiz.objects.get(quiz_id=quiz_id)
+            student = Student.objects.get(user=request.user)
+            
+            # Fetch question and error if not found.
+            try:
+                question = TrueFalseQuestion.objects.get(
+                    quiz=quiz,
+                    course=course,
+                    question_id=question_id,
+                )
+            except MultipleChoiceQuestion.DoesNotExist:
+                response_data = {'status' : 'failed', 'message' : 'cannot find question'}
+                return HttpResponse(json.dumps(response_data), content_type="application/json")
+        
             # Fetch submission and create new submission if not found.
             try:
                 submission = TrueFalseSubmission.objects.get(
-                    student_id=student_id,
-                    assignment_id=0,
-                    course_id=course_id,
-                    question_num=question_num,
-                    quiz_id=quiz_id,
+                    student=student,
+                    quiz=quiz,
+                    question_id=question_id,
                 )
             except TrueFalseSubmission.DoesNotExist:
-                submission = TrueFalseSubmission.create(
-                student_id=student_id,
-                assignment_id=0,
-                course_id=course_id,
-                question_num=question_num,
-                quiz_id=quiz_id,
-            )
-
-            # Save answer
-            submission.answer = key == "true"
+                submission = TrueFalseSubmission.objects.create(
+                    student=student,
+                    quiz=quiz,
+                    question_id=question_id,
+                )
+            
+            # Process the answer
+            # Return success results
+            submission.answer = answer == "true"
             submission.save()
-
+            
             response_data = {'status' : 'success', 'message' : 'submitted'}
-        return HttpResponse(json.dumps(response_data), content_type="application/json")
-
-    response_data = {'status' : 'failed', 'message' : 'error submitting'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
 @login_required()
-def submit_truefalse_quiz_completion(request, course_id):
-    # Update the 'submission_date' of our entry to indicate we
-    # have finished the quiz.
-    submission = QuizSubmission.objects.get(
-        quiz_id=int(request.POST['quiz_id']),
-        student_id=int(request.POST['student_id']),
-        course_id=int(request.POST['course_id']),
-    )
-    submission.submission_date = datetime.datetime.utcnow()
-    submission.save()
-
-    response_data = {'status' : 'success', 'message' : ''}
-    return HttpResponse(json.dumps(response_data), content_type="application/json")
-
-
-@login_required()
-def quiz_delete(request, course_id):
-    response_data = {'status' : 'failed', 'message' : 'quiz was not deleted'}
+def submit_quiz(request, course_id, quiz_id):
     if request.is_ajax():
         if request.method == 'POST':
-            student_id = int(request.POST['student_id'])
-            quiz_id = int(request.POST['quiz_id'])
-            quiz_type = int(request.POST['quiz_type'])
-
-            # Update the 'submission_date' of our entry to indicate we
-            # have finished the quiz.
-            submission = QuizSubmission.objects.get(
-                quiz_id=int(request.POST['quiz_id']),
-                student_id=int(request.POST['student_id']),
-                course_id=int(request.POST['course_id'])
-            )
-            submission.submission_date = None
+            # Fetch from database
+            course = Course.objects.get(id=course_id)
+            quiz = Quiz.objects.get(quiz_id=quiz_id)
+            student = Student.objects.get(user=request.user)
+            
+            # Fetch submission and create new submission if not found.
+            try:
+                submission = QuizSubmission.objects.get(
+                    student=student,
+                    quiz=quiz,
+                    course=course,
+                )
+            except QuizSubmission.DoesNotExist:
+                submission = AssignmentSubmission.objects.create(
+                    student=student,
+                    quiz=quiz,
+                    course=course,
+                )
+            submission.is_finished = True
             submission.save()
-
-            # Delete quiz depending on what type
-            if quiz_type == settings.TRUEFALSE_QUESTION_TYPE:
-                try:
-                    TrueFalseSubmission.objects.get(
-                        assignment_id=0,
-                        student_id=student_id,
-                        course_id=course_id,
-                        quiz_id=quiz_id,
-                    ).delete()
-
-                    # Send JSON Response indicating success
-                    response_data = {'status' : 'success', 'message' : 'assignment was deleted'}
-                except EssaySubmission.DoesNotExist:
-                    response_data = {'status' : 'failed', 'message' : 'assignment not found'}
-    return HttpResponse(json.dumps(response_data), content_type="application/json")
+            response_data = {'status' : 'success', 'message' : 'submitted'}
+        return HttpResponse(json.dumps(response_data), content_type="application/json")

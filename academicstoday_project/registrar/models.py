@@ -188,14 +188,13 @@ class Quiz(models.Model):
 
 class QuizSubmission(models.Model):
     course = models.ForeignKey(Course)
-    submission_id = models.AutoField(primary_key=True)
+    quiz = models.ForeignKey(Quiz)
     student = models.ForeignKey(Student)
-    quiz_id = models.PositiveIntegerField()
-    quiz_num = models.PositiveSmallIntegerField(default=0)
-    type = models.PositiveSmallIntegerField()
+    submission_id = models.AutoField(primary_key=True)
     marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateField(null=True)
     is_marked = models.BooleanField(default=False)
+    is_finished = models.BooleanField(default=False)
 
     def __str__(self):
         return self.quiz_id + ' ' + self.type;

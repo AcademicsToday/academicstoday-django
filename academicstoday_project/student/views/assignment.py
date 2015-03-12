@@ -25,14 +25,6 @@ from student.forms import EssaySubmissionForm
 from student.forms import AssignmentSubmissionForm
 
 
-# Developer Notes:
-# (1) Templates
-# https://docs.djangoproject.com/en/1.7/ref/templates
-#
-# (2) JSON
-# https://docs.djangoproject.com/en/1.7/topics/serialization/
-
-
 @login_required(login_url='/landpage')
 def assignments_page(request, course_id):
     course = Course.objects.get(id=course_id)
@@ -84,6 +76,7 @@ def assignments_page(request, course_id):
     })
 
 
+@login_required(login_url='/landpage')
 def assignment_page(request, course_id, assignment_id):
     course = Course.objects.get(id=course_id)
     student = Student.objects.get(user=request.user)

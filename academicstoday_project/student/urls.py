@@ -41,12 +41,14 @@ urlpatterns = patterns('',
     url(r'^course/(\d+)/assignment/(\d+)/submit_tf_assignment_answer$', assignment.submit_tf_assignment_answer),
     url(r'^course/(\d+)/assignment/(\d+)/submit_r_assignment_answer$', assignment.submit_r_assignment_answer),
                        
-    # Quiz
+    # Quiz(zes)
     url(r'^course/(\d+)/quizzes$', quiz.quizzes_page),
-    url(r'^course/(\d+)/quiz_truefalse$', quiz.quiz_truefalse),
-    url(r'^course/(\d+)/submit_truefalse_quiz_answer$', quiz.submit_truefalse_quiz_answer),
-    url(r'^course/(\d+)/submit_truefalse_quiz_completion$', quiz.submit_truefalse_quiz_completion),
-    url(r'^course/(\d+)/quiz_delete$', quiz.quiz_delete),
+    url(r'^course/(\d+)/quiz_delete$', quiz.delete_quiz),
+                       
+    # Quiz
+    url(r'^course/(\d+)/quiz/(\d+)$', quiz.quiz_page),
+    url(r'^course/(\d+)/quiz/(\d+)/submit_quiz$', quiz.submit_quiz),
+    url(r'^course/(\d+)/quiz/(\d+)/submit_tf_quiz_answer$', quiz.submit_tf_assignment_answer),
 
     # Exam
     url(r'^course/(\d+)/exams$', exam.exams_page),
