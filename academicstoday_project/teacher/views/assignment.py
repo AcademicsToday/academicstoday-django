@@ -140,7 +140,7 @@ def assignment_page(request, course_id, assignment_id):
         'TRUEFALSE_QUESTION_TYPE': settings.TRUEFALSE_QUESTION_TYPE,
         'RESPONSE_QUESTION_TYPE': settings.RESPONSE_QUESTION_TYPE,
         'user' : request.user,
-        'tab' : 'assignments',
+        'tab' : 'assignment',
         'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
         'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
     })
