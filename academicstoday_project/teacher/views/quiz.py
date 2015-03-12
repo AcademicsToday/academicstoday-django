@@ -185,7 +185,6 @@ def save_question(request, course_id, quiz_id):
                 # question type selected.
                 if question_type == settings.TRUEFALSE_QUESTION_TYPE:
                     question = TrueFalseQuestion.objects.create(
-                        course=course,
                         quiz=quiz,
                         question_num=question_num
                     )

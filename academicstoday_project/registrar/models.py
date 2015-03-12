@@ -153,7 +153,6 @@ class ExamSubmission(models.Model):
     submission_date = models.DateField(null=True)
     is_marked = models.BooleanField(default=False)
     is_finished = models.BooleanField(default=False)
-    course = models.ForeignKey(Course)
     student = models.ForeignKey(Student)
     exam = models.ForeignKey(Exam)
 
@@ -186,7 +185,6 @@ class QuizSubmission(models.Model):
     submission_date = models.DateField(null=True)
     is_marked = models.BooleanField(default=False)
     is_finished = models.BooleanField(default=False)
-    course = models.ForeignKey(Course)
     student = models.ForeignKey(Student)
     quiz = models.ForeignKey(Quiz)
 

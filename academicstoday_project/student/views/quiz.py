@@ -27,7 +27,7 @@ def quizzes_page(request, course_id):
 
     # Fetch all submitted quizzes
     try:
-        submitted_quizzes = QuizSubmission.objects.filter(course=course,
+        submitted_quizzes = QuizSubmission.objects.filter(quiz__course=course,
                                                           student=student)
     except QuizSubmission.DoesNotExist:
         submitted_quizzes = None
@@ -107,7 +107,7 @@ def quiz_page(request, course_id, quiz_id):
     except TrueFalseQuestion.DoesNotExist:
         tf_questions = None
     try:
-        tf_submissions = TrueFalseSubmission.objects.filter(quiz=quiz, student=student)
+        tf_submissions = TrueFalseSubmission.objects.filter(question__quiz=quiz, student=student)
     except tf_submissions.DoesNotExist:
         tf_submissions = None
     
@@ -146,10 +146,8 @@ def submit_tf_assignment_answer(request, course_id, quiz_id):
             try:
                 question = TrueFalseQuestion.objects.get(
                     quiz=quiz,
-                    course=course,
-                    question_id=question_id,
                 )
-            except MultipleChoiceQuestion.DoesNotExist:
+            except TrueFalseQuestion.DoesNotExist:
                 response_data = {'status' : 'failed', 'message' : 'cannot find question'}
                 return HttpResponse(json.dumps(response_data), content_type="application/json")
         
@@ -157,14 +155,12 @@ def submit_tf_assignment_answer(request, course_id, quiz_id):
             try:
                 submission = TrueFalseSubmission.objects.get(
                     student=student,
-                    quiz=quiz,
-                    question_id=question_id,
+                    question=question,
                 )
             except TrueFalseSubmission.DoesNotExist:
                 submission = TrueFalseSubmission.objects.create(
                     student=student,
-                    quiz=quiz,
-                    question_id=question_id,
+                    question=question,
                 )
             
             # Process the answer
@@ -190,13 +186,11 @@ def submit_quiz(request, course_id, quiz_id):
                 submission = QuizSubmission.objects.get(
                     student=student,
                     quiz=quiz,
-                    course=course,
                 )
             except QuizSubmission.DoesNotExist:
                 submission = AssignmentSubmission.objects.create(
                     student=student,
                     quiz=quiz,
-                    course=course,
                 )
             submission.is_finished = True
             submission.save()
