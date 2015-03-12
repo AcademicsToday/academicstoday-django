@@ -43,10 +43,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                        {% for assignment in assignments %}
+                        {% for submission in submissions %}
                             <tr>
-                                <td>{{ assignment.id }}</td>
-                                <td>{{ user.username }}</td>
+                                <td>{{ submission.assignment.assignment_num }}</td>
+                                <td>{{ submission.student.user.username }}</td>
                                 <td>
                                      <i class="fa fa-star"></i>
                                      <i class="fa fa-star"></i>
@@ -55,14 +55,13 @@
                                      <i class="fa fa-star"></i>
                                 </td>
                                 <td>
-                                    <button type="button"
-                                        onclick=""
-                                        class="btn btn-sm btn-primary" disabled>
+                                    <button onclick="view_submission({{ submission.submission_id }});"
+                                               type="button"
+                                              class="btn btn-sm btn-primary">
                                         <i class="fa fa-search"></i> View
                                     </button>
                                 </td>
                             </tr>
-                        {% empty %}
                         {% endfor %}
                         </tbody>
                     </table>
@@ -74,5 +73,13 @@
     </div>
     
 </div>
-
+<script>
+    /**
+     *  Function will load up the assignment view
+     */
+    function view_submission(assignment_id)
+    {
+        window.location = "peer_review/" + assignment_id;
+    }
+</script>
 {% endblock content %}

@@ -1,0 +1,237 @@
+{% extends 'course/base.html' %}
+{% load staticfiles %}
+{% block content %}
+
+<div id="page-wrapper">
+
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    Assignment
+                </h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-university"></i>  <a href="../../../courses">Courses</a>
+                    </li>
+                    <li>
+                        <i class="fa fa-compass"></i> {{ course.title }}
+                    </li>
+                    <li class="active">
+                        <i class="fa fa-child"></i> Peer-Review
+                    </li>
+                    <li class="active">
+                        <i class="fa fa-book"></i> Assignment #{{ assignment.assignment_num }}
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <!-- Essay(s) -->
+        {% for e_submission in e_submissions %}
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Question #{{ e_submission.question.question_num }}: {{ e_submission.question.title }}</h3>
+                    </div>
+                    <div class="panel-body">
+                        {% include "course/peer_review/e_form.html" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <!-- /.Essay Questions -->
+        
+        <!-- Response Questions -->
+        {% for r_question in r_questions %}
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Question #{{ r_question.question_num }}: {{ r_question.title }}</h3>
+                    </div>
+                    <div class="panel-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <!-- /.Response  Questions -->
+        
+    </div><!-- /.container -->
+
+</div>
+
+<script>
+    //------------------------------------------------------------------------//
+    //                                 ESSAY                                  //
+    //------------------------------------------------------------------------//
+    
+    function ajax_submit_e_assignment_answer(question_id)
+    {
+        var file_id = 'id_file_' + question_id;
+        var url = {{ assignment.assignment_id }} + '/submit_e_assignment_answer';
+        
+        // create a FormData Object using your form dom element
+        var data = new FormData();
+        data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+        data.append('question_id', question_id);
+        data.append('file', document.getElementById(file_id).files[0]);
+        
+        jQuery.ajax({
+            url: url,
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: 'POST',
+            success: function(result){
+                if (result.status == 'success')
+                {
+                    $("#success_status_info").show();
+                    $("#warning_status_info").hide();
+                    $("#danger_status_info").hide();
+                }
+                else
+                {
+                    var message = "<strong>Failed!</strong>";
+                    message += " " + result.message['file']
+                    $('#danger_status_msg').html(message);
+                    $("#success_status_info").hide();
+                    $("#warning_status_info").hide();
+                    $("#danger_status_info").show();
+                    }
+                }
+        });
+    }
+    
+    //------------------------------------------------------------------------//
+    //                           MULTIPLE CHOICE                              //
+    //------------------------------------------------------------------------//
+
+    function ajax_submit_mc_assignment_answer(question_id, answer)
+    {
+        var url = {{ assignment.assignment_id }} + '/submit_mc_assignment_answer';
+        
+        // create a FormData Object using your form dom element
+        var data = new FormData();
+        data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+        data.append('question_id', question_id);
+        data.append('answer', answer);
+    
+        jQuery.ajax({
+            url: url,
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: 'POST',
+            success: function(result){
+                if (result.status != 'success') // Print errors.
+                {
+                    alert(result.message);
+                }
+            }
+        });
+    }
+
+    //------------------------------------------------------------------------//
+    //                          TRUE/FALSE CHOICE                             //
+    //------------------------------------------------------------------------//
+
+    function ajax_submit_tf_assignment_answer(question_id, answer)
+    {
+        var url = {{ assignment.assignment_id }} + '/submit_tf_assignment_answer';
+    
+        // create a FormData Object using your form dom element
+        var data = new FormData();
+        data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+        data.append('question_id', question_id);
+        data.append('answer', answer);
+    
+        jQuery.ajax({
+            url: url,
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: 'POST',
+            success: function(result){
+                if (result.status != 'success') // Print errors.
+                {
+                alert(result.message);
+                }
+            }
+        });
+    }
+
+    //------------------------------------------------------------------------//
+    //                           RESPONSE CHOICE                              //
+    //------------------------------------------------------------------------//
+
+    function ajax_submit_r_assignment_answer(question_id, div_id)
+    {
+        var url = {{ assignment.assignment_id }} + '/submit_r_assignment_answer';
+    
+        // create a FormData Object using your form dom element
+        var data = new FormData();
+        data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+        data.append('question_id', question_id);
+        
+        // Get the response and append it to the form.
+        var text = $(div_id).val();
+        data.append('answer', text);
+    
+        jQuery.ajax({
+            url: url,
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: 'POST',
+            success: function(result){
+                if (result.status != 'success') // Print errors.
+                {
+                    alert(result.message);
+                }
+            }
+        });
+    }
+
+    //------------------------------------------------------------------------//
+    //                               SUBMISSION                               //
+    //------------------------------------------------------------------------//
+    function ajax_submit_assignment()
+    {
+        var url = {{ assignment.assignment_id }} + '/submit_assignment';
+        
+        // create a FormData Object using your form dom element
+        var data = new FormData();
+        data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+        
+        jQuery.ajax({
+            url: url,
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: 'POST',
+            success: function(result){
+                if (result.status != 'success') // Print errors.
+                {
+                    alert(result.message);
+                }
+                else
+                {
+                    window.location = "../assignments"
+                }
+            }
+        });
+    }
+</script>
+{% endblock content %}

@@ -408,32 +408,25 @@ class ResponseSubmission(models.Model):
         db_table = 'at_response_submissions'
 
 
-class AssignmentReview(models.Model):
-    review_id = models.AutoField(primary_key=True)
-    title = models.CharField(max_length=31)
-    comment = models.TextField()
-    marks = models.PositiveSmallIntegerField(default=0)
-    post_date = models.DateField(auto_now=True, auto_now_add=True, null=True)
+class EssaySubmissionReview(models.Model):
+    review_id = models.AutoField(max_length=11, primary_key=True)
+    ESSAY_MARK_CHOICES = (
+        (0, '0 Star'),
+        (1, '1 Star'),
+        (2, '2 Stars'),
+        (3, '3 Stars'),
+        (4, '4 Stars'),
+        (5, '5 Stars'),
+    )
+    marks = models.PositiveSmallIntegerField(default=0, choices=ESSAY_MARK_CHOICES)
+    text = models.TextField(null=True, blank=True)
+    date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
     student = models.ForeignKey(Student)
-    course = models.ForeignKey(Course)
-    assignment = models.ForeignKey(Assignment, null=True)
-    quiz = models.ForeignKey(Quiz, null=True)
-    exam = models.ForeignKey(Exam, null=True)
-
-    @classmethod
-    def create(cls, student_id, assignment_id, course_id, title, comment, marks):
-        assignment = cls(
-            student_id=student_id,
-            assignment_id=assignment_id,
-            course_id=course_id,
-            title=title,
-            comment=comment,
-            marks=marks
-        )
-        return assignment
-
+    submission = models.ForeignKey(EssaySubmission)
+    
     def __str__(self):
-        return self.id + ' ' + self.title + ' ' + self.comment + ' ' + self.post_date;
-
+        return self.course_id + ' ' + self.file_path;
+    
     class Meta:
-        db_table = 'at_assignment_reviews'
+        db_table = 'at_essay_submission_reviews'
+
