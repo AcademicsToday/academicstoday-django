@@ -50,15 +50,19 @@ def assignments_page(request, course_id):
         for assignment in assignments:
             found_assignment = False
             for submitted_assignment in submitted_assignments:
-                if assignment.id == submitted_assignment.assignment_id:
+                if assignment.assignment_id == submitted_assignment.assignment_id:
                     found_assignment = True
             if not found_assignment:
                 submission = AssignmentSubmission.objects.create(
                     student=student,
-                    course=course,
                     assignment=assignment,
                 )
                 submission.save()
+        # Once we saved the data, we will have to fetch the results again.
+        submitted_assignments = AssignmentSubmission.objects.filter(
+            assignment__course=course,
+            student=student
+        )
 
     return render(request, 'course/assignment/assignments_list.html',{
         'course' : course,
