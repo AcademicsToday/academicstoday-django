@@ -28,6 +28,7 @@
      $(document).ready(function(){
         $('#assignment_modal').on('hidden.bs.modal', function (e) {
             $('#assignment_modal').html('');
+            refresh_page();
         });
     });
     
@@ -62,7 +63,6 @@
                 if (json_result.status == "success")
                 {
                     $('#assignment_modal').modal('hide');
-                    refresh_page();
                 }
                 else
                 {
