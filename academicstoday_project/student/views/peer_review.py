@@ -92,12 +92,12 @@ def peer_review_modal(request, course_id, assignment_id):
     response_data = {}
     if request.is_ajax():
         if request.method == 'POST':
-            question_id = request.POST['question_id']
             form = PeerReviewForm()
-            
             # Check to see if any fields where missing from the form.
             return render(request, 'course/peer_review/review_modal.html',{
-                'question_id': question_id,
+                'question_id': request.POST['question_id'],
+                'question_type': request.POST['question_type'],
+                'submission_id': request.POST['submission_id'],
                 'form': form,
                 'user': request.user,
                 'local_css_urls': settings.SB_ADMIN_CSS_LIBRARY_URLS,
@@ -109,19 +109,40 @@ def peer_review_modal(request, course_id, assignment_id):
 def save_peer_review(request, course_id, assignment_id):
     if request.is_ajax():
         if request.method == 'POST':
-            question_id = request.POST['question_id']
+            question_id = int(request.POST['question_id'])
+            question_type = int(request.POST['question_type'])
+            submission_id = int(request.POST['submission_id'])
+            
             # Fetch from database
             course = Course.objects.get(id=course_id)
             assignment = Assignment.objects.get(assignment_id=assignment_id)
-            student = Student.objects.get(user=request.user)
-            question = EssayQuestion.objects.get(
-                assignment=assignment,
-                question_id=question_id
-            )
-            submission = EssaySubmission.objects.get(
-                student=student,
-                question=question,
-            )
+            question = None
+            submission = None
+            if question_type == settings.RESPONSE_QUESTION_TYPE:
+                question = ResponseQuestion.objects.get(
+                    assignment=assignment,
+                    question_id=question_id,
+                )
+                submission = ResponseSubmission.objects.get(
+                    submission_id=submission_id
+                )
+            elif question_type == settings.ESSAY_QUESTION_TYPE:
+                question = EssayQuestion.objects.get(
+                    assignment=assignment,
+                    question_id=question_id
+                )
+                submission = EssaySubmission.objects.get(
+                    submission_id=submission_id
+                )
+            
+            # Defensive Code
+            if question is None:
+                response_data = {'status' : 'failed', 'message' : 'cannot find question at id ' + question_id}
+                return HttpResponse(json.dumps(response_data), content_type="application/json")
+            if submission is None:
+                response_data = {'status' : 'failed', 'message' : 'cannot find submission'}
+                return HttpResponse(json.dumps(response_data), content_type="application/json")
+            
             form = PeerReviewForm(request.POST, request.FILES);
             if form.is_valid():
                 # Save the peer review
@@ -135,7 +156,7 @@ def save_peer_review(request, course_id, assignment_id):
                 response_data = {'status' : 'success', 'message' : 'submitted'}
             else:
                 response_data = {'status' : 'failed', 'message' : form.errors}
-            
+
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 

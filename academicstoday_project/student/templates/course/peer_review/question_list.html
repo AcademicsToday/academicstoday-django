@@ -48,14 +48,15 @@
         <!-- /.Essay Questions -->
         
         <!-- Response Questions -->
-        {% for r_question in r_questions %}
+        {% for r_submission in r_submissions %}
         <div class="row">
             <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Question #{{ r_question.question_num }}: {{ r_question.title }}</h3>
+                        <h3 class="panel-title">Question #{{ r_submission.question.question_num }}: {{ r_submission.question.title }}</h3>
                     </div>
                     <div class="panel-body">
+                        {% include "course/peer_review/r_form.html" %}
                     </div>
                 </div>
             </div>
@@ -237,14 +238,16 @@
     /**
      *  Function will call AJAX function to load the video player modal for the lecture.
      */
-    function ajax_peer_review_modal(question_id)
+    function ajax_peer_review_modal(question_id, question_type, submission_id)
     {
         var url = {{ assignment.assignment_id }} + '/peer_review_modal';
     
         $.ajax( url, {
                data: {
                     'csrfmiddlewaretoken': '{{ csrf_token }}',
-                    'question_id': question_id
+                    'question_id': question_id,
+                    'question_type': question_type,
+                    'submission_id': submission_id
                },
                type: 'post',
                success: function(result) {
@@ -261,7 +264,7 @@
         });
     }
 
-    function ajax_save_peer_review(question_id)
+    function ajax_save_peer_review(question_id, question_type, submission_id)
     {
         var url = {{ assignment.assignment_id }} + '/save_peer_review';
         var marks = $('#id_marks').val();
@@ -271,6 +274,8 @@
             data: {
                'csrfmiddlewaretoken': '{{ csrf_token }}',
                'question_id': question_id,
+               'question_type': question_type,
+               'submission_id': submission_id,
                'marks': marks,
                'text': text,
             },
