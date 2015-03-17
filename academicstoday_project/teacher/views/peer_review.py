@@ -41,7 +41,7 @@ def peer_review_page(request, course_id):
     except AssignmentSubmission.DoesNotExist:
         submissions = None
 
-    return render(request, 'course/peer_review/assignments_list.html',{
+    return render(request, 'teacher/peer_review/assignments_list.html',{
         'course' : course,
         'assignments': assignments,
         'submissions': submissions,
@@ -70,7 +70,7 @@ def assignment_page(request, course_id, assignment_id):
     except ResponseQuestion.DoesNotExist:
         r_submissions = None
     
-    return render(request, 'course/peer_review/question_list.html',{
+    return render(request, 'teacher/peer_review/question_list.html',{
         'student': student,
         'course': course,
         'assignment': assignment,
@@ -94,7 +94,7 @@ def peer_review_modal(request, course_id, assignment_id):
         if request.method == 'POST':
             form = PeerReviewForm()
             # Check to see if any fields where missing from the form.
-            return render(request, 'course/peer_review/review_modal.html',{
+            return render(request, 'teacher/peer_review/review_modal.html',{
                 'question_id': request.POST['question_id'],
                 'question_type': request.POST['question_type'],
                 'submission_id': request.POST['submission_id'],
