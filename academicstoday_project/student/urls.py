@@ -68,4 +68,7 @@ urlpatterns = patterns('',
                        
     # Discussion
     url(r'^course/(\d+)/discussion$', discussion.discussion_page),
+    url(r'^course/(\d+)/new_thread$', discussion.new_thread_modal),
+    url(r'^course/(\d+)/insert_thread$', discussion.insert_thread),
+                       
 )

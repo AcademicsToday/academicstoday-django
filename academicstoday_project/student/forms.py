@@ -5,6 +5,7 @@ from django.forms import ModelForm
 from registrar.models import EssaySubmission
 from registrar.models import AssignmentSubmission
 from registrar.models import PeerReview
+from registrar.models import CourseDiscussionThread
 
 
 class EssaySubmissionForm(forms.ModelForm):
@@ -39,3 +40,12 @@ class PeerReviewForm(forms.ModelForm):
             'marks': 'Rating',
             'text': 'Review',
          }
+
+class CourseDiscussionThreadForm(forms.ModelForm):
+    class Meta:
+        model = CourseDiscussionThread
+        fields = ['title', 'text']
+        labels = {
+            'title': 'Thread Title',
+            'text': 'Thread Content',
+            }

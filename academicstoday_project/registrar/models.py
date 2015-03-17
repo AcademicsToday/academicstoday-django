@@ -408,3 +408,33 @@ class ResponseSubmission(models.Model):
 
     class Meta:
         db_table = 'at_response_submissions'
+
+
+class CourseDiscussionPost(models.Model):
+    post_id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=127)
+    text = models.TextField(null=True, blank=True)
+    date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
+    user = models.ForeignKey(User)
+    
+    def __str__(self):
+        return self.course_id + ' ' + self.file_path;
+
+    class Meta:
+        db_table = 'at_course_discussion_posts'
+
+
+class CourseDiscussionThread(models.Model):
+    thread_id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=127)
+    text = models.TextField(null=True, blank=True)
+    date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
+    course = models.ForeignKey(Course)
+    user = models.ForeignKey(User)
+    posts = models.ManyToManyField(CourseDiscussionPost)
+                    
+    def __str__(self):
+        return self.course_id + ' ' + self.file_path;
+                    
+    class Meta:
+        db_table = 'at_course_discussion_threads'
