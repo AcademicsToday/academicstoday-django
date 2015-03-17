@@ -418,7 +418,7 @@ class CourseDiscussionPost(models.Model):
     user = models.ForeignKey(User)
     
     def __str__(self):
-        return self.course_id + ' ' + self.file_path;
+        return self.title + ' ' + self.text;
 
     class Meta:
         db_table = 'at_course_discussion_posts'
@@ -434,7 +434,7 @@ class CourseDiscussionThread(models.Model):
     posts = models.ManyToManyField(CourseDiscussionPost)
                     
     def __str__(self):
-        return self.course_id + ' ' + self.file_path;
+        return self.title + ' ' + self.text;
                     
     class Meta:
         db_table = 'at_course_discussion_threads'

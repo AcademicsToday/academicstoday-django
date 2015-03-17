@@ -6,6 +6,7 @@ from registrar.models import EssaySubmission
 from registrar.models import AssignmentSubmission
 from registrar.models import PeerReview
 from registrar.models import CourseDiscussionThread
+from registrar.models import CourseDiscussionPost
 
 
 class EssaySubmissionForm(forms.ModelForm):
@@ -41,6 +42,7 @@ class PeerReviewForm(forms.ModelForm):
             'text': 'Review',
          }
 
+
 class CourseDiscussionThreadForm(forms.ModelForm):
     class Meta:
         model = CourseDiscussionThread
@@ -49,3 +51,13 @@ class CourseDiscussionThreadForm(forms.ModelForm):
             'title': 'Thread Title',
             'text': 'Thread Content',
             }
+
+
+class CourseDiscussionPostForm(forms.ModelForm):
+    class Meta:
+        model = CourseDiscussionPost
+        fields = ['title', 'text']
+        labels = {
+            'title': 'Post Title',
+            'text': 'Post Content',
+        }
