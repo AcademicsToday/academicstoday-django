@@ -28,7 +28,64 @@
             </div>
         </div>
         <!-- /.row -->
-
+        
+       <!-- Course -->
+       <div class="row">
+           <div class="col-lg-12">
+               <div class="panel panel-default">
+                   <div class="panel-heading">
+                       <h3 class="panel-title"><i class="fa fa-cogs"></i> Course Settings</h3>
+                   </div>
+                   <div class="panel-body">
+                       <form>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        Course Status
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control"
+                                                  id="disabledInput"
+                                                type="text"
+                                    {% if course.status == COURSE_SUBMITTED_FOR_REVIEW_STATUS %}
+                                         placeholder="Submitted and Waiting for Review"
+                                    {% elif course.status == COURSE_IN_REVIEW_STATUS %}
+                                         placeholder="In Review"
+                                    {% elif course.status == COURSE_UNAVAILABLE_STATUS %}
+                                         placeholder="Course Unavailable"
+                                    {% elif course.status == COURSE_AVAILABLE_STATUS %}                                         placeholder="Course Available"
+                                    {% elif course.status == COURSE_REJECTED_STATUS %}
+                                         placeholder="Course is Rejected and not Available"
+                                    {% else %}
+                                         placeholder="Unknown Error"
+                                    {% endif %}
+                                            disabled="">
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+<!--                            <div class="row">-->
+<!--                                <div class="form-group">-->
+<!--                                    <label class="col-sm-3 control-label">-->
+<!--                                        Course Operation-->
+<!--                                    </label>-->
+<!--                                    <div class="col-sm-9">-->
+<!--                                        <button onclick=""-->
+<!--                                            type="button"-->
+<!--                                            class="btn btn-success"-->
+<!--                                            form="register_form">-->
+<!--                                            <i class="fa fa-check-circle"></i> Running-->
+<!--                                        </button>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+                            <br/>
+                       </form>
+                   </div>
+               </div>
+           </div>
+       </div>
+       <!-- /.row -->
 
     </div>
 

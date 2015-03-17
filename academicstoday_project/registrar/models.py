@@ -438,3 +438,14 @@ class CourseDiscussionThread(models.Model):
                     
     class Meta:
         db_table = 'at_course_discussion_threads'
+
+
+class CourseSetting(models.Model):
+    settings_id = models.AutoField(primary_key=True)
+    course = models.ForeignKey(Course)
+    
+    def __str__(self):
+        return str(self.settings_id);
+    
+    class Meta:
+        db_table = 'at_course_settings'
