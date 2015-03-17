@@ -39,26 +39,37 @@
                             <button type="button"
                                  onclick="ajax_new_thread_modal({{ course.id }});"
                                    class="btn btn-sm btn-success">
-                                <i class="fa fa-plus"></i> New Thread
+                                <i class="fa fa-plus"></i> New
                             </button>
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        {% for thread in threads %}
-                        test
-                        {% endfor %}
-                        
-                        <!-- TODO: IMPLEMENT! -->
-                        <td>I don't undertsantd question 1'</td>
-                        <td>Blah blah blah</td>
-                        <td></td>
+                    {% for thread in threads %}
+                        <td>{{ thread.title }}</td>
+                        <td>{{ thread.text }}</td>
+                        <td>
+                            <button type="button"
+                                 onclick="ajax_view_thread({{ thread.thread_id }});"
+                                   class="btn btn-sm btn-primary">
+                                <i class="fa fa-glass"></i> View
+                            </button>
+                            {% if user == thread.user %}
+                            <!-- Only the user that created this thread can delete this thread -->
+                            <button type="button"
+                                 onclick="ajax_delete_threa({{ thread.thread_id }});"
+                                   class="btn btn-sm btn-danger">
+                                <i class="fa fa-minus"></i> Delete
+                            </button>
+                            {% endif %}
+                        </td>
+                    {% endfor %}
                     </tr>
                 </tbody>
             </table>
         </div>
-        
+        <!-- /.row -->
         
     </div>
     
@@ -168,6 +179,11 @@
     function refresh_current_assignments_page()
     {
         window.location = 'discussion';
+    }
+
+    function ajax_view_thread(thread_id)
+    {
+        window.location = 'thread/' + thread_id;
     }
 </script>
 

@@ -53,6 +53,7 @@ def insert_thread(request, course_id):
             course = Course.objects.get(id=course_id)
             form = CourseDiscussionThreadForm(request.POST)
             form.instance.user = request.user
+            form.instance.course = course
             if form.is_valid():
                 form.save()
                 response_data = {'status' : 'success', 'message' : 'submitted'}
