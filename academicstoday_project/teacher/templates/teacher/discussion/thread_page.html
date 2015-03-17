@@ -1,0 +1,196 @@
+{% extends 'course/base.html' %}
+{% load staticfiles %}
+{% block content %}
+
+<div id="page-wrapper">
+    
+    <div class="container-fluid">
+        
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    Discussion
+                    <small>Ask any questions here</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-university"></i>  <a href="../../../../courses">Courses</a>
+                    </li>
+                    <li>
+                        <i class="fa fa-compass"></i> {{ course.title }}
+                    </li>
+                    <li>
+                        <i class="fa fa-fw fa-comment"></i>  <a href="../discussion">Discussion</a>
+                    </li>
+                    <li class="active">
+                        <i class="fa fa-fw fa-comment"></i> Thread #{{ thread.thread_id }}
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+        
+        <!-- Main Discussion Thread -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{ thread.title }}</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>
+                        {{ thread.text }}
+                        </p>
+                        <br/><br/>
+                        <p align="right">
+                        <button onclick="ajax_new_post_modal({{ thread.thread_id }});"
+                                   type="button"
+                                  class="btn btn-sm btn-primary">
+                            <i class="fa fa-reply"></i> Reply
+                        </button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+        
+        {% for post in thread.posts.all %}
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{ post.title }}</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>
+                        {{ post.text }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        
+    </div>
+    
+</div>
+<script>
+    function ajax_new_post_modal(thread_id)
+    {
+        var url = thread_id + '/new_post';
+        
+        $.ajax( url, {
+            data: {
+               'csrfmiddlewaretoken': '{{ csrf_token }}',
+            },
+            type: 'post',
+            success: function(result) {
+               // success code execution here
+               $('#ajax_new_post').html(result); // Update UI.
+               $('#new_post_modal').modal();     // Unhide view.
+            },
+            error: function(xhr,status,error) {
+               // error code here
+            },
+            complete: function(xhr,status) {
+               // completion code here
+            }
+        });
+    }
+
+    function ajax_insert_post(thread_id)
+    {
+        if (typeof(thread_id)==='undefined')
+        {
+            thread_id = 0;
+        }
+    
+        // Create a FormData Object using your form dom element and load
+        // up the initial data first, then update it on question type.
+    
+        // Basic
+        var data = new FormData();
+        data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+        data.append('title', $('#id_title').val());
+        data.append('text', $('#id_text').val());
+        data.append('thread_id', thread_id);
+    
+        jQuery.ajax({
+            url: thread_id + '/insert_post',
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: 'POST',
+            success: function(json_result){
+                // success code execution here
+                if (json_result.status == 'success')
+                {
+                    $('#new_post_modal').modal('hide');
+                }
+                else
+                {
+                    alert(json_result.message);
+                }
+            },
+            error: function(xhr,status,error) {
+                // error code here
+            },
+            complete: function(xhr,status) {
+                // completion code here
+            }
+        });
+    }
+
+    function ajax_delete_thread(thread_id)
+    {
+        var url = 'delete_thread';
+    
+        $.ajax( url, {
+            data: {
+               'csrfmiddlewaretoken': '{{ csrf_token }}',
+               'thread_id': thread_id,
+            },
+            type: 'post',
+            success: function(result) {
+               // success code execution here
+               if (result.status == 'success')
+               {
+                    refresh_current_assignments_page(); // Reload UI.
+               }
+               else
+               {
+                    alert(result.message);
+               }
+            },
+            error: function(xhr,status,error) {
+               // error code here
+            },
+            complete: function(xhr,status) {
+               // completion code here
+            }
+        });
+    }
+
+    /**
+     *  Function makes the current tab refresh the page.
+     */
+    function refresh_current_assignments_page()
+    {
+        window.location = 'discussion';
+    }
+
+    function ajax_view_thread(thread_id)
+    {
+        window.location = 'thread/' + thread_id;
+    }
+</script>
+
+<!-- Modal -->
+<div id="ajax_new_post"
+   name="ajax_new_post"></div>
+<!-- /.Modal -->
+
+{% endblock content %}

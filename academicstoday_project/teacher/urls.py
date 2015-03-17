@@ -11,6 +11,7 @@ from teacher.views import assignment
 from teacher.views import quiz
 from teacher.views import exam
 from teacher.views import overview
+from teacher.views import discussion
 
 urlpatterns = patterns('',
     # Syllabus
@@ -77,11 +78,20 @@ urlpatterns = patterns('',
     url(r'^teacher/course/(\d+)/exam_modal$', exam.exam_modal),
     url(r'^teacher/course/(\d+)/save_exam$', exam.save_exam),
     url(r'^teacher/course/(\d+)/delete_exam$', exam.delete_exam),
-    #
+    
     # # Exam
     url(r'^teacher/course/(\d+)/exam/(\d+)$', exam.exam_page),
     url(r'^teacher/course/(\d+)/exam/(\d+)/question_type_modal$', exam.question_type_modal),
     url(r'^teacher/course/(\d+)/exam/(\d+)/question_multiple_choice_modal$', exam.question_multiple_choice_modal),
     url(r'^teacher/course/(\d+)/exam/(\d+)/save_question$', exam.save_question),
     url(r'^teacher/course/(\d+)/exam/(\d+)/delete_question$', exam.delete_question),
+                       
+    # Discussion
+    url(r'^teacher/course/(\d+)/discussion$', discussion.discussion_page),
+    url(r'^teacher/course/(\d+)/new_thread$', discussion.new_thread_modal),
+    url(r'^teacher/course/(\d+)/insert_thread$', discussion.insert_thread),
+    url(r'^teacher/course/(\d+)/delete_thread$', discussion.delete_thread),
+    url(r'^teacher/course/(\d+)/thread/(\d+)$', discussion.thread_page),
+    url(r'^teacher/course/(\d+)/thread/(\d+)/new_post$', discussion.new_post_modal),
+    url(r'^teacher/course/(\d+)/thread/(\d+)/insert_post$', discussion.insert_post),
 )
