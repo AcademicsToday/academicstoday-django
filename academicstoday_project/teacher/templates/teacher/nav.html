@@ -33,7 +33,7 @@
             </ul>
         </li>
     </ul>
-    {% if tab != 'assignment' and tab != 'quiz' and tab != 'exam'  %}
+    {% if tab != 'assignment' and tab != 'quiz' and tab != 'exam' and tab != 'peer_review' and tab != 'thread' %}
     <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
     <div class="collapse navbar-collapse navbar-ex1-collapse">
         <ul class="nav navbar-nav side-nav">
@@ -65,7 +65,7 @@
                 <a href="discussion"><i class="fa fa-fw fa-comment"></i> Discussion</a>
             </li>
             <li {% if tab == 'peer_review' %}class="active"{% endif %}>
-                <a href="peer_review"><i class="fa fa-fw fa-child"></i> Peer Review</a>
+                <a href="peer_reviews"><i class="fa fa-fw fa-child"></i> Peer Review</a>
             </li>
         </ul>
     </div>
