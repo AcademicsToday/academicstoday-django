@@ -1,0 +1,133 @@
+<form name="assignment_form" enctype="multipart/form-data" action="upload_essay" method="post" >
+    <!-- DESCRIPTION -->
+    <div class="row">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">
+                Description
+            </label>
+        </div>
+    </div><!-- /.row -->
+    
+    <div class="row">
+        <div class="form-group">
+            <label class="col-sm-12" style="font-weight:normal;">
+                <button onclick="ajax_peer_review_modal({{ e_submission.question.question_id }}, {{ e_submission.question.question_type }}, {{ e_submission.submission_id }});"
+                         style="float: right;"
+                          type="button"
+                         class="btn btn-lg btn-success"
+                         {% for review in e_submission.reviews.all %}
+                         {% if review.user = user %}
+                         disabled
+                         {% endif %}
+                         {% endfor %}>
+                    <i class="fa fa-plus"></i> Add Review
+                </button>
+                <p>{{ e_submission.question.description }}</p>
+            </label>
+        </div>
+    </div><!-- /.row -->
+    
+    <!-- ANSWER -->
+    <div class="row">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">
+                Answer
+            </label>
+        </div>
+    </div><!-- /.row -->
+    
+    <div class="row">
+        <div class="form-group">
+            <label class="col-sm-12" style="font-weight:normal;">
+                <iframe id="pdf_response" src="{{ e_submission.file.url }}" width="100%" height="640px"></iframe>
+            </label>
+        </div>
+    </div><!-- /.row -->
+    <br/>
+    
+    <!-- REVIEWS -->
+    <div class="row">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">
+                Reviews
+            </label>
+        </div>
+    </div><!-- /.row -->
+    
+    <div class="row">
+        <div class="form-group">
+            <label class="col-sm-12" style="font-weight:normal;">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>Email</th>
+                                <th>Rating</th>
+                                <th>Message</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for review in e_submission.reviews.all %}
+                            <tr>
+                                <td>{{ review.user.username }}</td>
+                                <td>
+                                    {% if review.marks == 0 %}
+                                    <i class="fa fa-star-o"></i>
+                                    <i class="fa fa-star-o"></i>
+                                    <i class="fa fa-star-o"></i>
+                                    <i class="fa fa-star-o"></i>
+                                    <i class="fa fa-star-o"></i>
+                                    {% elif review.marks == 1 %}
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-o"></i>
+                                    <i class="fa fa-star-o"></i>
+                                    <i class="fa fa-star-o"></i>
+                                    <i class="fa fa-star-o"></i>
+                                    {% elif review.marks == 2 %}
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-o"></i>
+                                    <i class="fa fa-star-o"></i>
+                                    <i class="fa fa-star-o"></i>
+                                    {% elif review.marks == 3 %}
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-o"></i>
+                                    <i class="fa fa-star-o"></i>
+                                    {% elif review.marks == 4 %}
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-o"></i>
+                                    {% elif review.marks == 5 %}
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    {% else %}
+                                    {% endif %}
+                                </td>
+                                <td>{{ review.text }}</td>
+                                <td>
+                                    {% if review.user = user %}
+                                    <button onclick="ajax_delete_peer_review({{ review.review_id }});"
+                                        style="float: right;"
+                                        type="button"
+                                        class="btn btn-xs btn-danger"><i class="fa fa-minus"></i> Delete
+                                    </button>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </label>
+        </div>
+    </div><!-- /.row -->
+    
+</form>

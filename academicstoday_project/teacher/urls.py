@@ -12,6 +12,7 @@ from teacher.views import quiz
 from teacher.views import exam
 from teacher.views import overview
 from teacher.views import discussion
+from teacher.views import peer_review
 
 urlpatterns = patterns('',
     # Syllabus
@@ -94,4 +95,11 @@ urlpatterns = patterns('',
     url(r'^teacher/course/(\d+)/thread/(\d+)$', discussion.thread_page),
     url(r'^teacher/course/(\d+)/thread/(\d+)/new_post$', discussion.new_post_modal),
     url(r'^teacher/course/(\d+)/thread/(\d+)/insert_post$', discussion.insert_post),
+                       
+    # Peer-Review
+    url(r'^teacher/course/(\d+)/peer_reviews$', peer_review.peer_review_page),
+    url(r'^teacher/course/(\d+)/peer_review/(\d+)$', peer_review.assignment_page),
+    url(r'^teacher/course/(\d+)/peer_review/(\d+)/peer_review_modal$', peer_review.peer_review_modal),
+    url(r'^teacher/course/(\d+)/peer_review/(\d+)/save_peer_review$', peer_review.save_peer_review),
+    url(r'^teacher/course/(\d+)/peer_review/(\d+)/delete_peer_review$', peer_review.delete_peer_review),
 )
