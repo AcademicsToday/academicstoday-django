@@ -40,6 +40,9 @@
         data.append('title', $('#id_title').val());
         data.append('description', $('#id_description').val());
         data.append('exam_num', $('#id_exam_num').val());
+        data.append('marks', $('#id_marks').val());
+        data.append('is_final', $('#id_is_final').is(':checked'));
+        
         var date = '';
         date  = $('#id_start_date_year').val() + '-';
         date += $('#id_start_date_month').val() + '-';
