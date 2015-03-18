@@ -239,9 +239,10 @@ class Assignment(models.Model):
 
 class AssignmentSubmission(models.Model):
     submission_id = models.AutoField(primary_key=True)
-    score = models.PositiveSmallIntegerField(default=0)
+    percent = models.PositiveSmallIntegerField(default=0)
+    earned_marks = models.PositiveSmallIntegerField(default=0)
+    total_marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateTimeField(auto_now=True, null=True)
-    is_marked = models.BooleanField(default=False)
     is_finished = models.BooleanField(default=False)
     student = models.ForeignKey(Student)
     assignment = models.ForeignKey(Assignment)

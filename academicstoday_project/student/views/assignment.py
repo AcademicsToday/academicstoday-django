@@ -429,6 +429,9 @@ def submit_assignment(request, course_id, assignment_id):
             assignment = Assignment.objects.get(assignment_id=assignment_id)
             student = Student.objects.get(user=request.user)
 
+            # Defensive Code: Prevent submitting assignment with missing questions
+            #TODO: IMPL
+
             # Fetch submission and create new submission if not found.
             try:
                 submission = AssignmentSubmission.objects.get(
@@ -442,9 +445,58 @@ def submit_assignment(request, course_id, assignment_id):
                 )
             submission.is_finished = True
             submission.save()
+            
+            # Compute the final score of the assignment
+            compute_score(student, assignment, submission)
+            
             response_data = {'status' : 'success', 'message' : 'submitted'}
             return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
 # Private Functions
 #-------------------
+def compute_score(student, assignment, submission):
+    submission.total_marks = 0
+    submission.earned_marks = 0
+
+    # Essay Submission(s)
+    e_submissions = EssaySubmission.objects.filter(
+        student=student,
+        question__assignment=assignment,
+    )
+    for e_submission in e_submissions:
+        submission.total_marks += e_submission.question.marks
+        submission.earned_marks += e_submission.marks
+
+    # Multiple Choice Submission(s)
+    mc_submissions = MultipleChoiceSubmission.objects.filter(
+        student=student,
+        question__assignment=assignment,
+                                                                                                                )
+    for mc_submission in mc_submissions:
+        submission.total_marks += mc_submission.question.marks
+        submission.earned_marks += mc_submission.marks
+
+    # True / False Submission(s)
+    tf_submissions = TrueFalseSubmission.objects.filter(
+        student=student,
+        question__assignment=assignment,
+    )
+    for tf_submission in tf_submissions:
+        submission.total_marks += tf_submission.question.marks
+        submission.earned_marks += tf_submission.marks
+
+    # Response Submission(s)
+    r_submissions = ResponseSubmission.objects.filter(
+        student=student,
+        question__assignment=assignment,
+    )
+    for r_submission in r_submissions:
+        submission.total_marks += r_submission.question.marks
+        submission.earned_marks += r_submission.marks
+
+    # Compute Percent
+    submission.percent = round((submission.earned_marks / submission.total_marks) * 100)
+
+    # Save calculation
+    submission.save()
