@@ -10,12 +10,6 @@ from registrar.models import Student
 from registrar.models import Course
 from registrar.models import Announcement
 
-# Developer Notes:
-# (1) Templates
-# https://docs.djangoproject.com/en/1.7/ref/templates
-#
-# (2) JSON
-# https://docs.djangoproject.com/en/1.7/topics/serialization/
 
 @login_required(login_url='/landpage')
 def announcements_page(request, course_id):

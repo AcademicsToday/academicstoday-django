@@ -188,7 +188,6 @@ def save_question(request, course_id, exam_id):
                 # question type selected.
                 if question_type == settings.MULTIPLECHOICE_QUESTION_TYPE:
                     question = MultipleChoiceQuestion.objects.create(
-                        course=course,
                         exam=exam,
                         question_num=question_num
                     )

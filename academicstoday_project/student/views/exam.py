@@ -20,14 +20,6 @@ from student.forms import EssaySubmissionForm
 from student.forms import AssignmentSubmissionForm
 
 
-# Developer Notes:
-# (1) Templates
-# https://docs.djangoproject.com/en/1.7/ref/templates
-#
-# (2) JSON
-# https://docs.djangoproject.com/en/1.7/topics/serialization/
-
-
 @login_required(login_url='/landpage')
 def exams_page(request, course_id):
     course = Course.objects.get(id=course_id)
@@ -41,8 +33,10 @@ def exams_page(request, course_id):
 
     # Fetch all submitted assignments
     try:
-        submitted_exams = ExamSubmission.objects.filter(exam__course=course,
-                                                        student=student)
+        submitted_exams = ExamSubmission.objects.filter(
+            exam__course=course,
+            student=student
+        )
     except ExamSubmission.DoesNotExist:
         submitted_exams = None
 
@@ -58,10 +52,13 @@ def exams_page(request, course_id):
             if not found_exam:
                 submission = ExamSubmission.objects.create(
                     student=student,
-                    course=course,
                     exam=exam,
                 )
                 submission.save()
+        submitted_exams = ExamSubmission.objects.filter(
+            exam__course=course,
+            student=student
+        )
 
     return render(request, 'course/exam/exams_list.html',{
         'course' : course,
@@ -177,7 +174,7 @@ def submit_mc_exam_answer(request, course_id, exam_id):
                     question=question,
                 )
 
-            # Process answer
+            # Save Answer
             if answer == 'A':
                 submission.a = not submission.a
             if answer == 'B':
@@ -190,6 +187,29 @@ def submit_mc_exam_answer(request, course_id, exam_id):
                 submission.e = not submission.e
             if answer == 'F':
                 submission.f = not submission.f
+            submission.save()
+            
+            # Caclulate score
+            total = 6
+            correct = 0
+            if submission.a == submission.question.a_is_correct:
+                correct += 1;
+            if submission.b == submission.question.b_is_correct:
+                correct += 1;
+            if submission.c == submission.question.c_is_correct:
+                correct += 1;
+            if submission.d == submission.question.d_is_correct:
+                correct += 1;
+            if submission.e == submission.question.e_is_correct:
+                correct += 1;
+            if submission.f == submission.question.f_is_correct:
+                correct += 1;
+            
+            # If all choices have been correctly selected, then give full credit.
+            if total == correct:
+                submission.marks = submission.question.marks
+            else:
+                submission.marks = 0
             submission.save()
                 
             # Return success results
@@ -219,5 +239,33 @@ def submit_exam(request, course_id, exam_id):
                 )
             submission.is_finished = True
             submission.save()
+            
+            # Compute Exam Score
+            compute_score(submission)
+            
             response_data = {'status' : 'success', 'message' : 'submitted'}
         return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
+#-------------------#
+# Private Functions #
+#-------------------#
+
+def compute_score(submission):
+    submission.total_marks = 0
+    submission.earned_marks = 0
+    
+    # Multiple Choice Submission(s)
+    mc_submissions = MultipleChoiceSubmission.objects.filter(
+        student=submission.student,
+        question__exam=submission.exam,
+    )
+    for mc_submission in mc_submissions:
+        submission.total_marks += mc_submission.question.marks
+        submission.earned_marks += mc_submission.marks
+
+    # Compute Percent
+    submission.percent = round((submission.earned_marks / submission.total_marks) * 100)
+    
+    # Save calculation
+    submission.save()
