@@ -264,6 +264,12 @@
                     {
                         refresh_page();
                     }
+                    else
+                    {
+                        var message = "Cannot submit for review. Reason: ";
+                        message += result.message;
+                        alert(message);
+                    }
                },
                error: function(xhr,status,error) {
                     // error code here

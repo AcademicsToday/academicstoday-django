@@ -50,6 +50,7 @@
         date += $('#id_due_date_month').val() + '-';
         date += $('#id_due_date_day').val();
         data.append('due_date', date);
+        data.append('worth', $('#id_worth').val());
         
         jQuery.ajax({
             url: 'save_assignment',
