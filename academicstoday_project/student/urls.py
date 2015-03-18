@@ -65,6 +65,7 @@ urlpatterns = patterns('',
     url(r'^course/(\d+)/peer_review/(\d+)/peer_review_modal$', peer_review.peer_review_modal),
     url(r'^course/(\d+)/peer_review/(\d+)/save_peer_review$', peer_review.save_peer_review),
     url(r'^course/(\d+)/peer_review/(\d+)/delete_peer_review$', peer_review.delete_peer_review),
+    url(r'^course/(\d+)/peer_review/(\d+)/update_assignment_marks$', peer_review.update_assignment_marks),
                        
     # Discussion
     url(r'^course/(\d+)/discussion$', discussion.discussion_page),

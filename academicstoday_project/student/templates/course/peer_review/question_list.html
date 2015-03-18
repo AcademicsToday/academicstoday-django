@@ -69,178 +69,12 @@
 </div>
 
 <script>
-    //------------------------------------------------------------------------//
-    //                                 ESSAY                                  //
-    //------------------------------------------------------------------------//
-    
-    function ajax_submit_e_assignment_answer(question_id)
-    {
-        var file_id = 'id_file_' + question_id;
-        var url = {{ assignment.assignment_id }} + '/submit_e_assignment_answer';
-        
-        // create a FormData Object using your form dom element
-        var data = new FormData();
-        data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
-        data.append('question_id', question_id);
-        data.append('file', document.getElementById(file_id).files[0]);
-        
-        jQuery.ajax({
-            url: url,
-            data: data,
-            cache: false,
-            contentType: false,
-            processData: false,
-            type: 'POST',
-            success: function(result){
-                if (result.status == 'success')
-                {
-                    $("#success_status_info").show();
-                    $("#warning_status_info").hide();
-                    $("#danger_status_info").hide();
-                }
-                else
-                {
-                    var message = "<strong>Failed!</strong>";
-                    message += " " + result.message['file']
-                    $('#danger_status_msg').html(message);
-                    $("#success_status_info").hide();
-                    $("#warning_status_info").hide();
-                    $("#danger_status_info").show();
-                    }
-                }
-        });
-    }
-    
-    //------------------------------------------------------------------------//
-    //                           MULTIPLE CHOICE                              //
-    //------------------------------------------------------------------------//
-
-    function ajax_submit_mc_assignment_answer(question_id, answer)
-    {
-        var url = {{ assignment.assignment_id }} + '/submit_mc_assignment_answer';
-        
-        // create a FormData Object using your form dom element
-        var data = new FormData();
-        data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
-        data.append('question_id', question_id);
-        data.append('answer', answer);
-    
-        jQuery.ajax({
-            url: url,
-            data: data,
-            cache: false,
-            contentType: false,
-            processData: false,
-            type: 'POST',
-            success: function(result){
-                if (result.status != 'success') // Print errors.
-                {
-                    alert(result.message);
-                }
-            }
-        });
-    }
-
-    //------------------------------------------------------------------------//
-    //                          TRUE/FALSE CHOICE                             //
-    //------------------------------------------------------------------------//
-
-    function ajax_submit_tf_assignment_answer(question_id, answer)
-    {
-        var url = {{ assignment.assignment_id }} + '/submit_tf_assignment_answer';
-    
-        // create a FormData Object using your form dom element
-        var data = new FormData();
-        data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
-        data.append('question_id', question_id);
-        data.append('answer', answer);
-    
-        jQuery.ajax({
-            url: url,
-            data: data,
-            cache: false,
-            contentType: false,
-            processData: false,
-            type: 'POST',
-            success: function(result){
-                if (result.status != 'success') // Print errors.
-                {
-                alert(result.message);
-                }
-            }
-        });
-    }
-
-    //------------------------------------------------------------------------//
-    //                           RESPONSE CHOICE                              //
-    //------------------------------------------------------------------------//
-
-    function ajax_submit_r_assignment_answer(question_id, div_id)
-    {
-        var url = {{ assignment.assignment_id }} + '/submit_r_assignment_answer';
-    
-        // create a FormData Object using your form dom element
-        var data = new FormData();
-        data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
-        data.append('question_id', question_id);
-        
-        // Get the response and append it to the form.
-        var text = $(div_id).val();
-        data.append('answer', text);
-    
-        jQuery.ajax({
-            url: url,
-            data: data,
-            cache: false,
-            contentType: false,
-            processData: false,
-            type: 'POST',
-            success: function(result){
-                if (result.status != 'success') // Print errors.
-                {
-                    alert(result.message);
-                }
-            }
-        });
-    }
-
-    //------------------------------------------------------------------------//
-    //                               SUBMISSION                               //
-    //------------------------------------------------------------------------//
-    function ajax_submit_assignment()
-    {
-        var url = {{ assignment.assignment_id }} + '/submit_assignment';
-        
-        // create a FormData Object using your form dom element
-        var data = new FormData();
-        data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
-        
-        jQuery.ajax({
-            url: url,
-            data: data,
-            cache: false,
-            contentType: false,
-            processData: false,
-            type: 'POST',
-            success: function(result){
-                if (result.status != 'success') // Print errors.
-                {
-                    alert(result.message);
-                }
-                else
-                {
-                    window.location = "../assignments"
-                }
-            }
-        });
-    }
-
     /**
      *  Function will call AJAX function to load the video player modal for the lecture.
      */
     function ajax_peer_review_modal(question_id, question_type, submission_id)
     {
-        var url = {{ assignment.assignment_id }} + '/peer_review_modal';
+        var url = {{ a_submission.submission_id }} + '/peer_review_modal';
     
         $.ajax( url, {
                data: {
@@ -264,9 +98,9 @@
         });
     }
 
-    function ajax_save_peer_review(question_id, question_type, submission_id)
+    function ajax_save_peer_review(question_id, question_type)
     {
-        var url = {{ assignment.assignment_id }} + '/save_peer_review';
+        var url = {{ a_submission.submission_id }} + '/save_peer_review';
         var marks = $('#id_marks').val();
         var text = $('#id_text').val();
         
@@ -275,7 +109,6 @@
                'csrfmiddlewaretoken': '{{ csrf_token }}',
                'question_id': question_id,
                'question_type': question_type,
-               'submission_id': submission_id,
                'marks': marks,
                'text': text,
             },
@@ -284,6 +117,7 @@
                if (result.status == 'success')
                {
                     $('#peer_review_modal').modal('hide');
+                    ajax_update_assignment_marks();
                }
                else
                {
@@ -301,7 +135,7 @@
 
     function ajax_delete_peer_review(review_id)
     {
-        var url = {{ assignment.assignment_id }} + '/delete_peer_review';
+        var url = {{ a_submission.submission_id }} + '/delete_peer_review';
         var marks = $('#id_marks').val();
         var text = $('#id_text').val();
     
@@ -314,7 +148,7 @@
            success: function(result) {
                if (result.status == 'success')
                {
-                    window.location = ''
+                    ajax_update_assignment_marks();
                }
                else
                {
@@ -327,6 +161,34 @@
            complete: function(xhr,status) {
                 // completion code here
            }
+        });
+    }
+
+    function ajax_update_assignment_marks()
+    {
+        var url = {{ a_submission.submission_id }} + '/update_assignment_marks';
+    
+        // create a FormData Object using your form dom element
+        var data = new FormData();
+        data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+    
+        jQuery.ajax({
+            url: url,
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: 'POST',
+                success: function(result){
+                if (result.status != 'success') // Print errors.
+                {
+                    alert(result.message);
+                }
+                else
+                {
+                    window.location = ''; // Reload the view.
+                }
+            }
         });
     }
 

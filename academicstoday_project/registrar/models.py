@@ -239,8 +239,8 @@ class Assignment(models.Model):
 
 class AssignmentSubmission(models.Model):
     submission_id = models.AutoField(primary_key=True)
-    percent = models.PositiveSmallIntegerField(default=0)
-    earned_marks = models.PositiveSmallIntegerField(default=0)
+    percent = models.FloatField(default=0)
+    earned_marks = models.FloatField(default=0)
     total_marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateTimeField(auto_now=True, null=True)
     is_finished = models.BooleanField(default=False)
@@ -298,7 +298,7 @@ class EssaySubmission(models.Model):
     submission_id = models.AutoField(max_length=11, primary_key=True)
     file = models.FileField(upload_to='uploads')
     submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
-    marks = models.PositiveSmallIntegerField(default=0)
+    marks = models.FloatField(default=0)
     student = models.ForeignKey(Student)
     question = models.ForeignKey(EssayQuestion)
     reviews = models.ManyToManyField(PeerReview)
@@ -346,7 +346,7 @@ class MultipleChoiceSubmission(models.Model):
     d = models.BooleanField(default=False)
     e = models.BooleanField(default=False)
     f = models.BooleanField(default=False)
-    marks = models.PositiveSmallIntegerField(default=0)
+    marks = models.FloatField(default=0)
     submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
     student = models.ForeignKey(Student)
     question = models.ForeignKey(MultipleChoiceQuestion)
@@ -393,7 +393,7 @@ class TrueFalseSubmission(models.Model):
     answer = models.BooleanField(default=False)
     marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
-    marks = models.PositiveSmallIntegerField(default=0)
+    marks = models.FloatField(default=0)
     student = models.ForeignKey(Student)
     question = models.ForeignKey(TrueFalseQuestion)
     
@@ -426,7 +426,7 @@ class ResponseQuestion(models.Model):
 class ResponseSubmission(models.Model):
     submission_id = models.AutoField(primary_key=True)
     answer = models.TextField(default='')
-    marks = models.PositiveSmallIntegerField(default=0)
+    marks = models.FloatField(default=0)
     submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
     student = models.ForeignKey(Student)
     question = models.ForeignKey(ResponseQuestion)
