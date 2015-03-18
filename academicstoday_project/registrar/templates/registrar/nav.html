@@ -42,12 +42,15 @@
             <li {% if tab == 'my_courses' %}class="active"{% endif %}>
                 <a href="my_courses"><i class="fa fa-fw fa-bookmark"></i> My Courses</a>
             </li>
+            <li {% if tab == 'certificates' %}class="active"{% endif %}>
+                <a href="certificates"><i class="fa fa-fw fa-certificate"></i> Certificates</a>
+            </li>
         </ul>
     </div>
     <!-- /.navbar-collapse -->
 </nav>
 <script>
     $(document).ready(function(){
-                      $('.dropdown-toggle').dropdown();
-                      });
-    </script>
+        $('.dropdown-toggle').dropdown();
+    });
+</script>

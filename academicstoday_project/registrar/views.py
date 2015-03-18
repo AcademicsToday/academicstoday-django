@@ -126,3 +126,21 @@ def course_delete(request):
             except Teacher.DoesNotExist:
                 response_data = {'status' : 'failure', 'message' : 'no teacher'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
+@login_required(login_url='/landpage')
+def certificates_page(request):
+    # Create our student account which will build our registration around.
+    try:
+        student = Student.objects.get(user=request.user)
+    except Student.DoesNotExist:
+        student = Student.objects.create(user=request.user)
+
+    return render(request, 'registrar/certificate/list.html',{
+        'student' : student,
+        'user' : request.user,
+        'tab' : 'certificates',
+        'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
+        'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS
+    })
+
