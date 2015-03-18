@@ -17,6 +17,9 @@ from registrar.models import Quiz
 from registrar.models import Exam
 from registrar.models import CourseSubmission
 
+# Public Functions
+#--------------------
+
 @login_required(login_url='/landpage')
 def overview_page(request, course_id):
     course = Course.objects.get(id=course_id)
@@ -63,6 +66,8 @@ def overview_page(request, course_id):
 
     return render(request, 'teacher/overview/view.html',{
         'course': course,
+        'total_final_mark_worth': total_final_mark_worth(course),
+        'has_final_exam': has_final_exam(exams),
         'review': review,
         'announcements' : announcements,
         'syllabus': syllabus,
@@ -151,6 +156,18 @@ def submit_course_for_review(request, course_id):
         response_data['message'] = 'no exams(s) found'
         return HttpResponse(json.dumps(response_data), content_type="application/json")
 
+    # Validate final mark calculator
+    total_worth = total_final_mark_worth(course)
+    if total_worth != 100:
+        response_data['message'] = 'total final mark must add up to 100%'
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+    # Make sure we have a final exam
+    has_final_exam = has_final_exam(exams)
+    if has_final_exam == False:
+        response_data['message'] = 'course requires only 1 final exam'
+        return HttpResponse(json.dumps(response_data), content_type="application/json")
+    
     review = CourseSubmission.objects.create(
         course=course,
     )
@@ -158,3 +175,47 @@ def submit_course_for_review(request, course_id):
 
     response_data = {'status' : 'success', 'message' : 'submitted course review'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
+# Private Functions
+#--------------------
+
+# Function looks through the course assignments/exams/quizzes and returns
+# the accumulated worth total.
+def total_final_mark_worth(course):
+    total_worth = 0  # Variable used to track total worth of the coursework.
+    
+    # Fetch from database
+    try:
+        assignments = Assignment.objects.filter(course=course).order_by('-assignment_num')
+    except Assignment.DoesNotExist:
+        assignments = None
+
+    try:
+        quizzes = Quiz.objects.filter(course=course).order_by('-quiz_num')
+    except Quiz.DoesNotExist:
+        quizzes = None
+
+    try:
+        exams = Exam.objects.filter(course=course).order_by('-exam_num')
+    except Exam.DoesNotExist:
+        exams = None
+
+    # Iterate through all coursework and calculate the total.
+    for assignment in assignments:
+        total_worth += assignment.worth
+    for quiz in quizzes:
+        total_worth += quiz.worth
+    for exam in exams:
+        total_worth += exam.worth
+    return total_worth
+
+
+# Function will iterate through all the exams and return either True or False
+# depending if a 'final exam' was found in the list.
+def has_final_exam(exams):
+    count = 0
+    for exam in exams:
+        if exam.is_final:
+            count += 1
+    return count == 1

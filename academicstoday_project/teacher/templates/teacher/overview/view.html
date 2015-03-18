@@ -56,11 +56,12 @@
                                 <thead>
                                     <tr>
                                         <th>Requirement</th>
-                                        <th>Needs</th>
+                                        <th>Minimum Needs</th>
                                         <th>Meets Requirement</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                <!-- HAS AT LEAST A SINGLE ANNOUNCEMENT -->
                                 {% if announcements.count >= 1 %}
                                     <tr class="success">
                                         <td>Announcements</td>
@@ -75,6 +76,7 @@
                                     </tr>
                                 {% endif %}
 
+                                <!-- HAS AT LEAST A SYLLABUS PDF UPLOADED -->
                                 {% if syllabus == None %}
                                     <tr class="danger">
                                         <td>Syllabus</td>
@@ -89,6 +91,7 @@
                                 </tr>
                                 {% endif %}
 
+                                <!-- HAS AT LEAST A POLICY PDF UPLOADED -->
                                 {% if policy == None %}
                                     <tr class="danger">
                                         <td>Grades and Policy</td>
@@ -103,60 +106,94 @@
                                     </tr>
                                 {% endif %}
 
+                                <!-- HAS AT LEAST 2 COURSE LECTURES -->
                                 {% if lectures.count >= 2 %}
                                     <tr class="success">
-                                        <td>Lectures</td>
+                                        <td>Lectures Count</td>
                                         <td>2 Lectures</td>
                                         <td>Yes</td>
                                     </tr>
                                 {% else %}
                                     <tr class="danger">
-                                        <td>Lectures</td>
+                                        <td>Lectures Count</td>
                                         <td>2 Lectures</td>
                                         <td>No</td>
                                     </tr>
                                 {% endif %}
 
+                                <!-- HAS AT LEAST ONE ASSIGNMENT -->
                                 {% if assignments.count >= 1 %}
                                     <tr class="success">
-                                        <td>Assignments</td>
+                                        <td>Assignments Count</td>
                                         <td>1 Assignment</td>
                                         <td>Yes</td>
                                     </tr>
                                 {% else %}
                                     <tr class="danger">
-                                        <td>Assignments</td>
+                                        <td>Assignments Count</td>
                                         <td>1 Assignment</td>
                                         <td>No</td>
                                     </tr>
                                 {% endif %}
 
+                                <!-- HAS AT LEAST ONE QUIZ -->
                                 {% if quizzes.count >= 1 %}
                                     <tr class="success">
-                                        <td>Quizzes</td>
+                                        <td>Quizzes Count</td>
                                         <td>2 Quizzes</td>
                                         <td>Yes</td>
                                     </tr>
                                 {% else %}
                                     <tr class="danger">
-                                        <td>Quizzes</td>
+                                        <td>Quizzes Count</td>
                                         <td>2 Quizzes</td>
                                         <td>No</td>
                                     </tr>
                                 {% endif %}
 
+                                <!-- HAS AT LEAST 1 EXAM -->
                                 {% if exams.count >= 1 %}
                                     <tr class="success">
-                                        <td>Exams</td>
+                                        <td>Exams Count</td>
                                         <td>1 Exam</td>
                                         <td>Yes</td>
                                     </tr>
                                 {% else %}
                                     <tr class="danger">
-                                        <td>Exams</td>
+                                        <td>Exams Count</td>
                                         <td>1 Exam</td>
                                         <td>No</td>
                                     </tr>
+                                {% endif %}
+                                
+                                <!-- HAS FINAL EXAM -->
+                                {% if has_final_exam == True %}
+                                <tr class="success">
+                                    <td>Has a Final Exam</td>
+                                    <td>A exam has Is Final set to True</td>
+                                    <td>Yes</td>
+                                </tr>
+                                {% else %}
+                                <tr class="danger">
+                                    <td>Has a Final Exam</td>
+                                    <td>1 Final Exam</td>
+                                    <td>Yes</td>
+                                </tr>
+                                {% endif %}
+                                
+                                <!-- MARK WORTH ADDS TO 100% -->
+                                {% if total_final_mark_worth == 100 %}
+                                <tr class="success">
+                                    <td>Total Final Mark Worth</td>
+                                    <td>100%</td>
+                                    <td>Yes</td>
+                                </tr>
+                                {% else %}
+                                <tr class="danger">
+                                    <td>Total Final Mark Worth</td>
+                                    <td>100%</td>
+                                    <td>No, calculated: {{ total_final_mark_worth }}%</td>
+                                </tr>
                                 {% endif %}
                                 </tbody>
                             </table>
