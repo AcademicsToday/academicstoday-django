@@ -56,7 +56,10 @@ class LectureForm(forms.ModelForm):
 class AssignmentForm(forms.ModelForm):
     class Meta:
         model = Assignment
-        fields = ['assignment_id', 'assignment_num', 'title', 'description', 'start_date', 'due_date']
+        fields = ['assignment_id', 'assignment_num', 'title', 'description', 'start_date', 'due_date', 'worth']
+        labels = {
+            'worth': 'Worth % of Final Mark',
+        }
         widgets = {
             'start_date': SelectDateWidget(),
             'due_date': SelectDateWidget(),
@@ -129,9 +132,10 @@ class QuizQuestionTypeForm(forms.Form):
 class QuizForm(forms.ModelForm):
     class Meta:
         model = Quiz
-        fields = ['quiz_num', 'title', 'description', 'start_date', 'due_date']
+        fields = ['quiz_num', 'title', 'description', 'start_date', 'due_date', 'worth']
         labels = {
             'quiz_num': 'Quiz #',
+            'worth': 'Worth % of Final Mark',
         }
         widgets = {
             'start_date': SelectDateWidget(),
@@ -150,9 +154,11 @@ class ExamQuestionTypeForm(forms.Form):
 class ExamForm(forms.ModelForm):
     class Meta:
         model = Exam
-        fields = ['exam_num', 'title', 'description', 'start_date', 'due_date']
+        fields = ['exam_num', 'title', 'description', 'start_date', 'due_date', 'worth', 'is_final']
         labels = {
             'exam_num': 'Exam #',
+            'worth': 'Worth % of Final Mark',
+            'is_final': 'Is Final Exam',
         }
         widgets = {
             'start_date': SelectDateWidget(),

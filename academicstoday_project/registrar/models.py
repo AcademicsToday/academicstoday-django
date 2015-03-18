@@ -2,7 +2,28 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
 
-
+WORTH_PERCENT_CHOICES = (
+    (0, '0 %'),
+    (10, '10 %'),
+    (15, '15 %'),
+    (20, '20 %'),
+    (25, '25 %'),
+    (30, '30 %'),
+    (35, '35 %'),
+    (40, '40 %'),
+    (45, '45 %'),
+    (50, '50 %'),
+    (55, '55 %'),
+    (60, '60 %'),
+    (65, '65 %'),
+    (70, '70 %'),
+    (75, '75 %'),
+    (80, '80 %'),
+    (85, '85 %'),
+    (90, '90 %'),
+    (95, '95 %'),
+    (100, '100 %'),
+)
 
 class Course(models.Model):
     COURSE_CATEGORY_TYPES = (
@@ -138,6 +159,8 @@ class Exam(models.Model):
     description = models.TextField(null=True)
     start_date = models.DateField(null=True)
     due_date = models.DateField(null=True)
+    worth = models.PositiveSmallIntegerField(default=0, choices=WORTH_PERCENT_CHOICES)
+    is_final = models.BooleanField(default=False)
     course = models.ForeignKey(Course)
 
     def __str__(self):
@@ -170,6 +193,7 @@ class Quiz(models.Model):
     description = models.TextField(null=True)
     start_date = models.DateField(null=True)
     due_date = models.DateField(null=True)
+    worth = models.PositiveSmallIntegerField(default=0, choices=WORTH_PERCENT_CHOICES)
     course = models.ForeignKey(Course)
 
     def __str__(self):
@@ -202,6 +226,7 @@ class Assignment(models.Model):
     description = models.TextField(null=True)
     start_date = models.DateField(null=True)
     due_date = models.DateField(null=True)
+    worth = models.PositiveSmallIntegerField(default=0, choices=WORTH_PERCENT_CHOICES)
     course = models.ForeignKey(Course)
 
     def __str__(self):
