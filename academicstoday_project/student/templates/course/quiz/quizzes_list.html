@@ -40,6 +40,7 @@
                                 <th>Status</th>
                                 <th>Due Date</th>
                                 <th>Date Submitted</th>
+                                <th>Score</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -55,6 +56,7 @@
                                 </td>
                                 <td>{{ quiz.due_date }}</td>
                                 <td>{{ submission.submission_date }}</td>
+                                <td>{{ submission.percent }}%</td>
                                 <td>
                                     <button type="button"
                                         onclick=""

@@ -4,7 +4,8 @@
     <p>
         <input onclick="ajax_submit_tf_quiz_answer({{ tf_question.question_id }}, true);"
                   type="radio"
-                  name="tf"
+                    id="id_tf_{{ tf_question.question_num }}"
+                  name="tf_{{ tf_question.question_num }}"
                  value="true"
         {% for tf_submission in tf_submissions %}
         {% if tf_submission.question == tf_question %}
@@ -17,7 +18,8 @@
     <p>
         <input onclick="ajax_submit_tf_quiz_answer({{ tf_question.question_id }}, false);"
                   type="radio"
-                  name="tf"
+                    id="id_tf_{{ tf_question.question_num }}"
+                  name="tf_{{ tf_question.question_num }}"
                  value="false"
         {% for tf_submission in tf_submissions %}
         {% if tf_submission.question == tf_question %}

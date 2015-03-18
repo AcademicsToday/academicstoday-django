@@ -206,9 +206,10 @@ class Quiz(models.Model):
 
 class QuizSubmission(models.Model):
     submission_id = models.AutoField(primary_key=True)
-    marks = models.PositiveSmallIntegerField(default=0)
+    percent = models.FloatField(default=0)
+    earned_marks = models.FloatField(default=0)
+    total_marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateField(null=True)
-    is_marked = models.BooleanField(default=False)
     is_finished = models.BooleanField(default=False)
     student = models.ForeignKey(Student)
     quiz = models.ForeignKey(Quiz)

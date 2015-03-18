@@ -21,14 +21,16 @@ def quizzes_page(request, course_id):
 
     # Fetch all the quizzes for this course.
     try:
-        quizzes = Quiz.objects.filter(course_id=course_id).order_by('quiz_num')
+        quizzes = Quiz.objects.filter(course=course).order_by('quiz_num')
     except Quiz.DoesNotExist:
         quizzes = None
 
     # Fetch all submitted quizzes
     try:
-        submitted_quizzes = QuizSubmission.objects.filter(quiz__course=course,
-                                                          student=student)
+        submitted_quizzes = QuizSubmission.objects.filter(
+            quiz__course=course,
+            student=student
+        )
     except QuizSubmission.DoesNotExist:
         submitted_quizzes = None
 
@@ -44,10 +46,13 @@ def quizzes_page(request, course_id):
             if not found_quiz:
                 submission = QuizSubmission.objects.create(
                     student=student,
-                    course=course,
                     quiz=quiz,
                 )
                 submission.save()
+        submitted_quizzes = QuizSubmission.objects.filter(
+            quiz__course=course,
+            student=student
+        )
 
     return render(request, 'course/quiz/quizzes_list.html',{
         'course' : course,
@@ -146,6 +151,7 @@ def submit_tf_assignment_answer(request, course_id, quiz_id):
             try:
                 question = TrueFalseQuestion.objects.get(
                     quiz=quiz,
+                    question_id=question_id,
                 )
             except TrueFalseQuestion.DoesNotExist:
                 response_data = {'status' : 'failed', 'message' : 'cannot find question'}
@@ -163,11 +169,18 @@ def submit_tf_assignment_answer(request, course_id, quiz_id):
                     question=question,
                 )
             
-            # Process the answer
-            # Return success results
+            # Save answer
             submission.answer = answer == "true"
             submission.save()
             
+            # Calculate the marks
+            if submission.answer == submission.question.answer:
+                submission.marks = submission.question.marks
+            else:
+                submission.marks = 0
+            submission.save()
+            
+            # Return results
             response_data = {'status' : 'success', 'message' : 'submitted'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
@@ -194,5 +207,34 @@ def submit_quiz(request, course_id, quiz_id):
                 )
             submission.is_finished = True
             submission.save()
+            
+            # Process quiz score.
+            compute_score(submission)
+            
             response_data = {'status' : 'success', 'message' : 'submitted'}
         return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
+#-------------------#
+# Private Functions #
+#-------------------#
+
+def compute_score(submission):
+    student = submission.student
+    submission.total_marks = 0
+    submission.earned_marks = 0
+
+    # True / False Submission(s)
+    tf_submissions = TrueFalseSubmission.objects.filter(
+        student=student,
+        question__quiz=submission.quiz,
+    )
+    for tf_submission in tf_submissions:
+        submission.total_marks += tf_submission.question.marks
+        submission.earned_marks += tf_submission.marks
+
+    # Compute Percent
+    submission.percent = round((submission.earned_marks / submission.total_marks) * 100)
+
+    # Save calculation
+    submission.save()

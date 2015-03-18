@@ -453,8 +453,10 @@ def submit_assignment(request, course_id, assignment_id):
             return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
-# Private Functions
-#-------------------
+#-------------------#
+# Private Functions #
+#-------------------#
+
 def compute_score(student, assignment, submission):
     submission.total_marks = 0
     submission.earned_marks = 0
@@ -472,7 +474,7 @@ def compute_score(student, assignment, submission):
     mc_submissions = MultipleChoiceSubmission.objects.filter(
         student=student,
         question__assignment=assignment,
-                                                                                                                )
+    )
     for mc_submission in mc_submissions:
         submission.total_marks += mc_submission.question.marks
         submission.earned_marks += mc_submission.marks
