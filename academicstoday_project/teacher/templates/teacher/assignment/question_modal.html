@@ -70,6 +70,7 @@
         data.append('true_choice', $('#id_true_choice').val());
         data.append('false_choice', $('#id_false_choice').val());
         data.append('answer', $('#id_answer').is(':checked'));
+        data.append('marks', $('#id_marks').val());
 
         // Response
         if ($('#id_question_type').val() == {{ RESPONSE_QUESTION_TYPE }})

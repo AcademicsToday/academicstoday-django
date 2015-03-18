@@ -81,7 +81,7 @@ class AssignmentQuestionTypeForm(forms.Form):
 class EssayQuestionForm(forms.ModelForm):
     class Meta:
         model = EssayQuestion
-        fields = ['question_num', 'title', 'description']
+        fields = ['question_num', 'title', 'description', 'marks']
         labels = {
             'question_num': 'Question #',
         }
@@ -90,7 +90,7 @@ class EssayQuestionForm(forms.ModelForm):
 class MultipleChoiceQuestionForm(forms.ModelForm):
     class Meta:
         model = MultipleChoiceQuestion
-        fields = ['question_num', 'title', 'description', 'a', 'a_is_correct', 'b', 'b_is_correct', 'c', 'c_is_correct', 'd', 'd_is_correct', 'e', 'e_is_correct', 'f', 'f_is_correct']
+        fields = ['question_num', 'title', 'description', 'a', 'a_is_correct', 'b', 'b_is_correct', 'c', 'c_is_correct', 'd', 'd_is_correct', 'e', 'e_is_correct', 'f', 'f_is_correct', 'marks']
         labels = {
             'question_num': 'Question #',
             'a': 'Option A)',
@@ -105,7 +105,7 @@ class MultipleChoiceQuestionForm(forms.ModelForm):
 class TrueFalseQuestionForm(forms.ModelForm):
     class Meta:
         model = TrueFalseQuestion
-        fields = ['question_num', 'title', 'description', 'true_choice', 'false_choice', 'answer']
+        fields = ['question_num', 'title', 'description', 'true_choice', 'false_choice', 'answer', 'marks']
         labels = {
             'question_num': 'Question #',
             'answer': 'Answer is True?',
@@ -115,7 +115,7 @@ class TrueFalseQuestionForm(forms.ModelForm):
 class ResponseQuestionForm(forms.ModelForm):
     class Meta:
         model = ResponseQuestion
-        fields = ['question_num', 'title', 'description', 'answer']
+        fields = ['question_num', 'title', 'description', 'answer', 'marks']
         labels = {
             'question_num': 'Question #',
         }
@@ -140,7 +140,7 @@ class QuizForm(forms.ModelForm):
         widgets = {
             'start_date': SelectDateWidget(),
             'due_date': SelectDateWidget(),
-    }
+        }
 
 EXAM_QUESTION_TYPE_CHOICES = (
     (settings.MULTIPLECHOICE_QUESTION_TYPE, 'Multiple-Choice'),

@@ -40,6 +40,7 @@
                                 <th>Status</th>
                                 <th>Due Date</th>
                                 <th>Date Submitted</th>
+                                <th>Score</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -53,6 +54,7 @@
                                 </td>
                                 <td>{{ submission.assignment.due_date }}</td>
                                 <td>{{ submission.submission_date }}</td>
+                                <td>{{ submission.score }}%</td>
                                 <td>
                                     <button type="button"
                                         onclick=""
@@ -73,7 +75,8 @@
                                     <span class="badge">Incomplete</span>
                                 </td>
                                 <td>{{ submission.assignment.due_date }}</td>
-                                <td></td>
+                                <td>-</td>
+                                <td>-</td>
                                 <td>
                                     <button type="button"
                                         onclick="view_assignment({{ submission.assignment.assignment_id }});"

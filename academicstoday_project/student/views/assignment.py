@@ -280,7 +280,7 @@ def submit_mc_assignment_answer(request, course_id, assignment_id):
                     question=question,
                 )
 
-            # Process answer
+            # Save answer
             if answer == 'A':
                 submission.a = not submission.a
             if answer == 'B':
@@ -293,6 +293,29 @@ def submit_mc_assignment_answer(request, course_id, assignment_id):
                 submission.e = not submission.e
             if answer == 'F':
                 submission.f = not submission.f
+            submission.save()
+            
+            # Caclulate score
+            total = 6
+            correct = 0
+            if submission.a == submission.question.a_is_correct:
+                correct += 1;
+            if submission.b == submission.question.b_is_correct:
+                correct += 1;
+            if submission.c == submission.question.c_is_correct:
+                correct += 1;
+            if submission.d == submission.question.d_is_correct:
+                correct += 1;
+            if submission.e == submission.question.e_is_correct:
+                correct += 1;
+            if submission.f == submission.question.f_is_correct:
+                correct += 1;
+
+            # If all choices have been correctly selected, then give full credit.
+            if total == correct:
+                submission.marks = submission.question.marks
+            else:
+                submission.marks = 0
             submission.save()
     
             # Return success results
@@ -339,8 +362,14 @@ def submit_tf_assignment_answer(request, course_id, assignment_id):
                 )
 
             # Process the answer
-            # Return success results
             submission.answer = answer == "true"
+            submission.save()
+            
+            # Calculate the marks
+            if submission.answer == submission.question.answer:
+                submission.marks = submission.question.marks
+            else:
+                submission.marks = 0
             submission.save()
 
             response_data = {'status' : 'success', 'message' : 'submitted'}
@@ -415,3 +444,7 @@ def submit_assignment(request, course_id, assignment_id):
             submission.save()
             response_data = {'status' : 'success', 'message' : 'submitted'}
             return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+
+# Private Functions
+#-------------------

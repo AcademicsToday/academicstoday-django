@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
+from django.core.validators import MinValueValidator
 
 WORTH_PERCENT_CHOICES = (
     (0, '0 %'),
@@ -238,7 +239,7 @@ class Assignment(models.Model):
 
 class AssignmentSubmission(models.Model):
     submission_id = models.AutoField(primary_key=True)
-    marks = models.PositiveSmallIntegerField(default=0)
+    score = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateTimeField(auto_now=True, null=True)
     is_marked = models.BooleanField(default=False)
     is_finished = models.BooleanField(default=False)
@@ -253,10 +254,11 @@ class AssignmentSubmission(models.Model):
 
 
 class EssayQuestion(models.Model):
-    question_id = models.AutoField(max_length=11, primary_key=True)
-    question_num = models.PositiveSmallIntegerField()
+    question_id = models.AutoField(primary_key=True)
+    question_num = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)], default=1)
     title = models.CharField(max_length=31, default='')
     description = models.TextField(default='')
+    marks = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)], default=1)
     question_type = settings.ESSAY_QUESTION_TYPE
     assignment = models.ForeignKey(Assignment, null=True)
     quiz = models.ForeignKey(Quiz, null=True)
@@ -295,7 +297,7 @@ class EssaySubmission(models.Model):
     submission_id = models.AutoField(max_length=11, primary_key=True)
     file = models.FileField(upload_to='uploads')
     submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
-    is_marked = models.BooleanField(default=False)
+    marks = models.PositiveSmallIntegerField(default=0)
     student = models.ForeignKey(Student)
     question = models.ForeignKey(EssayQuestion)
     reviews = models.ManyToManyField(PeerReview)
@@ -323,6 +325,7 @@ class MultipleChoiceQuestion(models.Model):
     e_is_correct = models.BooleanField(default=False)
     f = models.CharField(max_length=255, null=True, blank=True)
     f_is_correct = models.BooleanField(default=False)
+    marks = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)], default=1)
     question_type = settings.MULTIPLECHOICE_QUESTION_TYPE
     assignment = models.ForeignKey(Assignment, null=True)
     quiz = models.ForeignKey(Quiz, null=True)
@@ -344,7 +347,6 @@ class MultipleChoiceSubmission(models.Model):
     f = models.BooleanField(default=False)
     marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
-    is_marked = models.BooleanField(default=False)
     student = models.ForeignKey(Student)
     question = models.ForeignKey(MultipleChoiceQuestion)
   
@@ -372,6 +374,7 @@ class TrueFalseQuestion(models.Model):
     true_choice = models.CharField(max_length=127, null=True)
     false_choice = models.CharField(max_length=127, null=True)
     answer = models.BooleanField(default=False)
+    marks = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)], default=1)
     question_type = settings.TRUEFALSE_QUESTION_TYPE
     assignment = models.ForeignKey(Assignment, null=True)
     quiz = models.ForeignKey(Quiz, null=True)
@@ -389,7 +392,7 @@ class TrueFalseSubmission(models.Model):
     answer = models.BooleanField(default=False)
     marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
-    is_marked = models.BooleanField(default=False)
+    marks = models.PositiveSmallIntegerField(default=0)
     student = models.ForeignKey(Student)
     question = models.ForeignKey(TrueFalseQuestion)
     
@@ -406,6 +409,7 @@ class ResponseQuestion(models.Model):
     title = models.CharField(max_length=31, default='')
     description = models.TextField(default='')
     answer = models.TextField(default='')
+    marks = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)], default=1)
     question_type = settings.RESPONSE_QUESTION_TYPE
     assignment = models.ForeignKey(Assignment, null=True)
     quiz = models.ForeignKey(Quiz, null=True)
@@ -423,7 +427,6 @@ class ResponseSubmission(models.Model):
     answer = models.TextField(default='')
     marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
-    is_marked = models.BooleanField(default=False)
     student = models.ForeignKey(Student)
     question = models.ForeignKey(ResponseQuestion)
     reviews = models.ManyToManyField(PeerReview)
