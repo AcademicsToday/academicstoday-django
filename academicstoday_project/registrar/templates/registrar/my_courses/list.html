@@ -47,7 +47,13 @@
                                   <tr>
                                       <th>Course #</th>
                                       <th>Title</th>
-                                      <th>Actions</th>
+                                      <th>
+                                          <button onclick="ajax_new_course_modal();"
+                                                     type="button"
+                                                    class="btn btn-lg btn-success">
+                                              <i class="fa fa-plus"></i> Add
+                                          </button>
+                                      </th>
                                   </tr>
                               </thead>
                               <tbody>
@@ -59,12 +65,12 @@
                                         <button type="button"
                                                class="btn btn-lg btn-primary"
                                              onclick="view_course_page({{ course.id }});">
-                                            View
+                                            <i class="fa fa-level-down"></i> View
                                         </button>
                                         <button type="button"
                                                class="btn btn-lg btn-danger"
                                              onclick="ajax_delete_course({{ course.id }})">
-                                            Delete
+                                            <i class="fa fa-minus"></i> Delete
                                         </button>
                                       </td>
                                   </tr>
