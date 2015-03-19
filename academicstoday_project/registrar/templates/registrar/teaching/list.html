@@ -22,7 +22,7 @@
         </div>
         <!-- /.row -->
 
-        {% if teacher.courses.count == 0 %}
+        {% if teacher.courses.count == 0 or teacher == None %}
 
         <div class="jumbotron">
             <h1>Become a Teacher!</h1>

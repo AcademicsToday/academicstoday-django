@@ -29,8 +29,9 @@
         </div>
         <!-- /.row -->
 
-        <!-- Submit course for Review -->
         {% if review == None %}
+
+        <!-- Submit course for Review -->
         <div class="jumbotron">
             <h1>Course Registration</h1>
                 <p>To have your course available on AcademicsToday, you must first submit your course for review. We will look over it and either accept it or provide feedback on how to improve the course before release.</p>
@@ -38,7 +39,6 @@
                 <p><a onclick="ajax_submit_course();" class="btn btn-primary btn-lg" role="button">Submit for Review »</a>
             </p>
         </div>
-        {% endif %}
         <!-- /.row -->
 
         <!-- Registrar Status Information -->
@@ -140,13 +140,13 @@
                                 {% if quizzes.count >= 1 %}
                                     <tr class="success">
                                         <td>Quizzes Count</td>
-                                        <td>2 Quizzes</td>
+                                        <td>1 Quiz</td>
                                         <td>Yes</td>
                                     </tr>
                                 {% else %}
                                     <tr class="danger">
                                         <td>Quizzes Count</td>
-                                        <td>2 Quizzes</td>
+                                        <td>1 Quiz</td>
                                         <td>No</td>
                                     </tr>
                                 {% endif %}
@@ -198,7 +198,28 @@
                                 </tbody>
                             </table>
                         </div>
-                        {% if review != None %}
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+        
+        {% else %}
+        
+        <!-- Congradulations -->
+        <div class="jumbotron">
+            <h1>Course Registrated!</h1>
+            <p>Course is now available for students to enrol in an participate.</p>
+            </p>
+        </div>
+        <!-- /.row -->
+
+        <!-- Row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
                         <h2>Review Status</h2>
                         <p>These requirements must be met to be considered acceptable course by the registrar</p>
                         <div class="table-responsive">
@@ -214,31 +235,32 @@
                                     <tr>
                                         <td>{{ review.submission_date }}</td>
                                         <td>
-                                        {% if review.status == COURSE_SUBMITTED_FOR_REVIEW_STATUS %}
+                                            {% if review.status == COURSE_SUBMITTED_FOR_REVIEW_STATUS %}
                                             Waiting for Review
-                                        {% elif review.status == COURSE_IN_REVIEW_STATUS %}
+                                            {% elif review.status == COURSE_IN_REVIEW_STATUS %}
                                             In Review
-                                        {% elif review.status == COURSE_REJECTED_STATUS %}
+                                            {% elif review.status == COURSE_REJECTED_STATUS %}
                                             Rejected
-                                        {% elif review.status == COURSE_AVAILABLE_STATUS %}
+                                            {% elif review.status == COURSE_AVAILABLE_STATUS %}
                                             Accepted
-                                        {% elif review.status == COURSE_AVAILABLE_STATUS %}
+                                            {% elif review.status == COURSE_AVAILABLE_STATUS %}
                                             Unavailable
-                                        {% else %}
+                                            {% else %}
                                             Unknown State
-                                        {% endif %}
+                                            {% endif %}
                                         </td>
                                         <td>{{ review.from_reviewer }}</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                        {% endif %}
-                    </div>
+                    </div><!-- /.panel-body -->
                 </div>
             </div>
         </div>
         <!-- /.row -->
+        
+        {% endif %}
 
     </div>
 

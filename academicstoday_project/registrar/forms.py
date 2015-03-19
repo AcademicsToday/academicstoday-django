@@ -10,7 +10,7 @@ class CourseForm(forms.ModelForm):
         model = Course
         fields = ['title', 'sub_title', 'category', 'description', 'start_date', 'finish_date', 'file']
         labels = {
-            'file': 'Image',
+            'file': 'PNG Image',
         }
         widgets = {
             'description': Textarea(attrs={'cols': 70, 'rows':10}),

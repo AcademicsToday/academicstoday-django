@@ -139,7 +139,7 @@ def submit_course_for_review(request, course_id):
     # Validate quizzes
     try:
         quizzes = Quiz.objects.filter(course=course).order_by('-quiz_num')
-        if quizzes.count() < 2:
+        if quizzes.count() < 1:
             response_data['message'] = 'minimum 1 quiz required'
             return HttpResponse(json.dumps(response_data), content_type="application/json")
     except Quiz.DoesNotExist:
@@ -163,8 +163,8 @@ def submit_course_for_review(request, course_id):
         return HttpResponse(json.dumps(response_data), content_type="application/json")
 
     # Make sure we have a final exam
-    has_final_exam = has_final_exam(exams)
-    if has_final_exam == False:
+    is_final = has_final_exam(exams)
+    if is_final == False:
         response_data['message'] = 'course requires only 1 final exam'
         return HttpResponse(json.dumps(response_data), content_type="application/json")
     
@@ -172,6 +172,10 @@ def submit_course_for_review(request, course_id):
         course=course,
     )
     review.save()
+
+    # Make course available.
+    course.status = settings.COURSE_AVAILABLE_STATUS
+    course.save()
 
     response_data = {'status' : 'success', 'message' : 'submitted course review'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
@@ -216,6 +220,6 @@ def total_final_mark_worth(course):
 def has_final_exam(exams):
     count = 0
     for exam in exams:
-        if exam.is_final:
+        if exam.is_final == True:
             count += 1
     return count == 1

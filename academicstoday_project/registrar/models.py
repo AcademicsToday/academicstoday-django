@@ -192,7 +192,10 @@ class Lecture(models.Model):
 
 class Exam(models.Model):
     exam_id = models.AutoField(primary_key=True)
-    exam_num = models.PositiveSmallIntegerField(default=0)
+    exam_num = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1)],
+        default=1,
+    )
     title = models.CharField(max_length=31, null=True)
     description = models.TextField(null=True)
     start_date = models.DateField(null=True)
@@ -231,7 +234,10 @@ class ExamSubmission(models.Model):
 
 class Quiz(models.Model):
     quiz_id = models.AutoField(primary_key=True)
-    quiz_num = models.PositiveSmallIntegerField(default=0)
+    quiz_num = models.PositiveSmallIntegerField(
+        default=1,
+        validators=[MinValueValidator(0)],
+    )
     title = models.CharField(max_length=31, null=True)
     description = models.TextField(null=True)
     start_date = models.DateField(null=True)

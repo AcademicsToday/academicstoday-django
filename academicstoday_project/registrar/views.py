@@ -28,7 +28,7 @@ from registrar.forms import CourseForm
 
 @login_required(login_url='/landpage')
 def courses_page(request):
-    courses = Course.objects.all()
+    courses = Course.objects.filter(status=settings.COURSE_AVAILABLE_STATUS)
 
     # Create our student account which will build our registration around.
     try:
@@ -39,7 +39,7 @@ def courses_page(request):
     # Only fetch teacher and do not create new teacher here.
     try:
         teacher = Teacher.objects.get(user=request.user)
-    except Student.DoesNotExist:
+    except Teacher.DoesNotExist:
         teacher = None
 
     return render(request, 'registrar/courses/list.html',{
