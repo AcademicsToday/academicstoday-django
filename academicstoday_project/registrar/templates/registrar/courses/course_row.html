@@ -12,15 +12,15 @@
                         class="btn btn-lg btn-primary"
                         onclick="ajax_enrol({{ course.id }});">
                         {% comment %}
-                        If the student does not have the current course
-                        then that means this student has not been
-                        enrolled in the course so therefore print
-                        UI acordingly.
+                            If the student does not have the current course
+                            then that means this student has not been
+                                enrolled in the course so therefore print
+                                UI acordingly.
                         {% endcomment %}
                         {% if course not in student.courses.all %}
-                        <i class="fa fa-pencil"></i> Enrol
+                            <i class="fa fa-pencil"></i> Enrol
                         {% else %}
-                        <i class="fa fa-level-down"></i> Continue
+                            <i class="fa fa-level-down"></i> Continue
                         {% endif %}
                     </button>
                     </p>

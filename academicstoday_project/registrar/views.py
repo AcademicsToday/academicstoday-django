@@ -36,6 +36,12 @@ def courses_page(request):
     except Student.DoesNotExist:
          student = Student.objects.create(user=request.user)
 
+    # Fetch our teachers. Do not create new teachers here.
+    try:
+        teacher = Teacher.objects.get(user=request.user)
+    except Student.DoesNotExist:
+        teacher = None
+
     return render(request, 'registrar/courses/list.html',{
         'courses' : courses,
         'student' : student,
@@ -66,17 +72,16 @@ def enrol(request):
 
 
 @login_required(login_url='/landpage')
-def my_courses_page(request):
-    # Create our teacher account which will build our registration around.
+def teaching_page(request):
     try:
         teacher = Teacher.objects.get(user=request.user)
     except Teacher.DoesNotExist:
-        teacher = Teacher.objects.create(user=request.user)
+        teacher = None
 
-    return render(request, 'registrar/my_courses/list.html',{
+    return render(request, 'registrar/teaching/list.html',{
         'teacher' : teacher,
         'user' : request.user,
-        'tab' : 'my_courses',
+        'tab' : 'teaching',
         'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
         'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS
     })
@@ -91,7 +96,7 @@ def new_course_modal(request):
     else:
         course_form = CourseForm()
 
-    return render(request, 'registrar/my_courses/new_course_modal.html',{
+    return render(request, 'registrar/teaching/new_course_modal.html',{
         'course_form' : course_form,
     })
 
@@ -104,7 +109,11 @@ def save_new_course(request):
             form = CourseForm(request.POST, request.FILES)
             if form.is_valid():
                 form.save()
-                teacher = Teacher.objects.get(user=request.user)
+                # Create our teacher account which will build our course around.
+                try:
+                    teacher = Teacher.objects.get(user=request.user)
+                except Teacher.DoesNotExist:
+                    teacher = Teacher.objects.create(user=request.user)
                 teacher.courses.add(form.instance)
                 response_data = {'status' : 'success', 'message' : 'unknown error with saving'}
             else:
