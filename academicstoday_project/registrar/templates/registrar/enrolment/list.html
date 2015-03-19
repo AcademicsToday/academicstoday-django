@@ -47,11 +47,6 @@
                                       <th>Course #</th>
                                       <th>Title</th>
                                       <th>
-                                          <button onclick="ajax_new_course_modal();"
-                                                     type="button"
-                                                    class="btn btn-lg btn-success">
-                                              <i class="fa fa-plus"></i> Add
-                                          </button>
                                       </th>
                                   </tr>
                               </thead>
@@ -61,15 +56,10 @@
                                       <td align="left" valign="left">{{ course.id }}</td>
                                       <td align="left" valign="left">{{ course.title }}</td>
                                       <td align="left" valign="left">
-                                        <button type="button"
-                                               class="btn btn-lg btn-primary"
-                                             onclick="">
-                                            <i class="fa fa-level-down"></i> View
-                                        </button>
-                                        <button type="button"
-                                               class="btn btn-lg btn-danger"
-                                             onclick="">
-                                            <i class="fa fa-minus"></i> Delete
+                                          <button onclick="ajax_continue_course({{ course.id }});"
+                                                     type="button"
+                                                    class="btn btn-lg btn-primary">
+                                            <i class="fa fa-level-down"></i> Continue
                                         </button>
                                       </td>
                                   </tr>
@@ -89,4 +79,31 @@
     <!-- /.container-fluid -->
 
 </div>
+<script>
+    function ajax_continue_course(course_id)
+    {
+        var url = 'enrol';
+    
+        $.ajax( url, {
+           data: {
+               'course_id' : course_id,
+               'csrfmiddlewaretoken': '{{ csrf_token }}',
+           },
+           type: 'post',
+           success: function(result) {
+               // success code execution here
+               if (result.status == 'success')
+               {
+                    window.location = 'course/' + course_id + '/announcement';
+               }
+           },
+           error: function(xhr,status,error) {
+               // error code here
+           },
+           complete: function(xhr,status) {
+               // completion code here
+           }
+        });
+    }
+</script>
 {% endblock content %}

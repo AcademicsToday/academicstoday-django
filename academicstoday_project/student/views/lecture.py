@@ -22,7 +22,7 @@ import datetime
 def lectures_page(request, course_id):
     course = Course.objects.get(id=course_id)
     try:
-        lectures = Lecture.objects.filter(course_id=course_id).order_by('-lecture_num')
+        lectures = Lecture.objects.filter(course_id=course_id).order_by('week_num', 'lecture_num')
     except Lecture.DoesNotExist:
         lectures = None
     return render(request, 'course/lecture/list.html',{

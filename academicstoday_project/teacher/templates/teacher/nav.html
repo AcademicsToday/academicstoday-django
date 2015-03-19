@@ -28,52 +28,50 @@
                 </li>
                 <li class="divider"></li>
                 <li>
-                    <a href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                    <a onclick="ajax_logout();"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
                 </li>
             </ul>
         </li>
     </ul>
-    {% if tab != 'assignment' and tab != 'quiz' and tab != 'exam' and tab != 'peer_review' and tab != 'thread' %}
     <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
     <div class="collapse navbar-collapse navbar-ex1-collapse">
         <ul class="nav navbar-nav side-nav">
             <li {% if tab == 'overview' %}class="active"{% endif %}>
-                <a href="overview"><i class="fa fa-fw fa-sitemap"></i> Overview</a>
+                <a href="/teacher/course/{{ course.id }}/overview"><i class="fa fa-fw fa-sitemap"></i> Overview</a>
             </li>
             <li {% if tab == 'home' %}class="active"{% endif %}>
-                <a href="home"><i class="fa fa-fw fa-bullhorn"></i> Announcements</a>
+                <a href="/teacher/course/{{ course.id }}/home"><i class="fa fa-fw fa-bullhorn"></i> Announcements</a>
             </li>
             <li  {% if tab == 'syllabus' %}class="active"{% endif %}>
-                <a href="syllabus"><i class="fa fa-fw fa-info"></i> Syllabus</a>
+                <a href="/teacher/course/{{ course.id }}/syllabus"><i class="fa fa-fw fa-info"></i> Syllabus</a>
             </li>
             <li {% if tab == 'policy' %}class="active"{% endif %}>
-                <a href="policy"><i class="fa fa-fw fa-legal"></i> Grading and Policy</a>
+                <a href="/teacher/course/{{ course.id }}/policy"><i class="fa fa-fw fa-legal"></i> Grading and Policy</a>
             </li>
             <li {% if tab == 'lectures' %}class="active"{% endif %}>
-                <a href="lectures"><i class="fa fa-fw fa-video-camera"></i> Lectures</a>
+                <a href="/teacher/course/{{ course.id }}/lectures"><i class="fa fa-fw fa-video-camera"></i> Lectures</a>
             </li>
             <li {% if tab == 'assignments' %}class="active"{% endif %}>
-                <a href="assignments"><i class="fa fa-fw fa-book"></i> Assignments</a>
+                <a href="/teacher/course/{{ course.id }}/assignments"><i class="fa fa-fw fa-book"></i> Assignments</a>
             </li>
             <li {% if tab == 'quizzes' %}class="active"{% endif %}>
-                <a href="quizzes"><i class="fa fa-fw fa-star-half"></i> Quizzes</a>
+                <a href="/teacher/course/{{ course.id }}/quizzes"><i class="fa fa-fw fa-star-half"></i> Quizzes</a>
             </li>
             <li {% if tab == 'exams' %}class="active"{% endif %}>
-                <a href="exams"><i class="fa fa-fw fa-star"></i> Exams</a>
+                <a href="/teacher/course/{{ course.id }}/exams"><i class="fa fa-fw fa-star"></i> Exams</a>
             </li>
             <li {% if tab == 'discussion' %}class="active"{% endif %}>
-                <a href="discussion"><i class="fa fa-fw fa-comment"></i> Discussion</a>
+                <a href="/teacher/course/{{ course.id }}/discussion"><i class="fa fa-fw fa-comment"></i> Discussion</a>
             </li>
             <li {% if tab == 'peer_reviews' %}class="active"{% endif %}>
-                <a href="peer_reviews"><i class="fa fa-fw fa-child"></i> Peer Review</a>
+                <a href="/teacher/course/{{ course.id }}/peer_reviews"><i class="fa fa-fw fa-child"></i> Peer Review</a>
             </li>
             <li {% if tab == 'settings' %}class="active"{% endif %}>
-                <a href="settings"><i class="fa fa-fw fa-cogs"></i> Settings</a>
+                <a href="/teacher/course/{{ course.id }}/settings"><i class="fa fa-fw fa-cogs"></i> Settings</a>
             </li>
         </ul>
     </div>
     <!-- /.navbar-collapse -->
-    {% endif %}
 </nav>
 <script>
 $(document).ready(function(){
