@@ -7,7 +7,10 @@ urlpatterns = patterns('',
     url(r'^courses$', views.courses_page),
     url(r'^enrol$', views.enrol),
 
-    # My Courses
+    # Enrolment(s)
+    url(r'^enrolment$', views.enrolment_page),
+                       
+    # Teaching
     url(r'^teaching$', views.teaching_page),
     url(r'^new_course_modal$', views.new_course_modal),
     url(r'^save_new_course$', views.save_new_course),

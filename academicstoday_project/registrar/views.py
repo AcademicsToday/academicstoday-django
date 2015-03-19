@@ -36,7 +36,7 @@ def courses_page(request):
     except Student.DoesNotExist:
          student = Student.objects.create(user=request.user)
 
-    # Fetch our teachers. Do not create new teachers here.
+    # Only fetch teacher and do not create new teacher here.
     try:
         teacher = Teacher.objects.get(user=request.user)
     except Student.DoesNotExist:
@@ -144,11 +144,26 @@ def certificates_page(request):
         student = Student.objects.get(user=request.user)
     except Student.DoesNotExist:
         student = Student.objects.create(user=request.user)
-
     return render(request, 'registrar/certificate/list.html',{
         'student' : student,
         'user' : request.user,
         'tab' : 'certificates',
+        'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
+        'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS
+    })
+
+
+@login_required(login_url='/landpage')
+def enrolment_page(request):
+    # Create our student account which will build our registration around.
+    try:
+        student = Student.objects.get(user=request.user)
+    except Student.DoesNotExist:
+        student = Student.objects.create(user=request.user)
+    return render(request, 'registrar/enrolment/list.html',{
+        'student' : student,
+        'user' : request.user,
+        'tab' : 'enrolment',
         'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
         'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS
     })
