@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 WORTH_PERCENT_CHOICES = (
     (0, '0 %'),
@@ -77,7 +77,10 @@ class CourseSetting(models.Model):
 
 class CourseFinalMark(models.Model):
     credit_id = models.AutoField(primary_key=True)
-    percent = models.FloatField(default=0)
+    percent = models.FloatField(
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+        default=0
+    )
     course = models.ForeignKey(Course)
     
     def __str__(self):
@@ -156,10 +159,16 @@ class Policy(models.Model):
 
 class Lecture(models.Model):
     lecture_id = models.AutoField(primary_key=True)
-    lecture_num = models.PositiveSmallIntegerField(max_length=7, default=0)
-    week_num = models.PositiveSmallIntegerField(max_length=7)
-    title = models.CharField(max_length=31, default='',null=True)
-    description = models.TextField(default='',null=True)
+    lecture_num = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1)],
+        default=1
+    )
+    week_num = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1)],
+        default=1
+    )
+    title = models.CharField(max_length=63, default='', null=True)
+    description = models.TextField(default='', null=True)
     youtube_url = models.URLField(null=True, blank=True)
     vimeo_url = models.URLField(null=True, blank=True)
     bliptv_url = models.URLField(null=True, blank=True)
@@ -167,7 +176,11 @@ class Lecture(models.Model):
         (settings.YOUTUBE_VIDEO_PLAYER, 'YouTube'),
         (settings.VIMEO_VIDEO_PLAYER, 'Vimeo')
     )
-    preferred_service = models.CharField(max_length=1, choices=VIDEO_PLAYER_CHOICES, default=settings.YOUTUBE_VIDEO_PLAYER)
+    preferred_service = models.CharField(
+        max_length=1,
+        choices=VIDEO_PLAYER_CHOICES,
+        default=settings.YOUTUBE_VIDEO_PLAYER
+    )
     course = models.ForeignKey(Course)
 
     def __str__(self):
@@ -184,7 +197,11 @@ class Exam(models.Model):
     description = models.TextField(null=True)
     start_date = models.DateField(null=True)
     due_date = models.DateField(null=True)
-    worth = models.PositiveSmallIntegerField(default=0, choices=WORTH_PERCENT_CHOICES)
+    worth = models.PositiveSmallIntegerField(
+        default=0,
+        choices=WORTH_PERCENT_CHOICES,
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+    )
     is_final = models.BooleanField(default=False)
     course = models.ForeignKey(Course)
 
@@ -219,7 +236,11 @@ class Quiz(models.Model):
     description = models.TextField(null=True)
     start_date = models.DateField(null=True)
     due_date = models.DateField(null=True)
-    worth = models.PositiveSmallIntegerField(default=0, choices=WORTH_PERCENT_CHOICES)
+    worth = models.PositiveSmallIntegerField(
+        default=0,
+        choices=WORTH_PERCENT_CHOICES,
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+    )
     course = models.ForeignKey(Course)
 
     def __str__(self):
@@ -253,7 +274,11 @@ class Assignment(models.Model):
     description = models.TextField(null=True)
     start_date = models.DateField(null=True)
     due_date = models.DateField(null=True)
-    worth = models.PositiveSmallIntegerField(default=0, choices=WORTH_PERCENT_CHOICES)
+    worth = models.PositiveSmallIntegerField(
+        default=0,
+        choices=WORTH_PERCENT_CHOICES,
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+    )
     course = models.ForeignKey(Course)
 
     def __str__(self):
@@ -282,10 +307,16 @@ class AssignmentSubmission(models.Model):
 
 class EssayQuestion(models.Model):
     question_id = models.AutoField(primary_key=True)
-    question_num = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)], default=1)
+    question_num = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1)],
+        default=1
+    )
     title = models.CharField(max_length=31, default='')
     description = models.TextField(default='')
-    marks = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)], default=1)
+    marks = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1)],
+        default=1
+    )
     question_type = settings.ESSAY_QUESTION_TYPE
     assignment = models.ForeignKey(Assignment, null=True)
     quiz = models.ForeignKey(Quiz, null=True)
@@ -308,7 +339,11 @@ class PeerReview(models.Model):
         (4, '4 Stars'),
         (5, '5 Stars'),
     )
-    marks = models.PositiveSmallIntegerField(default=0, choices=MARK_CHOICES)
+    marks = models.PositiveSmallIntegerField(
+        default=0,
+        choices=MARK_CHOICES,
+        validators=[MinValueValidator(0), MaxValueValidator(5)],
+    )
     text = models.TextField(null=True, blank=True)
     date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
     user = models.ForeignKey(User)
@@ -321,10 +356,13 @@ class PeerReview(models.Model):
 
 
 class EssaySubmission(models.Model):
-    submission_id = models.AutoField(max_length=11, primary_key=True)
+    submission_id = models.AutoField(primary_key=True)
     file = models.FileField(upload_to='uploads')
     submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
-    marks = models.FloatField(default=0)
+    marks = models.FloatField(
+        validators=[MinValueValidator(0)],
+        default=0
+    )
     student = models.ForeignKey(Student)
     question = models.ForeignKey(EssayQuestion)
     reviews = models.ManyToManyField(PeerReview)
@@ -335,9 +373,13 @@ class EssaySubmission(models.Model):
     class Meta:
         db_table = 'at_essay_submissions'
 
+
 class MultipleChoiceQuestion(models.Model):
     question_id = models.AutoField(primary_key=True)
-    question_num = models.PositiveSmallIntegerField()
+    question_num = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1)],
+        default=1,
+    )
     title = models.CharField(max_length=31, default='', blank=True)
     description = models.TextField(default='')
     a = models.CharField(max_length=255, null=True)
@@ -352,7 +394,10 @@ class MultipleChoiceQuestion(models.Model):
     e_is_correct = models.BooleanField(default=False)
     f = models.CharField(max_length=255, null=True, blank=True)
     f_is_correct = models.BooleanField(default=False)
-    marks = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)], default=1)
+    marks = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1)],
+        default=1,
+    )
     question_type = settings.MULTIPLECHOICE_QUESTION_TYPE
     assignment = models.ForeignKey(Assignment, null=True)
     quiz = models.ForeignKey(Quiz, null=True)
@@ -365,14 +410,17 @@ class MultipleChoiceQuestion(models.Model):
         db_table = 'at_multiple_choice_questions'
 
 class MultipleChoiceSubmission(models.Model):
-    submission_id = models.AutoField(max_length=11, primary_key=True)
+    submission_id = models.AutoField(primary_key=True)
     a = models.BooleanField(default=False)
     b = models.BooleanField(default=False)
     c = models.BooleanField(default=False)
     d = models.BooleanField(default=False)
     e = models.BooleanField(default=False)
     f = models.BooleanField(default=False)
-    marks = models.FloatField(default=0)
+    marks = models.FloatField(
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
     submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
     student = models.ForeignKey(Student)
     question = models.ForeignKey(MultipleChoiceQuestion)
@@ -395,13 +443,19 @@ class MultipleChoiceSubmission(models.Model):
 
 class TrueFalseQuestion(models.Model):
     question_id = models.AutoField(primary_key=True)
-    question_num = models.PositiveSmallIntegerField()
+    question_num = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1)],
+        default=1,
+    )
     title = models.CharField(max_length=31, default='')
     description = models.TextField(default='')
     true_choice = models.CharField(max_length=127, null=True)
     false_choice = models.CharField(max_length=127, null=True)
     answer = models.BooleanField(default=False)
-    marks = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)], default=1)
+    marks = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1)],
+        default=1
+    )
     question_type = settings.TRUEFALSE_QUESTION_TYPE
     assignment = models.ForeignKey(Assignment, null=True)
     quiz = models.ForeignKey(Quiz, null=True)
@@ -415,11 +469,14 @@ class TrueFalseQuestion(models.Model):
 
 
 class TrueFalseSubmission(models.Model):
-    submission_id = models.AutoField(max_length=11, primary_key=True)
+    submission_id = models.AutoField(primary_key=True)
     answer = models.BooleanField(default=False)
     marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
-    marks = models.FloatField(default=0)
+    marks = models.FloatField(
+        validators=[MinValueValidator(0)],
+        default=0,
+    )
     student = models.ForeignKey(Student)
     question = models.ForeignKey(TrueFalseQuestion)
     
@@ -432,11 +489,17 @@ class TrueFalseSubmission(models.Model):
 
 class ResponseQuestion(models.Model):
     question_id = models.AutoField(primary_key=True)
-    question_num = models.PositiveSmallIntegerField()
+    question_num = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1)],
+        default=1,
+    )
     title = models.CharField(max_length=31, default='')
     description = models.TextField(default='')
     answer = models.TextField(default='')
-    marks = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)], default=1)
+    marks = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1)],
+        default=1
+    )
     question_type = settings.RESPONSE_QUESTION_TYPE
     assignment = models.ForeignKey(Assignment, null=True)
     quiz = models.ForeignKey(Quiz, null=True)
@@ -452,7 +515,10 @@ class ResponseQuestion(models.Model):
 class ResponseSubmission(models.Model):
     submission_id = models.AutoField(primary_key=True)
     answer = models.TextField(default='')
-    marks = models.FloatField(default=0)
+    marks = models.FloatField(
+        validators=[MinValueValidator(0)],
+        default=0
+    )
     submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
     student = models.ForeignKey(Student)
     question = models.ForeignKey(ResponseQuestion)

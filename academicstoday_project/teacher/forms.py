@@ -39,12 +39,18 @@ class SyllabusForm(forms.ModelForm):
     class Meta:
         model = Syllabus
         fields = ['file']
+        labels = {
+            'file': 'PDF Document',
+        }
 
 
 class PolicyForm(forms.ModelForm):
     class Meta:
         model = Policy
         fields = ['file']
+        labels = {
+            'file': 'PDF Document',
+        }
 
 
 class LectureForm(forms.ModelForm):

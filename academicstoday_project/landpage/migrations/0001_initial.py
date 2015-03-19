@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='CoursePreview',
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False, max_length=11)),
+                ('id', models.AutoField(max_length=11, serialize=False, primary_key=True)),
                 ('image_filename', models.CharField(max_length=31)),
                 ('title', models.CharField(max_length=63)),
                 ('sub_title', models.CharField(max_length=127)),
@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='LandpageCoursePreview',
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False, max_length=11)),
+                ('id', models.AutoField(max_length=11, serialize=False, primary_key=True)),
                 ('image_filename', models.CharField(max_length=31)),
                 ('title', models.CharField(max_length=127)),
                 ('category', models.CharField(max_length=31)),
@@ -42,7 +42,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='LandpageTeamMember',
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False, max_length=11)),
+                ('id', models.AutoField(max_length=11, serialize=False, primary_key=True)),
                 ('full_name', models.CharField(max_length=31)),
                 ('role', models.CharField(max_length=31)),
                 ('twitter_url', models.CharField(max_length=255)),
