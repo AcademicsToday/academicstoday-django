@@ -4,13 +4,20 @@
             <div class="panel-body">
                 <!-- Course Info -->
                 <div class="col-lg-8 text-left">
-                    <h2>{{ course.title }}</h2>
+                    <h2>{{ course.title }}
+                        {% if course in teacher.courses.all %}
+                            <small>[You cannot enrol in a class you currently teach!]</small>
+                        {% endif %}
+                    </h2>
                     <p>{{ course.description }}<p>
                     <p>Durration: {{ course.start_date }} to {{ course.finish_date }}</p>
                     <p align="right">
-                    <button type="button"
-                        class="btn btn-lg btn-primary"
-                        onclick="ajax_enrol({{ course.id }});">
+                    <button onclick="ajax_enrol({{ course.id }});"
+                               type="button"
+                              class="btn btn-lg btn-primary"
+                              {% if course in teacher.courses.all %}
+                              disabled=""
+                              {% endif %}>
                         {% comment %}
                             If the student does not have the current course
                             then that means this student has not been

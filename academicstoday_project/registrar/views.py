@@ -45,6 +45,7 @@ def courses_page(request):
     return render(request, 'registrar/courses/list.html',{
         'courses' : courses,
         'student' : student,
+        'teacher' : teacher,
         'user' : request.user,
         'tab' : 'courses',
         'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
