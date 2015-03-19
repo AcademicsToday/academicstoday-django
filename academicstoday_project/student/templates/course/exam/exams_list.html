@@ -40,6 +40,7 @@
                                 <th>Status</th>
                                 <th>Due Date</th>
                                 <th>Date Submitted</th>
+                                <th>Score</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -55,6 +56,7 @@
                                 </td>
                                 <td>{{ exam.due_date }}</td>
                                 <td>{{ submission.submission_date }}</td>
+                                <td>{{ submission.percent }}%</td>
                                 <td>
                                     <button type="button"
                                         onclick=""
@@ -75,7 +77,8 @@
                                     <span class="badge">Incomplete</span>
                                 </td>
                                 <td>{{ exam.due_date }}</td>
-                                <td></td>
+                                <td>-</td>
+                                <td>-</td>
                                 <td>
                                     <button type="button"
                                         onclick="view_exam({{ exam.exam_id }});"
