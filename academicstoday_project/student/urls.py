@@ -12,6 +12,7 @@ from student.views import quiz
 from student.views import exam
 from student.views import discussion
 from student.views import peer_review
+from student.views import credit
 
 urlpatterns = patterns('',
     # Announcement
@@ -75,4 +76,8 @@ urlpatterns = patterns('',
     url(r'^course/(\d+)/thread/(\d+)$', discussion.thread_page),
     url(r'^course/(\d+)/thread/(\d+)/new_post$', discussion.new_post_modal),
     url(r'^course/(\d+)/thread/(\d+)/insert_post$', discussion.insert_post),
+                       
+    # Credit
+    url(r'^course/(\d+)/credit$', credit.credit_page),
+    url(r'^course/(\d+)/submit_credit_application$', credit.submit_credit_application),
 )

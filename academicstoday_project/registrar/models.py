@@ -64,9 +64,33 @@ class CourseSubmission(models.Model):
         db_table = 'at_course_submissions'
 
 
+class CourseSetting(models.Model):
+    settings_id = models.AutoField(primary_key=True)
+    course = models.ForeignKey(Course)
+    
+    def __str__(self):
+        return str(self.settings_id);
+    
+    class Meta:
+        db_table = 'at_course_settings'
+
+
+class CourseFinalMark(models.Model):
+    credit_id = models.AutoField(primary_key=True)
+    percent = models.FloatField(default=0)
+    course = models.ForeignKey(Course)
+    
+    def __str__(self):
+        return self.user
+    
+    class Meta:
+        db_table = 'at_course_final_marks'
+
+
 class Student(models.Model):
     user = models.OneToOneField(User, primary_key=True)
     courses = models.ManyToManyField(Course)
+    marks = models.ManyToManyField(CourseFinalMark)
 
     def __str__(self):
         return self.user
@@ -469,14 +493,3 @@ class CourseDiscussionThread(models.Model):
                     
     class Meta:
         db_table = 'at_course_discussion_threads'
-
-
-class CourseSetting(models.Model):
-    settings_id = models.AutoField(primary_key=True)
-    course = models.ForeignKey(Course)
-    
-    def __str__(self):
-        return str(self.settings_id);
-    
-    class Meta:
-        db_table = 'at_course_settings'

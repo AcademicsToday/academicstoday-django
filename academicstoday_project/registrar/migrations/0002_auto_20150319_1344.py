@@ -7,13 +7,13 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('registrar', '0003_auto_20150318_0948'),
+        ('registrar', '0001_initial'),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='assignmentsubmission',
-            old_name='marks',
-            new_name='score',
+            model_name='student',
+            old_name='transcript',
+            new_name='marks',
         ),
     ]
