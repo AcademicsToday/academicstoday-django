@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
             name='Assignment',
             fields=[
                 ('assignment_id', models.AutoField(primary_key=True, serialize=False)),
-                ('assignment_num', models.PositiveSmallIntegerField(default=0)),
+                ('assignment_num', models.PositiveSmallIntegerField(default=1, validators=[django.core.validators.MinValueValidator(1)])),
                 ('title', models.CharField(max_length=31, null=True)),
                 ('description', models.TextField(null=True)),
                 ('start_date', models.DateField(null=True)),

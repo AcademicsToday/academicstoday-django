@@ -275,7 +275,10 @@ class QuizSubmission(models.Model):
 
 class Assignment(models.Model):
     assignment_id = models.AutoField(primary_key=True)
-    assignment_num = models.PositiveSmallIntegerField(default=0)
+    assignment_num = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1)],
+        default=1,
+    )
     title = models.CharField(max_length=31, null=True)
     description = models.TextField(null=True)
     start_date = models.DateField(null=True)

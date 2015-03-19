@@ -28,6 +28,7 @@
      $(document).ready(function(){
         $('#lecture_modal').on('hidden.bs.modal', function (e) {
             $('#lecture_modal').html('');
+            refresh_page();
         });
     });
     
@@ -58,8 +59,7 @@
                 // success code execution here
                 if (json_result.status == "success")
                 {
-                    $('#new_course_modal').modal('hide');
-                    refresh_page();
+                    $('#lecture_modal').modal('hide');
                 }
                 else
                 {
