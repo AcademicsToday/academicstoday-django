@@ -127,24 +127,24 @@ $ git clone some_url (See "git.txt").
 
 
 2) Go into the directory
-$ cd academicstoday-webapp
+$ cd py-academicstoday
 
 
 3) Setup our virtual environment
 $ python3 -m venv env
 
 
-(5) okay , Now lets activate virtualenv
+(4) okay , Now lets activate virtualenv
 $ source env/bin/activate
 
 
-(6) OSX USERS ONLY:
+(5) OSX USERS ONLY:
 (a) Check what Postgres.app version you are using.
 (b) For Postgres we need the following $PATH, so just type it in.
 $ export PATH="/Applications/Postgres.app/Contents/Versions/9.4/bin:$PATH"
 
 
-(7) Now lets install the libraries this project depends on.
+(6) Now lets install the libraries this project depends on.
 $ pip install -r requirements.txt
 
 
