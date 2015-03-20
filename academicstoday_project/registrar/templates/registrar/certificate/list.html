@@ -22,142 +22,16 @@
         </div>
         <!-- /.row -->
 
-        {% if teacher.courses.count == 0 %}
-
         <div class="jumbotron">
-            <h1>Become a Teacher!</h1>
-            <p>Help spread the knowledge to the rest of humankind as a teacher.</p>
-            <p><a href="#"
-                 class="btn btn-primary btn-lg"
-               onclick="ajax_new_course_modal();"
-                  role="button">Create Course »</a>
+            <h1>Coming Soon</h1>
+            <p>
+                Print and share your accomplishments with family, friends and employers. This feature is still being worked on.
             </p>
         </div>
-
-        {% else %}
-
-        <!-- Course Rows -->
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                      <div class="table-responsive">
-                          <table class="table table-hover table-striped">
-                              <thead>
-                                  <tr>
-                                      <th>Course #</th>
-                                      <th>Title</th>
-                                      <th>Actions</th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                              {% for course in teacher.courses.all %}
-                                  <tr>
-                                      <td align="left" valign="left">{{ course.id }}</td>
-                                      <td align="left" valign="left">{{ course.title }}</td>
-                                      <td align="left" valign="left">
-                                        <button type="button"
-                                               class="btn btn-lg btn-primary"
-                                             onclick="view_course_page({{ course.id }});">
-                                            View
-                                        </button>
-                                        <button type="button"
-                                               class="btn btn-lg btn-danger"
-                                             onclick="ajax_delete_course({{ course.id }})">
-                                            Delete
-                                        </button>
-                                      </td>
-                                  </tr>
-                              {% endfor %}
-                            </tbody>
-                          </table>
-                      </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- /.Course Rows -->
-
-        {% endif %}
+        <!-- /.row -->
 
     </div>
     <!-- /.container-fluid -->
 
 </div>
-
-<!-- Modal -->
-<div id="ajax_new_course_modal"
-   name="ajax_new_course_modal"></div>
-<!-- end modal -->
-
-<script>
-    /**
-     *  Function will call AJAX function to load the modal for the new course
-     *  creation UI.
-     */
-    function ajax_new_course_modal()
-    {
-        var url = 'new_course_modal';
-
-        $.ajax( url, {
-            data: {
-                'csrfmiddlewaretoken': '{{ csrf_token }}',
-            },
-            type: 'post',
-            success: function(result) {
-                // success code execution here
-                $('#ajax_new_course_modal').html(result); // Update UI.
-                $('#new_course_modal').modal();           // Unhide view.
-            },
-            error: function(xhr,status,error) {
-                // error code here
-            },
-            complete: function(xhr,status) {
-               // completion code here
-            }
-        });
-    }
-
-    /**
-     *  Function will call AJAX function to delete the teacher's course.
-     */
-    function ajax_delete_course(course_id)
-    {
-        var url = 'course_delete';
-
-        $.ajax( url, {
-            data: {
-                'csrfmiddlewaretoken': '{{ csrf_token }}',
-                'course_id' : course_id
-            },
-            type: 'post',
-            success: function(result) {
-                // success code execution here
-                if (result.status == 'success')
-                {
-                    refresh_page();
-                }
-            },
-            error: function(xhr,status,error) {
-                // error code here
-            },
-            complete: function(xhr,status) {
-               // completion code here
-            }
-        });
-    }
-
-    /**
-     *  Function makes the current tab refresh the page.
-     */
-    function refresh_page()
-    {
-        window.location = '{{ tab }}';
-    }
-
-    function view_course_page(course_id)
-    {
-        window.location = 'teacher/course/' + course_id + '/overview';
-    }
-</script>
 {% endblock content %}
