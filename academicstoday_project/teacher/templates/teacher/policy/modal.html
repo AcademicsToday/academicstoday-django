@@ -28,6 +28,7 @@
      $(document).ready(function(){
         $('#policy_modal').on('hidden.bs.modal', function (e) {
             $('#policy_modal').html('');
+            refresh_page();
         });
     });
     
@@ -53,7 +54,6 @@ function ajax_save_policy()
             if (json_result.status == "success")
             {
                 $('#policy_modal').modal('hide');
-                refresh_page();
             }
             else
             {

@@ -75,26 +75,10 @@ class CourseSetting(models.Model):
         db_table = 'at_course_settings'
 
 
-class CourseFinalMark(models.Model):
-    credit_id = models.AutoField(primary_key=True)
-    percent = models.FloatField(
-        validators=[MinValueValidator(0), MaxValueValidator(100)],
-        default=0
-    )
-    course = models.ForeignKey(Course)
-    
-    def __str__(self):
-        return self.user
-    
-    class Meta:
-        db_table = 'at_course_final_marks'
-
-
 class Student(models.Model):
     user = models.OneToOneField(User, primary_key=True)
     courses = models.ManyToManyField(Course)
-    marks = models.ManyToManyField(CourseFinalMark)
-
+    
     def __str__(self):
         return self.user
 
@@ -111,6 +95,22 @@ class Teacher(models.Model):
 
     class Meta:
         db_table = 'at_teachers'
+
+
+class CourseFinalMark(models.Model):
+    credit_id = models.AutoField(primary_key=True)
+    percent = models.FloatField(
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+        default=0
+    )
+    course = models.ForeignKey(Course)
+    student = models.ForeignKey(Student)
+        
+    def __str__(self):
+        return self.user
+                                
+    class Meta:
+        db_table = 'at_course_final_marks'
 
 
 class Announcement(models.Model):

@@ -28,7 +28,9 @@
         </div>
         <!-- /.row -->
 
-        <!-- -->
+        {% if final_mark == None %}
+        
+        <!-- Apply Now Banner Row -->
         <div class="jumbotron">
             <h1>Get Credit</h1>
             <p>You can apply to get credit for having completed this course. Once the credit has been granted, you can:</p>
@@ -40,16 +42,25 @@
                      role="button">Apply Now »</a>
             </p>
         </div>
+        <!-- /.row -->
+        
+        {% else %}
+        
+        <!-- Credit Granted Banner Row -->
+        <div class="jumbotron">
+            <h1>Credit Granted</h1>
+            <p>Congradulations, you have been granted full credit for completing this class!</p>
+            <p>We hope you enjoyed this course.</p>
+        </div>
+        <!-- /.row -->
+        
+        {% endif %}
 
     </div>
 
 </div>
 
 <script>
-    /**
-     *  Function will delete the current logged in users assignment for the
-     *  given parameters.
-     */
     function ajax_submit_credit_application()
     {
         var url = 'submit_credit_application';
@@ -63,7 +74,7 @@
                // success code execution here
                if (result.status == 'success')
                {
-                    
+                    window.location = ""; // Refresh page.
                }
                else
                {
