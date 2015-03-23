@@ -165,6 +165,45 @@
                // success code execution here
                if (json_result.status == "success")
                {
+                    // Send the username & password now that it's in the
+                    // registery and then login.
+                    ajax_authenticate(
+                        $('#electronic_mail').val(),
+                        $('#password').val()
+                    );
+               }
+               else
+               {
+                    alert(json_result.message);
+               }
+            },
+            error: function(xhr,status,error) {
+               // error code here
+            },
+            complete: function(xhr,status) {
+               // completion code here
+            }
+        });
+    }
+
+    /**
+     *  Function will call AJAX function to load the register.
+     */
+    function ajax_authenticate(username, password)
+    {
+        var url = 'login';
+    
+        $.ajax( url, {
+            data: {
+               'username': username,
+               'password': password,
+               'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            type: 'post',
+            success: function(json_result) {
+               // success code execution here
+               if (json_result.status == "success")
+               {
                     $('#register_modal').modal('hide');
                
                     // Load up the course list.
