@@ -166,6 +166,9 @@
                if (json_result.status == "success")
                {
                     $('#register_modal').modal('hide');
+               
+                    // Load up the course list.
+                    window.location = 'courses';
                }
                else
                {
