@@ -15,16 +15,32 @@ from teacher.forms import QuizForm
 from teacher.forms import QuizQuestionTypeForm
 from teacher.forms import TrueFalseQuestionForm
 
+
 @login_required(login_url='/landpage')
 def quizzes_page(request, course_id):
     course = Course.objects.get(id=course_id)
     teacher = Teacher.objects.get(user=request.user)
 
+    return render(request, 'teacher/quiz/quiz_view.html',{
+        'teacher' : teacher,
+        'course' : course,
+        'user' : request.user,
+        'tab' : 'quizzes',
+        'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
+        'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+    })
+
+
+@login_required(login_url='/landpage')
+def quizzes_table(request, course_id):
+    course = Course.objects.get(id=course_id)
+    teacher = Teacher.objects.get(user=request.user)
+    
     try:
         quizzes = Quiz.objects.filter(course=course).order_by('-quiz_num')
     except Quiz.DoesNotExist:
         quizzes = None
-    return render(request, 'teacher/quiz/quiz_list.html',{
+    return render(request, 'teacher/quiz/quiz_table.html',{
         'teacher' : teacher,
         'course' : course,
         'quizzes' : quizzes,
