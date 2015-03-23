@@ -15,4 +15,5 @@ urlpatterns = patterns('',
     url(r'^register_modal$', views.register_modal),
     url(r'^terms\.txt$', views.terms_txt_page),
     url(r'^privacy\.txt$', views.privacy_txt_page),
+    url(r'^save_contact_us_message$', views.save_contact_us_message),
 )

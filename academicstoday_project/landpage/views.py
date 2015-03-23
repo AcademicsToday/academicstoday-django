@@ -4,6 +4,7 @@ from django.core import serializers
 from landpage.models import LandpageTeamMember
 from landpage.models import LandpageCoursePreview
 from landpage.models import CoursePreview
+from landpage.models import LandpageContactMessage
 
 import json
 from django.http import HttpResponse
@@ -59,8 +60,36 @@ def login_modal(request):
 def register_modal(request):
     return render(request, 'landpage/register.html',{})
 
+
 def terms_txt_page(request):
     return render(request, 'misc/terms.txt', {}, content_type="text/plain")
 
+
 def privacy_txt_page(request):
     return render(request, 'misc/privacy.txt', {}, content_type="text/plain")
+
+
+def save_contact_us_message(request):
+    response_data = {'status' : 'failed', 'message' : 'unknown error with sending message'}
+    if request.is_ajax():
+        if request.method == 'POST':
+            try:
+                name = request.POST['name']
+                email = request.POST['email']
+                phone = request.POST['phone']
+                message = request.POST['message']
+                
+                LandpageContactMessage.objects.create(
+                    name=name,
+                    email=email,
+                    phone=phone,
+                    message=message,
+                ).save()
+                
+                response_data = {'status' : 'success', 'message' : 'saved'}
+            except:
+                response_data = {
+                    'status' : 'failure',
+                    'message' : 'could not save message ' + name + ' ' + email + ' ' + phone + ' ' + message
+                }
+    return HttpResponse(json.dumps(response_data), content_type="application/json")

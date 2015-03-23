@@ -34,7 +34,7 @@ class LandpageTeamMember(models.Model):
     facebook_url = models.CharField(max_length=255)
     image_filename = models.CharField(max_length=255)
     linkedin_url = models.CharField(max_length=255)
-    email = models.CharField(max_length=255)
+    email = models.EmailField()
     
     def __str__(self):
         return self.title
@@ -70,3 +70,17 @@ class CoursePreview(models.Model):
     
     class Meta:
         db_table = 'at_course_previews'
+
+
+class LandpageContactMessage(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=127)
+    email = models.EmailField()
+    phone = models.CharField(max_length=63)
+    message = models.TextField()
+    
+    def __str__(self):
+        return self.title
+    
+    class Meta:
+        db_table = 'at_landpage_contact_message'
