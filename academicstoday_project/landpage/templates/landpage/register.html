@@ -121,41 +121,63 @@
 <!-- end modal -->
 
 <script>
-/**
-*  Function will call AJAX function to load the register.
-*/
-function ajax_register()
-{
-    var url = 'register';
-    $.ajax( url, {
-        data: {
-           'first_name': $('#first_name').val(),
-           'last_name': $('#last_name').val(),
-           'email': $('#electronic_mail').val(),
-           'password': $('#password').val(),
-           'password_repeated': $('#password_repeated').val(),
-           'is_18_or_plus': $('#is_18_or_plus').is(':checked'),
-           'csrfmiddlewaretoken': '{{ csrf_token }}'
-        },
-        type: 'POST',
-        success: function(json_result) {
-           // success code execution here
-           if (json_result.status == "success")
-           {
-               $('#register_modal').modal('hide');
-           }
-           else
-           {
-               alert(json_result.message);
-           }
-        },
-        error: function(xhr,status,error) {
-            // error code here
-        },
-        complete: function(xhr,status) {
-            // completion code here
+    /**
+     * When the 'Enter' key is pressed, lets try login in.
+     */
+    $(document).bind("keypress.13", function(event) {
+        if ($('#register_modal').is(':visible')) {
+            if (event.which == 13) {
+                ajax_register();
+            }
         }
     });
-}
-
+                 
+    //
+    // IMPORTANT:
+    //  The following block of code will run when finished running this modal.
+    //  Please put all jQuery unbinding code here.
+    //
+    // When this model hides, we will clear the contents of it.
+    $('#register_modal').on('hidden.bs.modal', function (e) {
+        $(document).unbind("keypress.key13");
+        $('#register_modal').remove();
+        $('#ajax_response_register').html('');
+    });
+    
+    /**
+     *  Function will call AJAX function to load the register.
+     */
+    function ajax_register()
+    {
+        var url = 'register';
+        $.ajax( url, {
+            data: {
+               'first_name': $('#first_name').val(),
+               'last_name': $('#last_name').val(),
+               'email': $('#electronic_mail').val(),
+               'password': $('#password').val(),
+               'password_repeated': $('#password_repeated').val(),
+               'is_18_or_plus': $('#is_18_or_plus').is(':checked'),
+               'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            type: 'POST',
+            success: function(json_result) {
+               // success code execution here
+               if (json_result.status == "success")
+               {
+                    $('#register_modal').modal('hide');
+               }
+               else
+               {
+                    alert(json_result.message);
+               }
+            },
+            error: function(xhr,status,error) {
+               // error code here
+            },
+            complete: function(xhr,status) {
+               // completion code here
+            }
+        });
+    }
 </script>

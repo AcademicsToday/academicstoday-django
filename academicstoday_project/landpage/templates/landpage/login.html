@@ -19,9 +19,9 @@
                               name="login_password"
                                 id="login_password"
                        placeholder="Enter Password"></p>
-                    <p><button type="button"
-                            onclick="ajax_authenticate();"
-                              class="btn btn-success">Sign in
+                    <p><button onclick="ajax_authenticate();"
+                                  type="button"
+                                 class="btn btn-default btn-success">Sign in
                     </button> <a href="/forgotpassword">Forgot Password</a></p>
                 </form>
             </div>
@@ -30,67 +30,90 @@
 </div>
 
 <script>
-/**
-*  Function will call AJAX function to load the register.
-*/
-function ajax_authenticate()
-{
-    var url = 'login';
-
-    $.ajax( url, {
-        data: {
-           'username': $("#login_username").val(),
-           'password': $("#login_password").val(),
-           'csrfmiddlewaretoken': '{{ csrf_token }}'
-        },
-        type: 'post',
-        success: function(json_result) {
-           // success code execution here
-           if (json_result.status == "success")
-           {
-               // Hide & close the current popup modal.
-               $('#login_modal').modal('hide');
-           
-               // Load up the course list.
-               window.location = 'courses';
-           }
-           else
-           {
-               alert(json_result.message);
-           }
-        },
-        error: function(xhr,status,error) {
-            // error code here
-        },
-        complete: function(xhr,status) {
-            // completion code here
+    /**
+     * When the 'Enter' key is pressed, lets try login in.
+     */
+    $(document).bind("keypress.13", function(event) {
+        if ($('#login_modal').is(':visible')) {
+            if (event.which == 13) {
+                ajax_authenticate();
+            }
         }
     });
-}
-
-/**
- *  TODO: Implement.
- */
-function ajax_forget_password()
-{
-    var url = 'forget_password';
     
-    $.ajax( url, {
-        data: {
-            'csrfmiddlewaretoken': '{{ csrf_token }}',
-        },
-        type: 'post',
-        success: function(result) {
-               // success code execution here
-            $('#ajax_response_register').html(result); // Update UI.
-            $('#register_modal').modal();               // Unhide view.
-        },
-        error: function(xhr,status,error) {
-            // error code here
-        },
-        complete: function(xhr,status) {
-            // completion code here
-        }
+    //
+    // IMPORTANT:
+    //  The following block of code will run when finished running this modal.
+    //  Please put all jQuery unbinding code here.
+    //
+    // When this model hides, we will clear the contents of it.
+    $('#login_modal').on('hidden.bs.modal', function (e) {
+        $(document).unbind("keypress.key13");
+        $('#login_modal').remove();
+        $('#ajax_response_login').html('');
     });
-}
+    
+    /**
+     *  Function will call AJAX function to load the register.
+     */
+    function ajax_authenticate()
+    {
+        var url = 'login';
+
+        $.ajax( url, {
+            data: {
+               'username': $("#login_username").val(),
+               'password': $("#login_password").val(),
+               'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            type: 'post',
+            success: function(json_result) {
+            // success code execution here
+               if (json_result.status == "success")
+               {
+                    // Hide & close the current popup modal.
+                    $('#login_modal').modal('hide');
+           
+                    // Load up the course list.
+                    window.location = 'courses';
+               }
+               else
+               {
+                    alert(json_result.message);
+               }
+            },
+            error: function(xhr,status,error) {
+               // error code here
+            },
+            complete: function(xhr,status) {
+               // completion code here
+            }
+        });
+    }
+
+    /**
+     *  TODO: Implement.
+     */
+    function ajax_forget_password()
+    {
+        var url = 'forget_password';
+    
+        $.ajax( url, {
+            data: {
+               'csrfmiddlewaretoken': '{{ csrf_token }}',
+            },
+            type: 'post',
+            success: function(result) {
+               // success code execution here
+               $('#ajax_response_register').html(result); // Update UI.
+               $('#register_modal').modal();               // Unhide view.
+            },
+            error: function(xhr,status,error) {
+               // error code here
+            },
+            complete: function(xhr,status) {
+               // completion code here
+            }
+        });
+    }
 </script>
