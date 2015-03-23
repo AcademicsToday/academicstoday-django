@@ -22,15 +22,9 @@ from teacher.forms import AnnouncementForm
 def announcements_page(request, course_id):
     course = Course.objects.get(id=course_id)
     teacher = Teacher.objects.get(user=request.user)
-
-    try:
-        announcements = Announcement.objects.filter(course=course).order_by('-post_date')
-    except Announcement.DoesNotExist:
-        announcements = None
     return render(request, 'teacher/announcement/view.html',{
         'teacher' : teacher,
         'course' : course,
-        'announcements' : announcements,
         'user' : request.user,
         'tab' : 'home',
         'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,

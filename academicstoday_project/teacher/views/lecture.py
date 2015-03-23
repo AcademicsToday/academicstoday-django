@@ -17,15 +17,9 @@ from teacher.forms import LectureForm
 def lectures_page(request, course_id):
     course = Course.objects.get(id=course_id)
     teacher = Teacher.objects.get(user=request.user)
-
-    try:
-        lectures = Lecture.objects.filter(course=course).order_by('-lecture_num')
-    except Lecture.DoesNotExist:
-        lectures = None
     return render(request, 'teacher/lecture/view.html',{
         'teacher' : teacher,
         'course' : course,
-        'lectures' : lectures,
         'NO_VIDEO_PLAYER': settings.NO_VIDEO_PLAYER,
         'YOUTUBE_VIDEO_PLAYER': settings.YOUTUBE_VIDEO_PLAYER,
         'VIMEO_VIDEO_PLAYER': settings.VIMEO_VIDEO_PLAYER,
@@ -47,17 +41,17 @@ def lectures_table(request, course_id):
     except Lecture.DoesNotExist:
         lectures = None
     return render(request, 'teacher/lecture/table.html',{
-                  'teacher' : teacher,
-                  'course' : course,
-                  'lectures' : lectures,
-                  'NO_VIDEO_PLAYER': settings.NO_VIDEO_PLAYER,
-                  'YOUTUBE_VIDEO_PLAYER': settings.YOUTUBE_VIDEO_PLAYER,
-                  'VIMEO_VIDEO_PLAYER': settings.VIMEO_VIDEO_PLAYER,
-                  'BLIPTV_VIDEO_PLAYER': settings.BLIPTV_VIDEO_PLAYER,
-                  'user' : request.user,
-                  'tab' : 'lectures',
-                  'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
-                  'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+        'teacher' : teacher,
+        'course' : course,
+        'lectures' : lectures,
+        'NO_VIDEO_PLAYER': settings.NO_VIDEO_PLAYER,
+        'YOUTUBE_VIDEO_PLAYER': settings.YOUTUBE_VIDEO_PLAYER,
+        'VIMEO_VIDEO_PLAYER': settings.VIMEO_VIDEO_PLAYER,
+        'BLIPTV_VIDEO_PLAYER': settings.BLIPTV_VIDEO_PLAYER,
+        'user' : request.user,
+        'tab' : 'lectures',
+        'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
+        'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
     })
 
 

@@ -123,38 +123,10 @@ def assignment_page(request, course_id, assignment_id):
     teacher = Teacher.objects.get(user=request.user)
     assignment = Assignment.objects.get(assignment_id=assignment_id)
 
-    # Load all essay type questions for this assignment.
-    try:
-        essay_questions = EssayQuestion.objects.filter(assignment=assignment).order_by('question_num')
-    except EssayQuestion.DoesNotExist:
-        essay_questions = None
-
-    # Load all multiple-choice type questions for this assignment.
-    try:
-        mc_questions = MultipleChoiceQuestion.objects.filter(assignment=assignment).order_by('question_num')
-    except MultipleChoiceQuestion.DoesNotExist:
-        mc_questions = None
-
-    # Load all true/false type questions for this assignment.
-    try:
-        tf_questions = TrueFalseQuestion.objects.filter(assignment=assignment).order_by('question_num')
-    except TrueFalseQuestion.DoesNotExist:
-        tf_questions = None
-
-    # Load all response type questions for this assignment.
-    try:
-        r_questions = ResponseQuestion.objects.filter(assignment=assignment).order_by('question_num')
-    except ResponseQuestion.DoesNotExist:
-        r_questions = None
-
     return render(request, 'teacher/assignment/question_view.html',{
         'teacher' : teacher,
         'course' : course,
         'assignment' : assignment,
-        'essay_questions' : essay_questions,
-        'mc_questions' : mc_questions,
-        'tf_questions' : tf_questions,
-        'r_questions' : r_questions,
         'ESSAY_QUESTION_TYPE': settings.ESSAY_QUESTION_TYPE,
         'MULTIPLECHOICE_QUESTION_TYPE': settings.MULTIPLECHOICE_QUESTION_TYPE,
         'TRUEFALSE_QUESTION_TYPE': settings.TRUEFALSE_QUESTION_TYPE,
