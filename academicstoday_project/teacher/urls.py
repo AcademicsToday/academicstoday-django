@@ -43,6 +43,7 @@ urlpatterns = patterns('',
 
     # Lecture
     url(r'^teacher/course/(\d+)/lectures$', lecture.lectures_page),
+    url(r'^teacher/course/(\d+)/lectures_table$', lecture.lectures_table),
     url(r'^teacher/course/(\d+)/lecture_modal$', lecture.lecture_modal),
     url(r'^teacher/course/(\d+)/save_lecture$', lecture.save_lecture),
     url(r'^teacher/course/(\d+)/delete_lecture$', lecture.delete_lecture),

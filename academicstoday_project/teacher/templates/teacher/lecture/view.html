@@ -1,0 +1,146 @@
+{% extends 'teacher/base.html' %}
+{% load staticfiles %}
+{% block content %}
+
+<div id="page-wrapper">
+
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    Lectures
+                </h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-suitcase"></i>  <a href="/teaching">Teaching</a>
+                    </li>
+                    <li>
+                        <i class="fa fa-compass"></i> {{ course.title }}
+                    </li>
+                    <li class="active">
+                        <i class="fa fa-video-camera"></i> Lectures
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        {% if lectures.count <= 0 %}
+        <!-- Lecture Banner -->
+        <div class="jumbotron">
+            <h1>Create a Lecture!</h1>
+            <p>Create the first lecture for your course here.</p>
+            <p><a href="#"
+                 class="btn btn-primary btn-lg"
+               onclick="ajax_lecture_modal(0);"
+                  role="button">Lecture »</a>
+            </p>
+        </div>
+        <!-- /.row -->
+        {% else %}
+        <!-- Lectures -->
+        <div id="ajax_lecture_table"
+           name="ajax_lecture_table"></div>
+        <!-- /.row -->
+        {% endif %}
+
+    </div>
+
+</div>
+
+<!-- Modal -->
+<div id="ajax_lecture_modal"
+   name="ajax_lecture_modal"></div>
+<!-- end modal -->
+
+<script>
+    /**
+     * When the page loads up, get the table data.
+     */
+    $(document).ready(function(){
+        ajax_refresh_lectures_table();
+    });
+                  
+    function ajax_refresh_lectures_table()
+    {
+        var url = 'lectures_table';
+        
+        $.ajax( url, {
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+            },
+            type: 'post',
+            success: function(result) {
+               // success code execution here
+               $('#ajax_lecture_table').html(result); // Update UI.
+            },
+            error: function(xhr,status,error) {
+                // error code here
+            },
+            complete: function(xhr,status) {
+               // completion code here
+            }
+        });
+    }
+    
+    /**
+     *  Function will call AJAX function to load the modal for the new lecture
+     *  creation UI.
+     */
+    function ajax_lecture_modal(lecture_id)
+    {
+        var url = 'lecture_modal';
+
+        $.ajax( url, {
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'lecture_id': lecture_id
+            },
+            type: 'post',
+            success: function(result) {
+                // success code execution here
+                $('#ajax_lecture_modal').html(result); // Update UI.
+                $('#lecture_modal').modal();           // Unhide view.
+            },
+            error: function(xhr,status,error) {
+                // error code here
+            },
+            complete: function(xhr,status) {
+               // completion code here
+            }
+        });
+    }
+
+    /**
+     *  Function will call AJAX function to delete the teacher's lecture.
+     */
+    function ajax_delete_lecture(lecture_id)
+    {
+        var url = 'delete_lecture';
+
+        $.ajax( url, {
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'lecture_id' : lecture_id
+            },
+            type: 'post',
+            success: function(result) {
+                // success code execution here
+                if (result.status == 'success')
+                {
+                    ajax_refresh_lectures_table();
+                }
+            },
+            error: function(xhr,status,error) {
+                // error code here
+            },
+            complete: function(xhr,status) {
+               // completion code here
+            }
+        });
+    }
+</script>
+
+{% endblock content %}

@@ -28,7 +28,6 @@
      $(document).ready(function(){
         $('#lecture_modal').on('hidden.bs.modal', function (e) {
             $('#lecture_modal').html('');
-            refresh_page();
         });
     });
     
@@ -60,6 +59,7 @@
                 if (json_result.status == "success")
                 {
                     $('#lecture_modal').modal('hide');
+                    ajax_refresh_lectures_table();
                 }
                 else
                 {
