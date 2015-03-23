@@ -82,7 +82,23 @@ def teaching_page(request):
     except Teacher.DoesNotExist:
         teacher = None
 
-    return render(request, 'registrar/teaching/list.html',{
+    return render(request, 'registrar/teaching/view.html',{
+        'teacher' : teacher,
+        'user' : request.user,
+        'tab' : 'teaching',
+        'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
+        'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS
+    })
+
+
+@login_required(login_url='/landpage')
+def refresh_teaching_table(request):
+    try:
+        teacher = Teacher.objects.get(user=request.user)
+    except Teacher.DoesNotExist:
+        teacher = None
+    
+    return render(request, 'registrar/teaching/table.html',{
         'teacher' : teacher,
         'user' : request.user,
         'tab' : 'teaching',

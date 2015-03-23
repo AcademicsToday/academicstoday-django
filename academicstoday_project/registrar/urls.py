@@ -12,6 +12,8 @@ urlpatterns = patterns('',
                        
     # Teaching
     url(r'^teaching$', views.teaching_page),
+    url(r'^refresh_teaching_table$', views.refresh_teaching_table),
+                       
     url(r'^new_course_modal$', views.new_course_modal),
     url(r'^save_new_course$', views.save_new_course),
     url(r'^course_delete$', views.course_delete),
