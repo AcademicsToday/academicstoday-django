@@ -34,7 +34,6 @@
         // When this model hides, we will clear the contents of it.
         $('#announcement_modal').on('hidden.bs.modal', function (e) {
             $('#announcement_modal').html('');
-            refresh_page();
         });
     });
 
@@ -61,6 +60,7 @@
                 if (json_result.status == "success")
                 {
                     $('#announcement_modal').modal('hide');
+                    ajax_refresh_announcements_table();
                 }
                 else
                 {

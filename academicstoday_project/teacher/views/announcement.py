@@ -27,7 +27,7 @@ def announcements_page(request, course_id):
         announcements = Announcement.objects.filter(course=course).order_by('-post_date')
     except Announcement.DoesNotExist:
         announcements = None
-    return render(request, 'teacher/announcement/list.html',{
+    return render(request, 'teacher/announcement/view.html',{
         'teacher' : teacher,
         'course' : course,
         'announcements' : announcements,
@@ -36,6 +36,27 @@ def announcements_page(request, course_id):
         'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
         'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
     })
+
+
+@login_required(login_url='/landpage')
+def announcements_table(request, course_id):
+    course = Course.objects.get(id=course_id)
+    teacher = Teacher.objects.get(user=request.user)
+    
+    try:
+        announcements = Announcement.objects.filter(course=course).order_by('-post_date')
+    except Announcement.DoesNotExist:
+        announcements = None
+    return render(request, 'teacher/announcement/table.html',{
+        'teacher' : teacher,
+        'course' : course,
+        'announcements' : announcements,
+        'user' : request.user,
+        'tab' : 'home',
+        'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
+        'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+    })
+
 
 @login_required(login_url='/landpage')
 def announcement_modal(request, course_id):
