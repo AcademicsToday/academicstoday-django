@@ -58,3 +58,9 @@ def login_modal(request):
 
 def register_modal(request):
     return render(request, 'landpage/register.html',{})
+
+def terms_txt_page(request):
+    return render(request, 'misc/terms.txt', {}, content_type="text/plain")
+
+def privacy_txt_page(request):
+    return render(request, 'misc/privacy.txt', {}, content_type="text/plain")
