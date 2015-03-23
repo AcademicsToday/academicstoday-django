@@ -50,6 +50,7 @@ urlpatterns = patterns('',
 
     # Assignment(s)
     url(r'^teacher/course/(\d+)/assignments$', assignment.assignments_page),
+    url(r'^teacher/course/(\d+)/assignments_table$', assignment.assignments_table),
     url(r'^teacher/course/(\d+)/assignment_modal$', assignment.assignment_modal),
     url(r'^teacher/course/(\d+)/save_assignment$', assignment.save_assignment),
     url(r'^teacher/course/(\d+)/delete_assignment$', assignment.delete_assignment),

@@ -31,7 +31,27 @@ def assignments_page(request, course_id):
         assignments = Assignment.objects.filter(course=course).order_by('-assignment_num')
     except Assignment.DoesNotExist:
         assignments = None
-    return render(request, 'teacher/assignment/assignment_list.html',{
+    return render(request, 'teacher/assignment/assignment_view.html',{
+        'teacher' : teacher,
+        'course' : course,
+        'assignments' : assignments,
+        'user' : request.user,
+        'tab' : 'assignments',
+        'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
+        'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+    })
+
+
+@login_required(login_url='/landpage')
+def assignments_table(request, course_id):
+    course = Course.objects.get(id=course_id)
+    teacher = Teacher.objects.get(user=request.user)
+    
+    try:
+        assignments = Assignment.objects.filter(course=course).order_by('-assignment_num')
+    except Assignment.DoesNotExist:
+        assignments = None
+    return render(request, 'teacher/assignment/assignment_table.html',{
         'teacher' : teacher,
         'course' : course,
         'assignments' : assignments,
