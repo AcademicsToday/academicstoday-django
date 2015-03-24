@@ -9,10 +9,11 @@
                 {% include "teacher/syllabus/form.html" with form=form %}
             </div>
             <div class="modal-footer">
-                <button type="button"
-                    class="btn btn-primary"
-                    form="register_form"
-                    onclick="ajax_save_syllabus();">
+                <button onclick="ajax_save_syllabus();"
+                             id="submit_syllabus_btn"
+                           name="submit_syllabus_btn"
+                           type="button"
+                          class="btn btn-primary">
                     <i class="fa fa-check-circle"></i> Submit
                 </button>
             </div>
@@ -26,8 +27,9 @@
      *  used to perform various UI changes.
      */
      $(document).ready(function(){
-        $('#policy_modal').on('hidden.bs.modal', function (e) {
-            $('#policy_modal').html('');
+        $('#syllabus_modal').on('hidden.bs.modal', function (e) {
+            $('#syllabus_modal').html('');
+            $('#add_syllabus_btn').prop("disabled", false);
             refresh_page();
         });
     });
@@ -37,11 +39,12 @@
      */
 function ajax_save_syllabus()
 {
+    $('#submit_syllabus_btn').prop("disabled", true);
+    
     // create a FormData Object using your form dom element
     var data = new FormData();
     data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
     data.append('file', document.getElementById('id_file').files[0]);
-    
     jQuery.ajax({
         url: 'save_syllabus',
         data: data,
@@ -65,6 +68,7 @@ function ajax_save_syllabus()
         },
         complete: function(xhr,status) {
             // completion code here
+            $('#submit_syllabus_btn').prop("disabled", false);
         }
     });
 }
