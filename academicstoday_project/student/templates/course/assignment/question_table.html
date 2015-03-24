@@ -78,6 +78,8 @@
                 <p>Due: {{ assignment.due_date }}</p>
                 <p>
                     <button onclick="ajax_submit_assignment();"
+                                 id="submit_{{ assignment.assignment_id }}_btn"
+                               name="submit_{{ assignment.assignment_id }}_btn"
                                type="button"
                               class="btn btn-primary">
                         <i class="fa fa-check"></i> Submit

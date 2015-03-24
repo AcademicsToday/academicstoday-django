@@ -35,20 +35,14 @@
     </div>
     <!-- /.container -->
 </div>
-<script>
-    $(document).ready(function(){
-        // When this model hides, we will clear the contents of it.
-        $('#lecture_modal').on('hidden.bs.modal', function (e) {
-            // Clear all the code inside this modal.
-            $('#ajax_learn_lecture').html('');
-        })
-    });
-    
+<script>    
     /**
      *  Function will call AJAX function to load the video player modal for the lecture.
      */
     function ajax_learn_lecture(lecture_id)
     {
+        $('#play_' + lecture_id + '_btn').prop("disabled", true); // Lock button
+        
         var url = 'lecture';
 
         $.ajax( url, {

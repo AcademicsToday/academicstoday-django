@@ -68,6 +68,8 @@
  */
 function ajax_delete_assignment_submission(assignment_id)
 {
+    $('#del_' + assignment_id + '_btn').prop("disabled", true); // Lock button
+    
     var url = 'delete_assignment';
     
     $.ajax( url, {
@@ -81,6 +83,7 @@ function ajax_delete_assignment_submission(assignment_id)
                 if (result.status == 'success')
                 {
                     ajax_refresh_assignments_table(); // Reload UI.
+                    $('#del_' + assignment_id + '_btn').prop("disabled", false); // Unlock button
                 }
                 else
                 {

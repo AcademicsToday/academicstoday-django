@@ -26,9 +26,11 @@
                             <td>{{ lecture.title }}</td>
                             <td>
                                 {% if lecture.preferred_service == YOUTUBE_VIDEO_PLAYER %}
-                                <button type="button"
-                                        class="btn btn-sm btn-primary"
-                                      onclick="ajax_learn_lecture({{ lecture.lecture_id }});">
+                                <button onclick="ajax_learn_lecture({{ lecture.lecture_id }});"
+                                             id="play_{{ lecture.lecture_id }}_btn"
+                                           name="play_{{ lecture.lecture_id }}_btn"
+                                           type="button"
+                                          class="btn btn-sm btn-primary">
                                     <i class="fa fa-youtube"></i> Learn
                                 </button>
                                 {% elif lecture.preferred_service == VIMEO_VIDEO_PLAYER %}

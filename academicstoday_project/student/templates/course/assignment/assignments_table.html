@@ -25,14 +25,16 @@
                         <td>{{ submission.submission_date }}</td>
                         <td>{{ submission.percent }}%</td>
                         <td>
-                            <button type="button"
-                                onclick=""
-                                  class="btn btn-sm btn-primary" disabled>
+                            <button onclick=""
+                                       type="button"
+                                      class="btn btn-sm btn-primary" disabled>
                                 <i class="fa fa-file"></i> Continue
                             </button>
-                            <button type="button"
-                                 onclick="ajax_delete_assignment_submission({{ submission.assignment.assignment_id }});"
-                                   class="btn btn-sm btn-danger">
+                            <button onclick="ajax_delete_assignment_submission({{ submission.assignment.assignment_id }});"
+                                         id="del_{{ submission.assignment.assignment_id }}_btn"
+                                       name="del_{{ submission.assignment.assignment_id }}_btn"
+                                       type="button"
+                                      class="btn btn-sm btn-danger">
                                 <i class="fa fa-minus"></i> Delete
                             </button>
                         </td>
