@@ -141,7 +141,7 @@ def quiz_page(request, course_id, quiz_id):
     except tf_submissions.DoesNotExist:
         tf_submissions = None
     
-    return render(request, 'course/quiz/question_list.html',{
+    return render(request, 'course/quiz/question_view.html',{
         'course' : course,
         'student': student,
         'user' : request.user,
