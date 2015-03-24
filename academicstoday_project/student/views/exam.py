@@ -20,11 +20,10 @@ from student.forms import EssaySubmissionForm
 from student.forms import AssignmentSubmissionForm
 
 
-@login_required(login_url='/landpage')
-def exams_page(request, course_id):
-    course = Course.objects.get(id=course_id)
-    student = Student.objects.get(user=request.user)
+# Private
 
+
+def get_submitted_exams(course, student):
     # Fetch all the assignments for this course.
     try:
         exams = Exam.objects.filter(course=course).order_by('exam_num')
@@ -39,7 +38,7 @@ def exams_page(request, course_id):
         )
     except ExamSubmission.DoesNotExist:
         submitted_exams = None
-
+    
     # If the submissions & quizzes counts do not equal, then we have to
     # iterate through all the quizzes and create the missing 'submission'
     # entries for our system.
@@ -59,12 +58,39 @@ def exams_page(request, course_id):
             exam__course=course,
             student=student
         )
+    return submitted_exams
 
-    return render(request, 'course/exam/exams_list.html',{
+
+# Public
+
+
+@login_required(login_url='/landpage')
+def exams_page(request, course_id):
+    course = Course.objects.get(id=course_id)
+    student = Student.objects.get(user=request.user)
+    return render(request, 'course/exam/exams_view.html',{
         'course' : course,
         'user' : request.user,
-        'exams' : exams,
-        'submitted_exams' : submitted_exams,
+        'submitted_exams' : get_submitted_exams(course, student),
+        'ESSAY_QUESTION_TYPE' : settings.ESSAY_QUESTION_TYPE,
+        'MULTIPLECHOICE_QUESTION_TYPE' : settings.MULTIPLECHOICE_QUESTION_TYPE,
+        'TRUEFALSE_QUESTION_TYPE' : settings.TRUEFALSE_QUESTION_TYPE,
+        'RESPONSE_QUESTION_TYPE' : settings.RESPONSE_QUESTION_TYPE,
+        'tab' : 'exams',
+        'subtab' : '',
+        'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
+        'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+    })
+
+
+@login_required(login_url='/landpage')
+def exams_table(request, course_id):
+    course = Course.objects.get(id=course_id)
+    student = Student.objects.get(user=request.user)
+    return render(request, 'course/exam/exams_table.html',{
+        'course' : course,
+        'user' : request.user,
+        'submitted_exams' : get_submitted_exams(course, student),
         'ESSAY_QUESTION_TYPE' : settings.ESSAY_QUESTION_TYPE,
         'MULTIPLECHOICE_QUESTION_TYPE' : settings.MULTIPLECHOICE_QUESTION_TYPE,
         'TRUEFALSE_QUESTION_TYPE' : settings.TRUEFALSE_QUESTION_TYPE,
@@ -97,10 +123,13 @@ def delete_exam(request, course_id):
                                                     
             # Delete all previous entries.
             try:
-                 MultipleChoiceSubmission.objects.filter(question__exam=exam, student=student).delete()
+                 MultipleChoiceSubmission.objects.filter(
+                    question__exam=exam,
+                    student=student
+                ).delete()
             except MultipleChoiceSubmission.DoesNotExist:
                 pass
-            response_data = {'status' : 'success', 'message' : ''}
+            response_data = {'status' : 'success', 'message' : 'deleted'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 

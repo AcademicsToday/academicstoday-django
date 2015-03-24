@@ -56,6 +56,7 @@ urlpatterns = patterns('',
 
     # Exam(s)
     url(r'^course/(\d+)/exams$', exam.exams_page),
+    url(r'^course/(\d+)/exams_table$', exam.exams_table),
     url(r'^course/(\d+)/delete_exam$', exam.delete_exam),
                        
     # Exam
