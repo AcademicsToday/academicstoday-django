@@ -69,6 +69,8 @@
  */
 function ajax_delete_quiz_submission(quiz_id)
 {
+    $('#del_' + quiz_id + '_btn').prop("disabled", true); // Lock button
+    
     var url = 'quiz_delete';
     
     $.ajax( url, {
@@ -81,6 +83,7 @@ function ajax_delete_quiz_submission(quiz_id)
                 // success code execution here
                 if (result.status == 'success')
                 {
+                    $('#del_' + quiz_id + '_btn').prop("disabled", false); // Unlock button
                     ajax_refresh_quizzes_table(); // Reload UI.
                 }
                 else

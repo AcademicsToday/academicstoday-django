@@ -30,9 +30,11 @@
                             class="btn btn-sm btn-primary" disabled>
                                 <i class="fa fa-file"></i> Continue
                             </button>
-                            <button type="button"
-                                onclick="ajax_delete_quiz_submission({{ submission.quiz.quiz_id }});"
-                                class="btn btn-sm btn-danger">
+                            <button onclick="ajax_delete_quiz_submission({{ submission.quiz.quiz_id }});"
+                                         id="del_{{ submission.quiz.quiz_id }}_btn"
+                                       name="del_{{ submission.quiz.quiz_id }}_btn"
+                                       type="button"
+                                      class="btn btn-sm btn-danger">
                                 <i class="fa fa-minus"></i> Delete
                             </button>
                         </td>

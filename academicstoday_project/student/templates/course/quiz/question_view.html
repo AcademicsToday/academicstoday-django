@@ -77,6 +77,7 @@
     //------------------------------------------------------------------------//
     function ajax_submit_quiz()
     {
+        $('#submit_{{ quiz.quiz_id }}_btn').prop("disabled", true); // Lock button
         var url = {{ quiz.quiz_id }} + '/submit_quiz';
         
         // create a FormData Object using your form dom element
@@ -97,6 +98,7 @@
                 }
                 else
                 {
+                    $('#submit_{{ assignment.assignment_id }}_btn').prop("disabled", false); // Unlock button
                     window.location = "../quizzes"
                 }
             }

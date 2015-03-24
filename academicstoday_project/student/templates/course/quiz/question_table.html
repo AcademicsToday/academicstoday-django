@@ -27,6 +27,8 @@
                         <p>Due: {{ quiz.due_date }}</p>
                         <p>
                             <button onclick="ajax_submit_quiz();"
+                                         id="submit_{{ quiz.quiz_id }}_btn"
+                                       name="submit_{{ quiz.quiz_id }}_btn"
                                        type="button"
                                       class="btn btn-primary">
                                 <i class="fa fa-check"></i> Submit
