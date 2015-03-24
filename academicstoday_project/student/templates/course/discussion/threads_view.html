@@ -29,45 +29,9 @@
         <!-- /.row -->
         
         <!-- Discussion Forum -->
-        <div class="table-responsive">
-            <table class="table table-hover table-striped">
-                <thead>
-                    <tr>
-                        <th>Question</th>
-                        <th>Contents</th>
-                        <th>
-                            <button type="button"
-                                 onclick="ajax_new_thread_modal({{ course.id }});"
-                                   class="btn btn-sm btn-success">
-                                <i class="fa fa-plus"></i> New
-                            </button>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for thread in threads %}
-                    <tr>
-                        <td>{{ thread.title }}</td>
-                        <td>{{ thread.text }}</td>
-                        <td>
-                            <button type="button"
-                                 onclick="ajax_view_thread({{ thread.thread_id }});"
-                                   class="btn btn-sm btn-primary">
-                                <i class="fa fa-level-down"></i> View
-                            </button>
-                            {% if user == thread.user %}
-                            <!-- Only the user that created this thread can delete this thread -->
-                            <button type="button"
-                                 onclick="ajax_delete_thread({{ thread.thread_id }});"
-                                   class="btn btn-sm btn-danger">
-                                <i class="fa fa-minus"></i> Delete
-                            </button>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <div id="ajax_threads_table"
+           name="ajax_threads_table">
+            {% include "course/discussion/threads_table.html" %}
         </div>
         <!-- /.row -->
         
@@ -75,6 +39,28 @@
     
 </div>
 <script>
+    function ajax_refresh_threads_table()
+    {
+        var url = 'threads_table';
+        
+        $.ajax( url, {
+               data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+               },
+               type: 'post',
+               success: function(result) {
+                    // success code execution here
+                    $('#ajax_threads_table').html(result); // Update UI.
+               },
+               error: function(xhr,status,error) {
+                    // error code here
+               },
+               complete: function(xhr,status) {
+                    // completion code here
+            }
+        });
+    }
+    
     function ajax_new_thread_modal(course_id)
     {
         var url = 'new_thread';
@@ -128,6 +114,7 @@
                 if (json_result.status == 'success')
                 {
                     $('#new_thread_modal').modal('hide');
+                    ajax_refresh_threads_table();
                 }
                 else
                 {
@@ -157,7 +144,7 @@
                // success code execution here
                if (result.status == 'success')
                {
-                    refresh_current_assignments_page(); // Reload UI.
+                    ajax_refresh_threads_table(); // Reload UI.
                }
                else
                {
@@ -171,14 +158,6 @@
                // completion code here
             }
         });
-    }
-
-    /**
-     *  Function makes the current tab refresh the page.
-     */
-    function refresh_current_assignments_page()
-    {
-        window.location = 'discussion';
     }
 
     function ajax_view_thread(thread_id)

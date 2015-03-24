@@ -1,0 +1,41 @@
+        <div class="table-responsive">
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>Question</th>
+                        <th>Contents</th>
+                        <th>
+                            <button type="button"
+                                 onclick="ajax_new_thread_modal({{ course.id }});"
+                                   class="btn btn-sm btn-success">
+                                <i class="fa fa-plus"></i> New
+                            </button>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for thread in threads %}
+                    <tr>
+                        <td>{{ thread.title }}</td>
+                        <td>{{ thread.text }}</td>
+                        <td>
+                            <button type="button"
+                                 onclick="ajax_view_thread({{ thread.thread_id }});"
+                                   class="btn btn-sm btn-primary">
+                                <i class="fa fa-level-down"></i> View
+                            </button>
+                            {% if user == thread.user %}
+                            <!-- Only the user that created this thread can delete this thread -->
+                            <button type="button"
+                                 onclick="ajax_delete_thread({{ thread.thread_id }});"
+                                   class="btn btn-sm btn-danger">
+                                <i class="fa fa-minus"></i> Delete
+                            </button>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <!-- /.row -->

@@ -24,7 +24,26 @@ def discussion_page(request, course_id):
     except:
         threads = None
     
-    return render(request, 'course/discussion/threads_list.html',{
+    return render(request, 'course/discussion/threads_view.html',{
+        'course': course,
+        'threads': threads,
+        'user': request.user,
+        'tab': 'discussion',
+        'local_css_urls': settings.SB_ADMIN_CSS_LIBRARY_URLS,
+        'local_js_urls': settings.SB_ADMIN_JS_LIBRARY_URLS,
+    })
+
+
+@login_required(login_url='/landpage')
+def threads_table(request, course_id):
+    course = Course.objects.get(id=course_id)
+    
+    try:
+        threads = CourseDiscussionThread.objects.filter(course=course).order_by('date')
+    except:
+        threads = None
+
+    return render(request, 'course/discussion/threads_table.html',{
         'course': course,
         'threads': threads,
         'user': request.user,
