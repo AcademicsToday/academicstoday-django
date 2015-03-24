@@ -30,94 +30,10 @@
         </div>
         <!-- /.row -->
 
-        <!-- Essay Questions -->
-        {% for e_question in e_questions %}
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Question #{{ e_question.question_num }}: {{ e_question.title }}</h3>
-                    </div>
-                    <div class="panel-body">
-                        {% include "course/assignment/e_form.html" %}
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-        <!-- /.Essay Questions -->
-        
-        <!-- Multiple-Choice Questions -->
-        {% for mc_question in mc_questions %}
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Question #{{ mc_question.question_num }}: {{ mc_question.title }}</h3>
-                    </div>
-                    <div class="panel-body">
-                        {% include "course/assignment/mc_form.html" %}
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-        <!-- /.Multiple-Choice Questions -->
-        
-        <!-- True/False Questions -->
-        {% for tf_question in tf_questions %}
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Question #{{ tf_question.question_num }}: {{ r_question.title }}</h3>
-                    </div>
-                    <div class="panel-body">
-                        {% include "course/assignment/tf_form.html" %}
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-        <!-- /.True/False  Questions -->
-        
-        <!-- Response Questions -->
-        {% for r_question in r_questions %}
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Question #{{ r_question.question_num }}: {{ r_question.title }}</h3>
-                    </div>
-                    <div class="panel-body">
-                        {% include "course/assignment/r_form.html" %}
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-        <!-- /.Response  Questions -->
-        
-        <!-- Assignment description -->
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Assignment #{{ assignment.assignment_num }}: {{ assignment.title }}</h3>
-                    </div>
-                    <div class="panel-body">
-                        <p>{{ assignment.description }}</p>
-                        <p>Due: {{ assignment.due_date }}</p>
-                        <p>
-                            <button onclick="ajax_submit_assignment();"
-                                       type="button"
-                                      class="btn btn-primary">
-                                <i class="fa fa-check"></i> Submit
-                            </button>
-                        </p>
-                    </div>
-                </div>
-            </div>
+        <!-- Questions -->
+        <div id="ajax_questions_table"
+           name="ajax_questions_table">
+            {% include "course/assignment/question_table.html" %}
         </div>
         <!-- /.row -->
         

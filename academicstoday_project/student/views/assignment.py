@@ -149,7 +149,7 @@ def assignment_page(request, course_id, assignment_id):
     except ResponseQuestion.DoesNotExist:
         r_submissions = None
 
-    return render(request, 'course/assignment/question_list.html',{
+    return render(request, 'course/assignment/question_view.html',{
         'student': student,
         'course': course,
         'assignment': assignment,
