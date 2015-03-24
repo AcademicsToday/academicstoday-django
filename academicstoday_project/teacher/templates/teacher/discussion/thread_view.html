@@ -20,75 +20,68 @@
                     <li>
                         <i class="fa fa-compass"></i> {{ course.title }}
                     </li>
+                    <li>
+                        <i class="fa fa-fw fa-comment"></i>  <a href="/teacher/course/{{ course.id }}/discussion">Discussion</a>
+                    </li>
                     <li class="active">
-                        <i class="fa fa-fw fa-comment"></i> Discussion
+                        <i class="fa fa-fw fa-comment"></i> Thread #{{ thread.thread_id }}
                     </li>
                 </ol>
             </div>
         </div>
         <!-- /.row -->
         
-        <!-- Discussion Forum -->
-        <div class="table-responsive">
-            <table class="table table-hover table-striped">
-                <thead>
-                    <tr>
-                        <th>Question</th>
-                        <th>Contents</th>
-                        <th>
-                            <button type="button"
-                                 onclick="ajax_new_thread_modal({{ course.id }});"
-                                   class="btn btn-sm btn-success">
-                                <i class="fa fa-plus"></i> New
-                            </button>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for thread in threads %}
-                    <tr>
-                        <td>{{ thread.title }}</td>
-                        <td>{{ thread.text }}</td>
-                        <td>
-                            <button type="button"
-                                 onclick="ajax_view_thread({{ thread.thread_id }});"
-                                   class="btn btn-sm btn-primary">
-                                <i class="fa fa-level-down"></i> View
-                            </button>
-                            {% if user == thread.user %}
-                            <!-- Only the user that created this thread can delete this thread -->
-                            <button type="button"
-                                 onclick="ajax_delete_thread({{ thread.thread_id }});"
-                                   class="btn btn-sm btn-danger">
-                                <i class="fa fa-minus"></i> Delete
-                            </button>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+        <!-- Discussion Thread -->
+        <div id="ajax_discussion_table"
+           name="ajax_discussion_table"></div>
         <!-- /.row -->
         
     </div>
     
 </div>
 <script>
-    function ajax_new_thread_modal(course_id)
+    /**
+     * When the page loads up, get the table data.
+     */
+    $(document).ready(function(){
+        ajax_refresh_discussion_table();
+    });
+                  
+    function ajax_refresh_discussion_table()
     {
-        var url = 'new_thread';
+        var url = {{ thread.thread_id}} + '/thread_table';
+                      
+        $.ajax( url, {
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+            },
+            type: 'post',
+            success: function(result) {
+                // success code execution here
+                $('#ajax_discussion_table').html(result); // Update UI.
+            },
+            error: function(xhr,status,error) {
+                // error code here
+            },
+            complete: function(xhr,status) {
+                // completion code here
+            }
+        });
+    }
+    
+    function ajax_new_post_modal(thread_id)
+    {
+        var url = thread_id + '/new_post';
         
         $.ajax( url, {
             data: {
                'csrfmiddlewaretoken': '{{ csrf_token }}',
-               'course_id': course_id,
             },
             type: 'post',
             success: function(result) {
                // success code execution here
-               $('#ajax_new_thread').html(result); // Update UI.
-               $('#new_thread_modal').modal();     // Unhide view.
+               $('#ajax_new_post').html(result); // Update UI.
+               $('#new_post_modal').modal();     // Unhide view.
             },
             error: function(xhr,status,error) {
                // error code here
@@ -99,11 +92,11 @@
         });
     }
 
-    function ajax_insert_thread(course_id)
+    function ajax_insert_post(thread_id)
     {
-        if (typeof(course_id)==='undefined')
+        if (typeof(thread_id)==='undefined')
         {
-            course_id = 0;
+            thread_id = 0;
         }
     
         // Create a FormData Object using your form dom element and load
@@ -114,10 +107,10 @@
         data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
         data.append('title', $('#id_title').val());
         data.append('text', $('#id_text').val());
-        data.append('course_id', course_id);
+        data.append('thread_id', thread_id);
     
         jQuery.ajax({
-            url: 'insert_thread',
+            url: thread_id + '/insert_post',
             data: data,
             cache: false,
             contentType: false,
@@ -127,7 +120,8 @@
                 // success code execution here
                 if (json_result.status == 'success')
                 {
-                    $('#new_thread_modal').modal('hide');
+                    $('#new_post_modal').modal('hide');
+                    ajax_refresh_discussion_table();
                 }
                 else
                 {
@@ -145,7 +139,7 @@
 
     function ajax_delete_thread(thread_id)
     {
-        var url = 'delete_thread';
+        var url = thread_id + '/delete_thread';
     
         $.ajax( url, {
             data: {
@@ -157,7 +151,7 @@
                // success code execution here
                if (result.status == 'success')
                {
-                    refresh_current_assignments_page(); // Reload UI.
+                    ajax_refresh_discussion_table(); // Reload UI.
                }
                else
                {
@@ -173,14 +167,6 @@
         });
     }
 
-    /**
-     *  Function makes the current tab refresh the page.
-     */
-    function refresh_current_assignments_page()
-    {
-        window.location = 'discussion';
-    }
-
     function ajax_view_thread(thread_id)
     {
         window.location = 'thread/' + thread_id;
@@ -188,8 +174,8 @@
 </script>
 
 <!-- Modal -->
-<div id="ajax_new_thread"
-   name="ajax_new_thread"></div>
+<div id="ajax_new_post"
+   name="ajax_new_post"></div>
 <!-- /.Modal -->
 
 {% endblock content %}

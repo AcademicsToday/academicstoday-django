@@ -98,10 +98,12 @@ urlpatterns = patterns('',
                        
     # Discussion
     url(r'^teacher/course/(\d+)/discussion$', discussion.discussion_page),
+    url(r'^teacher/course/(\d+)/discussions_table$', discussion.discussions_table),
     url(r'^teacher/course/(\d+)/new_thread$', discussion.new_thread_modal),
     url(r'^teacher/course/(\d+)/insert_thread$', discussion.insert_thread),
     url(r'^teacher/course/(\d+)/delete_thread$', discussion.delete_thread),
     url(r'^teacher/course/(\d+)/thread/(\d+)$', discussion.thread_page),
+    url(r'^teacher/course/(\d+)/thread/(\d+)/thread_table$', discussion.thread_table),
     url(r'^teacher/course/(\d+)/thread/(\d+)/new_post$', discussion.new_post_modal),
     url(r'^teacher/course/(\d+)/thread/(\d+)/insert_post$', discussion.insert_post),
                        

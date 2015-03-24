@@ -24,7 +24,26 @@ def discussion_page(request, course_id):
     except:
         threads = None
     
-    return render(request, 'teacher/discussion/threads_list.html',{
+    return render(request, 'teacher/discussion/threads_view.html',{
+        'course': course,
+        'threads': threads,
+        'user': request.user,
+        'tab': 'discussion',
+        'local_css_urls': settings.SB_ADMIN_CSS_LIBRARY_URLS,
+        'local_js_urls': settings.SB_ADMIN_JS_LIBRARY_URLS,
+    })
+
+
+@login_required(login_url='/landpage')
+def discussions_table(request, course_id):
+    course = Course.objects.get(id=course_id)
+    
+    try:
+        threads = CourseDiscussionThread.objects.filter(course=course).order_by('date')
+    except:
+        threads = None
+
+    return render(request, 'teacher/discussion/threads_table.html',{
         'course': course,
         'threads': threads,
         'user': request.user,
@@ -95,7 +114,29 @@ def thread_page(request, course_id, thread_id):
     except CourseDiscussionThread.DoesNotExist:
         thread = None
 
-    return render(request, 'teacher/discussion/thread_page.html',{
+    return render(request, 'teacher/discussion/thread_view.html',{
+        'course': course,
+        'thread': thread,
+        'user': request.user,
+        'tab': 'thread',
+        'local_css_urls': settings.SB_ADMIN_CSS_LIBRARY_URLS,
+        'local_js_urls': settings.SB_ADMIN_JS_LIBRARY_URLS,
+    })
+
+
+@login_required(login_url='/landpage')
+def thread_table(request, course_id, thread_id):
+    course = Course.objects.get(id=course_id)
+    
+    try:
+        thread = CourseDiscussionThread.objects.get(
+            course=course,
+            thread_id=thread_id
+        )
+    except CourseDiscussionThread.DoesNotExist:
+        thread = None
+
+    return render(request, 'teacher/discussion/thread_table.html',{
         'course': course,
         'thread': thread,
         'user': request.user,
