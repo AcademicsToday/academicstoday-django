@@ -1,0 +1,135 @@
+{% extends 'teacher/base.html' %}
+{% load staticfiles %}
+{% block content %}
+
+<div id="page-wrapper">
+
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    Exam
+                </h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-suitcase"></i>  <a href="/teaching">Teaching</a>
+                    </li>
+                    <li>
+                        <i class="fa fa-compass"></i> {{ course.title }}
+                    </li>
+                    <li>
+                        <i class="fa fa-star"></i> <a href="/teacher/course/{{ course.id }}/exams">Exams</a>
+                    </li>
+                    <li class="active">
+                        <i class="fa fa-star"></i> New Exam
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <!-- Questions -->
+        <div id="ajax_question_table"
+           name="ajax_question_table"></div>
+        <!-- /.row -->
+
+    </div>
+
+</div>
+<!-- Modal -->
+<div id="ajax_question_modal"
+   name="ajax_question_modal"></div>
+<!-- end modal -->
+<script>
+       /**
+        * When the page loads up, get the table data.
+        */
+        $(document).ready(function(){
+            ajax_refresh_questions_table();
+        });
+                  
+        function ajax_refresh_questions_table()
+        {
+            var url = {{ exam.exam_id }} + '/questions_table';
+                      
+            $.ajax( url, {
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+            },
+            type: 'post',
+            success: function(result) {
+                // success code execution here
+                $('#ajax_question_table').html(result); // Update UI.
+            },
+            error: function(xhr,status,error) {
+                // error code here
+            },
+            complete: function(xhr,status) {
+                // completion code here
+            }
+        });
+    }
+    
+    function ajax_question(question_id, question_type)
+    {
+        var url;
+        if (question_type == 0)
+        {
+            url = {{ exam.exam_id }} + '/question_type_modal';
+        }
+        else if (question_type == {{ MULTIPLECHOICE_QUESTION_TYPE }})
+        {
+            url = {{ exam.exam_id }} + '/question_multiple_choice_modal'
+        }
+
+        $.ajax( url, {
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'question_id': question_id,
+                'question_type': question_type,
+            },
+            type: 'post',
+            success: function(result) {
+                // success code execution here-->
+                $('#ajax_question_modal').html(result); // Update UI.
+                $('#question_modal').modal();           // Unhide view.
+            },
+            error: function(xhr,status,error) {
+                // error code here
+            },
+            complete: function(xhr,status) {
+                // completion code here
+            }
+        });
+    }
+
+    function ajax_delete_question(question_id, question_type)
+    {
+        var url = {{ exam.exam_id }} + '/delete_question';
+
+        $.ajax( url, {
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'question_id' : question_id,
+                'question_type' : question_type,
+            },
+            type: 'post',
+            success: function(result) {
+                // success code execution here
+                if (result.status == 'success')
+                {
+                    ajax_refresh_questions_table();
+                }
+            },
+            error: function(xhr,status,error) {
+                // error code here
+            },
+            complete: function(xhr,status) {
+               // completion code here
+            }
+        });
+    }
+</script>
+{% endblock content %}

@@ -41,56 +41,8 @@
         <!-- /.row -->
         {% else %}
         <!-- Exams -->
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                      <div class="table-responsive">
-                          <table class="table table-hover table-striped">
-                              <thead>
-                                  <tr>
-                                      <th>Exam #</th>
-                                      <th>Title</th>
-                                      <th>
-                                          <button type="button"
-                                                 class="btn btn-sm btn-success"
-                                               onclick="ajax_exam(0);">
-                                            <i class="fa fa-plus"></i> Add
-                                        </button>
-                                      </th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                              {% for exam in exams %}
-                                  <tr>
-                                      <td align="left" valign="left">{{ exam.exam_num }}</td>
-                                      <td align="left" valign="left">{{ exam.title }}</td>
-                                      <td align="left" valign="left">
-                                        <button type="button"
-                                              class="btn btn-sm btn-primary"
-                                              onclick="view_exam({{ exam.exam_id }});">
-                                              <i class="fa fa-file"></i> Questions
-                                        </button>
-                                        <button type="button"
-                                              class="btn btn-sm btn-warning"
-                                              onclick="ajax_exam({{ exam.exam_id }});">
-                                              <i class="fa fa-pencil"></i> Edit
-                                        </button>
-                                        <button type="button"
-                                               class="btn btn-sm btn-danger"
-                                             onclick="ajax_delete_exam({{ exam.exam_id }});">
-                                           <i class="fa fa-minus"></i> Delete
-                                        </button>
-                                      </td>
-                                  </tr>
-                            {% endfor %}
-                            </tbody>
-                          </table>
-                      </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div id="ajax_exam_table"
+           name="ajax_exam_table"></div>
         <!-- /.row -->
         {% endif %}
 
@@ -104,6 +56,35 @@
 <!-- end modal -->
 
 <script>
+    /**
+     * When the page loads up, get the table data.
+     */
+    $(document).ready(function(){
+        ajax_refresh_exams_table();
+    });
+                  
+    function ajax_refresh_exams_table()
+    {
+        var url = 'exams_table';
+        
+        $.ajax( url, {
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+            },
+            type: 'post',
+            success: function(result) {
+                // success code execution here
+                $('#ajax_exam_table').html(result); // Update UI.
+            },
+            error: function(xhr,status,error) {
+                // error code here
+            },
+            complete: function(xhr,status) {
+                // completion code here
+            }
+        });
+    }
+
     /**
      *  This function will load up the exam question creator/editor page.
      */
@@ -156,7 +137,7 @@
                 // success code execution here
                 if (result.status == 'success')
                 {
-                    refresh_page();
+                    ajax_refresh_exams_table();
                 }
             },
             error: function(xhr,status,error) {
@@ -166,14 +147,6 @@
                // completion code here
             }
         });
-    }
-
-    /**
-     *  Function makes the current tab refresh the page.
-     */
-    function refresh_page()
-    {
-        window.location = '{{ tab }}';
     }
 </script>
 

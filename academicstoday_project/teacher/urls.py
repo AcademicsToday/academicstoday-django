@@ -83,12 +83,14 @@ urlpatterns = patterns('',
 
     # Exam(s)
     url(r'^teacher/course/(\d+)/exams$', exam.exams_page),
+    url(r'^teacher/course/(\d+)/exams_table$', exam.exams_table),
     url(r'^teacher/course/(\d+)/exam_modal$', exam.exam_modal),
     url(r'^teacher/course/(\d+)/save_exam$', exam.save_exam),
     url(r'^teacher/course/(\d+)/delete_exam$', exam.delete_exam),
     
     # # Exam
     url(r'^teacher/course/(\d+)/exam/(\d+)$', exam.exam_page),
+    url(r'^teacher/course/(\d+)/exam/(\d+)/questions_table$', exam.questions_table),
     url(r'^teacher/course/(\d+)/exam/(\d+)/question_type_modal$', exam.question_type_modal),
     url(r'^teacher/course/(\d+)/exam/(\d+)/question_multiple_choice_modal$', exam.question_multiple_choice_modal),
     url(r'^teacher/course/(\d+)/exam/(\d+)/save_question$', exam.save_question),

@@ -27,7 +27,6 @@
      $(document).ready(function(){
         $('#question_modal').on('hidden.bs.modal', function (e) {
             $('#question_modal').html('');
-            refresh_page();
         });
     });
 
@@ -90,6 +89,7 @@
                 if (json_result.status == "success")
                 {
                     $('#question_modal').modal('hide');
+                    ajax_refresh_questions_table();
                 }
                 else
                 {

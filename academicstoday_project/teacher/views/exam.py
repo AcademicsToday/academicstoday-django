@@ -28,7 +28,26 @@ def exams_page(request, course_id):
         exams = Exam.objects.filter(course=course).order_by('-exam_num')
     except Exam.DoesNotExist:
         exams = None
-    return render(request, 'teacher/exam/exam_list.html',{
+    return render(request, 'teacher/exam/exam_view.html',{
+        'teacher' : teacher,
+        'course' : course,
+        'exams' : exams,
+        'user' : request.user,
+        'tab' : 'exams',
+        'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
+        'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+    })
+
+@login_required(login_url='/landpage')
+def exams_table(request, course_id):
+    course = Course.objects.get(id=course_id)
+    teacher = Teacher.objects.get(user=request.user)
+    
+    try:
+        exams = Exam.objects.filter(course=course).order_by('-exam_num')
+    except Exam.DoesNotExist:
+        exams = None
+    return render(request, 'teacher/exam/exam_table.html',{
         'teacher' : teacher,
         'course' : course,
         'exams' : exams,
@@ -106,7 +125,7 @@ def exam_page(request, course_id, exam_id):
     except MultipleChoiceQuestion.DoesNotExist:
         mc_questions = None
 
-    return render(request, 'teacher/exam/question_list.html',{
+    return render(request, 'teacher/exam/question_view.html',{
         'teacher' : teacher,
         'course' : course,
         'exam' : exam,
@@ -120,6 +139,34 @@ def exam_page(request, course_id, exam_id):
         'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
         'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
     })
+
+
+def questions_table(request, course_id, exam_id):
+    course = Course.objects.get(id=course_id)
+    teacher = Teacher.objects.get(user=request.user)
+    exam = Exam.objects.get(exam_id=exam_id)
+    
+    # Load all multiple-choice type questions for this exam.
+    try:
+        mc_questions = MultipleChoiceQuestion.objects.filter(exam=exam).order_by('question_num')
+    except MultipleChoiceQuestion.DoesNotExist:
+        mc_questions = None
+
+    return render(request, 'teacher/exam/question_table.html',{
+        'teacher' : teacher,
+        'course' : course,
+        'exam' : exam,
+        'mc_questions' : mc_questions,
+        'ESSAY_QUESTION_TYPE': settings.ESSAY_QUESTION_TYPE,
+        'MULTIPLECHOICE_QUESTION_TYPE': settings.MULTIPLECHOICE_QUESTION_TYPE,
+        'TRUEFALSE_QUESTION_TYPE': settings.TRUEFALSE_QUESTION_TYPE,
+        'RESPONSE_QUESTION_TYPE': settings.RESPONSE_QUESTION_TYPE,
+        'user' : request.user,
+        'tab' : 'exam',
+        'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
+        'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+    })
+
 
 def question_type_modal(request, course_id, exam_id):
     if request.is_ajax():
