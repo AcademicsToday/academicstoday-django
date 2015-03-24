@@ -11,6 +11,8 @@
                                       <th>Title</th>
                                       <th>
                                           <button onclick="ajax_new_course_modal();"
+                                                       id="new_course_btn"
+                                                     name="new_course_btn"
                                                      type="button"
                                                     class="btn btn-lg btn-success">
                                               <i class="fa fa-plus"></i> Add
@@ -24,14 +26,16 @@
                                       <td align="left" valign="left">{{ course.id }}</td>
                                       <td align="left" valign="left">{{ course.title }}</td>
                                       <td align="left" valign="left">
-                                        <button type="button"
-                                               class="btn btn-lg btn-primary"
-                                             onclick="view_course_page({{ course.id }});">
+                                        <button onclick="view_course_page({{ course.id }});"
+                                                   type="button"
+                                                  class="btn btn-lg btn-primary">
                                             <i class="fa fa-level-down"></i> View
                                         </button>
-                                        <button type="button"
-                                               class="btn btn-lg btn-danger"
-                                             onclick="ajax_delete_course({{ course.id }})">
+                                        <button onclick="ajax_delete_course({{ course.id }});"
+                                                     id="del_{{ course.id }}_btn"
+                                                   name="del_{{ course.id }}_btn"
+                                                   type="button"
+                                                  class="btn btn-lg btn-danger">
                                             <i class="fa fa-minus"></i> Delete
                                         </button>
                                       </td>

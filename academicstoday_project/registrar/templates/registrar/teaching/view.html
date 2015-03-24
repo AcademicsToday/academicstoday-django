@@ -63,24 +63,21 @@
     
     function ajax_refresh_teaching_table()
     {
-        var url = 'refresh_teaching_table';
-        
-        $.ajax( url, {
-               data: {
+        $.ajax( 'refresh_teaching_table', {
+            data: {
                'csrfmiddlewaretoken': '{{ csrf_token }}',
-               },
-               type: 'post',
-               success: function(result) {
+            },
+            type: 'post',
+            success: function(result) {
                     // success code execution here
                     $('#ajax_courses_table').html(result); // Update UI.
-               
-               },
-               error: function(xhr,status,error) {
-                // error code here
-               },
-               complete: function(xhr,status) {
+            },
+            error: function(xhr,status,error) {
+               // error code here
+            },
+            complete: function(xhr,status) {
                 // completion code here
-               }
+            }
         });
     }
     
@@ -90,9 +87,8 @@
      */
     function ajax_new_course_modal()
     {
-        var url = 'new_course_modal';
-
-        $.ajax( url, {
+        $('#new_course_btn').prop("disabled", true); // Lock button
+        $.ajax( 'new_course_modal', {
             data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
             },
@@ -116,9 +112,8 @@
      */
     function ajax_delete_course(course_id)
     {
-        var url = 'course_delete';
-
-        $.ajax( url, {
+        $('#del_' + course_delete + '_btn').prop("disabled", true); // Lock button
+        $.ajax( 'course_delete', {
             data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
                 'course_id' : course_id
@@ -128,6 +123,7 @@
                 // success code execution here
                 if (result.status == 'success')
                 {
+                    $('#del_' + course_delete + '_btn').prop("disabled", false); // Unlock button
                     ajax_refresh_teaching_table();
                 }
             },
