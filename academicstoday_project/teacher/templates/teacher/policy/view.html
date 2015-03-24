@@ -34,10 +34,11 @@
         <div class="jumbotron">
             <h1>Upload Policy and Grading</h1>
             <p>A policy is required to run a course. Please update.</p>
-            <p><a href="#"
-                class="btn btn-primary btn-lg"
-                onclick="ajax_policy_modal();"
-                role="button">Upload »</a>
+            <p><button onclick="ajax_policy_modal();"
+                            id="add_policy_btn"
+                          name="add_policy_btn"
+                         class="btn btn-primary btn-lg"
+                          role="button">Upload »</button>
             </p>
         </div>
         <!-- /.row -->
@@ -45,10 +46,11 @@
         <!-- PDF RESULT -->
         <div class="row">
             <div class="col-lg-12">
-                <a href="#"
-                    class="btn btn-danger btn-lg"
-                    onclick="ajax_delete_policy({{ policy.policy_id }});"
-                    role="button">Delete</a>
+                <button onclick="ajax_delete_policy({{ policy.policy_id }});"
+                             id="del_{{ policy.policy_id }}_btn"
+                           name="del_{{ policy.policy_id }}_btn"
+                          class="btn btn-danger btn-lg"
+                           role="button">Delete</button>
                 <iframe id="pdf_response" src="{{ policy.file.url }}" width="100%" height="640px"></iframe>
             </div>
         </div>
@@ -70,9 +72,8 @@
      */
     function ajax_policy_modal()
     {
-        var url = 'policy_modal';
-
-        $.ajax( url, {
+        $('#add_policy_btn').prop("disabled", true); // Lock button
+        $.ajax( 'policy_modal', {
            data: {
                'csrfmiddlewaretoken': '{{ csrf_token }}',
            },
@@ -96,9 +97,8 @@
      */
     function ajax_delete_policy(policy_id)
     {
-        var url = 'delete_policy';
-
-        $.ajax( url, {
+        $('#del_'+policy_id+'_btn').prop("disabled", true); // Lock button
+        $.ajax( 'delete_policy', {
                data: {
                     'csrfmiddlewaretoken': '{{ csrf_token }}',
                     'policy_id' : policy_id
@@ -108,6 +108,7 @@
                     // success code execution here
                     if (result.status == 'success')
                     {
+                        $('#del_'+policy_id+'_btn').prop("disabled", false); // Unlock button
                         refresh_page();
                     }
                },
