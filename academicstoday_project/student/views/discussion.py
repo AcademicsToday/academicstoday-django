@@ -114,7 +114,29 @@ def thread_page(request, course_id, thread_id):
     except CourseDiscussionThread.DoesNotExist:
         thread = None
 
-    return render(request, 'course/discussion/thread_page.html',{
+    return render(request, 'course/discussion/posts_view.html',{
+        'course': course,
+        'thread': thread,
+        'user': request.user,
+        'tab': 'thread',
+        'local_css_urls': settings.SB_ADMIN_CSS_LIBRARY_URLS,
+        'local_js_urls': settings.SB_ADMIN_JS_LIBRARY_URLS,
+    })
+
+
+@login_required(login_url='/landpage')
+def posts_table(request, course_id, thread_id):
+    course = Course.objects.get(id=course_id)
+    
+    try:
+        thread = CourseDiscussionThread.objects.get(
+            course=course,
+            thread_id=thread_id
+        )
+    except CourseDiscussionThread.DoesNotExist:
+        thread = None
+
+    return render(request, 'course/discussion/posts_table.html',{
         'course': course,
         'thread': thread,
         'user': request.user,
