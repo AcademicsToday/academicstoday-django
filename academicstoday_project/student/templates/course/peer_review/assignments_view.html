@@ -1,0 +1,50 @@
+{% extends 'course/base.html' %}
+{% load staticfiles %}
+{% block content %}
+
+<div id="page-wrapper">
+    
+    <div class="container-fluid">
+        
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    Peer Review
+                    
+                </h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-university"></i>  <a href="../../courses">Courses</a>
+                    </li>
+                    <li>
+                        <i class="fa fa-compass"></i> {{ course.title }}
+                    </li>
+                    <li class="active">
+                        <i class="fa fa-child"></i> Peer-Review
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+        
+        <!-- Assignments -->
+        <div id="ajax_assignments_table"
+           name="ajax_assignments_table">
+            {% include "course/peer_review/assignments_table.html" %}
+        </div>
+        <!-- /.row -->
+        
+    </div>
+    
+</div>
+<script>
+    /**
+     *  Function will load up the assignment view
+     */
+    function view_submission(submission_id)
+    {
+        window.location = "peer_review/" + submission_id;
+    }
+</script>
+{% endblock content %}

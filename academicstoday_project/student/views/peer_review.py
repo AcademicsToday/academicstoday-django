@@ -45,7 +45,7 @@ def peer_review_page(request, course_id):
     except AssignmentSubmission.DoesNotExist:
         submissions = None
 
-    return render(request, 'course/peer_review/assignments_list.html',{
+    return render(request, 'course/peer_review/assignments_view.html',{
         'course' : course,
         'assignments': assignments,
         'submissions': submissions,
@@ -75,7 +75,7 @@ def assignment_page(request, course_id, submission_id):
     except ResponseQuestion.DoesNotExist:
         r_submissions = None
     
-    return render(request, 'course/peer_review/question_list.html',{
+    return render(request, 'course/peer_review/question_view.html',{
         'student': student,
         'course': course,
         'assignment': assignment,

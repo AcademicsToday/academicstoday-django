@@ -1,0 +1,33 @@
+        <!-- Essay(s) -->
+        {% for e_submission in e_submissions %}
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Question #{{ e_submission.question.question_num }}: {{ e_submission.question.title }}</h3>
+                    </div>
+                    <div class="panel-body">
+                        {% include "course/peer_review/e_form.html" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <!-- /.Essay Questions -->
+        
+        <!-- Response Questions -->
+        {% for r_submission in r_submissions %}
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Question #{{ r_submission.question.question_num }}: {{ r_submission.question.title }}</h3>
+                    </div>
+                    <div class="panel-body">
+                        {% include "course/peer_review/r_form.html" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <!-- /.Response  Questions -->
