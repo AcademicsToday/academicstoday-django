@@ -43,7 +43,9 @@
         {% else %}
         <!-- Announcements -->
         <div id="ajax_announcements_table"
-           name="ajax_announcements_table"></div>
+           name="ajax_announcements_table">
+           {% include "teacher/announcement/table.html" %}
+        </div>
         <!-- /.row -->
         {% endif %}
 
@@ -57,18 +59,9 @@
 <!-- end modal -->
 
 <script>
-    /**
-     * When the page loads up, get the table data.
-     */
-    $(document).ready(function(){
-        ajax_refresh_announcements_table();
-    });
-    
     function ajax_refresh_announcements_table()
     {
-        var url = 'announcements_table';
-        
-        $.ajax( url, {
+        $.ajax( 'announcements_table', {
             data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
             },
@@ -92,9 +85,15 @@
      */
     function ajax_announcement_modal(announcement_id)
     {
-        var url = 'announcement_modal';
-
-        $.ajax( url, {
+        if (announcement_id == 0)
+        {
+            $('#new_announcement_btn').prop("disabled", true); // Lock button
+        }
+        else
+        {
+            $('#edit_'+announcement_id+'_btn').prop("disabled", true); // Lock button
+        }
+        $.ajax( 'announcement_modal', {
             data: {
                'csrfmiddlewaretoken': '{{ csrf_token }}',
                'announcement_id' : announcement_id
@@ -119,9 +118,8 @@
      */
     function ajax_delete_announcement(announcement_id)
     {
-        var url = 'delete_announcement';
-
-        $.ajax( url, {
+        $('#del_'+announcement_id+'_btn').prop("disabled", true); // Lock button
+        $.ajax( 'delete_announcement', {
             data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
                 'announcement_id' : announcement_id
@@ -131,6 +129,7 @@
                 // success code execution here
                 if (result.status == 'success')
                 {
+                    $('#del_'+announcement_id+'_btn').prop("disabled", false); // Unlock button
                     ajax_refresh_announcements_table();
                 }
             },

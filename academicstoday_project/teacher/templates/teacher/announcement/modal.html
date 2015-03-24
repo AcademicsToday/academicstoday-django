@@ -34,6 +34,10 @@
         // When this model hides, we will clear the contents of it.
         $('#announcement_modal').on('hidden.bs.modal', function (e) {
             $('#announcement_modal').html('');
+                                    
+            // Unlock button
+            $('#new_announcement_btn').prop("disabled", false);
+            $('#edit_{{ form.instance.announcement_id }}_btn').prop("disabled", false);
         });
     });
 
