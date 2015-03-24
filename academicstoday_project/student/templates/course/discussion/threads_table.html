@@ -5,9 +5,11 @@
                 <th>Question</th>
                 <th>Contents</th>
                 <th>
-                    <button type="button"
-                            onclick="ajax_new_thread_modal({{ course.id }});"
-                            class="btn btn-sm btn-success">
+                    <button onclick="ajax_new_thread_modal({{ course.id }});"
+                                 id="new_thread_btn"
+                               name="new_thread_btn"
+                               type="button"
+                              class="btn btn-sm btn-success">
                         <i class="fa fa-plus"></i> New
                     </button>
                 </th>
@@ -19,16 +21,18 @@
                 <td>{{ thread.title }}</td>
                 <td>{{ thread.text }}</td>
                 <td>
-                    <button type="button"
-                         onclick="ajax_view_thread({{ thread.thread_id }});"
-                           class="btn btn-sm btn-primary">
+                    <button onclick="ajax_view_thread({{ thread.thread_id }});"
+                               type="button"
+                              class="btn btn-sm btn-primary">
                         <i class="fa fa-level-down"></i> View
                     </button>
                     {% if user == thread.user %}
                     <!-- Only the user that created this thread can delete this thread -->
-                    <button type="button"
-                         onclick="ajax_delete_thread({{ thread.thread_id }});"
-                           class="btn btn-sm btn-danger">
+                    <button onclick="ajax_delete_thread({{ thread.thread_id }});"
+                                 id="del_{{ thread.thread_id }}_btn"
+                               name="del_{{ thread.thread_id }}_btn"
+                               type="button"
+                              class="btn btn-sm btn-danger">
                         <i class="fa fa-minus"></i> Delete
                     </button>
                     {% endif %}

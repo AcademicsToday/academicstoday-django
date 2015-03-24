@@ -11,6 +11,8 @@
                 <br/><br/>
                 <p align="right">
                 <button onclick="ajax_new_post_modal({{ thread.thread_id }});"
+                             id="reply_{{ thread.thread_id }}_btn"
+                           name="reply_{{ thread.thread_id }}_btn"
                            type="button"
                           class="btn btn-sm btn-primary">
                     <i class="fa fa-reply"></i> Reply

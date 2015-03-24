@@ -67,9 +67,8 @@
 
     function ajax_new_post_modal(thread_id)
     {
-        var url = thread_id + '/new_post';
-        
-        $.ajax( url, {
+        $('#reply_' + thread_id + '_btn').prop("disabled", true); // Lock button
+        $.ajax( thread_id + '/new_post', {
             data: {
                'csrfmiddlewaretoken': '{{ csrf_token }}',
             },

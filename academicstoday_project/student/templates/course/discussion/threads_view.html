@@ -41,9 +41,7 @@
 <script>
     function ajax_refresh_threads_table()
     {
-        var url = 'threads_table';
-        
-        $.ajax( url, {
+        $.ajax( 'threads_table', {
                data: {
                     'csrfmiddlewaretoken': '{{ csrf_token }}',
                },
@@ -63,9 +61,8 @@
     
     function ajax_new_thread_modal(course_id)
     {
-        var url = 'new_thread';
-        
-        $.ajax( url, {
+        $('#new_thread_btn').prop("disabled", true); // Lock button
+        $.ajax( 'new_thread', {
             data: {
                'csrfmiddlewaretoken': '{{ csrf_token }}',
                'course_id': course_id,
@@ -132,9 +129,8 @@
 
     function ajax_delete_thread(thread_id)
     {
-        var url = 'delete_thread';
-    
-        $.ajax( url, {
+        $('#del_' + thread_id + '_btn').prop("disabled", true); // Lock button
+        $.ajax( 'delete_thread', {
             data: {
                'csrfmiddlewaretoken': '{{ csrf_token }}',
                'thread_id': thread_id,
@@ -144,6 +140,7 @@
                // success code execution here
                if (result.status == 'success')
                {
+                    $('#del_' + thread_id + '_btn').prop("disabled", false); // Unlock button
                     ajax_refresh_threads_table(); // Reload UI.
                }
                else

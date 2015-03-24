@@ -42,6 +42,7 @@
         $('#new_thread_modal').on('hidden.bs.modal', function (e) {
             // Clear all the code inside this modal.
             $('#new_thread_modal').html('');
+            $('#new_thread_btn').prop("disabled", false); // Unlock button
         })
     });
 </script>
