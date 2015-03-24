@@ -46,6 +46,7 @@ urlpatterns = patterns('',
                        
     # Quiz(zes)
     url(r'^course/(\d+)/quizzes$', quiz.quizzes_page),
+    url(r'^course/(\d+)/quizzes_table$', quiz.quizzes_table),
     url(r'^course/(\d+)/quiz_delete$', quiz.delete_quiz),
                        
     # Quiz

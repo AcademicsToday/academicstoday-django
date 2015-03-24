@@ -1,0 +1,115 @@
+{% extends 'course/base.html' %}
+{% load staticfiles %}
+{% block content %}
+
+<div id="page-wrapper">
+    
+    <div class="container-fluid">
+        
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    Quizzes
+                    <small></small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-university"></i>  <a href="/courses">Courses</a>
+                    </li>
+                    <li>
+                        <i class="fa fa-compass"></i> {{ course.title }}
+                    </li>
+                    <li class="active">
+                        <i class="fa fa-star-half"></i> Quizzes
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+        
+        <!-- Quizzes -->
+        <div id="ajax_quizzes_table"
+           name="ajax_quizzes_table">
+            {% include "course/quiz/quizzes_table.html" %}
+        </div>
+        <!-- /.row -->
+
+    </div>
+    
+</div>
+
+<script>
+    function ajax_refresh_quizzes_table()
+    {
+        var url = 'quizzes_table';
+        
+        $.ajax( url, {
+            data: {
+               'csrfmiddlewaretoken': '{{ csrf_token }}',
+            },
+            type: 'post',
+            success: function(result) {
+               // success code execution here
+               $('#ajax_quizzes_table').html(result); // Update UI.
+            },
+            error: function(xhr,status,error) {
+               // error code here
+            },
+            complete: function(xhr,status) {
+               // completion code here
+            }
+        });
+    }
+
+    
+/**
+ *  Function will delete the current logged in users quiz for the
+ *  given parameters.
+ */
+function ajax_delete_quiz_submission(quiz_id)
+{
+    var url = 'quiz_delete';
+    
+    $.ajax( url, {
+           data: {
+               'csrfmiddlewaretoken': '{{ csrf_token }}',
+               'quiz_id': quiz_id,
+           },
+           type: 'post',
+           success: function(result) {
+                // success code execution here
+                if (result.status == 'success')
+                {
+                    ajax_refresh_quizzes_table(); // Reload UI.
+                }
+                else
+                {
+                    alert(result.message);
+                }
+           },
+           error: function(xhr,status,error) {
+                // error code here
+           },
+           complete: function(xhr,status) {
+               // completion code here
+           }
+    });
+}
+
+/**
+ *  Function will call AJAX function to load the quiz modal.
+ */
+function view_quiz(quiz_id)
+{
+    window.location = "quiz/" + quiz_id;
+}
+</script>
+
+<!-- Modal -->
+<div id="ajax_quiz"
+   name="ajax_quiz"></div>
+<!-- /.Modal -->
+
+
+{% endblock content %}

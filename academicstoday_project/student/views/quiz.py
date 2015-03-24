@@ -14,11 +14,11 @@ from registrar.models import QuizSubmission
 import json
 import datetime
 
-@login_required(login_url='/landpage')
-def quizzes_page(request, course_id):
-    course = Course.objects.get(id=course_id)
-    student = Student.objects.get(user=request.user)
 
+# Private
+
+
+def get_submitted_quizzes(course, student):
     # Fetch all the quizzes for this course.
     try:
         quizzes = Quiz.objects.filter(course=course).order_by('quiz_num')
@@ -33,7 +33,7 @@ def quizzes_page(request, course_id):
         )
     except QuizSubmission.DoesNotExist:
         submitted_quizzes = None
-
+    
     # If the submissions & quizzes counts do not equal, then we have to
     # iterate through all the quizzes and create the missing 'submission'
     # entries for our system.
@@ -53,12 +53,38 @@ def quizzes_page(request, course_id):
             quiz__course=course,
             student=student
         )
+    return submitted_quizzes
 
-    return render(request, 'course/quiz/quizzes_list.html',{
+# Public
+
+
+@login_required(login_url='/landpage')
+def quizzes_page(request, course_id):
+    course = Course.objects.get(id=course_id)
+    student = Student.objects.get(user=request.user)
+    return render(request, 'course/quiz/quizzes_view.html',{
         'course' : course,
         'user' : request.user,
-        'quizzes' : quizzes,
-        'submitted_quizzes' : submitted_quizzes,
+        'submitted_quizzes' : get_submitted_quizzes(course, student),
+        'ESSAY_QUESTION_TYPE' : settings.ESSAY_QUESTION_TYPE,
+        'MULTIPLECHOICE_QUESTION_TYPE' : settings.MULTIPLECHOICE_QUESTION_TYPE,
+        'TRUEFALSE_QUESTION_TYPE' : settings.TRUEFALSE_QUESTION_TYPE,
+        'RESPONSE_QUESTION_TYPE' : settings.RESPONSE_QUESTION_TYPE,
+        'tab' : 'quizzes',
+        'subtab' : '',
+        'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
+        'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+    })
+
+
+@login_required(login_url='/landpage')
+def quizzes_table(request, course_id):
+    course = Course.objects.get(id=course_id)
+    student = Student.objects.get(user=request.user)
+    return render(request, 'course/quiz/quizzes_table.html',{
+        'course' : course,
+        'user' : request.user,
+        'submitted_quizzes' : get_submitted_quizzes(course, student),
         'ESSAY_QUESTION_TYPE' : settings.ESSAY_QUESTION_TYPE,
         'MULTIPLECHOICE_QUESTION_TYPE' : settings.MULTIPLECHOICE_QUESTION_TYPE,
         'TRUEFALSE_QUESTION_TYPE' : settings.TRUEFALSE_QUESTION_TYPE,
@@ -83,7 +109,6 @@ def delete_quiz(request, course_id):
             # Set 'is_finished' to false to indicate we need to take the
             # assignment all over.
             submission = QuizSubmission.objects.get(
-                course=course,
                 student=student,
                 quiz=quiz,
             )
@@ -92,9 +117,9 @@ def delete_quiz(request, course_id):
                                                           
             # Delete all previous entries.
             try:
-                tf_submissions = TrueFalseSubmission.objects.filter(quiz=quiz, student=student)
+                tf_submissions = TrueFalseSubmission.objects.filter(question__quiz=quiz, student=student)
                 tf_submissions.delete()
-            except tf_submissions.DoesNotExist:
+            except TrueFalseSubmission.DoesNotExist:
                 pass
             response_data = {'status' : 'success', 'message' : ''}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
