@@ -27,6 +27,8 @@
                         <p>Due: {{ exam.due_date }}</p>
                         <p>
                             <button onclick="ajax_submit_exam();"
+                                         id="submit_{{ exam.exam_id }}_btn"
+                                       name="submit_{{ exam.exam_id }}_btn"
                                        type="button"
                                       class="btn btn-primary">
                                 <i class="fa fa-check"></i> Submit

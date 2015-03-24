@@ -63,9 +63,8 @@
     
 function ajax_delete_exam_submission(exam_id)
 {
-    var url = 'delete_exam';
-    
-    $.ajax( url, {
+    $('#del_' + exam_id + '_btn').prop("disabled", true); // Lock button
+    $.ajax( 'delete_exam', {
            data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
                 'exam_id': exam_id,
@@ -75,6 +74,7 @@ function ajax_delete_exam_submission(exam_id)
                 // success code execution here
                 if (result.status == 'success')
                 {
+                    $('#del_' + exam_id + '_btn').prop("disabled", false); // Unlock button
                     ajax_refresh_exams_table(); // Reload UI.
                 }
                 else
