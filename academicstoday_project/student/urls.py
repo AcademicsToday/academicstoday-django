@@ -19,7 +19,7 @@ urlpatterns = patterns('',
     url(r'^course/(\d+)/$', announcement.announcements_page),
     url(r'^course/(\d+)/home$', announcement.announcements_page),
     url(r'^course/(\d+)/announcement$', announcement.announcements_page),
-    url(r'^course/(\d+)/announcements_table$', announcement.announcements_table),
+    url(r'^course/(\d+)/announcements$', announcement.announcements_page),
 
     # Syllabus
     url(r'^course/(\d+)/syllabus$', syllabus.syllabus_page),

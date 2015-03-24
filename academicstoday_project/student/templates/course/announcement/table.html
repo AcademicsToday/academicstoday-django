@@ -1,14 +1,14 @@
 <div id="ajax_announcements_table"
-    name="ajax_announcements_table"></div>
-{% for announcement in announcements %}
-        <div class="row">
-            <div class="col-lg-12">
-                <h2 class="page-header">{{ announcement.title }}</h2>
-                {% autoescape off %}
-                {{ announcement.body }}
-                {% endautoescape %}
-                <p style="float: right; margin-right: 100px;"><i>{{ announcement.post_date }}</i></p>
-            </div>
+    name="ajax_announcements_table">
+    {% for announcement in announcements %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h2 class="page-header">{{ announcement.title }}</h2>
+            {% autoescape off %}
+            {{ announcement.body }}
+            {% endautoescape %}
+            <p style="float: right; margin-right: 100px;"><i>{{ announcement.post_date }}</i></p>
         </div>
-        {% endfor %}
+    </div>
+    {% endfor %}
 </div>

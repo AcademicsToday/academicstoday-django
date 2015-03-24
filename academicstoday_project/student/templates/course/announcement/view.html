@@ -35,28 +35,5 @@
     </div>
 
 </div>
-<script>                  
-    function ajax_refresh_announcements_table()
-    {
-        var url = 'announcements_table';
-                      
-        $.ajax( url, {
-            data: {
-                'csrfmiddlewaretoken': '{{ csrf_token }}',
-            },
-            type: 'post',
-            success: function(result) {
-                // success code execution here
-                $('#ajax_announcements_table').html(result); // Update UI.
-            },
-            error: function(xhr,status,error) {
-                // error code here
-            },
-            complete: function(xhr,status) {
-                // completion code here
-            }
-        });
-    }
-</script>
 
 {% endblock content %}

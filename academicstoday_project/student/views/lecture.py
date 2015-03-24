@@ -25,7 +25,7 @@ def lectures_page(request, course_id):
         lectures = Lecture.objects.filter(course_id=course_id).order_by('week_num', 'lecture_num')
     except Lecture.DoesNotExist:
         lectures = None
-    return render(request, 'course/lecture/list.html',{
+    return render(request, 'course/lecture/view.html',{
         'course' : course,
         'lectures' : lectures,
         'NO_VIDEO_PLAYER': settings.NO_VIDEO_PLAYER,
