@@ -25,21 +25,21 @@ from student.forms import EssaySubmissionForm
 from student.forms import AssignmentSubmissionForm
 
 
-@login_required(login_url='/landpage')
-def assignments_page(request, course_id):
-    course = Course.objects.get(id=course_id)
-    student = Student.objects.get(user=request.user)
+# Private Functions
 
+def get_submitted_assignments(course, student):
     # Fetch all the assignments for this course.
     try:
         assignments = Assignment.objects.filter(course=course).order_by('assignment_num')
     except Assignment.DoesNotExist:
         assignment = None
-
+    
     # Fetch all submitted assignments
     try:
-        submitted_assignments = AssignmentSubmission.objects.filter(assignment__course=course,
-                                                                    student=student)
+        submitted_assignments = AssignmentSubmission.objects.filter(
+            assignment__course=course,
+            student=student
+        )
     except AssignmentSubmission.DoesNotExist:
         submitted_assignments = None
 
@@ -58,16 +58,40 @@ def assignments_page(request, course_id):
                     assignment=assignment,
                 )
                 submission.save()
-        # Once we saved the data, we will have to fetch the results again.
-        submitted_assignments = AssignmentSubmission.objects.filter(
-            assignment__course=course,
-            student=student
-        )
+                # Once we saved the data, we will have to fetch the results again.
+                submitted_assignments = AssignmentSubmission.objects.filter(
+                    assignment__course=course,
+                    student=student
+                )
+    return submitted_assignments
 
-    return render(request, 'course/assignment/assignments_list.html',{
+
+# Public Functions
+
+
+@login_required(login_url='/landpage')
+def assignments_page(request, course_id):
+    course = Course.objects.get(id=course_id)
+    student = Student.objects.get(user=request.user)
+    return render(request, 'course/assignment/assignments_view.html',{
+        'course' : course,
+        'submitted_assignments': get_submitted_assignments(course, student),
+        'user' : request.user,
+        'tab' : 'assignments',
+        'subtab' : '',
+        'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
+        'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+    })
+
+
+@login_required(login_url='/landpage')
+def assignments_table(request, course_id):
+    course = Course.objects.get(id=course_id)
+    student = Student.objects.get(user=request.user)
+    return render(request, 'course/assignment/assignments_table.html',{
         'course' : course,
         'user' : request.user,
-        'submitted_assignments' : submitted_assignments,
+        'submitted_assignments': get_submitted_assignments(course, student),
         'ESSAY_QUESTION_TYPE' : settings.ESSAY_QUESTION_TYPE,
         'MULTIPLECHOICE_QUESTION_TYPE' : settings.MULTIPLECHOICE_QUESTION_TYPE,
         'TRUEFALSE_QUESTION_TYPE' : settings.TRUEFALSE_QUESTION_TYPE,
