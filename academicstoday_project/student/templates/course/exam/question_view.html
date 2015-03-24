@@ -30,46 +30,13 @@
         </div>
         <!-- /.row -->
 
-        <!-- Multiple-Choice Questions -->
-        {% for mc_question in mc_questions %}
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Question #{{ mc_question.question_num }}: {{ mc_question.title }}</h3>
-                    </div>
-                    <div class="panel-body">
-                        {% include "course/exam/mc_form.html" %}
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-        <!-- /.Multiple-Choice Questions -->
-        
-        <!-- Exam description -->
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Exam #{{ exam.exam_num }}: {{ exam.title }}</h3>
-                    </div>
-                    <div class="panel-body">
-                        <p>{{ exam.description }}</p>
-                        <p>Due: {{ exam.due_date }}</p>
-                        <p>
-                            <button onclick="ajax_submit_exam();"
-                                       type="button"
-                                      class="btn btn-primary">
-                                <i class="fa fa-check"></i> Submit
-                            </button>
-                        </p>
-                    </div>
-                </div>
-            </div>
+        <!-- Questions -->
+        <div id="ajax_questions_table"
+           name="ajax_questions_table">
+           {% include "course/exam/question_table.html" %}
         </div>
         <!-- /.row -->
-        
+
     </div><!-- /.container -->
 
 </div>

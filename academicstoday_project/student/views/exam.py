@@ -150,7 +150,7 @@ def exam_page(request, course_id, exam_id):
     except MultipleChoiceSubmission.DoesNotExist:
         mc_submissions = None
     
-    return render(request, 'course/exam/question_list.html',{
+    return render(request, 'course/exam/question_view.html',{
         'student': student,
         'course': course,
         'exam': exam,
@@ -242,7 +242,7 @@ def submit_mc_exam_answer(request, course_id, exam_id):
             submission.save()
                 
             # Return success results
-            response_data = {'status' : 'success', 'message' : ''}
+            response_data = {'status' : 'success', 'message' : 'submitted'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
