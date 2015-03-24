@@ -118,7 +118,7 @@ def quiz_page(request, course_id, quiz_id):
     except TrueFalseQuestion.DoesNotExist:
         tf_questions = None
 
-    return render(request, 'teacher/quiz/question_list.html',{
+    return render(request, 'teacher/quiz/question_view.html',{
         'teacher' : teacher,
         'course' : course,
         'quiz' : quiz,
@@ -131,6 +131,33 @@ def quiz_page(request, course_id, quiz_id):
         'tab' : 'quiz',
         'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
         'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+    })
+
+
+def questions_table(request, course_id, quiz_id):
+    course = Course.objects.get(id=course_id)
+    teacher = Teacher.objects.get(user=request.user)
+    quiz = Quiz.objects.get(quiz_id=quiz_id)
+    
+    # Load all true/false type questions for this quiz.
+    try:
+        tf_questions = TrueFalseQuestion.objects.filter(quiz=quiz).order_by('question_num')
+    except TrueFalseQuestion.DoesNotExist:
+        tf_questions = None
+
+    return render(request, 'teacher/quiz/question_table.html',{
+                  'teacher' : teacher,
+                  'course' : course,
+                  'quiz' : quiz,
+                  'tf_questions' : tf_questions,
+                  'ESSAY_QUESTION_TYPE': settings.ESSAY_QUESTION_TYPE,
+                  'MULTIPLECHOICE_QUESTION_TYPE': settings.MULTIPLECHOICE_QUESTION_TYPE,
+                  'TRUEFALSE_QUESTION_TYPE': settings.TRUEFALSE_QUESTION_TYPE,
+                  'RESPONSE_QUESTION_TYPE': settings.RESPONSE_QUESTION_TYPE,
+                  'user' : request.user,
+                  'tab' : 'quiz',
+                  'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
+                  'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
     })
 
 
