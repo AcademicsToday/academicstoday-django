@@ -98,6 +98,14 @@
             url = {{ assignment.assignment_id }} + '/question_response_modal'
         }
 
+        if (question_id == 0)
+        {
+            $('#add_question_btn').prop("disabled", true); // Lock button
+        }
+        else
+        {
+            $('#edit_'+question_id+'_'+question_type+'_btn').prop("disabled", true); // Lock button
+        }
 
         $.ajax( url, {
             data: {
@@ -123,7 +131,7 @@
     function ajax_delete_question(question_id, question_type)
     {
         var url = {{ assignment.assignment_id }} + '/delete_question';
-
+        $('#del_'+question_id+'_'+question_type+'_btn').prop("disabled", true); // Lock button
         $.ajax( url, {
             data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
@@ -133,6 +141,7 @@
             type: 'post',
             success: function(result) {
                 // success code execution here
+                $('#del_'+question_id+'_btn').prop("disabled", false); // Unlock button
                 if (result.status == 'success')
                 {
                     ajax_refresh_questions_table();
@@ -143,6 +152,7 @@
             },
             complete: function(xhr,status) {
                // completion code here
+               $('#del_'+question_id+'_'+question_type+'_btn').prop("disabled", false); // Lock button
             }
         });
     }

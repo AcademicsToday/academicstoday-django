@@ -9,6 +9,10 @@
            name="question_type"
           value="{{ form.instance.question_type }}">
     {% endif %}
+    <input type="hidden"
+             id="id_question_id"
+           name="question_id"
+          value={% if form.instance.question_id != None %}"{{ form.instance.question_id }}"{% else %}0{% endif %}>
     {% for field in form %}
     <div class="row">
         <div class="form-group">
