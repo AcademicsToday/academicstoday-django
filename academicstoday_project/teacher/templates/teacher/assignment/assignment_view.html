@@ -32,10 +32,11 @@
         <div class="jumbotron">
             <h1>Create an Assignment!</h1>
             <p>Create the first assignment for your course here.</p>
-            <p><a href="#"
-                 class="btn btn-primary btn-lg"
-               onclick="ajax_assignment(0);"
-                  role="button">Assignment »</a>
+            <p><button onclick="ajax_assignment(0);"
+                            id="add_assignment_btn"
+                          name="add_assignment_btn"
+                         class="btn btn-primary btn-lg"
+                          role="button">Assignment »</button>
             </p>
         </div>
         <!-- /.row -->
@@ -90,6 +91,7 @@
      */
     function view_assignment(assignment_id)
     {
+        $('#view_'+assignment_id+'_btn').prop("disabled", true); // Lock button
         window.location = "assignment/" + assignment_id;
     }
     
@@ -99,8 +101,15 @@
      */
     function ajax_assignment(assignment_id)
     {
-        var url = 'assignment_modal';
-        $.ajax( url, {
+        if (assignment_id == 0)
+        {
+            $('#add_assignment_btn').prop("disabled", true); // Lock button
+        }
+        else
+        {
+            $('#edit_'+assignment_id+'_btn').prop("disabled", true); // Lock button
+        }
+        $.ajax( 'assignment_modal', {
             data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
                 'assignment_id': assignment_id
@@ -125,9 +134,8 @@
      */
     function ajax_delete_assignment(assignment_id)
     {
-        var url = 'delete_assignment';
-
-        $.ajax( url, {
+        $('#del_'+assignment_id+'_btn').prop("disabled", true); // Lock button
+        $.ajax( 'delete_assignment', {
             data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
                 'assignment_id' : assignment_id
@@ -135,9 +143,10 @@
             type: 'post',
             success: function(result) {
                 // success code execution here
+                $('#del_'+assignment_id+'_btn').prop("disabled", false); // Unlock button
                 if (result.status == 'success')
                 {
-                    refresh_page();
+                    ajax_refresh_assignments_table();
                 }
             },
             error: function(xhr,status,error) {
@@ -147,14 +156,6 @@
                // completion code here
             }
         });
-    }
-
-    /**
-     *  Function makes the current tab refresh the page.
-     */
-    function refresh_page()
-    {
-        window.location = '{{ tab }}';
     }
 </script>
 

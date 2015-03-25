@@ -9,9 +9,11 @@
                                       <th>Assignment #</th>
                                       <th>Title</th>
                                       <th>
-                                          <button type="button"
-                                                 class="btn btn-sm btn-success"
-                                               onclick="ajax_assignment(0);">
+                                          <button onclick="ajax_assignment(0);"
+                                                       id="add_assignment_btn"
+                                                     name="add_assignment_btn"
+                                                     type="button"
+                                                    class="btn btn-sm btn-success">
                                             <i class="fa fa-plus"></i> Add
                                         </button>
                                       </th>
@@ -23,19 +25,25 @@
                                       <td align="left" valign="left">{{ assignment.assignment_num }}</td>
                                       <td align="left" valign="left">{{ assignment.title }}</td>
                                       <td align="left" valign="left">
-                                        <button type="button"
-                                              class="btn btn-sm btn-primary"
-                                              onclick="view_assignment({{ assignment.assignment_id }});">
-                                              <i class="fa fa-file"></i> Questions
+                                        <button onclick="view_assignment({{ assignment.assignment_id }});"
+                                                     id="view_{{ assignment.assignment_id }}_btn"
+                                                   name="view_{{ assignment.assignment_id }}_btn"
+                                                   type="button"
+                                                  class="btn btn-sm btn-primary">
+                                              <i class="fa fa-level-down"></i> Questions
                                         </button>
-                                        <button type="button"
-                                              class="btn btn-sm btn-warning"
-                                              onclick="ajax_assignment({{ assignment.assignment_id }});">
+                                        <button onclick="ajax_assignment({{ assignment.assignment_id }});"
+                                                     id="edit_{{ assignment.assignment_id }}_btn"
+                                                   name="edit_{{ assignment.assignment_id }}_btn"
+                                                   type="button"
+                                                  class="btn btn-sm btn-warning">
                                               <i class="fa fa-pencil"></i> Edit
                                         </button>
-                                        <button type="button"
-                                               class="btn btn-sm btn-danger"
-                                             onclick="ajax_delete_assignment({{ assignment.assignment_id }});">
+                                        <button onclick="ajax_delete_assignment({{ assignment.assignment_id }});"
+                                                     id="del_{{ assignment.assignment_id }}_btn"
+                                                   name="del_{{ assignment.assignment_id }}_btn"
+                                                   type="button"
+                                               class="btn btn-sm btn-danger">
                                            <i class="fa fa-minus"></i> Delete
                                         </button>
                                       </td>
