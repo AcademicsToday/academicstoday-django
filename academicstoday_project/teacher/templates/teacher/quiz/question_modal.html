@@ -27,6 +27,8 @@
      $(document).ready(function(){
         $('#question_modal').on('hidden.bs.modal', function (e) {
             $('#question_modal').html('');
+             $('#add_question_btn').prop("disabled", false);
+             $('#edit_{{ form.instance.question_id }}_{{ form.instance.question_type }}_btn').prop("disabled", false); 
         });
     });
 

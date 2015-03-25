@@ -141,7 +141,6 @@
             type: 'post',
             success: function(result) {
                 // success code execution here
-                $('#del_'+question_id+'_btn').prop("disabled", false); // Unlock button
                 if (result.status == 'success')
                 {
                     ajax_refresh_questions_table();
@@ -152,7 +151,7 @@
             },
             complete: function(xhr,status) {
                // completion code here
-               $('#del_'+question_id+'_'+question_type+'_btn').prop("disabled", false); // Lock button
+               $('#del_'+question_id+'_'+question_type+'_btn').prop("disabled", false);
             }
         });
     }

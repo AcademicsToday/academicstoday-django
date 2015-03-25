@@ -9,10 +9,11 @@
                 {% include "teacher/quiz/form.html" with form=form %}
             </div>
             <div class="modal-footer">
-                <button type="button"
-                    class="btn btn-primary"
-                     form="register_form"
-                  onclick="ajax_save_quiz();">
+                <button onclick="ajax_save_quiz();"
+                             id="save_quiz_btn"
+                           name="save_quiz_btn"
+                           type="button"
+                          class="btn btn-primary">
                     <i class="fa fa-check-circle"></i> Submit
                 </button>
             </div>
@@ -35,6 +36,8 @@
     
     function ajax_save_quiz()
     {
+        $('#save_quiz_btn').prop("disabled", true);
+        
         // create a FormData Object using your form dom element
         var data = new FormData();
         data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
@@ -77,6 +80,7 @@
             },
             complete: function(xhr,status) {
                // completion code here
+               $('#save_quiz_btn').prop("disabled", false);
             }
         });
 
