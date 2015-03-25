@@ -27,25 +27,10 @@
         </div>
         <!-- /.row -->
 
-        {% if assignments.count <= 0 %}
-        <!-- Assignment Banner -->
-        <div class="jumbotron">
-            <h1>Create an Assignment!</h1>
-            <p>Create the first assignment for your course here.</p>
-            <p><button onclick="ajax_assignment(0);"
-                            id="add_assignment_btn"
-                          name="add_assignment_btn"
-                         class="btn btn-primary btn-lg"
-                          role="button">Assignment »</button>
-            </p>
-        </div>
-        <!-- /.row -->
-        {% else %}
         <!-- Assignments -->
         <div id="ajax_assignments_table"
            name="ajax_assignments_table"></div>
         <!-- /.row -->
-        {% endif %}
 
     </div>
 

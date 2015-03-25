@@ -27,27 +27,12 @@
         </div>
         <!-- /.row -->
 
-        {% if announcements.count == 0 %}
-        <!-- Announcements Banner -->
-        <div class="jumbotron">
-            <h1>Create Announcement!</h1>
-            <p>Create the first announcement for your course here. This announcement will be seen by all students who enrol in your course.</p>
-            <p>Announcements are a great way to communicate with your student important information.</p>
-            <p><a href="#"
-                 class="btn btn-primary btn-lg"
-               onclick="ajax_announcement_modal(0);"
-                  role="button">Annonuncement »</a>
-            </p>
-        </div>
-        <!-- /.row -->
-        {% else %}
         <!-- Announcements -->
         <div id="ajax_announcements_table"
            name="ajax_announcements_table">
            {% include "teacher/announcement/table.html" %}
         </div>
         <!-- /.row -->
-        {% endif %}
 
     </div>
 

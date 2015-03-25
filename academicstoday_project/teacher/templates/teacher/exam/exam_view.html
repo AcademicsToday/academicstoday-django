@@ -27,24 +27,10 @@
         </div>
         <!-- /.row -->
 
-        {% if exams.count <= 0 %}
-        <!-- Exams Banner -->
-        <div class="jumbotron">
-            <h1>Create an Exam!</h1>
-            <p>Create the first exam for your course here.</p>
-            <p><a href="#"
-                 class="btn btn-primary btn-lg"
-               onclick="ajax_exam(0);"
-                  role="button">Exam »</a>
-            </p>
-        </div>
-        <!-- /.row -->
-        {% else %}
         <!-- Exams -->
         <div id="ajax_exam_table"
            name="ajax_exam_table"></div>
         <!-- /.row -->
-        {% endif %}
 
     </div>
 

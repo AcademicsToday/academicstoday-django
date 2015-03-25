@@ -27,24 +27,10 @@
         </div>
         <!-- /.row -->
 
-        {% if lectures.count <= 0 %}
-        <!-- Lecture Banner -->
-        <div class="jumbotron">
-            <h1>Create a Lecture!</h1>
-            <p>Create the first lecture for your course here.</p>
-            <p><a href="#"
-                 class="btn btn-primary btn-lg"
-               onclick="ajax_lecture_modal(0);"
-                  role="button">Lecture »</a>
-            </p>
-        </div>
-        <!-- /.row -->
-        {% else %}
         <!-- Lectures -->
         <div id="ajax_lecture_table"
            name="ajax_lecture_table"></div>
         <!-- /.row -->
-        {% endif %}
 
     </div>
 
