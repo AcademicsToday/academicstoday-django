@@ -116,4 +116,5 @@ urlpatterns = patterns('',
                        
     # Settings
     url(r'^teacher/course/(\d+)/settings$', setting.settings_page),
+    url(r'^teacher/course/(\d+)/suspend_course$', setting.suspend_course),
 )

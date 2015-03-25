@@ -70,12 +70,17 @@
                                         Course Operation
                                     </label>
                                     <div class="col-sm-9">
-                                        <button onclick=""
+                                    {% if review != None %}
+                                    {% if review.status != COURSE_REJECTED_STATUS %}
+                                        <button onclick="ajax_close_or_open_course();"
+                                                     id="suspend_course_btn"
+                                                   name="suspend_course_btn"
                                                    type="button"
-                                                  class="btn btn-success"
-                                               disabled="">
-                                            <i class="fa fa-check-circle"></i> Running
+                                                  class="btn btn-{% if course.status == COURSE_AVAILABLE_STATUS %}warning{% else %}success{% endif %}">
+                                            <i class="fa fa-check-circle"></i> {% if course.status == COURSE_AVAILABLE_STATUS %}Close Course{% else %}Open Course{% endif %}
                                         </button>
+                                    {% endif %}
+                                    {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -91,16 +96,15 @@
 
 </div>
 <!-- Modal -->
-<div id="ajax_syllabus_modal"
-   name="ajax_syllabus_modal"></div>
+<div id="ajax_modal"
+   name="ajax_modal"></div>
 <!-- end modal -->
 
 <script>
-    function ajax_submit_course()
+    function ajax_close_or_open_course()
     {
-        var url = 'submit_course_for_review';
-
-        $.ajax( url, {
+        $('#suspend_course_btn').prop("disabled", true);
+        $.ajax( 'suspend_course', {
                data: {
                     'csrfmiddlewaretoken': '{{ csrf_token }}',
                },
@@ -117,6 +121,7 @@
                },
                complete: function(xhr,status) {
                     // completion code here
+                    $('#suspend_course_btn').prop("disabled", false);
                }
         });
     }
