@@ -9,10 +9,11 @@
                 {% include "teacher/exam/form.html" with form=form %}
             </div>
             <div class="modal-footer">
-                <button type="button"
-                    class="btn btn-primary"
-                     form="register_form"
-                  onclick="ajax_save_exam();">
+                <button onclick="ajax_save_exam();"
+                             id="save_exam_btn"
+                           name="save_exam_btn"
+                           type="button"
+                          class="btn btn-primary">
                     <i class="fa fa-check-circle"></i> Submit
                 </button>
             </div>
@@ -28,11 +29,15 @@
      $(document).ready(function(){
         $('#exam_modal').on('hidden.bs.modal', function (e) {
             $('#exam_modal').html('');
+            $('#add_exam_btn').prop("disabled", false);
+            $('#edit_{{ form.instance.exam_id }}_btn').prop("disabled", false);
         });
     });
 
     function ajax_save_exam()
     {
+        $('#save_exam_btn').prop("disabled", true);
+        
         // create a FormData Object using your form dom element
         var data = new FormData();
         data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
@@ -78,6 +83,7 @@
             },
             complete: function(xhr,status) {
                // completion code here
+               $('#save_exam_btn').prop("disabled", true);
             }
         });
 

@@ -65,9 +65,7 @@
                   
     function ajax_refresh_exams_table()
     {
-        var url = 'exams_table';
-        
-        $.ajax( url, {
+        $.ajax( 'exams_table', {
             data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
             },
@@ -99,8 +97,15 @@
      */
     function ajax_exam(exam_id)
     {
-        var url = 'exam_modal';
-        $.ajax( url, {
+        if (exam_id == 0)
+        {
+            $('#add_question_btn').prop("disabled", true); // Lock button
+        }
+        else
+        {
+            $('#edit_'+exam_id+'_btn').prop("disabled", true); // Lock button
+        }
+        $.ajax( 'exam_modal', {
             data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
                 'exam_id': exam_id
@@ -125,9 +130,8 @@
      */
     function ajax_delete_exam(exam_id)
     {
-        var url = 'delete_exam';
-
-        $.ajax( url, {
+        $('#del_'+exam_id+'_btn').prop("disabled", true); // Lock button
+        $.ajax( 'delete_exam', {
             data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
                 'exam_id' : exam_id
@@ -145,6 +149,7 @@
             },
             complete: function(xhr,status) {
                // completion code here
+               $('#del_'+exam_id+'_btn').prop("disabled", true); // Unlock button
             }
         });
     }
