@@ -29,12 +29,12 @@
         </div>
         <!-- /.row -->
         
-       <!-- Course -->
+       <!-- Operation -->
        <div class="row">
            <div class="col-lg-12">
                <div class="panel panel-default">
                    <div class="panel-heading">
-                       <h3 class="panel-title"><i class="fa fa-cogs"></i> Course Settings</h3>
+                       <h3 class="panel-title"><i class="fa fa-cogs"></i> Operation</h3>
                    </div>
                    <div class="panel-body">
                        <form>
@@ -91,8 +91,104 @@
            </div>
        </div>
        <!-- /.row -->
+       
+       
+       <!-- Passing Requirements for Exam -->
+       <div class="row">
+           <div class="col-lg-12">
+               <div class="panel panel-default">
+                   <div class="panel-heading">
+                       <h3 class="panel-title"><i class="fa fa-star"></i> Minimum Passing Grades for Exam</h3>
+                   </div>
+                   <div class="panel-body">
+                       <form>
+                           <div class="row">
+                               <div class="form-group">
+                                   <label class="col-sm-3 control-label">
+                                       Final Exam Mark
+                                   </label>
+                                   <div class="col-sm-9">
+                                       <input class="form-control"
+                                                 id="disabledInput"
+                                               type="text"
+                                        placeholder="50%"
+                                           disabled=true>
+                                    </div>
+                               </div>
+                           </div><!-- /.row -->
+                           <br/>
+                           <div class="row">
+                               <div class="form-group">
+                                   <label class="col-sm-3 control-label">
+                                       
+                                   </label>
+                                   <div class="col-sm-9">
+                                       <button onclick=""
+                                                    id="change_exam_mark_btn"
+                                                  name="change_exam_mark_btn"
+                                                  type="button"
+                                                 class="btn btn-sm btn-success"
+                                              disabled=true>
+                                           <i class="fa fa-arrows-v"></i> Change
+                                       </button>
+                                   </div>
+                               </div>
+                           </div><!-- /.row -->
+                           <br/>
+                        </form>
+                   </div>
+               </div>
+           </div>
+       </div><!-- /.row -->
 
-    </div>
+    <!-- Passing Requirements for Exam -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-certificate"></i> Minimum Passing Total Grades for Course</h3>
+                </div>
+                <div class="panel-body">
+                    <form>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">
+                                    Final Course Mark
+                                </label>
+                                <div class="col-sm-9">
+                                    <input class="form-control"
+                                              id="disabledInput"
+                                            type="text"
+                                     placeholder="50%"
+                                        disabled=true>
+                                </div>
+                            </div>
+                        </div><!-- /.row -->
+                        <br/>
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">
+                                
+                                </label>
+                                <div class="col-sm-9">
+                                    <button onclick=""
+                                                 id="change_course_mark_btn"
+                                               name="change_course_mark_btn"
+                                               type="button"
+                                              class="btn btn-sm btn-success"
+                                           disabled=true>
+                                        <i class="fa fa-arrows-v"></i> Change
+                                    </button>
+                                
+                                </div>
+                            </div>
+                        </div><!-- /.row -->
+                        <br/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div><!-- /.row -->
 
 </div>
 <!-- Modal -->

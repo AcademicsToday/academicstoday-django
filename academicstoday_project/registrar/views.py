@@ -11,6 +11,7 @@ from registrar.models import Student
 from registrar.models import Teacher
 from registrar.models import Course
 from registrar.models import CourseFinalMark
+from registrar.models import CourseSetting
 
 
 from registrar.forms import CourseForm
@@ -128,7 +129,13 @@ def save_new_course(request):
         if request.method == 'POST':
             form = CourseForm(request.POST, request.FILES)
             if form.is_valid():
-                form.save()
+                form.save()  # Save course to the database.
+                
+                # Course Initialization
+                CourseSetting.objects.create(
+                    course=form.instance
+                ).save()
+                
                 # Create our teacher account which will build our course around.
                 try:
                     teacher = Teacher.objects.get(user=request.user)

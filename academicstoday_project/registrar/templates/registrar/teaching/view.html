@@ -22,26 +22,24 @@
         </div>
         <!-- /.row -->
 
-        {% if teacher.courses.count == 0 or teacher == None %}
-
-        <div class="jumbotron">
-            <h1>Become a Teacher!</h1>
-            <p>Help spread the knowledge to the rest of humankind as a teacher.</p>
-            <p><a href="#"
-                 class="btn btn-primary btn-lg"
-               onclick="ajax_new_course_modal();"
-                  role="button">Create Course »</a>
-            </p>
-        </div>
-
-        {% else %}
-
         <!-- Courses Rows -->
         <div id="ajax_courses_table"
-           name="ajax_courses_table"></div>
+           name="ajax_courses_table">
+           {% if teacher.courses.count == 0 or teacher == None %}
+           
+           <div class="jumbotron">
+               <h1>Become a Teacher!</h1>
+               <p>Help spread the knowledge to the rest of humankind as a teacher.</p>
+               <p><a href="#"
+                   class="btn btn-primary btn-lg"
+                   onclick="ajax_new_course_modal();"
+                   role="button">Create Course »</a>
+               </p>
+           </div>
+           
+           {% endif %}
+        </div>
         <!-- /.row -->
-
-        {% endif %}
 
     </div>
     <!-- /.container-fluid -->
@@ -57,9 +55,11 @@
     /**
      * When the page loads up, get the table data.
      */
+    {% if teacher.courses.count > 0 %}
     $(document).ready(function(){
        ajax_refresh_teaching_table();
     });
+    {% endif %}
     
     function ajax_refresh_teaching_table()
     {
@@ -112,7 +112,7 @@
      */
     function ajax_delete_course(course_id)
     {
-        $('#del_' + course_delete + '_btn').prop("disabled", true); // Lock button
+        $('#del_' + course_id + '_btn').prop("disabled", true); // Lock button
         $.ajax( 'course_delete', {
             data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
@@ -123,7 +123,6 @@
                 // success code execution here
                 if (result.status == 'success')
                 {
-                    $('#del_' + course_delete + '_btn').prop("disabled", false); // Unlock button
                     ajax_refresh_teaching_table();
                 }
             },
@@ -132,6 +131,7 @@
             },
             complete: function(xhr,status) {
                // completion code here
+               $('#del_' + course_id + '_btn').prop("disabled", false); // Unlock button
             }
         });
     }
