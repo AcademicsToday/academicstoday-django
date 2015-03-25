@@ -9,6 +9,7 @@
                             <small>[You cannot enrol in a class you currently teach!]</small>
                         {% endif %}
                     </h2>
+                    {% if course.is_official %}<p align="left"><span class="badge">Offical</span></p>{% endif %}
                     <p>{{ course.description }}<p>
                     <p>Durration: {{ course.start_date }} to {{ course.finish_date }}</p>
                     <p align="right">
