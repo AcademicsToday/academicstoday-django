@@ -42,9 +42,7 @@
 <script>
     function ajax_refresh_quizzes_table()
     {
-        var url = 'quizzes_table';
-        
-        $.ajax( url, {
+        $.ajax( 'quizzes_table', {
             data: {
                'csrfmiddlewaretoken': '{{ csrf_token }}',
             },
@@ -70,10 +68,7 @@
 function ajax_delete_quiz_submission(quiz_id)
 {
     $('#del_' + quiz_id + '_btn').prop("disabled", true); // Lock button
-    
-    var url = 'quiz_delete';
-    
-    $.ajax( url, {
+    $.ajax( 'quiz_delete', {
            data: {
                'csrfmiddlewaretoken': '{{ csrf_token }}',
                'quiz_id': quiz_id,
@@ -83,7 +78,6 @@ function ajax_delete_quiz_submission(quiz_id)
                 // success code execution here
                 if (result.status == 'success')
                 {
-                    $('#del_' + quiz_id + '_btn').prop("disabled", false); // Unlock button
                     ajax_refresh_quizzes_table(); // Reload UI.
                 }
                 else
@@ -96,6 +90,7 @@ function ajax_delete_quiz_submission(quiz_id)
            },
            complete: function(xhr,status) {
                // completion code here
+               $('#del_' + quiz_id + '_btn').prop("disabled", false);
            }
     });
 }

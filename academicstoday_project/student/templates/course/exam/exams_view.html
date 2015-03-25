@@ -41,9 +41,7 @@
 <script>
     function ajax_refresh_exams_table()
     {
-        var url = 'exams_table';
-        
-        $.ajax( url, {
+        $.ajax( 'exams_table', {
             data: {
                'csrfmiddlewaretoken': '{{ csrf_token }}',
             },
@@ -74,7 +72,6 @@ function ajax_delete_exam_submission(exam_id)
                 // success code execution here
                 if (result.status == 'success')
                 {
-                    $('#del_' + exam_id + '_btn').prop("disabled", false); // Unlock button
                     ajax_refresh_exams_table(); // Reload UI.
                 }
                 else
@@ -87,6 +84,7 @@ function ajax_delete_exam_submission(exam_id)
            },
            complete: function(xhr,status) {
                 // completion code here
+                $('#del_' + exam_id + '_btn').prop("disabled", false); // Unlock button
            }
     });
 }

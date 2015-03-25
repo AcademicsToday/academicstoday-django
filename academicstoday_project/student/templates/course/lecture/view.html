@@ -15,7 +15,7 @@
                 </h1>
                 <ol class="breadcrumb">
                     <li>
-                        <i class="fa fa-university"></i>  <a href="../../courses">Courses</a>
+                        <i class="fa fa-university"></i>  <a href="/courses">Courses</a>
                     </li>
                     <li>
                         <i class="fa fa-compass"></i> {{ course.title }}
@@ -42,10 +42,7 @@
     function ajax_learn_lecture(lecture_id)
     {
         $('#play_' + lecture_id + '_btn').prop("disabled", true); // Lock button
-        
-        var url = 'lecture';
-
-        $.ajax( url, {
+        $.ajax( 'lecture', {
            data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
                 'lecture_id': lecture_id

@@ -84,6 +84,7 @@
 
     function ajax_insert_thread(course_id)
     {
+        $('#submit_thread_btn').prop("disabled", true);
         if (typeof(course_id)==='undefined')
         {
             course_id = 0;
@@ -123,6 +124,7 @@
             },
             complete: function(xhr,status) {
                 // completion code here
+                $('#submit_thread_btn').prop("disabled", false);
             }
         });
     }
@@ -140,7 +142,6 @@
                // success code execution here
                if (result.status == 'success')
                {
-                    $('#del_' + thread_id + '_btn').prop("disabled", false); // Unlock button
                     ajax_refresh_threads_table(); // Reload UI.
                }
                else
@@ -153,6 +154,7 @@
             },
             complete: function(xhr,status) {
                // completion code here
+               $('#del_' + thread_id + '_btn').prop("disabled", false); // Unlock button
             }
         });
     }

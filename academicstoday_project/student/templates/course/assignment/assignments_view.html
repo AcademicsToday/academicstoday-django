@@ -42,9 +42,7 @@
 <script>
     function ajax_refresh_assignments_table()
     {
-        var url = 'assignments_table';
-        
-        $.ajax( url, {
+        $.ajax( 'assignments_table', {
             data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
             },
@@ -68,11 +66,8 @@
  */
 function ajax_delete_assignment_submission(assignment_id)
 {
-    $('#del_' + assignment_id + '_btn').prop("disabled", true); // Lock button
-    
-    var url = 'delete_assignment';
-    
-    $.ajax( url, {
+    $('#del_' + assignment_id + '_btn').prop("disabled", true);
+    $.ajax( 'delete_assignment', {
            data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
                 'assignment_id': assignment_id,
@@ -82,8 +77,7 @@ function ajax_delete_assignment_submission(assignment_id)
                 // success code execution here
                 if (result.status == 'success')
                 {
-                    $('#del_' + assignment_id + '_btn').prop("disabled", false); // Unlock button
-                    ajax_refresh_assignments_table(); // Reload UI.
+                    ajax_refresh_assignments_table();
                 }
                 else
                 {
@@ -95,6 +89,7 @@ function ajax_delete_assignment_submission(assignment_id)
            },
            complete: function(xhr,status) {
                 // completion code here
+                $('#del_' + assignment_id + '_btn').prop("disabled", false);
            }
     });
 }

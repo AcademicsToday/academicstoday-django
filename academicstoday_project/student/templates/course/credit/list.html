@@ -15,7 +15,7 @@
                 
                 <ol class="breadcrumb">
                     <li>
-                        <i class="fa fa-university"></i>  <a href="../../courses">Courses</a>
+                        <i class="fa fa-university"></i>  <a href="/courses">Courses</a>
                     </li>
                     <li>
                         <i class="fa fa-compass"></i> {{ course.title }}
@@ -37,7 +37,8 @@
             <p><b>Share</b> with employers, teachers and friends that you've succeeded in completing this course.</p>
             <p><b>Track</b> what you've learned so you'll know where you are going with your education.</p>
             <p><a onclick="ajax_submit_credit_application();"
-                     href="#"
+                       id="submit_credit_app_btn"
+                     name="submit_credit_app_btn"
                     class="btn btn-primary btn-lg"
                      role="button">Apply Now »</a>
             </p>
@@ -63,9 +64,8 @@
 <script>
     function ajax_submit_credit_application()
     {
-        var url = 'submit_credit_application';
-    
-        $.ajax( url, {
+        $('#submit_credit_app_btn').prop("disabled", true);
+        $.ajax( 'submit_credit_application', {
            data: {
                'csrfmiddlewaretoken': '{{ csrf_token }}',
            },
@@ -86,6 +86,7 @@
            },
            complete: function(xhr,status) {
                // completion code here
+               $('#submit_credit_app_btn').prop("disabled", false);
            }
         });
     }

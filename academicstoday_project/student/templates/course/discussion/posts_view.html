@@ -45,9 +45,7 @@
 <script>
     function ajax_refresh_posts_table()
     {
-        var url = {{ thread.thread_id }} + '/posts_table';
-        
-        $.ajax( url, {
+        $.ajax( {{ thread.thread_id }} + '/posts_table', {
             data: {
                'csrfmiddlewaretoken': '{{ csrf_token }}',
             },
@@ -89,6 +87,7 @@
 
     function ajax_insert_post(thread_id)
     {
+        $('#submit_post_btn').prop("disabled", true);
         if (typeof(thread_id)==='undefined')
         {
             thread_id = 0;
@@ -128,6 +127,7 @@
             },
             complete: function(xhr,status) {
                 // completion code here
+                $('#submit_post_btn').prop("disabled", false);
             }
         });
     }

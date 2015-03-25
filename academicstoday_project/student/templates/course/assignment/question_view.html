@@ -14,13 +14,13 @@
                 </h1>
                 <ol class="breadcrumb">
                     <li>
-                        <i class="fa fa-university"></i> <a href="../../../courses">Courses</a>
+                        <i class="fa fa-university"></i> <a href="/courses">Courses</a>
                     </li>
                     <li>
                         <i class="fa fa-compass"></i> {{ course.title }}
                     </li>
                     <li>
-                        <i class="fa fa-book"></i> <a href="../assignments">Assignments</a>
+                        <i class="fa fa-book"></i> <a href="/course/{{ course.id }}/assignments">Assignments</a>
                     </li>
                     <li class="active">
                         <i class="fa fa-book"></i> Assignment #{{ assignment.assignment_num }}
@@ -49,7 +49,6 @@
     function ajax_submit_e_assignment_answer(question_id)
     {
         var file_id = 'id_file_' + question_id;
-        var url = {{ assignment.assignment_id }} + '/submit_e_assignment_answer';
         
         // create a FormData Object using your form dom element
         var data = new FormData();
@@ -58,7 +57,7 @@
         data.append('file', document.getElementById(file_id).files[0]);
         
         jQuery.ajax({
-            url: url,
+            url: {{ assignment.assignment_id }} + '/submit_e_assignment_answer',
             data: data,
             cache: false,
             contentType: false,
@@ -90,8 +89,6 @@
 
     function ajax_submit_mc_assignment_answer(question_id, answer)
     {
-        var url = {{ assignment.assignment_id }} + '/submit_mc_assignment_answer';
-        
         // create a FormData Object using your form dom element
         var data = new FormData();
         data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
@@ -99,7 +96,7 @@
         data.append('answer', answer);
     
         jQuery.ajax({
-            url: url,
+            url: {{ assignment.assignment_id }} + '/submit_mc_assignment_answer',
             data: data,
             cache: false,
             contentType: false,
@@ -120,8 +117,6 @@
 
     function ajax_submit_tf_assignment_answer(question_id, answer)
     {
-        var url = {{ assignment.assignment_id }} + '/submit_tf_assignment_answer';
-    
         // create a FormData Object using your form dom element
         var data = new FormData();
         data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
@@ -129,7 +124,7 @@
         data.append('answer', answer);
     
         jQuery.ajax({
-            url: url,
+            url: {{ assignment.assignment_id }} + '/submit_tf_assignment_answer',
             data: data,
             cache: false,
             contentType: false,
@@ -150,8 +145,6 @@
 
     function ajax_submit_r_assignment_answer(question_id, div_id)
     {
-        var url = {{ assignment.assignment_id }} + '/submit_r_assignment_answer';
-    
         // create a FormData Object using your form dom element
         var data = new FormData();
         data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
@@ -162,7 +155,7 @@
         data.append('answer', text);
     
         jQuery.ajax({
-            url: url,
+            url: {{ assignment.assignment_id }} + '/submit_r_assignment_answer',
             data: data,
             cache: false,
             contentType: false,
@@ -182,16 +175,11 @@
     //------------------------------------------------------------------------//
     function ajax_submit_assignment()
     {
-        $('#submit_{{ assignment.assignment_id }}_btn').prop("disabled", true); // Lock button
-        
-        var url = {{ assignment.assignment_id }} + '/submit_assignment';
-        
-        // create a FormData Object using your form dom element
+        $('#submit_{{ assignment.assignment_id }}_btn').prop("disabled", true);
         var data = new FormData();
         data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
-        
         jQuery.ajax({
-            url: url,
+            url: {{ assignment.assignment_id }} + '/submit_assignment',
             data: data,
             cache: false,
             contentType: false,

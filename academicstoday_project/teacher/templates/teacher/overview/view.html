@@ -36,7 +36,11 @@
             <h1>Course Registration</h1>
                 <p>To have your course available on AcademicsToday, you must first submit your course for review. We will look over it and either accept it or provide feedback on how to improve the course before release.</p>
                 <p>Please not illegal stuff will be outrightly rejected.</p>
-                <p><a onclick="ajax_submit_course();" class="btn btn-primary btn-lg" role="button">Submit for Review »</a>
+                <p><a onclick="ajax_submit_course();"
+                           id="submit_course_btn"
+                         name="submit_course_btn"
+                        class="btn btn-primary btn-lg"
+                         role="button">Submit for Review »</a>
             </p>
         </div>
         <!-- /.row -->
@@ -273,9 +277,8 @@
 <script>
     function ajax_submit_course()
     {
-        var url = 'submit_course_for_review';
-
-        $.ajax( url, {
+        $('#submit_course_btn').prop("disabled", true);
+        $.ajax( 'submit_course_for_review', {
                data: {
                     'csrfmiddlewaretoken': '{{ csrf_token }}',
                },
@@ -298,6 +301,7 @@
                },
                complete: function(xhr,status) {
                     // completion code here
+                    $('#submit_course_btn').prop("disabled", false);
                }
         });
     }
