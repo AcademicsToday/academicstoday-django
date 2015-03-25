@@ -10,6 +10,10 @@ import datetime
 from registrar.models import Course
 from registrar.models import CourseSubmission
 from registrar.models import Student
+from registrar.models import AssignmentSubmission
+from registrar.models import QuizSubmission
+from registrar.models import ExamSubmission
+from registrar.models import CourseFinalMark
 
 
 @login_required(login_url='/landpage')
@@ -63,4 +67,68 @@ def mark_students(course):
 
 
 def mark_student(course, student):
-    pass  #TODO: Implement
+    try:
+        a_submissions = AssignmentSubmission.objects.filter(
+            assignment__course=course,
+            student=student,
+        )
+    except AssignmentSubmission.DoesNotExist:
+        a_submissions = None
+    try:
+        q_submissions = QuizSubmission.objects.filter(
+            quiz__course=course,
+            student=student,
+        )
+    except QuizSubmission.DoesNotExist:
+        q_submissions = None
+    
+    try:
+        e_submissions = ExamSubmission.objects.filter(
+            exam__course=course,
+            student=student,
+        )
+    except ExamSubmission.DoesNotExist:
+        e_submissions = None
+
+    # Calculate the final mark for the course.
+    has_completed_final = False
+    final_percent = 0
+    for a_submission in a_submissions:
+        percent = (a_submission.assignment.worth / 100)
+        percent *= (a_submission.percent / 100)
+        final_percent += percent
+    for q_submission in q_submissions:
+        percent = (q_submission.quiz.worth / 100)
+        percent *= (q_submission.percent / 100)
+        final_percent += percent
+    for e_submission in e_submissions:
+        percent = (e_submission.exam.worth / 100)
+        percent *= (e_submission.percent / 100)
+        final_percent += percent
+        if e_submission.exam.is_final:
+            if percent >= 0.50:
+                has_completed_final = True
+    final_percent *= 100
+
+    # Validation
+    if final_percent < 50:
+        return
+    if not has_completed_final:
+        return
+        
+    # Grant credit or update credit.
+    try:
+        final_mark = CourseFinalMark.objects.get(
+            course=course,
+            student=student,
+        )
+        final_mark.percent = final_percent
+        final_mark.save()
+    except CourseFinalMark.DoesNotExist:
+        final_mark = CourseFinalMark.objects.create(
+            course=course,
+            student=student,
+            percent = final_percent,
+        )
+        final_mark.save()
+
