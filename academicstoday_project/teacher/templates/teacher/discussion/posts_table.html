@@ -1,0 +1,41 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">{{ thread.title }}</h3>
+            </div>
+            <div class="panel-body">
+                <p>
+                    {{ thread.text }}
+                </p>
+                <br/><br/>
+                <p align="right">
+                    <button onclick="ajax_new_post_modal({{ thread.thread_id }});"
+                                 id="add_post_btn"
+                               name="add_post_btn"
+                               type="button"
+                              class="btn btn-sm btn-primary">
+                        <i class="fa fa-reply"></i> Reply
+                    </button>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+        
+{% for post in thread.posts.all %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">{{ post.title }}</h3>
+            </div>
+            <div class="panel-body">
+                <p>
+                {{ post.text }}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}

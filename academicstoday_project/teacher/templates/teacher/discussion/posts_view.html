@@ -49,9 +49,7 @@
                   
     function ajax_refresh_discussion_table()
     {
-        var url = {{ thread.thread_id}} + '/thread_table';
-                      
-        $.ajax( url, {
+        $.ajax( {{ thread.thread_id}} + '/posts_table', {
             data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
             },
@@ -71,9 +69,8 @@
     
     function ajax_new_post_modal(thread_id)
     {
-        var url = thread_id + '/new_post';
-        
-        $.ajax( url, {
+        $('#add_post_btn').prop("disabled", true);
+        $.ajax( thread_id + '/new_post', {
             data: {
                'csrfmiddlewaretoken': '{{ csrf_token }}',
             },
@@ -94,6 +91,8 @@
 
     function ajax_insert_post(thread_id)
     {
+        $('#save_post_btn').prop("disabled", true);
+        
         if (typeof(thread_id)==='undefined')
         {
             thread_id = 0;
@@ -133,15 +132,15 @@
             },
             complete: function(xhr,status) {
                 // completion code here
+                $('#save_post_btn').prop("disabled", false);
             }
         });
     }
 
     function ajax_delete_thread(thread_id)
     {
-        var url = thread_id + '/delete_thread';
-    
-        $.ajax( url, {
+        $('#del_'+thread_id+'_btn').prop("disabled", true);
+        $.ajax( thread_id + '/delete_thread', {
             data: {
                'csrfmiddlewaretoken': '{{ csrf_token }}',
                'thread_id': thread_id,
@@ -163,13 +162,9 @@
             },
             complete: function(xhr,status) {
                // completion code here
+               $('#del_'+thread_id+'_btn').prop("disabled", false);
             }
         });
-    }
-
-    function ajax_view_thread(thread_id)
-    {
-        window.location = 'thread/' + thread_id;
     }
 </script>
 

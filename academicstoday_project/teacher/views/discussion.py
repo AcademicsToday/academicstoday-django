@@ -103,7 +103,7 @@ def delete_thread(request, course_id):
 
 
 @login_required(login_url='/landpage')
-def thread_page(request, course_id, thread_id):
+def posts_page(request, course_id, thread_id):
     course = Course.objects.get(id=course_id)
     
     try:
@@ -114,7 +114,7 @@ def thread_page(request, course_id, thread_id):
     except CourseDiscussionThread.DoesNotExist:
         thread = None
 
-    return render(request, 'teacher/discussion/thread_view.html',{
+    return render(request, 'teacher/discussion/posts_view.html',{
         'course': course,
         'thread': thread,
         'user': request.user,
@@ -125,7 +125,7 @@ def thread_page(request, course_id, thread_id):
 
 
 @login_required(login_url='/landpage')
-def thread_table(request, course_id, thread_id):
+def posts_table(request, course_id, thread_id):
     course = Course.objects.get(id=course_id)
     
     try:
@@ -136,7 +136,7 @@ def thread_table(request, course_id, thread_id):
     except CourseDiscussionThread.DoesNotExist:
         thread = None
 
-    return render(request, 'teacher/discussion/thread_table.html',{
+    return render(request, 'teacher/discussion/posts_table.html',{
         'course': course,
         'thread': thread,
         'user': request.user,
