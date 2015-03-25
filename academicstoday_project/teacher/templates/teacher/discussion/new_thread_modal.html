@@ -28,8 +28,10 @@
             </div>
             <div class="modal-footer">
                 <button onclick="ajax_insert_thread({{ course.id }});"
-                    type="button"
-                    class="btn btn-primary">
+                             id="save_thread_btn"
+                           name="save_thread_btn"
+                           type="button"
+                          class="btn btn-primary">
                     <i class="fa fa-plus"></i> Submit
                 </button>
             </div>
@@ -42,6 +44,7 @@
         $('#new_thread_modal').on('hidden.bs.modal', function (e) {
             // Clear all the code inside this modal.
             $('#new_thread_modal').html('');
+            $('#add_thread_btn').prop("disabled", false);
         })
     });
 </script>

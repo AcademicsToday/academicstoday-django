@@ -46,9 +46,7 @@
                   
         function ajax_refresh_discussions_table()
         {
-            var url = 'discussions_table';
-                      
-            $.ajax( url, {
+            $.ajax( 'discussions_table', {
             data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
             },
@@ -68,9 +66,8 @@
     
     function ajax_new_thread_modal(course_id)
     {
-        var url = 'new_thread';
-        
-        $.ajax( url, {
+        $('#add_thread_btn').prop("disabled", true); // Lock button
+        $.ajax( 'new_thread', {
             data: {
                'csrfmiddlewaretoken': '{{ csrf_token }}',
                'course_id': course_id,
@@ -92,6 +89,8 @@
 
     function ajax_insert_thread(course_id)
     {
+        $('#save_thread_btn').prop("disabled", true); // Lock button
+        
         if (typeof(course_id)==='undefined')
         {
             course_id = 0;
@@ -131,15 +130,15 @@
             },
             complete: function(xhr,status) {
                 // completion code here
+                $('#save_thread_btn').prop("disabled", false);
             }
         });
     }
 
     function ajax_delete_thread(thread_id)
     {
-        var url = 'delete_thread';
-    
-        $.ajax( url, {
+        $('#del_'+thread_id+'_btn').prop("disabled", true);
+        $.ajax( 'delete_thread', {
             data: {
                'csrfmiddlewaretoken': '{{ csrf_token }}',
                'thread_id': thread_id,
@@ -161,12 +160,14 @@
             },
             complete: function(xhr,status) {
                // completion code here
+               $('#del_'+thread_id+'_btn').prop("disabled", false);
             }
         });
     }
 
     function ajax_view_thread(thread_id)
     {
+        $('#view_'+thread_id+'_btn').prop("disabled", true);
         window.location = 'thread/' + thread_id;
     }
 </script>
