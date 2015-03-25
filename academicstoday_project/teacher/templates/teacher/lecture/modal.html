@@ -9,10 +9,11 @@
                 {% include "teacher/lecture/form.html" with form=form %}
             </div>
             <div class="modal-footer">
-                <button type="button"
-                    class="btn btn-primary"
-                     form="register_form"
-                  onclick="ajax_create_lecture();">
+                <button onclick="ajax_create_lecture();"
+                             id="submit_lecture_btn"
+                           name="submit_lecture_btn"
+                           type="button"
+                          class="btn btn-primary">
                     <i class="fa fa-check-circle"></i> Submit
                 </button>
             </div>
@@ -28,6 +29,9 @@
      $(document).ready(function(){
         $('#lecture_modal').on('hidden.bs.modal', function (e) {
             $('#lecture_modal').html('');
+            $('#add_lecture_btn').prop("disabled", false);
+            $('#edit_{{ form.instance.lecture_id }}_btn').prop("disabled", false);
+                               
         });
     });
     
@@ -36,6 +40,8 @@
      */
     function ajax_create_lecture()
     {
+        $('#submit_lecture_btn').prop("disabled", true); // Lock button
+        
         // create a FormData Object using your form dom element
         var data = new FormData();
         data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
@@ -56,6 +62,7 @@
             type: 'POST',
             success: function(json_result){
                 // success code execution here
+                $('#submit_lecture_btn').prop("disabled", false); // Unlock button
                 if (json_result.status == "success")
                 {
                     $('#lecture_modal').modal('hide');

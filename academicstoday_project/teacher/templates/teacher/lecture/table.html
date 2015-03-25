@@ -11,9 +11,11 @@
                                       <th>Title</th>
                                       <th>Preferred Service</th>
                                       <th>
-                                          <button type="button"
-                                                 class="btn btn-sm btn-success"
-                                               onclick="ajax_lecture_modal(0);">
+                                          <button onclick="ajax_lecture_modal(0);"
+                                                       id="add_lecture_btn"
+                                                     name="add_lecture_btn"
+                                                     type="button"
+                                                    class="btn btn-sm btn-success">
                                             <i class="fa fa-plus"></i> Add
                                         </button>
                                       </th>
@@ -35,14 +37,18 @@
                                   {% endif %}
                                   </td>
                                   <td align="left" valign="left">
-                                      <button type="button"
-                                             class="btn btn-sm btn-warning"
-                                           onclick="ajax_lecture_modal({{ lecture.lecture_id }});">
+                                      <button onclick="ajax_lecture_modal({{ lecture.lecture_id }});"
+                                                   id="edit_{{ lecture.lecture_id }}_btn"
+                                                 name="edit_{{ lecture.lecture_id }}_btn"
+                                                 type="button"
+                                                class="btn btn-sm btn-warning">
                                           <i class="fa fa-pencil"></i> Edit
                                       </button>
-                                      <button type="button"
-                                               class="btn btn-sm btn-danger"
-                                             onclick="ajax_delete_lecture({{ lecture.lecture_id }});">
+                                      <button onclick="ajax_delete_lecture({{ lecture.lecture_id }});"
+                                                   id="del_{{ lecture.lecture_id }}_btn"
+                                                 name="del_{{ lecture.lecture_id }}_btn"
+                                                 type="button"
+                                                class="btn btn-sm btn-danger">
                                            <i class="fa fa-minus"></i> Delete
                                       </button>
                                   </td>

@@ -65,9 +65,7 @@
                   
     function ajax_refresh_lectures_table()
     {
-        var url = 'lectures_table';
-        
-        $.ajax( url, {
+        $.ajax( 'lectures_table', {
             data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
             },
@@ -91,9 +89,15 @@
      */
     function ajax_lecture_modal(lecture_id)
     {
-        var url = 'lecture_modal';
-
-        $.ajax( url, {
+        if (lecture_id == 0)
+        {
+            $('#add_lecture_btn').prop("disabled", true); // Lock button
+        }
+        else
+        {
+            $('#edit_'+lecture_id+'_btn').prop("disabled", true); // Lock button
+        }
+        $.ajax( 'lecture_modal', {
             data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
                 'lecture_id': lecture_id
@@ -118,9 +122,8 @@
      */
     function ajax_delete_lecture(lecture_id)
     {
-        var url = 'delete_lecture';
-
-        $.ajax( url, {
+        $('#del_'+lecture_id+'_btn').prop("disabled", true); // Lock button
+        $.ajax( 'delete_lecture', {
             data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
                 'lecture_id' : lecture_id
@@ -128,6 +131,7 @@
             type: 'post',
             success: function(result) {
                 // success code execution here
+                $('#del_'+lecture_id+'_btn').prop("disabled", false); // Unlock button
                 if (result.status == 'success')
                 {
                     ajax_refresh_lectures_table();
