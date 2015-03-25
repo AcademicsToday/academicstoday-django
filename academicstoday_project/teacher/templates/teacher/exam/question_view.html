@@ -52,9 +52,7 @@
                   
         function ajax_refresh_questions_table()
         {
-            var url = {{ exam.exam_id }} + '/questions_table';
-                      
-            $.ajax( url, {
+            $.ajax( {{ exam.exam_id }} + '/questions_table', {
             data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
             },
@@ -83,6 +81,15 @@
         {
             url = {{ exam.exam_id }} + '/question_multiple_choice_modal'
         }
+        
+        if (question_id == 0)
+        {
+            $('#add_question_btn').prop("disabled", true); // Lock button
+        }
+        else
+        {
+            $('#edit_'+question_id+'_'+question_type+'_btn').prop("disabled", true); // Lock button
+        }
 
         $.ajax( url, {
             data: {
@@ -107,9 +114,8 @@
 
     function ajax_delete_question(question_id, question_type)
     {
-        var url = {{ exam.exam_id }} + '/delete_question';
-
-        $.ajax( url, {
+        $('#del_'+question_id+'_'+question_type+'_btn').prop("disabled", true);
+        $.ajax(  {{ exam.exam_id }} + '/delete_question', {
             data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
                 'question_id' : question_id,
@@ -128,6 +134,7 @@
             },
             complete: function(xhr,status) {
                // completion code here
+               $('#del_'+question_id+'_'+question_type+'_btn').prop("disabled", false);
             }
         });
     }

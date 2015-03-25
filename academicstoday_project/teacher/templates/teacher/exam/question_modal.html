@@ -9,9 +9,11 @@
                 {% include "teacher/exam/form.html" with form=form %}
             </div>
             <div class="modal-footer">
-                <button type="button"
-                       class="btn btn-primary"
-                     onclick="ajax_save_question({{ form.instance.question_id }});">
+                <button onclick="ajax_save_question({{ form.instance.question_id }});"
+                             id="save_question_btn"
+                           name="save_question_btn"
+                           type="button"
+                          class="btn btn-primary">
                     <i class="fa fa-check-circle"></i> Submit
                 </button>
             </div>
@@ -27,11 +29,15 @@
      $(document).ready(function(){
         $('#question_modal').on('hidden.bs.modal', function (e) {
             $('#question_modal').html('');
+            $('#add_question_btn').prop("disabled", false);
+            $('#edit_{{ form.instance.question_id }}_{{ form.instance.question_type }}_btn').prop("disabled", false);
         });
     });
 
     function ajax_save_question(question_id)
     {
+        $('#save_question_btn').prop("disabled", true);
+        
         // If no question_id was entered then set it to zero to tell our
         // controller that we are inserting a new question.
         if (typeof(question_id)==='undefined')
@@ -101,6 +107,7 @@
             },
             complete: function(xhr,status) {
                // completion code here
+               $('#save_question_btn').prop("disabled", false);
             }
         });
 
