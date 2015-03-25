@@ -9,9 +9,11 @@
                                       <th>Quiz #</th>
                                       <th>Title</th>
                                       <th>
-                                          <button type="button"
-                                                 class="btn btn-sm btn-success"
-                                               onclick="ajax_quiz(0);">
+                                          <button onclick="ajax_quiz(0);"
+                                                       id="add_quiz_btn"
+                                                     name="add_quiz_btn"
+                                                     type="button"
+                                                    class="btn btn-sm btn-success">
                                             <i class="fa fa-plus"></i> Add
                                         </button>
                                       </th>
@@ -23,19 +25,25 @@
                                       <td align="left" valign="left">{{ quiz.quiz_num }}</td>
                                       <td align="left" valign="left">{{ quiz.title }}</td>
                                       <td align="left" valign="left">
-                                        <button type="button"
-                                              class="btn btn-sm btn-primary"
-                                              onclick="view_quiz({{ quiz.quiz_id }});">
-                                              <i class="fa fa-file"></i> Questions
+                                        <button onclick="view_quiz({{ quiz.quiz_id }});"
+                                                     id="view_{{ quiz.quiz_id }}_btn"
+                                                   name="view_{{ quiz.quiz_id }}_btn"
+                                                   type="button"
+                                                  class="btn btn-sm btn-primary">
+                                              <i class="fa fa-level-down"></i> Questions
                                         </button>
-                                        <button type="button"
-                                              class="btn btn-sm btn-warning"
-                                              onclick="ajax_quiz({{ quiz.quiz_id }});">
+                                        <button onclick="ajax_quiz({{ quiz.quiz_id }});"
+                                                     id="edit_{{ quiz.quiz_id }}_btn"
+                                                   name="edit_{{ quiz.quiz_id }}_btn"
+                                                   type="button"
+                                                  class="btn btn-sm btn-warning">
                                               <i class="fa fa-pencil"></i> Edit
                                         </button>
-                                        <button type="button"
-                                               class="btn btn-sm btn-danger"
-                                             onclick="ajax_delete_quiz({{ quiz.quiz_id }});">
+                                        <button onclick="ajax_delete_quiz({{ quiz.quiz_id }});"
+                                                     id="del_{{ quiz.quiz_id }}_btn"
+                                                   name="del_{{ quiz.quiz_id }}_btn"
+                                                   type="button"
+                                                  class="btn btn-sm btn-danger">
                                            <i class="fa fa-minus"></i> Delete
                                         </button>
                                       </td>

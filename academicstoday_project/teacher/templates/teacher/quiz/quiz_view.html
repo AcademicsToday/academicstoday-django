@@ -27,24 +27,11 @@
         </div>
         <!-- /.row -->
 
-        {% if quizzes.count <= 0 %}
-        <!-- Assignment Banner -->
-        <div class="jumbotron">
-            <h1>Create a Quiz!</h1>
-            <p>Create the first quiz for your course here.</p>
-            <p><a href="#"
-                 class="btn btn-primary btn-lg"
-               onclick="ajax_quiz(0);"
-                  role="button">Quiz »</a>
-            </p>
-        </div>
-        <!-- /.row -->
-        {% else %}
+
         <!-- Quizzes -->
         <div id="ajax_quizzes_table"
            name="ajax_quizzes_table"></div>
         <!-- /.row -->
-        {% endif %}
 
     </div>
 
@@ -90,17 +77,21 @@
      */
     function view_quiz(quiz_id)
     {
+        $('#view_'+quiz_id+'_btn').prop("disabled", true); // Lock button
         window.location = "quiz/" + quiz_id;
     }
-    
-    /**
-     *  Function will call AJAX function to load the modal for the new quiz
-     *  creation UI and load up the existing quiz.
-     */
+
     function ajax_quiz(quiz_id)
     {
-        var url = 'quiz_modal';
-        $.ajax( url, {
+        if (quiz_id == 0)
+        {
+            $('#add_quiz_btn').prop("disabled", true); // Lock button
+        }
+        else
+        {
+            $('#edit_'+quiz_id+'_btn').prop("disabled", true); // Lock button
+        }
+        $.ajax( 'quiz_modal', {
             data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
                 'quiz_id': quiz_id
@@ -120,14 +111,10 @@
         });
     }
 
-    /**
-     *  Function will call AJAX function to delete the teacher's assignment.
-     */
     function ajax_delete_quiz(quiz_id)
     {
-        var url = 'delete_quiz';
-
-        $.ajax( url, {
+        $('#del_'+quiz_id+'_btn').prop("disabled", true); // Lock button
+        $.ajax( 'delete_quiz', {
             data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
                 'quiz_id' : quiz_id
@@ -145,6 +132,7 @@
             },
             complete: function(xhr,status) {
                // completion code here
+               $('#del_'+quiz_id+'_btn').prop("disabled", true); // Lock button
             }
         });
     }

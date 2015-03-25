@@ -28,6 +28,8 @@
      $(document).ready(function(){
         $('#quiz_modal').on('hidden.bs.modal', function (e) {
             $('#quiz_modal').html('');
+            $('#add_quiz_btn').prop("disabled", false);
+            $('#edit_{{ form.instance.quiz_id }}_btn').prop("disabled", false);
         });
     });
     
