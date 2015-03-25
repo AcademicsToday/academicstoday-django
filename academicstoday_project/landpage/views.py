@@ -5,6 +5,7 @@ from landpage.models import LandpageTeamMember
 from landpage.models import LandpageCoursePreview
 from landpage.models import CoursePreview
 from landpage.models import LandpageContactMessage
+from landpage.models import LandpagePartner
 
 import json
 from django.http import HttpResponse
@@ -31,9 +32,11 @@ def humans_txt_page(request):
 def landpage_page(request):
     course_previews = LandpageCoursePreview.objects.all();
     team_members = LandpageTeamMember.objects.all()
+    partners = LandpagePartner.objects.all()
     return render(request, 'landpage/main.html',{
         'course_previews' : course_previews,
         'team_members' : team_members,
+        'partners': partners,
         'local_css_urls' : settings.AGENCY_CSS_LIBRARY_URLS,
         'local_js_urls' : settings.AGENCY_JS_LIBRARY_URLS
     })

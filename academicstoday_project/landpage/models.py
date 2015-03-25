@@ -26,7 +26,7 @@ from django.db import models
 
 
 class LandpageTeamMember(models.Model):
-    id = models.AutoField(max_length=11, primary_key=True)
+    id = models.AutoField(primary_key=True)
     image_filename = models.CharField(max_length=31)
     full_name = models.CharField(max_length=31)
     role = models.CharField(max_length=31)
@@ -44,7 +44,7 @@ class LandpageTeamMember(models.Model):
 
 
 class LandpageCoursePreview(models.Model):
-    id = models.AutoField(max_length=11, primary_key=True)
+    id = models.AutoField(primary_key=True)
     image_filename = models.CharField(max_length=31)
     title = models.CharField(max_length=127)
     category = models.CharField(max_length=31)
@@ -57,7 +57,7 @@ class LandpageCoursePreview(models.Model):
 
 
 class CoursePreview(models.Model):
-    id = models.AutoField(max_length=11, primary_key=True)
+    id = models.AutoField(primary_key=True)
     image_filename = models.CharField(max_length=31)
     title = models.CharField(max_length=63)
     sub_title = models.CharField(max_length=127)
@@ -84,3 +84,16 @@ class LandpageContactMessage(models.Model):
     
     class Meta:
         db_table = 'at_landpage_contact_message'
+
+
+class LandpagePartner(models.Model):
+    id = models.AutoField(primary_key=True)
+    image_filename = models.CharField(max_length=31)
+    title = models.CharField(max_length=127)
+    url = models.URLField()
+    
+    def __str__(self):
+        return self.title + ' ' + self.url
+    
+    class Meta:
+        db_table = 'at_landpage_partners'

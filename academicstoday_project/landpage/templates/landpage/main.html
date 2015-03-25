@@ -143,26 +143,15 @@
 <aside class="clients">
     <div class="container">
         <div class="row">
+            {% for partner in partners %}
             <div class="col-md-3 col-sm-6">
-                <a href="#">
-                    <img src="{% static 'img/' %}logos/envato.jpg" class="img-responsive img-centered" alt="">
-                        </a>
+                <a href="http://{{ partner.url }}">
+                    <img src="{% static 'img/' %}logos/{{ partner.image_filename }}"
+                       class="img-responsive img-centered"
+                         alt=""{{ partner.title }}>
+                </a>
             </div>
-            <div class="col-md-3 col-sm-6">
-                <a href="#">
-                    <img src="{% static 'img/' %}logos/designmodo.jpg" class="img-responsive img-centered" alt="">
-                        </a>
-            </div>
-            <div class="col-md-3 col-sm-6">
-                <a href="#">
-                    <img src="{% static 'img/' %}logos/themeforest.jpg" class="img-responsive img-centered" alt="">
-                        </a>
-            </div>
-            <div class="col-md-3 col-sm-6">
-                <a href="#">
-                    <img src="{% static 'img/' %}logos/creative-market.jpg" class="img-responsive img-centered" alt="">
-                        </a>
-            </div>
+            {% endfor %}
         </div>
     </div>
 </aside>
