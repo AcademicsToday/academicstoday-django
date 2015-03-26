@@ -7,7 +7,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="">AcademicsToday</a>
+        <a class="navbar-brand" href="/courses">AcademicsToday</a>
     </div>
     <!-- Top Menu Items -->
     <ul class="nav navbar-right top-nav">
@@ -36,20 +36,14 @@
     <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
     <div class="collapse navbar-collapse navbar-ex1-collapse">
         <ul class="nav navbar-nav side-nav">
-            <li {% if tab == 'courses' %}class="active"{% endif %}>
-                <a href="courses"><i class="fa fa-fw fa-university"></i> Courses</a>
+            <li {% if tab == 'profile' %}class="active"{% endif %}>
+                <a href="/profile"><i class="fa fa-fw fa-user"></i> Profile</a>
             </li>
-            <li {% if tab == 'enrolment' %}class="active"{% endif %}>
-                <a href="enrolment"><i class="fa fa-fw fa-bookmark"></i> Enrolment</a>
+            <li {% if tab == 'inbox' %}class="active"{% endif %}>
+                <a href="/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
             </li>
-            <li {% if tab == 'teaching' %}class="active"{% endif %}>
-                <a href="teaching"><i class="fa fa-fw fa-suitcase"></i> Teaching</a>
-            </li>
-            <li {% if tab == 'transcript' %}class="active"{% endif %}>
-                <a href="transcript"><i class="fa fa-fw fa-file-text"></i> Transcript</a>
-            </li>
-            <li {% if tab == 'certificates' %}class="active"{% endif %}>
-                <a href="certificates"><i class="fa fa-fw fa-certificate"></i> Certificates</a>
+            <li {% if tab == 'settings' %}class="active"{% endif %}>
+                <a href="/settings"><i class="fa fa-fw fa-gear"></i> Settings</a>
             </li>
         </ul>
     </div>

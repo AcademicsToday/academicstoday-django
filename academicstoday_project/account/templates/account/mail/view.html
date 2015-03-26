@@ -1,0 +1,44 @@
+{% extends 'account/base.html' %}
+{% load staticfiles %}
+{% block content %}
+
+<div id="page-wrapper">
+
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    Mail
+                    <small>View private messages sent to you</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-university"></i>  <a href="/courses">Registrar</a>
+                    </li>
+                    <li>
+                        <i class="fa fa-compass"></i> {{ user.first_name }} {{ user.last_name }}
+                    </li>
+                    <li class="active">
+                        <i class="fa fa-envelope"></i> Inbox
+                    </li>
+
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <div class="jumbotron">
+            <h1>Coming Soon</h1>
+            <p>
+                We are currently working on this.
+            </p>
+        </div>
+        <!-- /.row -->
+
+    </div>
+    <!-- /.container-fluid -->
+
+</div>
+{% endblock content %}
