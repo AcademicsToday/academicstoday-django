@@ -7,7 +7,7 @@ from django.conf import settings
 import json
 import datetime
 from account.models import PrivateMessage
-
+from account.forms import PrivateMessageForm
 
 @login_required(login_url='/landpage')
 def inbox_page(request):
@@ -60,15 +60,18 @@ def view_private_message(request):
         if request.method == 'POST':
             message_id = int(request.POST['message_id'])
             try:
-                message = PrivateMessage.objects.get(
-                    message_id=message_id,
-                )
+                message = PrivateMessage.objects.get(id=message_id)
             except PrivateMessage.DoesNotExist:
                 message = None
             
-            response_data = {'status' : 'success', 'message' : 'updated user '}
-    return HttpResponse(json.dumps(response_data), content_type="application/json")
-
+            form = PrivateMessageForm(instance=message)
+            return render(request, 'account/mail/modal.html',{
+                'form': form,
+                'user': request.user,
+                'tab': 'inbox',
+                'local_css_urls': settings.SB_ADMIN_CSS_LIBRARY_URLS,
+                'local_js_urls': settings.SB_ADMIN_JS_LIBRARY_URLS,
+            })
 
 
 @login_required()

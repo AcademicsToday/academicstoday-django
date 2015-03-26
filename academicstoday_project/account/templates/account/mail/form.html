@@ -1,0 +1,21 @@
+<form enctype="multipart/form-data" name="new_course_form" id="new_course_form">
+    <input type="hidden"
+             id="id_message_id"
+           name="message_id"
+          value={% if form.instance.message_id != None %}"{{ form.instance.message_id }}"{% else %}0{% endif %}>
+        {% for field in form %}
+        <div class="row">
+            <div class="form-group">
+                <div class="fieldWrapper">
+                    <label class="col-sm-3 control-label">
+                        {{ field.label }}
+                    </label>
+                    <div class="col-sm-9">
+                        {{ field }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br/>
+        {% endfor %}
+</form>
