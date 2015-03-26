@@ -41,20 +41,28 @@
                             <div class="form-group">
                                 <label>Email</label>
                                 <input class="form-control"
-                                    id="password"
-                                    name="password"
-                                    placeholder="Enter Email of Account in Academics Today"
-                                    type="password">
-                                </div>
-                                <div class="form-group">
-                                    <label>Message</label>
-                                    <textarea class="form-control" rows="6" placeholder="Enter Message"></textarea>
-                                </div>
-                                <button onclick=""
-                                             id="update_password_btn"
-                                           name="update_password_btn"
-                                           type="button"
-                                         class="btn btn-lg btn-primary">Send Message</button>
+                                          id="email"
+                                        name="email"
+                                 placeholder="Enter Email of Account in Academics Today"
+                                        type="input">
+                            </div>
+                            <div class="form-group">
+                                <label>Title</label>
+                                <input class="form-control"
+                                          id="title"
+                                        name="title"
+                                 placeholder="Enter Title"
+                                        type="input">
+                            </div>
+                            <div class="form-group">
+                                <label>Message</label>
+                                <textarea id="message" name="message" class="form-control" rows="6" placeholder="Enter Message"></textarea>
+                            </div>
+                            <button onclick="ajax_send_message();"
+                                        id="send_message_btn"
+                                        name="send_message_btn"
+                                        type="button"
+                                        class="btn btn-lg btn-primary">Send Message</button>
                         </form>
                     </div>
                 </div>
@@ -69,7 +77,37 @@
                         <h3 class="panel-title">Read Message(s)</h3>
                     </div>
                     <div class="panel-body">
-                        
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Email</th>
+                                        <th>Title</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for message in messages %}
+                                    <tr>
+                                        <td>{{ message.from_address }}</td>
+                                        <td>{{ message.title }}</td>
+                                        <td>
+                                            <button onclick="ajax_view_message({{ message.id }});"
+                                                         id="view_{{ message.id }}_btn"
+                                                       name="view_{{ message.id }}_btn"
+                                                       type="button"
+                                                      class="btn btn-xs btn-primary">View</button>
+                                            <button onclick="ajax_delete_message({{ message.id }});"
+                                                         id="del_{{ message.id }}_btn"
+                                                       name="del_{{ message.id }}_btn"
+                                                       type="button"
+                                                      class="btn btn-xs btn-danger">Delete</button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div><!-- /.col-sm-12 -->
@@ -79,4 +117,90 @@
     <!-- /.container-fluid -->
 
 </div>
+<!-- Modal -->
+<div id="ajax_modal"
+    name="ajax_modal"></div>
+<!-- end modal -->
+<script>
+    function ajax_send_message()
+    {
+        $('#send_message_btn').prop("disabled", true);
+        $.ajax( 'send_private_message', {
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'email': $('#email').val(),
+                'title': $('#title').val(),
+                'message': $('#message').val()
+            },
+            type: 'post',
+            success: function(result) {
+                // success code execution here
+               if (result.status == 'success')
+               {
+                    window.location = ""
+               }
+               else
+               {
+                    alert(result.message);
+               }
+               
+            },
+            error: function(xhr,status,error) {
+                // error code here
+            },
+            complete: function(xhr,status) {
+                // completion code here
+                $('#send_message_btn').prop("disabled", false);
+            }
+        });
+    }
+    
+    function ajax_view_message(message_id)
+    {
+        $('#view_'+message_id+'_btn').prop("disabled", true);
+        $.ajax( 'view_private_message', {
+            data: {
+               'csrfmiddlewaretoken': '{{ csrf_token }}',
+               'message_id': message_id
+            },
+            type: 'post',
+            success: function(result) {
+               // success code execution here
+               $('#ajax_new_course_modal').html(result); // Update UI.
+               $('#new_course_modal').modal();           // Unhide view.
+               },
+            error: function(xhr,status,error) {
+               // error code here
+            },
+            complete: function(xhr,status) {
+               // completion code here
+               $('#view_'+message_id+'_btn').prop("disabled", false);
+            }
+        });
+    }
+
+    function ajax_delete_message(message_id)
+    {
+        $('#del'+message_id+'_btn').prop("disabled", true);
+        $.ajax( 'delete_private_message', {
+            data: {
+               'csrfmiddlewaretoken': '{{ csrf_token }}',
+               'message_id': message_id
+            },
+            type: 'post',
+            success: function(result) {
+               // success code execution here
+               window.location = ""
+            },
+            error: function(xhr,status,error) {
+               // error code here
+            },
+            complete: function(xhr,status) {
+               // completion code here
+               $('#del'+message_id+'_btn').prop("disabled", false);
+            }
+        });
+    }
+</script>
+
 {% endblock content %}
