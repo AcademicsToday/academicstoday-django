@@ -6,6 +6,7 @@ from account.views import mail
 from account.views import profile
 from account.views import registration
 from account.views import setting
+from account.views import donate
 
 urlpatterns = patterns('',
     url(r'^register$', registration.register),
@@ -19,4 +20,5 @@ urlpatterns = patterns('',
     url(r'^delete_private_message$', mail.delete_private_message),
     url(r'^settings$', setting.settings_page),
     url(r'^update_password$', setting.update_password),
+    url(r'^donate$', donate.donate_page),
 )
