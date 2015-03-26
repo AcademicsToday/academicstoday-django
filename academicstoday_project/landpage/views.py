@@ -31,7 +31,7 @@ def humans_txt_page(request):
 
 def landpage_page(request):
     course_previews = LandpageCoursePreview.objects.all();
-    team_members = LandpageTeamMember.objects.all()
+    team_members = LandpageTeamMember.objects.all().order_by('id')
     partners = LandpagePartner.objects.all()
     return render(request, 'landpage/main.html',{
         'course_previews' : course_previews,

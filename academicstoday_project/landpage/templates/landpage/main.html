@@ -110,21 +110,33 @@
                     <p class="text-muted">{{ team_member.role }}</p>
                     <ul class="list-inline social-buttons">
                         <li>
+                            {% if team_member.twitter_url != None %}
                             <a href="{{ team_member.twitter_url }}">
-                                <i class="fa fa-twitter">
-                                </i>
-                        </a>
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                            {% endif %}
                         </li>
                         <li>
+                            {% if team_member.facebook_url != None %}
                             <a href="{{ team_member.facebook_url }}">
                                 <i class="fa fa-facebook"></i>
                             </a>
+                            {% elif team_member.google_url != None %}
+                            <a href="{{ team_member.google_url }}">
+                                <i class="fa fa-google"></i>
+                            </a>
+                            {% endif %}
                         </li>
                         <li>
+                            {% if team_member.linkedin_url != None %}
                             <a href="{{ team_member.linkedin_url }}">
-                                <i class="fa fa-linkedin">
-                                </i>
+                                <i class="fa fa-linkedin"></i>
                             </a>
+                            {% elif team_member.github_url != None %}
+                            <a href="{{ team_member.github_url }}">
+                                <i class="fa fa-github"></i>
+                            </a>
+                            {% endif %}
                         </li>
                     </ul>
                 </div>

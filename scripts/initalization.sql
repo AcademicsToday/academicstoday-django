@@ -27,13 +27,13 @@ INSERT INTO at_landpage_team_members (id, full_name, role, twitter_url, facebook
 VALUES
 (1, 'Bartlomiej Mika', 'Lead Developer', 'https://twitter.com/BartlomiejMika', 'https://www.facebook.com/bartlomiej.mika', 'bartlomiejmika.png', 'https://www.linkedin.com/pub/bartlomiej-mika/3b/568/a9a', '');
 
-INSERT INTO at_landpage_team_members (id, full_name, role, twitter_url, facebook_url, image_filename, linkedin_url, email)
+INSERT INTO at_landpage_team_members (id, full_name, role, twitter_url, facebook_url, image_filename, github_url, email)
 VALUES
-(2, 'Michael Murray', 'Lead Designer', '', '', 'michaelmurray.png', '', '');
+(2, 'Michael Murray', 'Lead Designer', 'https://twitter.com/iamnotchad', 'https://www.facebook.com/michael.murray.75033149', 'michaelmurray.png', 'https://github.com/Michael-Murray', '');
 
-INSERT INTO at_landpage_team_members (id, full_name, role, twitter_url, facebook_url, image_filename, linkedin_url, email)
+INSERT INTO at_landpage_team_members (id, full_name, role, twitter_url, google_url, image_filename, linkedin_url, email)
 VALUES
-(3, 'Sebastion Rydzewski', 'Developer', 'https://twitter.com/@srydzewski_AT', '', 'sebastionrydzewski.png', 'http://ca.linkedin.com/pub/sebastian-rydzewski/5b/108/160', 'srydzewski.AT@gmail.com');
+(3, 'Sebastion Rydzewski', 'Developer', 'https://twitter.com/@srydzewski_AT', 'https://plus.google.com/u/0/108001172254765225648/posts', 'sebastionrydzewski.png', 'http://ca.linkedin.com/pub/sebastian-rydzewski/5b/108/160', 'srydzewski.AT@gmail.com');
 
 /*-----------------------*/
 /* at_landpage_partners  */

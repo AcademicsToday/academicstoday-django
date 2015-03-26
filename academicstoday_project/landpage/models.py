@@ -30,11 +30,13 @@ class LandpageTeamMember(models.Model):
     image_filename = models.CharField(max_length=31)
     full_name = models.CharField(max_length=31)
     role = models.CharField(max_length=31)
-    twitter_url = models.CharField(max_length=255)
-    facebook_url = models.CharField(max_length=255)
-    image_filename = models.CharField(max_length=255)
-    linkedin_url = models.CharField(max_length=255)
-    email = models.EmailField()
+    twitter_url = models.CharField(max_length=255, null=True)
+    facebook_url = models.CharField(max_length=255, null=True)
+    image_filename = models.CharField(max_length=255, null=True)
+    linkedin_url = models.CharField(max_length=255, null=True)
+    github_url = models.CharField(max_length=255, null=True)
+    google_url = models.CharField(max_length=255, null=True)
+    email = models.EmailField(null=True)
     
     def __str__(self):
         return self.title
