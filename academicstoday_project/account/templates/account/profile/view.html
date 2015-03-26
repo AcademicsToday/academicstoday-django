@@ -28,16 +28,93 @@
         </div>
         <!-- /.row -->
 
-        <div class="jumbotron">
-            <h1>Coming Soon</h1>
-            <p>
-                We are currently working on this.
-            </p>
-        </div>
-        <!-- /.row -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">General Information</h3>
+                    </div>
+                    <div class="panel-body">
+                        
+                        <form role="form">
+                            
+                            <div class="form-group">
+                                <label>First Name</label>
+                                <input class="form-control"
+                                          id="first_name"
+                                        name="first_name"
+                                 placeholder="Enter First Name"
+                                       value="{{ user.first_name }}">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Last Name</label>
+                                <input class="form-control"
+                                          id="last_name"
+                                        name="last_name"
+                                 placeholder="Enter Last Name"
+                                       value="{{ user.last_name }}">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input class="form-control"
+                                          id="email"
+                                        name="email"
+                                 placeholder="Enter Email"
+                                       value="{{ user.email }}">
+                                <p class="help-block">Note: Email must be unique and not claimed by anyone else.</p>
+                            </div>
+                            
+                            <button onclick="ajax_update_user();"
+                                         id="update_user_btn"
+                                       name="update_user_btn"
+                                       type="button"
+                                      class="btn btn-lg btn-primary">Save</button>
+                            
+                        </form>
+                        
+                    </div>
+                </div>
+            </div>
+            <!-- /.col-sm-4 -->
+        </div><!-- /.row -->
 
     </div>
     <!-- /.container-fluid -->
 
 </div>
+<script>
+    function ajax_update_user()
+    {
+        $('#update_user_btn').prop("disabled", true); // Lock button
+        $.ajax( 'update_user', {
+            data: {
+               'csrfmiddlewaretoken': '{{ csrf_token }}',
+               'first_name': $('#first_name').val(),
+               'last_name': $('#last_name').val(),
+               'email': $('#email').val()
+            },
+            type: 'post',
+            success: function(result) {
+               // success code execution here
+               if (result.status != 'success')
+               {
+                    alert(result.message);
+               }
+               else
+               {
+                    window.location = "";
+               }
+            },
+            error: function(xhr,status,error) {
+               // error code here
+            },
+            complete: function(xhr,status) {
+               // completion code here
+               $('#update_user_btn').prop("disabled", false); // Unlock button
+            }
+        });
+    }
+</script>
 {% endblock content %}

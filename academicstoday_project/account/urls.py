@@ -12,6 +12,8 @@ urlpatterns = patterns('',
     url(r'^login$', login.login_authentication),
     url(r'^logout$', login.logout_authentication),
     url(r'^profile$', profile.profile_page),
+    url(r'^update_user$', profile.update_user),
     url(r'^inbox$', mail.inbox_page),
     url(r'^settings$', setting.settings_page),
+    url(r'^update_password$', setting.update_password),
 )

@@ -19,3 +19,27 @@ def settings_page(request):
         'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
         'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
     })
+
+
+@login_required()
+def update_password(request):
+    response_data = {'status' : 'failed', 'message' : 'unknown deletion error'}
+    if request.is_ajax():
+        if request.method == 'POST':
+            password = request.POST['password']
+            repeat_password = request.POST['repeat_password']
+            
+            # Validate password.
+            if password is '' or request is '':
+                response_data = {'status' : 'failure', 'message' : 'blank passwords are not acceptable' }
+                return HttpResponse(json.dumps(response_data), content_type="application/json")
+            if password != repeat_password:
+                response_data = {'status' : 'failure', 'message' : 'passwords do not match' }
+                return HttpResponse(json.dumps(response_data), content_type="application/json")
+        
+            # Update model
+            request.user.set_password(password)
+            request.user.save()
+        
+            response_data = {'status' : 'success', 'message' : 'updated password'}
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
