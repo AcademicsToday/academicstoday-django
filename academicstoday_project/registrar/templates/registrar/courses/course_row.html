@@ -2,11 +2,17 @@
     <div class="col-lg-12 text-center">
         <div class="panel panel-default">
             <div class="panel-body">
+                <!-- Course Picture -->
+                <div class="col-lg-3 text-left">
+                    <img src="{{ course.file.url }}" height="256" width="256" />
+                </div>
                 <!-- Course Info -->
-                <div class="col-lg-8 text-left">
-                    <h2>{{ course.title }}
+                <div class="col-lg-9 text-left">
+                    <h2>{{ course.title }}<br/>
                         {% if course in teacher.courses.all %}
                             <small>[You cannot enrol in a class you currently teach!]</small>
+                        {% else %}
+                            <small>{{ course.sub_title }}</small>
                         {% endif %}
                     </h2>
                     {% if course.is_official %}<p align="left"><span class="badge">Offical</span></p>{% endif %}
