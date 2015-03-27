@@ -115,3 +115,38 @@ class DonateTestCase(TestCase):
         array = json.loads(json_string)
         self.assertEqual(array['status'], 'success')
         self.assertEqual(array['message'], 'you are logged off')
+
+    def test_login_authentication_with_non_ajax_call(self):
+        # Test
+        client = Client()
+        response = client.post(
+            '/login',
+            {'username': TEST_USER_USERNAME, 'password': TEST_USER_PASSWORD}
+        )
+            
+        # Verify: Check that the response is 200 OK.
+        self.assertEqual(response.status_code, 200)
+                               
+        # Verify: Successful response.
+        json_string = response.content.decode(encoding='UTF-8')
+        array = json.loads(json_string)
+        self.assertEqual(array['status'], 'failure')
+        self.assertEqual(array['message'], 'an unknown error occured')
+
+    def test_logout_authentication_with_non_ajax_call(self):
+        # Test
+        client = Client()
+        client.login(
+            username=TEST_USER_USERNAME,
+            password=TEST_USER_PASSWORD
+        )
+        response = client.post('/logout')
+                     
+        # Verify: Check that the response is 200 OK.
+        self.assertEqual(response.status_code, 200)
+                     
+        # Verify: Successful response.
+        json_string = response.content.decode(encoding='UTF-8')
+        array = json.loads(json_string)
+        self.assertEqual(array['status'], 'success')
+        self.assertEqual(array['message'], 'you are logged off')
