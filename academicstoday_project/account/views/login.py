@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 
 
 def login_authentication(request):
-    response_data = {}
+    response_data = {'status' : 'failure', 'message' : 'an unknown error occured'}
     if request.is_ajax():
         if request.method == 'POST':
             user = authenticate(username=request.POST.get('username'), password=request.POST.get('password'))
@@ -18,17 +18,17 @@ def login_authentication(request):
             if user is not None:
                 # Is user suspended or active?
                 if user.is_active:
-                    response_data = {'status' : 'success', 'message' : 'Loging in...'}
+                    response_data = {'status' : 'success', 'message' : 'logged on'}
                     login(request, user)
                 else:
-                    response_data = {'status' : 'failure', 'message' : 'You are suspended.'}
+                    response_data = {'status' : 'failure', 'message' : 'you are suspended'}
             else:
-                response_data = {'status' : 'failure', 'message' : 'Wrong username or password.'}
+                response_data = {'status' : 'failure', 'message' : 'wrong username or password'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
 def logout_authentication(request):
-    response_data = {'status' : 'success', 'message' : 'Done'}
+    response_data = {'status' : 'success', 'message' : 'you are logged off'}
     if request.is_ajax():
         if request.method == 'POST':
             logout(request)

@@ -1,0 +1,117 @@
+from django.core.urlresolvers import resolve
+from django.http import HttpRequest
+from django.http import QueryDict
+from django.test import TestCase
+from django.test import Client
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+import json
+from account.views import donate
+
+# Contants
+TEST_USER_EMAIL = "ledo@gah.com"
+TEST_USER_USERNAME = "Ledo"
+TEST_USER_PASSWORD = "password"
+
+
+class DonateTestCase(TestCase):
+    def setUp(self):
+        # Create our user.
+        user = User.objects.create_user(
+            email=TEST_USER_EMAIL,
+            username=TEST_USER_USERNAME,
+            password=TEST_USER_PASSWORD
+        )
+        user.is_active = True
+        user.save()
+    
+    def test_login_authentication_with_succesful_login(self):
+        # Extra parameters to make this a Ajax style request.
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        
+        # Test
+        client = Client()
+        response = client.post(
+            '/login',
+            {'username': TEST_USER_USERNAME, 'password': TEST_USER_PASSWORD},
+            **kwargs
+        )
+        
+        # Verify: Check that the response is 200 OK.
+        self.assertEqual(response.status_code, 200)
+
+        # Verify: Successful response.
+        json_string = response.content.decode(encoding='UTF-8')
+        array = json.loads(json_string)
+        self.assertEqual(array['status'], 'success')
+        self.assertEqual(array['message'], 'logged on')
+
+
+    def test_login_authentication_with_failed_login(self):
+        # Extra parameters to make this a Ajax style request.
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        
+        # Test
+        client = Client()
+        response = client.post(
+            '/login',
+            {'username': TEST_USER_USERNAME, 'password': 'wrong_password'},
+            **kwargs
+        )
+            
+        # Verify: Check that the response is 200 OK.
+        self.assertEqual(response.status_code, 200)
+                               
+        # Verify: Successful response.
+        json_string = response.content.decode(encoding='UTF-8')
+        array = json.loads(json_string)
+        self.assertEqual(array['status'], 'failure')
+        self.assertEqual(array['message'], 'wrong username or password')
+
+    def test_login_authentication_with_suspension(self):
+        # Extra parameters to make this a Ajax style request.
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+     
+        # Suspend User
+        user = User.objects.get(username=TEST_USER_USERNAME)
+        user.is_active = False
+        user.save()
+   
+        # Test
+        client = Client()
+        response = client.post(
+            '/login',
+            {'username': TEST_USER_USERNAME, 'password': TEST_USER_PASSWORD},
+            **kwargs
+        )
+            
+        # Verify: Check that the response is 200 OK.
+        self.assertEqual(response.status_code, 200)
+                               
+        # Verify: Successful response.
+        json_string = response.content.decode(encoding='UTF-8')
+        array = json.loads(json_string)
+        self.assertEqual(array['status'], 'failure')
+        self.assertEqual(array['message'], 'you are suspended')
+
+    def test_logout_authentication_with_success(self):
+        # Extra parameters to make this a Ajax style request.
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        
+        # Test
+        client = Client()
+        client.login(
+            username=TEST_USER_USERNAME,
+            password=TEST_USER_PASSWORD
+        )
+        response = client.post('/logout', {}, **kwargs )
+            
+        # Verify: Check that the response is 200 OK.
+        self.assertEqual(response.status_code, 200)
+                               
+        # Verify: Successful response.
+        json_string = response.content.decode(encoding='UTF-8')
+        array = json.loads(json_string)
+        self.assertEqual(array['status'], 'success')
+        self.assertEqual(array['message'], 'you are logged off')

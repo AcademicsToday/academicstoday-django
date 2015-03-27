@@ -32,11 +32,17 @@ class DonateTestCase(TestCase):
     
     
     def test_donate_page_returns_correct_html(self):
+        # Test
         client = Client()
         client.login(
             username=TEST_USER_USERNAME,
             password=TEST_USER_PASSWORD
         )
-        response = client.post('/donate')  # Test
-        self.assertIn(b'PayPal',response.content)  # Verify
+        response = client.post('/donate')
+        
+        # Verify: Check that the response is 200 OK.
+        self.assertEqual(response.status_code, 200)
+        
+        # Verify: Check that donation content was returned.
+        self.assertIn(b'PayPal',response.content)
         self.assertIn(b'Bitcoin',response.content)
