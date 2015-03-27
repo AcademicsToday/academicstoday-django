@@ -1,0 +1,18 @@
+———————————————————————————————————————————————————————————
+HOWTO: Run Unit Tests
+———————————————————————————————————————————————————————————
+By: Bartlomiej Mika
+Date: Feb, 14th, 2015
+
+1) Make sure that the steps in postgres have been completed
+
+
+2) To run our web-apps unit tests, simply run the following commans in your conosle.
+
+- - - - - - - - - - - - - - - - - - - - - - -
+python manage.py test account.tests;
+- - - - - - - - - - - - - - - - - - - - - - -
+
+
+3) If you have any questions, then visit:
+https://docs.djangoproject.com/en/1.7/topics/testing/overview/
