@@ -1,6 +1,7 @@
 {% extends 'landpage/base.html' %}
 {% load staticfiles %}
 {% block content %}
+
 <!-- Header -->
 <header>
     <div class="container">
@@ -17,6 +18,41 @@
         </div>
     </div>
 </header>
+
+
+
+<!-- Social Media -->
+<div id="social-buttons" class="hidden-print">
+    <div class="container">
+        <ul class="list-inline">
+            <li>
+                <iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=AcademicsToday&amp;repo=py-academicstoday&amp;type=watch&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="100px" height="20px"></iframe>
+            </li>
+            <li>
+                <iframe class="github-btn" src="http://ghbtns.com/github-btn.html?user=AcademicsToday&amp;repo=py-academicstoday&amp;type=fork&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="102px" height="20px"></iframe>
+            </li>
+            <li>
+                <iframe src="https://ghbtns.com/github-btn.html?user=AcademicsToday&repo=py-academicstoday&type=watch&count=true&v=2" frameborder="0" scrolling="0" width="100px" height="20px"></iframe>
+            </li>
+            <li class="follow-btn">
+                <!-- Make your own here: https://dev.twitter.com/web/follow-button -->
+                <iframe
+                    src="//platform.twitter.com/widgets/follow_button.html?screen_name=AcademicsToday"
+                    style="width: 235px; height: 20px;"
+                    allowtransparency="true"
+                    frameborder="0"
+                    scrolling="no">
+                </iframe>
+            </li>
+            <li class="tweet-btn hidden-phone">
+                <!-- Make your own here: https://about.twitter.com/resources/buttons#tweet -->
+                <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.acadmicstoday.ca" data-text="Providing free university education to everyone on the planet, check us out!" data-via="AcademicsToday" data-hashtags="AcademicsToday">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
 
 <!-- Services Section -->
 <section id="services">
@@ -56,6 +92,8 @@
     </div>
 </section>
 
+
+
 <!-- Courses Grid Section -->
 <section id="portfolio" class="bg-light-gray">
     <div class="container">
@@ -88,6 +126,8 @@
         </div>
     </div>
 </section>
+
+
 
 <!--              -->
 <!-- Team Section -->
@@ -151,6 +191,8 @@
     </div>
 </section>
 
+
+
 <!-- Clients Aside -->
 <aside class="clients">
     <div class="container">
@@ -167,6 +209,8 @@
         </div>
     </div>
 </aside>
+
+
 
 <!-- Contact Us Section -->
 <section id="contact">
@@ -215,6 +259,9 @@
     </div>
 </section>
 
+
+
+<!-- Footer -->
 <footer>
     <div class="container">
         <div class="row">

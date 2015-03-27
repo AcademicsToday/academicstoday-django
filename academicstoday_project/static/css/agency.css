@@ -865,3 +865,14 @@ img::-moz-selection {
 body {
     webkit-tap-highlight-color: #fed136;
 }
+
+/*!
+ *  Addition: Social Media
+ */
+#social-buttons {
+    padding: 22px 0 17px;
+    text-align: center;
+    background-color: #f5f5f5;
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #eee;
+}
