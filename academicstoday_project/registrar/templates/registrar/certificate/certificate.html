@@ -1,0 +1,10 @@
+{% load staticfiles %}
+<html>
+    <head>
+        <title>Certificate #{{ mark.credit_id }}</title>
+    </head>
+    <body>
+        <h1>Certificate of Completion</h1>
+        <p>This Certifies that {{ student.user.first_name }} {{ student.user.last_name }} Has Attended <b>{{ mark.course.title }}</b> and is Awarded this Certificate Form From Academics Today.</p>
+    </body>
+</html>

@@ -180,6 +180,7 @@ class CourseFinalMark(models.Model):
         validators=[MinValueValidator(0), MaxValueValidator(100)],
         default=0
     )
+    is_public = models.BooleanField(default=False)
     course = models.ForeignKey(Course)
     student = models.ForeignKey(Student)
         

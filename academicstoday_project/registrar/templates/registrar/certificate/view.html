@@ -22,16 +22,39 @@
         </div>
         <!-- /.row -->
 
+        {% if marks == None %}
+
+        <!-- No Grades Banner -->
         <div class="jumbotron">
-            <h1>Coming Soon</h1>
+            <h1>No Grades</h1>
             <p>
-                Print and share your accomplishments with family, friends and employers. This feature is still being worked on.
+                It appears you have not completed any courses yet. To generate a certificate, you must complete a course.
+            </p>
+            <p><a href="/courses"
+                 class="btn btn-primary btn-lg"
+                  role="button">Find Courses »</a>
             </p>
         </div>
         <!-- /.row -->
+
+        {% else %}
+
+        <!-- Certificates -->
+        <div id="ajax_certificates_table"
+           name="ajax_certificates_table">
+            {% include "registrar/certificate/table.html" %}
+        </div>
+        <!-- /.row -->
+
+        {% endif %}
 
     </div>
     <!-- /.container-fluid -->
 
 </div>
+<!-- Modal -->
+<div id="ajax_modal"
+   name="ajax_modal"></div>
+<!-- end modal -->
+{% include 'registrar/certificate/js.html' %}
 {% endblock content %}

@@ -1,26 +1,34 @@
 from django.conf.urls import patterns, include, url
 
-from . import views
+from registrar.views import courses
+from registrar.views import enrolment
+from registrar.views import teaching
+from registrar.views import transcript
+from registrar.views import certificate
 
 urlpatterns = patterns('',
     # Courses
-    url(r'^courses$', views.courses_page),
-    url(r'^enrol$', views.enrol),
+    url(r'^courses$', courses.courses_page),
+    url(r'^enrol$', courses.enrol),
 
     # Enrolment(s)
-    url(r'^enrolment$', views.enrolment_page),
+    url(r'^enrolment$', enrolment.enrolment_page),
                        
     # Teaching
-    url(r'^teaching$', views.teaching_page),
-    url(r'^refresh_teaching_table$', views.refresh_teaching_table),
+    url(r'^teaching$', teaching.teaching_page),
+    url(r'^refresh_teaching_table$', teaching.refresh_teaching_table),
                        
-    url(r'^new_course_modal$', views.new_course_modal),
-    url(r'^save_new_course$', views.save_new_course),
-    url(r'^course_delete$', views.course_delete),
+    url(r'^new_course_modal$', teaching.new_course_modal),
+    url(r'^save_new_course$', teaching.save_new_course),
+    url(r'^course_delete$', teaching.course_delete),
                     
     # Transcript
-    url(r'^transcript$', views.transcript_page),
+    url(r'^transcript$', transcript.transcript_page),
                        
     # Certificate(s)
-    url(r'^certificates$', views.certificates_page),
+    url(r'^certificates$', certificate.certificates_page),
+    url(r'^certificates_table$', certificate.certificates_table),
+    url(r'^change_certificate_accessiblity$', certificate.change_certificate_accessiblity),
+    url(r'^certificate/(\d+)$', certificate.certificate_page),
+    url(r'^certificate_permalink_modal$', certificate.certificate_permalink_modal),
 )
