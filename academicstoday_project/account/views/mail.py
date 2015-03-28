@@ -10,7 +10,7 @@ from account.models import PrivateMessage
 from account.forms import PrivateMessageForm
 
 @login_required(login_url='/landpage')
-def inbox_page(request):
+def mail_page(request):
     try:
         email = request.user.email
         messages = PrivateMessage.objects.filter(to_address=email)
@@ -28,7 +28,7 @@ def inbox_page(request):
 
 @login_required()
 def send_private_message(request):
-    response_data = {'status' : 'failed', 'message' : 'unknown deletion error'}
+    response_data = {'status' : 'failed', 'message' : 'unknown error'}
     if request.is_ajax():
         if request.method == 'POST':
             title = request.POST['title']
@@ -49,13 +49,13 @@ def send_private_message(request):
                 from_address=request.user.email,
             ).save()
 
-            response_data = {'status' : 'success', 'message' : 'updated user '}
+            response_data = {'status' : 'success', 'message' : 'private message sent'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
 @login_required()
 def view_private_message(request):
-    response_data = {'status' : 'failed', 'message' : 'unknown deletion error'}
+    response_data = {'status' : 'failed', 'message' : 'unknown error'}
     if request.is_ajax():
         if request.method == 'POST':
             message_id = int(request.POST['message_id'])
@@ -76,7 +76,7 @@ def view_private_message(request):
 
 @login_required()
 def delete_private_message(request):
-    response_data = {'status' : 'failed', 'message' : 'unknown deletion error'}
+    response_data = {'status' : 'failed', 'message' : 'unknown error'}
     if request.is_ajax():
         if request.method == 'POST':
             message_id = int(request.POST['message_id'])
