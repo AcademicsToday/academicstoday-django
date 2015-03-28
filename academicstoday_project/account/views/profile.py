@@ -47,5 +47,5 @@ def update_user(request):
             user.username = email
             user.save()
 
-            response_data = {'status' : 'success', 'message' : 'updated user '}
+            response_data = {'status' : 'success', 'message' : 'updated user'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
