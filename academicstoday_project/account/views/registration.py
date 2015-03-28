@@ -41,7 +41,7 @@ def register(request):
                     user.first_name = request.POST['first_name']
                     user.last_name = request.POST['last_name']
                     user.save()
-                    response_data = {'status' : 'success', 'message' : 'You are now successfully registered' }
+                    response_data = {'status' : 'success', 'message' : 'successfully registered' }
                 except Exception as e:
                     response_data = {'status' : 'failure', 'message' : 'An unknown error occured, failed registering.' }
     else:
