@@ -11,6 +11,7 @@ Date: Feb, 14th, 2015
 
 - - - - - - - - - - - - - - - - - - - - - - -
 python manage.py test account.tests;
+python manage.py test registrar.tests;
 - - - - - - - - - - - - - - - - - - - - - - -
 
 
