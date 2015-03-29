@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
+import os
 
 WORTH_PERCENT_CHOICES = (
     (0, '0 %'),
@@ -110,6 +111,18 @@ class Course(models.Model):
     status = models.PositiveSmallIntegerField(default=settings.COURSE_UNAVAILABLE_STATUS)
     file = models.FileField(upload_to='uploads',null=True)
 
+    def delete(self, *args, **kwargs):
+        """
+            Overrided delete functionality to include deleting the local file
+            that we have stored on the system. Currently the deletion funciton
+            is missing this functionality as it's our responsibility to handle
+            the local files.
+        """
+        if self.file:
+            if os.path.isfile(self.file.path):
+                os.remove(self.file.path)
+        super(Course, self).delete(*args, **kwargs) # Call the "real" delete() method
+
     def __str__(self):
         return self.title
 
@@ -216,8 +229,14 @@ class Syllabus(models.Model):
     file = models.FileField(upload_to='uploads',null=True)
     course = models.ForeignKey(Course)
 
+    def delete(self, *args, **kwargs):
+        if self.file:
+            if os.path.isfile(self.file.path):
+                 os.remove(self.file.path)
+        super(Syllabus, self).delete(*args, **kwargs) # Call the "real" delete() method
+
     def __str__(self):
-        return self.file;
+        return self.syllabus_id + ' ' + self.file.url;
 
     class Meta:
         db_table = 'at_syllabus'
@@ -227,6 +246,12 @@ class Policy(models.Model):
     policy_id = models.AutoField(primary_key=True)
     file = models.FileField(upload_to='uploads',null=True)
     course = models.ForeignKey(Course)
+
+    def delete(self, *args, **kwargs):
+        if self.file:
+            if os.path.isfile(self.file.path):
+                os.remove(self.file.path)
+        super(Policy, self).delete(*args, **kwargs) # Call the "real" delete() method
 
     def __str__(self):
         return self.policy_id + ' ' + self.file.url;
@@ -453,6 +478,12 @@ class EssaySubmission(models.Model):
     student = models.ForeignKey(Student)
     question = models.ForeignKey(EssayQuestion)
     reviews = models.ManyToManyField(PeerReview)
+    
+    def delete(self, *args, **kwargs):
+        if self.file:
+            if os.path.isfile(self.file.path):
+                os.remove(self.file.path)
+        super(EssaySubmission, self).delete(*args, **kwargs) # Call the "real" delete() method
     
     def __str__(self):
         return self.course_id + ' ' + self.file_path;
