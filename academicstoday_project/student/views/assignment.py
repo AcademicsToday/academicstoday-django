@@ -185,13 +185,20 @@ def delete_assignment(request, course_id):
 
             # Set 'is_finished' to false to indicate we need to take the
             # assignment all over.
-            submission = AssignmentSubmission.objects.get(
-                student=student,
-                assignment=assignment,
-            )
-            submission.is_finished = False
-            submission.save()
-            
+            try:
+                submission = AssignmentSubmission.objects.get(
+                    student=student,
+                    assignment=assignment,
+                )
+                submission.is_finished = False
+                submission.save()
+            except AssignmentSubmission.DoesNotExist:
+                return HttpResponse(json.dumps({
+                    'status' : 'success',
+                    'message' : 'assignment was deleted'
+                }), content_type="application/json")
+
+
             # Delete all previous entries.
             try:
                 e_submissions = EssaySubmission.objects.filter(question__assignment=assignment, student=student)
@@ -214,7 +221,7 @@ def delete_assignment(request, course_id):
             except ResponseQuestion.DoesNotExist:
                 pass
 
-            response_data = {'status' : 'success', 'message' : ''}
+            response_data = {'status' : 'success', 'message' : 'assignment was deleted'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
