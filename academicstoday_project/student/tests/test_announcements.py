@@ -10,43 +10,48 @@ from django.contrib.auth.decorators import login_required
 import json
 
 # Modal
-from course.models import Course
-from course.models import Announcement
+from registrar.models import Course
+from registrar.models import Announcement
 
 # View
-from course.views import announcement
+from student.views import announcement
 
 # Contants
 TEST_USER_EMAIL = "ledo@gah.com"
 TEST_USER_USERNAME = "Ledo"
 TEST_USER_PASSWORD = "password"
 
+# Notes:
+# https://docs.djangoproject.com/en/1.7/topics/testing/tools/#assertions
 
 # Create your tests here.
 class AnnouncementTestCase(TestCase):
     def setUp(self):
         # Create our user.
-        user = User.objects.create_user(
+        User.objects.create_user(
             email=TEST_USER_EMAIL,
             username=TEST_USER_USERNAME,
             password=TEST_USER_PASSWORD
-        )
-        user.save()
+        ).save()
 
         # Create a test course
         Course.objects.create(
-            image_filename="roundicons.png",
+            id=1,
             title="Comics Book Course",
             sub_title="The definitive course on comics!",
             category="",
-        )
+        ).save()
+        
+        course = Course.objects.get(id=1)
+        if course is None:
+            self.assertTrue(False)
 
         # Create our announcement(s)
         Announcement.objects.create(
-            course_id=1,
+            course=course,
             title='Hello world!',
             body='This is the body of the message.',
-        )
+        ).save()
 
 
     def test_url_resolves_to_announcements_page_view(self):
