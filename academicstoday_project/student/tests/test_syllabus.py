@@ -28,7 +28,7 @@ TEST_USER_PASSWORD = "password"
 # https://docs.djangoproject.com/en/1.7/topics/testing/tools/#assertions
 
 # Create your tests here.
-class AssignmentTestCase(TestCase):
+class SyllabusTestCase(TestCase):
     def setUp(self):
         # Create our Student.
         User.objects.create_user(
