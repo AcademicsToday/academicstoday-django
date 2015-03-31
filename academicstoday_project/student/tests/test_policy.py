@@ -62,9 +62,6 @@ class PolicyTestCase(TestCase):
     def test_policy_page_with_correct_html(self):
         client = self.get_logged_in_client()
         response = client.post('/course/1/policy')
-        
-        # Verify we are in the correct course.
+        self.assertEqual(response.status_code, 200)
         self.assertIn(b'Comics Book Course',response.content)
-        
-        # Verify
         self.assertIn(b'<h1>Policy and Grades</h1>',response.content)

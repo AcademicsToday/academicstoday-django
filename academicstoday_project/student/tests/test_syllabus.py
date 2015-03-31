@@ -62,9 +62,6 @@ class SyllabusTestCase(TestCase):
     def test_syllabus_page_with_correct_html(self):
         client = self.get_logged_in_client()
         response = client.post('/course/1/syllabus')
-        
-        # Verify we are in the correct course.
+        self.assertEqual(response.status_code, 200)
         self.assertIn(b'Comics Book Course',response.content)
-        
-        # Verify
         self.assertIn(b'<h1>Syllabus</h1>',response.content)

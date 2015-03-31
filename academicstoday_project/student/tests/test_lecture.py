@@ -71,11 +71,8 @@ class LectureTestCase(TestCase):
     def test_lectures_page_with_correct_html(self):
         client = self.get_logged_in_client()
         response = client.post('/course/1/lectures')
-        
-        # Verify we are in the correct course.
+        self.assertEqual(response.status_code, 200)
         self.assertIn(b'Comics Book Course',response.content)
-        
-        # Verify
         self.assertIn(b'Lectures',response.content)
 
     def test_url_resolves_to_lecture_modal(self):
@@ -88,7 +85,6 @@ class LectureTestCase(TestCase):
         response = client.post('/course/1/lecture',{
             'lecture_id': 1,
         },**kwargs)
-        
-        # Verify
+        self.assertEqual(response.status_code, 200)
         self.assertIn(b'lecture_modal',response.content)
         self.assertIn(b'Blade vs Evil',response.content)

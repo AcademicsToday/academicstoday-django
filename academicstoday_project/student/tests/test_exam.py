@@ -95,11 +95,8 @@ class ExamTestCase(TestCase):
     def test_exams_page_with_no_submissions(self):
         client = self.get_logged_in_client()
         response = client.post('/course/1/exams')
-
-        # Verify we are in the correct course.
+        self.assertEqual(response.status_code, 200)
         self.assertIn(b'Comics Book Course',response.content)
-        
-        # Verify our assignment was listed.
         self.assertIn(b'view_exam(1);',response.content)
 
     def test_url_resolves_to_exams_table_view(self):
@@ -109,8 +106,7 @@ class ExamTestCase(TestCase):
     def test_exams_table_returns_with_no_submissions(self):
         client = self.get_logged_in_client()
         response = client.post('/course/1/exams_table')
-        
-        # Verify our assignment was listed.
+        self.assertEqual(response.status_code, 200)
         self.assertIn(b'view_exam(1);',response.content)
     
     def test_url_resolves_to_delete_exam(self):
@@ -123,8 +119,7 @@ class ExamTestCase(TestCase):
         response = client.post('/course/1/delete_exam',{
             'exam_id': 1,
         }, **kwargs)
-        
-        # Verify
+        self.assertEqual(response.status_code, 200)
         json_string = response.content.decode(encoding='UTF-8')
         array = json.loads(json_string)
         self.assertEqual(array['status'], 'success')
@@ -137,8 +132,7 @@ class ExamTestCase(TestCase):
     def test_assignment_page(self):
         client = self.get_logged_in_client()
         response = client.post('/course/1/exam/1')
-        
-        # Verify our assignment was listed.
+        self.assertEqual(response.status_code, 200)
         self.assertIn(b'Exam #1',response.content)
 
     def test_submit_mc_exam_answer_with_submissions(self):
@@ -148,8 +142,7 @@ class ExamTestCase(TestCase):
             'question_id': 2,
             'answer': 'A',
         }, **kwargs)
-            
-        # Verify
+        self.assertEqual(response.status_code, 200)
         json_string = response.content.decode(encoding='UTF-8')
         array = json.loads(json_string)
         self.assertEqual(array['status'], 'success')
@@ -159,11 +152,7 @@ class ExamTestCase(TestCase):
         kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
         client = self.get_logged_in_client()
         response = client.post('/course/1/exam/1/submit_exam',{}, **kwargs)
-        
-        # Verify: Check that the response is 200 OK.
         self.assertEqual(response.status_code, 200)
-        
-        # Verify
         json_string = response.content.decode(encoding='UTF-8')
         array = json.loads(json_string)
         self.assertEqual(array['message'], 'submitted')
@@ -177,11 +166,7 @@ class ExamTestCase(TestCase):
             'answer': 'A',
         }, **kwargs)
         response = client.post('/course/1/exam/1/submit_exam',{}, **kwargs)
-                    
-        # Verify: Check that the response is 200 OK.
         self.assertEqual(response.status_code, 200)
-                    
-        # Verify
         json_string = response.content.decode(encoding='UTF-8')
         array = json.loads(json_string)
         self.assertEqual(array['message'], 'submitted')

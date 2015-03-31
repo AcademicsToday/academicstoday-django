@@ -91,14 +91,8 @@ class QuizTestCase(TestCase):
     def test_quizzes_page_with_no_submissions(self):
         client = self.get_logged_in_client()
         response = client.post('/course/1/quizzes')
-
-        # Verify: Check that the response is 200 OK.
         self.assertEqual(response.status_code, 200)
-
-        # Verify we are in the correct course.
         self.assertIn(b'Comics Book Course',response.content)
-        
-        # Verify our assignment was listed.
         self.assertIn(b'view_quiz(1);',response.content)
 
     def test_url_resolves_to_quizzes_table_view(self):
@@ -108,11 +102,7 @@ class QuizTestCase(TestCase):
     def test_quizzes_table_returns_with_no_submissions(self):
         client = self.get_logged_in_client()
         response = client.post('/course/1/quizzes_table')
-        
-        # Verify: Check that the response is 200 OK.
         self.assertEqual(response.status_code, 200)
-        
-        # Verify our assignment was listed.
         self.assertIn(b'view_quiz(1);',response.content)
 
     def test_url_resolves_to_delete_quiz(self):
@@ -125,11 +115,7 @@ class QuizTestCase(TestCase):
         response = client.post('/course/1/quiz_delete',{
             'quiz_id': 1,
         }, **kwargs)
-        
-        # Verify: Check that the response is 200 OK.
         self.assertEqual(response.status_code, 200)
-        
-        # Verify
         json_string = response.content.decode(encoding='UTF-8')
         array = json.loads(json_string)
         self.assertEqual(array['status'], 'success')
@@ -142,11 +128,7 @@ class QuizTestCase(TestCase):
     def test_quiz_page(self):
         client = self.get_logged_in_client()
         response = client.post('/course/1/quiz/1')
-        
-        # Verify: Check that the response is 200 OK.
         self.assertEqual(response.status_code, 200)
-        
-        # Verify our assignment was listed.
         self.assertIn(b'Quiz #1',response.content)
     
     def test_submit_tf_assignment_answer_with_submission(self):
@@ -156,11 +138,8 @@ class QuizTestCase(TestCase):
             'question_id': 1,
             'answer': 'true',
         }, **kwargs)
-           
-        # Verify: Check that the response is 200 OK.
+        
         self.assertEqual(response.status_code, 200)
-           
-        # Verify
         json_string = response.content.decode(encoding='UTF-8')
         array = json.loads(json_string)
         self.assertEqual(array['message'], 'submitted')
@@ -170,11 +149,7 @@ class QuizTestCase(TestCase):
         kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
         client = self.get_logged_in_client()
         response = client.post('/course/1/quiz/1/submit_quiz',{}, **kwargs)
-            
-        # Verify: Check that the response is 200 OK.
         self.assertEqual(response.status_code, 200)
-                               
-        # Verify
         json_string = response.content.decode(encoding='UTF-8')
         array = json.loads(json_string)
         self.assertEqual(array['message'], 'submitted')
@@ -189,10 +164,7 @@ class QuizTestCase(TestCase):
         }, **kwargs)
         response = client.post('/course/1/quiz/1/submit_quiz',{}, **kwargs)
         
-        # Verify: Check that the response is 200 OK.
         self.assertEqual(response.status_code, 200)
-        
-        # Verify
         json_string = response.content.decode(encoding='UTF-8')
         array = json.loads(json_string)
         self.assertEqual(array['message'], 'submitted')

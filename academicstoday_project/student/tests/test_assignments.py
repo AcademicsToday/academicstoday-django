@@ -130,10 +130,8 @@ class AssignmentTestCase(TestCase):
         client = self.get_logged_in_client()
         response = client.post('/course/1/assignments')
 
-        # Verify we are in the correct course.
+        self.assertEqual(response.status_code, 200)
         self.assertIn(b'Comics Book Course',response.content)
-        
-        # Verify our assignment was listed.
         self.assertIn(b'view_assignment(1);',response.content)
 
     def test_url_resolves_to_assignment_table_view(self):
@@ -144,7 +142,7 @@ class AssignmentTestCase(TestCase):
         client = self.get_logged_in_client()
         response = client.post('/course/1/assignments_table')
         
-        # Verify our assignment was listed.
+        self.assertEqual(response.status_code, 200)
         self.assertIn(b'view_assignment(1);',response.content)
     
     def test_url_resolves_to_delete_assignment(self):
@@ -161,6 +159,7 @@ class AssignmentTestCase(TestCase):
         # Verify
         json_string = response.content.decode(encoding='UTF-8')
         array = json.loads(json_string)
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(array['status'], 'success')
         self.assertEqual(array['message'], 'assignment was deleted')
 
@@ -172,7 +171,7 @@ class AssignmentTestCase(TestCase):
         client = self.get_logged_in_client()
         response = client.post('/course/1/assignment/1')
         
-        # Verify our assignment was listed.
+        self.assertEqual(response.status_code, 200)
         self.assertIn(b'Assignment #1',response.content)
 
     def test_submit_e_assignment_answer_with_empty_submission(self):
@@ -182,9 +181,9 @@ class AssignmentTestCase(TestCase):
             'question_id': 1,
         }, **kwargs)
     
-        # Verify
         json_string = response.content.decode(encoding='UTF-8')
         array = json.loads(json_string)
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(array['status'], 'failed')
         self.assertEqual(array['message'], 'missing file')
 
@@ -202,6 +201,7 @@ class AssignmentTestCase(TestCase):
         # Verify Response
         json_string = response.content.decode(encoding='UTF-8')
         array = json.loads(json_string)
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(array['status'], 'success')
         self.assertEqual(array['message'], 'submitted')
 
@@ -222,10 +222,10 @@ class AssignmentTestCase(TestCase):
             'question_id': 2,
             'answer': 'A',
         }, **kwargs)
-            
-        # Verify
+        
         json_string = response.content.decode(encoding='UTF-8')
         array = json.loads(json_string)
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(array['status'], 'success')
         self.assertEqual(array['message'], 'submitted')
 
@@ -236,10 +236,10 @@ class AssignmentTestCase(TestCase):
             'question_id': 3,
             'answer': 'true',
         }, **kwargs)
-            
-        # Verify
+        
         json_string = response.content.decode(encoding='UTF-8')
         array = json.loads(json_string)
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(array['message'], 'submitted')
         self.assertEqual(array['status'], 'success')
     
@@ -252,9 +252,9 @@ class AssignmentTestCase(TestCase):
             'answer': 'Because of Global Cooling caused by abnormal solar hibernation.',
         }, **kwargs)
             
-        # Verify
         json_string = response.content.decode(encoding='UTF-8')
         array = json.loads(json_string)
+        self.assertEqual(response.status_code, 200)
         self.assertEqual(array['status'], 'success')
         self.assertEqual(array['message'], 'submitted')
     

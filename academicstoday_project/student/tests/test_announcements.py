@@ -66,10 +66,7 @@ class AnnouncementTestCase(TestCase):
             password=TEST_USER_PASSWORD
         )
         response = client.post('/course/1/announcement')
-        
-        # Verify we are in the correct course.
+        self.assertEqual(response.status_code, 200)
         self.assertIn(b'Comics Book Course',response.content)
-        
-        # Verify our announcement was listed.
         self.assertIn(b'Hello world!',response.content)
         self.assertIn(b'This is the body of the message.',response.content)
