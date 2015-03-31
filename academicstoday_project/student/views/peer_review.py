@@ -29,7 +29,7 @@ from student.forms import PeerReviewForm
 # https://docs.djangoproject.com/en/1.7/topics/serialization/
 
 @login_required(login_url='/landpage')
-def peer_review_page(request, course_id):
+def peer_reviews_page(request, course_id):
     course = Course.objects.get(id=course_id)
     student = Student.objects.get(user=request.user)
     
@@ -177,8 +177,11 @@ def delete_peer_review(request, course_id, submission_id):
     if request.is_ajax():
         if request.method == 'POST':
             review_id = request.POST['review_id']
-            review = PeerReview.objects.get(review_id=review_id).delete()
-            response_data = {'status' : 'success', 'message' : 'deleted '}
+            try:
+                PeerReview.objects.get(review_id=review_id).delete()
+                response_data = {'status' : 'success', 'message' : 'deleted'}
+            except PeerReview.DoesNotExist:
+                response_data = {'status' : 'failed', 'message' : 'record does not exist'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
@@ -204,7 +207,7 @@ def update_assignment_marks(request, course_id, submission_id):
                 process_submission_question(a_submission, r_submission)
             
             process_submission_assignment(a_submission)
-            response_data = {'status' : 'success', 'message' : 'updated '}
+            response_data = {'status' : 'success', 'message' : 'updated'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 

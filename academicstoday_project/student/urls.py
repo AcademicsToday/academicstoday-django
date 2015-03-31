@@ -65,7 +65,7 @@ urlpatterns = patterns('',
     url(r'^course/(\d+)/exam/(\d+)/submit_mc_exam_answer$', exam.submit_mc_exam_answer),
 
     # Peer-Review
-    url(r'^course/(\d+)/peer_reviews$', peer_review.peer_review_page),
+    url(r'^course/(\d+)/peer_reviews$', peer_review.peer_reviews_page),
     url(r'^course/(\d+)/peer_review/(\d+)$', peer_review.assignment_page),
     url(r'^course/(\d+)/peer_review/(\d+)/peer_review_modal$', peer_review.peer_review_modal),
     url(r'^course/(\d+)/peer_review/(\d+)/save_peer_review$', peer_review.save_peer_review),
