@@ -85,15 +85,19 @@ def save_announcement(request, course_id):
             form = None
             # If announcement already exists, then lets update only, else insert.
             if announcement_id > 0:
-                announcement = Announcement.objects.get(announcement_id=announcement_id)
+                try:
+                    announcement = Announcement.objects.get(announcement_id=announcement_id)
+                except Announcement.DoesNotExist:
+                    return HttpResponse(json.dumps({
+                        'status' : 'failed', 'message' : 'cannot find record'
+                    }), content_type="application/json")
                 form = AnnouncementForm(instance=announcement, data=request.POST)
             else:
                 form = AnnouncementForm(request.POST, request.FILES)
+                form.instance.course = course
             
             if form.is_valid():
-                instance = form.save(commit=False)
-                instance.course = course
-                instance.save()
+                form.save()
                 response_data = {'status' : 'success', 'message' : 'saved'}
             else:
                 response_data = {'status' : 'failed', 'message' : json.dumps(form.errors)}
@@ -106,7 +110,9 @@ def delete_announcement(request, course_id):
     if request.is_ajax():
         if request.method == 'POST':
             announcement_id = int(request.POST['announcement_id'])
-            announcement = Announcement.objects.get(announcement_id=announcement_id)
-            announcement.delete()
-            response_data = {'status' : 'success', 'message' : 'deleted'}
+            try:
+                Announcement.objects.get(announcement_id=announcement_id).delete()
+                response_data = {'status' : 'success', 'message' : 'deleted'}
+            except Announcement.DoesNotExist:
+                response_data = {'status' : 'failed', 'message' : 'cannot find record'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
