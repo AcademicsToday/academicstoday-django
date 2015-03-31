@@ -329,7 +329,8 @@ class ExamSubmission(models.Model):
     exam = models.ForeignKey(Exam)
 
     def __str__(self):
-        return self.submission_id + ' ' + self.type;
+        return str(self.submission_id) + ' ' + str(self.percent) + '% ' + \
+        str(self.earned_marks) + '/' + str(self.total_marks)
 
     class Meta:
         db_table = 'at_exam_submissions'

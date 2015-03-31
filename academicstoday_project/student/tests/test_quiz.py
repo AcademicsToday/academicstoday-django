@@ -54,7 +54,7 @@ class QuizTestCase(TestCase):
         if course is None:
             self.assertTrue(False)
 
-        # Create our assignment(s)
+        # Create our quiz
         Quiz.objects.create(
             quiz_id=1,
             quiz_num=1,
