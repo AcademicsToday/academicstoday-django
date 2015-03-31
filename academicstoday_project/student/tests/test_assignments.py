@@ -205,8 +205,15 @@ class AssignmentTestCase(TestCase):
         self.assertEqual(array['status'], 'success')
         self.assertEqual(array['message'], 'submitted')
 
-        # Finish Up
-        EssaySubmission.objects.all().delete()
+        # Cleanup
+        try:
+            EssaySubmission.objects.get(submission_id=1).delete()
+        except EssaySubmission.DoesNotExist:
+            pass
+        try:
+            EssaySubmission.objects.get(submission_id=2).delete()
+        except EssaySubmission.DoesNotExist:
+            pass
 
     def test_submit_mc_assignment_answer_with_submissions(self):
         kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
@@ -298,5 +305,13 @@ class AssignmentTestCase(TestCase):
         self.assertEqual(array['message'], 'submitted')
         self.assertEqual(array['status'], 'success')
 
-        # Finish Up
-        EssaySubmission.objects.all().delete()
+        # Cleanup
+        try:
+            EssaySubmission.objects.get(submission_id=1).delete()
+        except EssaySubmission.DoesNotExist:
+            pass
+        try:
+            EssaySubmission.objects.get(submission_id=2).delete()
+        except EssaySubmission.DoesNotExist:
+            pass
+
