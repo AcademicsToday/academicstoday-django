@@ -114,12 +114,17 @@ def delete_exam(request, course_id):
             
             # Set 'is_finished' to false to indicate we need to take the
             # exam all over.
-            submission = ExamSubmission.objects.get(
-                student=student,
-                exam=exam,
-            )
-            submission.is_finished = False
-            submission.save()
+            try:
+                submission = ExamSubmission.objects.get(
+                    student=student,
+                    exam=exam,
+                )
+                submission.is_finished = False
+                submission.save()
+            except ExamSubmission.DoesNotExist:
+                return HttpResponse(json.dumps({
+                    'status' : 'success', 'message' : 'exam was deleted'
+                }), content_type="application/json")
                                                     
             # Delete all previous entries.
             try:
@@ -129,7 +134,7 @@ def delete_exam(request, course_id):
                 ).delete()
             except MultipleChoiceSubmission.DoesNotExist:
                 pass
-            response_data = {'status' : 'success', 'message' : 'deleted'}
+            response_data = {'status' : 'success', 'message' : 'exam was deleted'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
@@ -294,7 +299,10 @@ def compute_score(submission):
         submission.earned_marks += mc_submission.marks
 
     # Compute Percent
-    submission.percent = round((submission.earned_marks / submission.total_marks) * 100)
-    
+    try:
+        submission.percent = round((submission.earned_marks / submission.total_marks) * 100)
+    except ZeroDivisionError:
+        submission.percent = 0
+
     # Save calculation
     submission.save()
