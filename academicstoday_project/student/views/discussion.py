@@ -96,7 +96,7 @@ def delete_thread(request, course_id):
                     course=course,
                     thread_id=thread_id
                 ).delete()
-                response_data = {'status' : 'success', 'message' : 'deleted record'}
+                response_data = {'status' : 'success', 'message' : 'thread was deleted'}
             except CourseDiscussionThread.DoesNotExist:
                 response_data = {'status' : 'failed', 'message' : 'record does not exist'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
