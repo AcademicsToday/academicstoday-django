@@ -225,7 +225,7 @@ def delete_assignment(request, course_id):
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
-#@login_required()
+@login_required()
 def submit_e_assignment_answer(request, course_id, assignment_id):
     response_data = {'status' : 'failed', 'message' : 'error submitting'}
     if request.is_ajax():
@@ -350,7 +350,7 @@ def submit_mc_assignment_answer(request, course_id, assignment_id):
             submission.save()
     
             # Return success results
-            response_data = {'status' : 'success', 'message' : ''}
+            response_data = {'status' : 'success', 'message' : 'submitted'}
             return HttpResponse(json.dumps(response_data), content_type="application/json")
 
     response_data = {'status' : 'failed', 'message' : 'error submitting'}
