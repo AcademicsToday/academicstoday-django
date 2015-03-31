@@ -529,7 +529,10 @@ def compute_score(student, assignment, submission):
         submission.earned_marks += r_submission.marks
 
     # Compute Percent
-    submission.percent = round((submission.earned_marks / submission.total_marks) * 100)
+    try:
+        submission.percent = round((submission.earned_marks / submission.total_marks) * 100)
+    except ZeroDivisionError:
+        submission.percent = 0
 
     # Save calculation
     submission.save()

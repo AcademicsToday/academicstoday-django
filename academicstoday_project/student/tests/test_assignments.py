@@ -205,12 +205,8 @@ class AssignmentTestCase(TestCase):
         self.assertEqual(array['status'], 'success')
         self.assertEqual(array['message'], 'submitted')
 
-        # Verify Database
-        submission = EssaySubmission.objects.get(submission_id=1)
-        self.assertTrue(submission is not None)
-
-        # Finish up
-        submission.delete()
+        # Finish Up
+        EssaySubmission.objects.all().delete()
 
     def test_submit_mc_assignment_answer_with_submissions(self):
         kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
@@ -254,8 +250,53 @@ class AssignmentTestCase(TestCase):
         array = json.loads(json_string)
         self.assertEqual(array['status'], 'success')
         self.assertEqual(array['message'], 'submitted')
+    
+    def test_submit_assignment_without_answering_questions(self):
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        client = self.get_logged_in_client()
+        response = client.post('/course/1/assignment/1/submit_assignment',{}, **kwargs)
+        self.assertEqual(response.status_code, 200)
+        json_string = response.content.decode(encoding='UTF-8')
+        array = json.loads(json_string)
+        self.assertEqual(array['message'], 'submitted')
+        self.assertEqual(array['status'], 'success')
+    
+    def test_submit_assignment_with_answering_questions(self):
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        client = self.get_logged_in_client()
+    
+        # Submit questions
+        file_path = settings.MEDIA_ROOT + '/sample.pdf'
+        with open(file_path, 'rb') as fp:
+            self.assertTrue(fp is not None)
+            client.post('/course/1/assignment/1/submit_e_assignment_answer',{
+                'question_id': 1,
+                'file': fp
+            }, **kwargs)
+        client.post('/course/1/assignment/1/submit_mc_assignment_answer',{
+            'question_id': 2,
+            'answer': 'A',
+        }, **kwargs)
+        client.post('/course/1/assignment/1/submit_tf_assignment_answer',{
+            'question_id': 3,
+            'answer': 'true',
+        }, **kwargs)
+        client.post('/course/1/assignment/1/submit_r_assignment_answer',{
+            'question_id': 4,
+            'answer': 'Because of Global Cooling caused by abnormal solar hibernation.',
+        }, **kwargs)
+                               
+        # Test
+        response = client.post('/course/1/assignment/1/submit_assignment',{}, **kwargs)
+                    
+        # Verify: Check that the response is 200 OK.
+        self.assertEqual(response.status_code, 200)
+                    
+        # Verify
+        json_string = response.content.decode(encoding='UTF-8')
+        array = json.loads(json_string)
+        self.assertEqual(array['message'], 'submitted')
+        self.assertEqual(array['status'], 'success')
 
-# TODO:
-# submit_assignment(request, course_id, assignment_id):
-# compute_score(student, assignment, submission):
-
+        # Finish Up
+        EssaySubmission.objects.all().delete()
