@@ -108,12 +108,18 @@ def delete_quiz(request, course_id):
             
             # Set 'is_finished' to false to indicate we need to take the
             # assignment all over.
-            submission = QuizSubmission.objects.get(
-                student=student,
-                quiz=quiz,
-            )
-            submission.is_finished = False
-            submission.save()
+            try:
+                submission = QuizSubmission.objects.get(
+                    student=student,
+                    quiz=quiz,
+                )
+                submission.is_finished = False
+                submission.save()
+            except QuizSubmission.DoesNotExist:
+                return HttpResponse(json.dumps({
+                    'status' : 'success',
+                    'message' : 'quiz was deleted'
+                }), content_type="application/json")
                                                           
             # Delete all previous entries.
             try:
@@ -226,7 +232,7 @@ def submit_quiz(request, course_id, quiz_id):
                     quiz=quiz,
                 )
             except QuizSubmission.DoesNotExist:
-                submission = AssignmentSubmission.objects.create(
+                submission = QuizSubmission.objects.create(
                     student=student,
                     quiz=quiz,
                 )
@@ -259,7 +265,10 @@ def compute_score(submission):
         submission.earned_marks += tf_submission.marks
 
     # Compute Percent
-    submission.percent = round((submission.earned_marks / submission.total_marks) * 100)
+    try:
+        submission.percent = round((submission.earned_marks / submission.total_marks) * 100)
+    except ZeroDivisionError:
+        submission.percent = 0
 
     # Save calculation
     submission.save()
