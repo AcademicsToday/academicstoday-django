@@ -51,7 +51,7 @@ def suspend_course(request, course_id):
                 mark_students(course)
                 course.status = settings.COURSE_UNAVAILABLE_STATUS
             course.save();
-            response_data = {'status' : 'success', 'message' : ''}
+            response_data = {'status' : 'success', 'message' : 'changed'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
