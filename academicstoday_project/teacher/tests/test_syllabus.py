@@ -93,7 +93,11 @@ class SyllabusTestCase(TestCase):
         except Syllabus.DoesNotExist:
             pass
         try:
-             Syllabus.objects.get(syllabus_id=2).delete()
+            Syllabus.objects.get(syllabus_id=2).delete()
+        except Syllabus.DoesNotExist:
+            pass
+        try:
+            Syllabus.objects.get(syllabus_id=3).delete()
         except Syllabus.DoesNotExist:
             pass
 
@@ -118,6 +122,10 @@ class SyllabusTestCase(TestCase):
             pass
         try:
             Syllabus.objects.get(syllabus_id=2).delete()
+        except Syllabus.DoesNotExist:
+            pass
+        try:
+            Syllabus.objects.get(syllabus_id=3).delete()
         except Syllabus.DoesNotExist:
             pass
 
@@ -147,5 +155,9 @@ class SyllabusTestCase(TestCase):
             pass
         try:
             Syllabus.objects.get(syllabus_id=2).delete()
+        except Syllabus.DoesNotExist:
+            pass
+        try:
+            Syllabus.objects.get(syllabus_id=3).delete()
         except Syllabus.DoesNotExist:
             pass
