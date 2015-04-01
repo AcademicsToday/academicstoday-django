@@ -112,9 +112,11 @@ def delete_assignment(request, course_id):
     if request.is_ajax():
         if request.method == 'POST':
             assignment_id = int(request.POST['assignment_id'])
-            assignment = Assignment.objects.get(assignment_id=assignment_id)
-            assignment.delete()
-            response_data = {'status' : 'success', 'message' : 'deleted'}
+            try:
+                Assignment.objects.get(assignment_id=assignment_id).delete()
+                response_data = {'status' : 'success', 'message' : 'assignment was deleted'}
+            except Assignment.DoesNotExist:
+                response_data = {'status' : 'failed', 'message' : 'record not found'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
@@ -392,5 +394,5 @@ def delete_question(request, course_id, assignment_id):
                 question = ResponseQuestion.objects.get(question_id=question_id)
             question.delete()
 
-            response_data = {'status' : 'success', 'message' : 'question was inserted'}
+            response_data = {'status' : 'success', 'message' : 'question was deleted'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
