@@ -105,7 +105,9 @@ def delete_lecture(request, course_id):
     if request.is_ajax():
         if request.method == 'POST':
             lecture_id = int(request.POST['lecture_id'])
-            lecture = Lecture.objects.get(lecture_id=lecture_id)
-            lecture.delete()
-            response_data = {'status' : 'success', 'message' : 'deleted'}
+            try:
+                Lecture.objects.get(lecture_id=lecture_id).delete()
+                response_data = {'status' : 'success', 'message' : 'deleted'}
+            except Lecture.DoesNotExist:
+                response_data = {'status' : 'failed', 'message' : 'record not found'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
