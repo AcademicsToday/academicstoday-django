@@ -108,9 +108,11 @@ def delete_exam(request, course_id):
     if request.is_ajax():
         if request.method == 'POST':
             exam_id = int(request.POST['exam_id'])
-            exam = Exam.objects.get(exam_id=exam_id)
-            exam.delete()
-            response_data = {'status' : 'success', 'message' : 'deleted'}
+            try:
+                Exam.objects.get(exam_id=exam_id).delete()
+                response_data = {'status' : 'success', 'message' : 'deleted'}
+            except Exam.DoesNotExist:
+                response_data = {'status' : 'failed', 'message' : 'record does not exist'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
@@ -278,5 +280,5 @@ def delete_question(request, course_id, exam_id):
                 question = MultipleChoiceQuestion.objects.get(question_id=question_id)
             question.delete()
 
-            response_data = {'status' : 'success', 'message' : 'question was inserted'}
+            response_data = {'status' : 'success', 'message' : 'question was deleted'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
