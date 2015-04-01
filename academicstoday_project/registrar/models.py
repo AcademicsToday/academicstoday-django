@@ -354,7 +354,7 @@ class Quiz(models.Model):
     course = models.ForeignKey(Course)
 
     def __str__(self):
-        return str(self.quiz_id) + ' ' + str(self.type);
+        return str(self.quiz_id) + ' ' + self.title + ' ' + str(self.worth);
 
     class Meta:
         db_table = 'at_quizzes'

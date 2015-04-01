@@ -101,9 +101,11 @@ def delete_quiz(request, course_id):
     if request.is_ajax():
         if request.method == 'POST':
             quiz_id = int(request.POST['quiz_id'])
-            quiz = Quiz.objects.get(quiz_id=quiz_id)
-            quiz.delete()
-            response_data = {'status' : 'success', 'message' : 'deleted'}
+            try:
+                Quiz.objects.get(quiz_id=quiz_id).delete()
+                response_data = {'status' : 'success', 'message' : 'deleted'}
+            except Quiz.DoesNotExist:
+                response_data = {'status' : 'failed', 'message' : 'record does not exist'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
@@ -271,5 +273,5 @@ def delete_question(request, course_id, quiz_id):
                 question = TrueFalseQuestion.objects.get(question_id=question_id)
             question.delete()
 
-            response_data = {'status' : 'success', 'message' : 'question was inserted'}
+            response_data = {'status' : 'success', 'message' : 'question was deleted'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")

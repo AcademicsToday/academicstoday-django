@@ -238,7 +238,7 @@ class AssignmentTestCase(TestCase):
         self.assertEqual(array['message'], 'question was saved')
         self.assertEqual(array['status'], 'success')
 
-    def test_save_question_with_update_essay_question(self):
+    def test_save_question_with_update_multiple_choice_question(self):
         # Insert
         MultipleChoiceQuestion.objects.create(
             question_id=2,
