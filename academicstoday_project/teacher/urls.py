@@ -108,11 +108,12 @@ urlpatterns = patterns('',
     url(r'^teacher/course/(\d+)/thread/(\d+)/insert_post$', discussion.insert_post),
                        
     # Peer-Review
-    url(r'^teacher/course/(\d+)/peer_reviews$', peer_review.peer_review_page),
+    url(r'^teacher/course/(\d+)/peer_reviews$', peer_review.peer_reviews_page),
     url(r'^teacher/course/(\d+)/peer_review/(\d+)$', peer_review.assignment_page),
     url(r'^teacher/course/(\d+)/peer_review/(\d+)/peer_review_modal$', peer_review.peer_review_modal),
     url(r'^teacher/course/(\d+)/peer_review/(\d+)/save_peer_review$', peer_review.save_peer_review),
     url(r'^teacher/course/(\d+)/peer_review/(\d+)/delete_peer_review$', peer_review.delete_peer_review),
+    url(r'^teacher/course/(\d+)/peer_review/(\d+)/update_assignment_marks$', peer_review.update_assignment_marks),
                        
     # Settings
     url(r'^teacher/course/(\d+)/settings$', setting.settings_page),
