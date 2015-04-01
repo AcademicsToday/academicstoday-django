@@ -463,3 +463,102 @@ class AssignmentTestCase(TestCase):
         self.assertEqual(array['message'], 'question was deleted')
         self.assertEqual(array['status'], 'success')
 
+    def test_url_resolves_to_questions_table_view(self):
+        found = resolve('/teacher/course/1/assignment/1/questions_table')
+        self.assertEqual(found.func, assignment.questions_table)
+    
+    def test_questions_table_returns_without_questions(self):
+        client = self.get_logged_in_client()
+        response = client.post('/teacher/course/1/assignment/1/questions_table')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'ajax_question(0,0);',response.content)
+
+    def test_questions_table_returns_with_questions(self):
+        ResponseQuestion.objects.create(
+            question_id=4,
+            assignment=Assignment.objects.get(assignment_id=1),
+            title="Ice Age",
+            description="Why did humanity migrate off-world?",
+            answer="Because of solar hibernation causing Global Cooling on Earth.",
+        )
+        client = self.get_logged_in_client()
+        response = client.post('/teacher/course/1/assignment/1/questions_table')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Response',response.content)
+
+    def test_question_type_modal(self):
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        client = self.get_logged_in_client()
+        response = client.post('/teacher/course/1/assignment/1/question_type_modal',**kwargs)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'question_modal',response.content)
+
+    def test_question_essay_modal(self):
+        EssayQuestion.objects.create(
+            question_id=1,
+            assignment=Assignment.objects.get(assignment_id=1),
+            title="Evolvers",
+            description="Write an essay about the Evolvers.",
+        )
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        client = self.get_logged_in_client()
+        response = client.post('/teacher/course/1/assignment/1/question_essay_modal',{
+            'question_id': 1,
+        },**kwargs)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'question_modal',response.content)
+
+    def test_question_multiple_choice_modal(self):
+        MultipleChoiceQuestion.objects.create(
+            question_id=2,
+            assignment=Assignment.objects.get(assignment_id=1),
+            title="Hideauze",
+            description="Who where the Hideauze?",
+            a="Former Humans",
+            a_is_correct=True,
+            b="Aliens",
+            b_is_correct=False,
+            c="Magical or Supernatural Creatures",
+            c_is_correct=False,
+        )
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        client = self.get_logged_in_client()
+        response = client.post('/teacher/course/1/assignment/1/question_multiple_choice_modal',{
+            'question_id':2,
+        },**kwargs)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'question_modal',response.content)
+
+    def test_question_true_false_modal(self):
+        TrueFalseQuestion.objects.create(
+                question_id=3,
+                assignment=Assignment.objects.get(assignment_id=1),
+            title="Hideauze",
+            description="Where the Hideauze human?",
+            true_choice="Yes, former humans",
+            false_choice="No, aliens",
+            answer=True,
+        )
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        client = self.get_logged_in_client()
+        response = client.post('/teacher/course/1/assignment/1/question_true_false_modal',{
+            'question_id':3,
+        },**kwargs)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'question_modal',response.content)
+
+    def test_question_response_modal(self):
+        ResponseQuestion.objects.create(
+            question_id=4,
+            assignment=Assignment.objects.get(assignment_id=1),
+            title="Ice Age",
+            description="Why did humanity migrate off-world?",
+            answer="Because of solar hibernation causing Global Cooling on Earth.",
+        )
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        client = self.get_logged_in_client()
+        response = client.post('/teacher/course/1/assignment/1/question_response_modal',{
+            'question_id':4,
+        },**kwargs)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'question_modal',response.content)
