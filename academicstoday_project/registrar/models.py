@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.core.validators import MinValueValidator, MaxValueValidator
 import os
+from account.models import Student
+from account.models import Teacher
 
 WORTH_PERCENT_CHOICES = (
     (0, '0 %'),
@@ -57,6 +59,7 @@ COURSE_CATEGORY_TYPES = (
     ('English', 'English'),
     ('French', 'French'),
     ('Genetics', 'Genetics'),
+    ('General Eduction', 'General Education'),
     ('Geological and Environmental Sciences', 'Geological and Environmental Sciences'),
     ('Geophysics', 'Geophysics'),
     ('Health', 'Health'),
@@ -103,13 +106,15 @@ class Course(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=127)
     sub_title = models.CharField(max_length=127)
-    category = models.CharField(max_length=127, choices=COURSE_CATEGORY_TYPES)
+    category = models.CharField(max_length=127, choices=COURSE_CATEGORY_TYPES, default='General Education')
     description = models.TextField(null=True)
     start_date = models.DateField(null=True)
     finish_date = models.DateField(null=True)
     is_official = models.BooleanField(default=False)
     status = models.PositiveSmallIntegerField(default=settings.COURSE_UNAVAILABLE_STATUS)
     file = models.FileField(upload_to='uploads',null=True)
+    students = models.ManyToManyField(Student)
+    teacher = models.ForeignKey(Teacher)
 
     def delete(self, *args, **kwargs):
         """
@@ -163,28 +168,6 @@ class CourseSetting(models.Model):
     
     class Meta:
         db_table = 'at_course_settings'
-
-
-class Student(models.Model):
-    user = models.OneToOneField(User, primary_key=True)
-    courses = models.ManyToManyField(Course)
-    
-    def __str__(self):
-        return self.user
-
-    class Meta:
-        db_table = 'at_students'
-
-
-class Teacher(models.Model):
-    user = models.OneToOneField(User, primary_key=True)
-    courses = models.ManyToManyField(Course)
-
-    def __str__(self):
-        return self.user
-
-    class Meta:
-        db_table = 'at_teachers'
 
 
 class CourseFinalMark(models.Model):

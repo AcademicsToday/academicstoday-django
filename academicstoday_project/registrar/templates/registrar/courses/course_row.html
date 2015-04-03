@@ -9,7 +9,7 @@
                 <!-- Course Info -->
                 <div class="col-lg-9 text-left">
                     <h2>{{ course.title }}<br/>
-                        {% if course in teacher.courses.all %}
+                        {% if teacher == course.teacher %}
                             <small>[You cannot enrol in a class you currently teach!]</small>
                         {% else %}
                             <small>{{ course.sub_title }}</small>
@@ -21,19 +21,14 @@
                     <p align="right">
                     <button onclick="ajax_enrol({{ course.id }});"
                                type="button"
-                              class="btn btn-lg btn-primary"
-                              {% if course in teacher.courses.all %}
-                              disabled=""
-                              {% endif %}>
-                        {% comment %}
-                            If the student does not have the current course
-                            then that means this student has not been
-                                enrolled in the course so therefore print
-                                UI acordingly.
-                        {% endcomment %}
-                        {% if course not in student.courses.all %}
-                            <i class="fa fa-pencil"></i> Enrol
+                        {% if teacher == course.teacher %}
+                           disabled=""
+                        {% endif %}
+                        {% if student not in course.students.all %}
+                              class="btn btn-lg btn-success">
+                                <i class="fa fa-pencil"></i> Enrol
                         {% else %}
+                              class="btn btn-lg btn-primary">
                             <i class="fa fa-level-down"></i> Continue
                         {% endif %}
                     </button>

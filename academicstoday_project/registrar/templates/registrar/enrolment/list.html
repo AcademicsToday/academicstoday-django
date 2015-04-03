@@ -22,7 +22,7 @@
         </div>
         <!-- /.row -->
 
-        {% if student.courses.count == 0 %}
+        {% if courses.count == 0 %}
 
         <div class="jumbotron">
             <h1>Become a Student!</h1>
@@ -51,7 +51,7 @@
                                   </tr>
                               </thead>
                               <tbody>
-                              {% for course in student.courses.all %}
+                              {% for course in courses.all %}
                                   <tr>
                                       <td align="left" valign="left">{{ course.id }}</td>
                                       <td align="left" valign="left">{{ course.title }}</td>

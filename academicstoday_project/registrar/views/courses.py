@@ -64,9 +64,9 @@ def enrol(request):
         # Lookup the course in the students enrolment history and if the
         # student is not enrolled, then enrol them now.
         try:
-            found_course = Student.objects.get(courses__id=course_id)
-        except Student.DoesNotExist:
-            student.courses.add(course)
+            Course.objects.get(students__student_id=student.student_id)
+        except Course.DoesNotExist:
+            course.students.add(student)
         response_data = {'status' : 'success', 'message' : 'enrolled' }
 
     return HttpResponse(json.dumps(response_data), content_type="application/json")

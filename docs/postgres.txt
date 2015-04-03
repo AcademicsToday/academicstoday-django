@@ -44,6 +44,16 @@ You are now able to log into the database "academicstoday_db" with the admin
 user account "bart" using the passowrd "123password"."
 
 
+Quick Script
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+drop database academicstoday_db;
+create database academicstoday_db;
+\c academicstoday_db
+GRANT ALL PRIVILEGES ON DATABASE academicstoday_db to bart;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
 
 ******************
 * Source(s) *

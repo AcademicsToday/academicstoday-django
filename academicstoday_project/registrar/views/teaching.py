@@ -21,9 +21,14 @@ def teaching_page(request):
         teacher = Teacher.objects.get(user=request.user)
     except Teacher.DoesNotExist:
         teacher = None
+    try:
+        courses = Course.objects.filter(teacher=teacher)
+    except Course.DoesNotExist:
+        courses = None
 
     return render(request, 'registrar/teaching/view.html',{
         'teacher' : teacher,
+        'courses': courses,
         'user' : request.user,
         'tab' : 'teaching',
         'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
@@ -37,9 +42,14 @@ def refresh_teaching_table(request):
         teacher = Teacher.objects.get(user=request.user)
     except Teacher.DoesNotExist:
         teacher = None
-    
+    try:
+        courses = Course.objects.filter(teacher=teacher)
+    except Course.DoesNotExist:
+        courses = None
+
     return render(request, 'registrar/teaching/table.html',{
         'teacher' : teacher,
+        'courses': courses,
         'user' : request.user,
         'tab' : 'teaching',
         'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
@@ -82,19 +92,19 @@ def save_new_course(request):
         if request.method == 'POST':
             form = CourseForm(request.POST, request.FILES)
             if form.is_valid():
-                form.save()  # Save course to the database.
-                
-                # Course Initialization
-                CourseSetting.objects.create(
-                    course=form.instance
-                ).save()
-                
                 # Create our teacher account which will build our course around.
                 try:
                     teacher = Teacher.objects.get(user=request.user)
                 except Teacher.DoesNotExist:
                     teacher = Teacher.objects.create(user=request.user)
-                teacher.courses.add(form.instance)
+                form.instance.teacher = teacher
+                form.save()  # Save course to the database.
+                
+                # Course Initialization
+                CourseSetting.objects.create(
+                    course=form.instance
+                )
+                
                 response_data = {'status' : 'success', 'message' : 'unknown error with saving'}
             else:
                 response_data = {'status' : 'failed', 'message' : json.dumps(form.errors)}

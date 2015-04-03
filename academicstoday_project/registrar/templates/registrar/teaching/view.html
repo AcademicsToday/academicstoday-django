@@ -25,15 +25,15 @@
         <!-- Courses Rows -->
         <div id="ajax_courses_table"
            name="ajax_courses_table">
-           {% if teacher.courses.count == 0 or teacher == None %}
+           {% if courses.count == 0 or teacher == None %}
            
            <div class="jumbotron">
                <h1>Become a Teacher!</h1>
                <p>Help spread the knowledge to the rest of humankind as a teacher.</p>
                <p><a href="#"
-                   class="btn btn-primary btn-lg"
-                   onclick="ajax_new_course_modal();"
-                   role="button">Create Course »</a>
+                    class="btn btn-primary btn-lg"
+                  onclick="ajax_new_course_modal();"
+                     role="button">Create Course »</a>
                </p>
            </div>
            
@@ -55,7 +55,7 @@
     /**
      * When the page loads up, get the table data.
      */
-    {% if teacher.courses.count > 0 %}
+    {% if courses != None %}
     $(document).ready(function(){
        ajax_refresh_teaching_table();
     });
@@ -126,35 +126,6 @@
             },
             complete: function(xhr,status) {
                // completion code here
-            }
-        });
-    }
-
-    /**
-     *  Function will call AJAX function to delete the teacher's course.
-     */
-    function ajax_delete_course(course_id)
-    {
-        $('#del_' + course_id + '_btn').prop("disabled", true); // Lock button
-        $.ajax( 'course_delete', {
-            data: {
-                'csrfmiddlewaretoken': '{{ csrf_token }}',
-                'course_id' : course_id
-            },
-            type: 'post',
-            success: function(result) {
-                // success code execution here
-                if (result.status == 'success')
-                {
-                    ajax_refresh_teaching_table();
-                }
-            },
-            error: function(xhr,status,error) {
-                // error code here
-            },
-            complete: function(xhr,status) {
-               // completion code here
-               $('#del_' + course_id + '_btn').prop("disabled", false); // Unlock button
             }
         });
     }

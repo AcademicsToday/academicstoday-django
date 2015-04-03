@@ -21,7 +21,7 @@
                                   </tr>
                               </thead>
                               <tbody>
-                              {% for course in teacher.courses.all %}
+                              {% for course in courses.all %}
                                   <tr>
                                       <td align="left" valign="left">{{ course.id }}</td>
                                       <td align="left" valign="left">{{ course.title }}</td>
@@ -40,7 +40,7 @@
                                         </button>
                                       </td>
                                   </tr>
-                              {% endfor %}
+                            {% endfor %}
                             </tbody>
                           </table>
                       </div>

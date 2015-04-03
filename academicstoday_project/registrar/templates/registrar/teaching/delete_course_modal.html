@@ -37,4 +37,34 @@
             $('#del_{{ course.id }}_btn').prop("disabled", false); // Unlock button
         });
     });
+    
+    /**
+     *  Function will call AJAX function to delete the teacher's course.
+     */
+    function ajax_delete_course(course_id)
+    {
+        $('#del_' + course_id + '_btn').prop("disabled", true); // Lock button
+        $.ajax( 'course_delete', {
+            data: {
+               'csrfmiddlewaretoken': '{{ csrf_token }}',
+               'course_id' : course_id
+            },
+            type: 'post',
+            success: function(result) {
+               // success code execution here
+               if (result.status == 'success')
+               {
+                    $('#delete_course_modal').modal('hide');
+                    ajax_refresh_teaching_table();
+               }
+            },
+            error: function(xhr,status,error) {
+               // error code here
+            },
+            complete: function(xhr,status) {
+               // completion code here
+               $('#del_' + course_id + '_btn').prop("disabled", false); // Unlock button
+            }
+        });
+    }
 </script>

@@ -22,8 +22,13 @@ def enrolment_page(request):
         student = Student.objects.get(user=request.user)
     except Student.DoesNotExist:
         student = Student.objects.create(user=request.user)
+    try:
+        courses = Course.objects.filter(students__student_id=student.student_id)
+    except Course.DoesNotExist:
+        courses = None
     return render(request, 'registrar/enrolment/list.html',{
         'student' : student,
+        'courses': courses,
         'user' : request.user,
         'tab' : 'enrolment',
         'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
