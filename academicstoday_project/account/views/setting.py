@@ -26,10 +26,14 @@ def update_password(request):
     response_data = {'status' : 'failed', 'message' : 'unknown deletion error'}
     if request.is_ajax():
         if request.method == 'POST':
+            old_password = request.POST['old_password']
             password = request.POST['password']
             repeat_password = request.POST['repeat_password']
             
             # Validate password.
+            if request.user.check_password(old_password) == False:
+                response_data = {'status' : 'failure', 'message' : 'invalid old password' }
+                return HttpResponse(json.dumps(response_data), content_type="application/json")
             if password is '' or request is '':
                 response_data = {'status' : 'failure', 'message' : 'blank passwords are not acceptable' }
                 return HttpResponse(json.dumps(response_data), content_type="application/json")
@@ -40,6 +44,6 @@ def update_password(request):
             # Update model
             request.user.set_password(password)
             request.user.save()
-        
+
             response_data = {'status' : 'success', 'message' : 'updated password'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")

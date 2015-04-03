@@ -50,7 +50,7 @@ class SettingTestCase(TestCase):
         self.assertIn(b'New Password',response.content)
         self.assertIn(b'Repeat New Password',response.content)
 
-    def test_uupdate_password_success(self):
+    def test_update_password_success(self):
         # Extra parameters to make this a Ajax style request.
         kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
             
@@ -63,6 +63,7 @@ class SettingTestCase(TestCase):
         response = client.post('/update_password',{
             'password': 'Transhumanism',
             'repeat_password': 'Transhumanism',
+            'old_password': TEST_USER_PASSWORD,
         }, **kwargs)
                                       
         # Verify: Check that the response is 200 OK.
