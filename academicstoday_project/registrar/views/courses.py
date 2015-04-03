@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from django.core import serializers
-import json
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
+import json
 from landpage.models import CoursePreview
 from registrar.models import Student
 from registrar.models import Teacher
@@ -17,7 +18,17 @@ from registrar.forms import CourseForm
 
 @login_required(login_url='/landpage')
 def courses_page(request):
-    courses = Course.objects.filter(status=settings.COURSE_AVAILABLE_STATUS)
+    course_list = Course.objects.filter(status=settings.COURSE_AVAILABLE_STATUS)
+    paginator = Paginator(course_list, 25) # Show 25 courses per page
+    page = request.GET.get('page')
+    try:
+        courses = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        courses = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        courses = paginator.page(paginator.num_pages)
 
     # Create our student account which will build our registration around.
     try:
@@ -59,3 +70,6 @@ def enrol(request):
         response_data = {'status' : 'success', 'message' : 'enrolled' }
 
     return HttpResponse(json.dumps(response_data), content_type="application/json")
+
+# Developer Notes: Pagination
+# https://docs.djangoproject.com/en/1.8/topics/pagination/

@@ -33,6 +33,30 @@
             {% include 'registrar/courses/course_row.html' %}
         {% endfor %}
         <!-- /.Course Rows -->
+        <!-- Pagination -->
+        <div class="panel-body text-right">
+            <div class="pagination">
+                <span class="step-links">
+                    <span class="current">
+                        Page {{ courses.number }} of {{ courses.paginator.num_pages }}.
+                    </span>
+                    
+                    {% if courses.has_previous %}
+                    <a href="?page={{ courses.previous_page_number }}"
+                        type="button"
+                        class="btn btn-lg btn-primary">Previous</a>
+                    {% endif %}
+                    
+                    {% if courses.has_next %}
+                    <a href="?page={{ courses.next_page_number }}"
+                        type="button"
+                        class="btn btn-lg btn-primary">Next</a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+        <!-- /.row -->
+        
         {% endif %}
 
     </div>
