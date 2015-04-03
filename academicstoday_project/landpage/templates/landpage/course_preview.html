@@ -7,7 +7,7 @@
                 <h2 class="modal-title" id="myModalLabel">Preview</h2>
             </div>
             <div class="modal-body">
-                {% if course_preview == None %}
+                {% if course == None %}
                 <h2>ERROR</h2>
                 <p>No course preview entered!</p>
                 {% else %}
@@ -17,12 +17,11 @@
                     
                         <div class="col-lg-8 col-lg-offset-2">
                             <!-- Project Details Go Here -->
-                            <h2> {{ course_preview.title }}</h2>
-                            <p class="item-intro text-muted">{{ course_preview.sub_title }}</p>
-                            <img class="img-responsive" src="{% static 'img/' %}{{ course_preview.image_filename }}" alt="">
+                            <h2> {{ course.title }}</h2>
+                            <p class="item-intro text-muted">{{ course.sub_title }}</p>
+                            <img class="img-responsive" src="{{ course.file.url }}" alt="">
                             <!-- Use this area to describe your project. -->
-                            {{ course_preview.description }}
-                            {{ course_preview.summary }}
+                            {{ course.description }}
                         </div>
                     </form>
                 </div>
@@ -31,15 +30,9 @@
             <div class="modal-footer">
                 <button type="button"
                        class="btn btn-primary"
-                data-dismiss="modal">
-                    <i class="fa fa-times"></i> Close Project
-                </button>
-                
-                <button type="button"
-                       class="btn btn-primary"
                 data-dismiss="modal"
-                        form="add_client_form"
-                     onclicl="ajax_update_client();">
+                        form="course_preview_form"
+                     onclick="">
                     <i class="fa fa-times"></i> Close Project
                 </button>
             </div>

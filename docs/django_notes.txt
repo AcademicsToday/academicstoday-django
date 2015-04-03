@@ -14,6 +14,10 @@ $ python manage.py makemigrations
 Run to apply those changes to the database:
 python manage.py migrate 
 
+4) Sometimes if we don't want to create a migrate file but want the database
+   updated then we run. (Use this for 'django-cron' addition)
+python manage.py syncdb
+
 Notes:
 - Run these if you’re creating the app for the first time as well using MySQL.
 
@@ -46,6 +50,9 @@ http://127.0.0.1:8000/admin
 ——————————————————————
 Handing Django Console
 ——————————————————————
+1) Creating super users
+python manage.py createsuperuser --username=bart --email=bart@academicstoday.ca
+
 //TODO: Fill in.
 
 
@@ -53,4 +60,5 @@ Handing Django Console
 ——————————————————————
 Useful Django Links
 ——————————————————————
+https://docs.djangoproject.com/en/1.8/topics/auth/default/#user-objects
 https://docs.djangoproject.com/en/1.7/topics/testing/tools/#assertions

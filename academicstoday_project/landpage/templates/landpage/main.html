@@ -94,7 +94,8 @@
 
 
 
-<!-- Courses Grid Section -->
+<!-- Courses Section -->
+{% if top_courses.count > 0 %}
 <section id="portfolio" class="bg-light-gray">
     <div class="container">
         <div class="row">
@@ -104,29 +105,29 @@
             </div>
         </div>
         <div class="row">
-            {% for course_preview in course_previews %}
+            {% for top_pick in top_courses %}
             <div class="col-md-4 col-sm-6 portfolio-item">
                 <a href="#portfolioModal1" class="portfolio-link"
             data-toggle="modal"
-                onclick="ajax_popup_course_preview({{ course_preview.id }});";>
+                onclick="ajax_popup_course_preview({{ top_pick.course.id }});";>
                     <div class="portfolio-hover">
                         <div class="portfolio-hover-content">
                             <i class="fa fa-plus fa-3x"></i>
                         </div>
                     </div>
-                    <img src="{% static "img/" %}{{ course_preview.image_filename }}"
+                    <img src="{{ top_pick.course.file.url }}"
                        class="img-responsive" alt="">
                         </a>
                 <div class="portfolio-caption">
-                    <h4>{{ course_preview.title }}</h4>
-                    <p class="text-muted">{{ course_preview.category }}</p>
+                    <h4>{{ top_pick.course.title }}</h4>
+                    <p class="text-muted">{{ top_pick.course.category }}</p>
                 </div>
             </div>
             {% endfor %}
         </div>
     </div>
 </section>
-
+{% endif %}
 
 
 <!--              -->

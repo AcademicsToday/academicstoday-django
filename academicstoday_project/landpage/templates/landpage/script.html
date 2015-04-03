@@ -3,12 +3,12 @@
 /**
  *  Function will call AJAX function to load the particular course preview.
  */
-function ajax_popup_course_preview(course_preview_id)
+function ajax_popup_course_preview(course_id)
 {
     var url = 'course_preview_modal';
     $.ajax( url, {
         data: {
-           'course_preview_id': course_preview_id,
+           'course_id': course_id,
            'csrfmiddlewaretoken': '{{ csrf_token }}',
         },
         type: 'post',

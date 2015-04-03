@@ -2,23 +2,16 @@ from django.shortcuts import render
 from django.core import serializers
 
 from landpage.models import LandpageTeamMember
+from landpage.models import LandpageTopPickCourse
 from landpage.models import LandpageCoursePreview
 from landpage.models import CoursePreview
 from landpage.models import LandpageContactMessage
 from landpage.models import LandpagePartner
+from registrar.models import Course
 
 import json
 from django.http import HttpResponse
 from django.conf import settings
-
-# Create your views here.
-
-# Developer Notes:
-# (1) Templates
-# https://docs.djangoproject.com/en/1.7/ref/templates
-#
-# (2) JSON
-# https://docs.djangoproject.com/en/1.7/topics/serialization/
 
 
 def robots_txt_page(request):
@@ -30,10 +23,12 @@ def humans_txt_page(request):
 
 
 def landpage_page(request):
-    course_previews = LandpageCoursePreview.objects.all();
+    top_courses = LandpageTopPickCourse.objects.all()
+    course_previews = LandpageCoursePreview.objects.all()
     team_members = LandpageTeamMember.objects.all().order_by('id')
     partners = LandpagePartner.objects.all()
     return render(request, 'landpage/main.html',{
+        'top_courses': top_courses,
         'course_previews' : course_previews,
         'team_members' : team_members,
         'partners': partners,
@@ -43,17 +38,19 @@ def landpage_page(request):
 
 
 def course_preview_modal(request):
-    course_preview = None
+    course = None
     if request.method == u'POST':
         POST = request.POST
+        course_id = int(POST.get('course_id'))
         value = POST.get('course_preview_id')
         if value is not None:
-            preview_course_id = int(value)
             try:
-                course_preview = CoursePreview.objects.get(id=preview_course_id)
-            except CoursePreview.DoesNotExist:
+                course = Course.objects.get(id=int(value))
+            except Course.DoesNotExist:
                 pass
-    return render(request, 'landpage/course_preview.html',{ 'course_preview' : course_preview })
+    return render(request, 'landpage/course_preview.html',{
+        'course' : course
+    })
 
 
 def login_modal(request):

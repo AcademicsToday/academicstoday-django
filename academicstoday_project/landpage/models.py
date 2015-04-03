@@ -1,4 +1,5 @@
 from django.db import models
+from registrar.models import Course
 
 # Create your models here.
 
@@ -56,6 +57,16 @@ class LandpageCoursePreview(models.Model):
     
     class Meta:
         db_table = 'at_landpage_course_previews'
+
+class LandpageTopPickCourse(models.Model):
+    id = models.AutoField(primary_key=True)
+    course = models.ForeignKey(Course)
+    
+    def __str__(self):
+        return self.title
+    
+    class Meta:
+        db_table = 'at_landpage_top_pick_courses'
 
 
 class CoursePreview(models.Model):

@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_cron',
     'account',
     'landpage',
     'registrar',
@@ -56,6 +57,13 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'academicstoday_project.urls'
 
 WSGI_APPLICATION = 'academicstoday_project.wsgi.application'
+
+
+# Cron Jobs
+#
+CRON_CLASSES = [
+    "landpage.cron.TopCoursesPickingCronJob",
+]
 
 
 # Database
