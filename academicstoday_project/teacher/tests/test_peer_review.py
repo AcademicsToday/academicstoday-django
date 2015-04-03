@@ -66,6 +66,7 @@ class PeerReviewTestCase(TestCase):
             title="Comics Book Course",
             sub_title="The definitive course on comics!",
             category="",
+            teacher=teacher,
         )
                 
         # Create our assignment

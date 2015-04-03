@@ -1,4 +1,3 @@
-# Django & Python
 from django.core.urlresolvers import resolve
 from django.http import HttpRequest
 from django.http import QueryDict
@@ -8,24 +7,17 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 import json
-
-# Modal
 from registrar.models import Course
 from registrar.models import Teacher
 from registrar.models import Announcement
-
-# View
 from teacher.views import announcement
 
-# Contants
+
 TEST_USER_EMAIL = "ledo@gah.com"
 TEST_USER_USERNAME = "Ledo"
 TEST_USER_PASSWORD = "password"
 
-# Notes:
-# https://docs.djangoproject.com/en/1.7/topics/testing/tools/#assertions
 
-# Create your tests here.
 class AnnouncementTestCase(TestCase):
     def setUp(self):
         user = User.objects.create_user(
@@ -33,12 +25,13 @@ class AnnouncementTestCase(TestCase):
             username=TEST_USER_USERNAME,
             password=TEST_USER_PASSWORD
         )
-        Teacher.objects.create(user=user)
+        teacher = Teacher.objects.create(user=user)
         course = Course.objects.create(
             id=1,
             title="Comics Book Course",
             sub_title="The definitive course on comics!",
             category="",
+            teacher=teacher,
         )
         Announcement.objects.create(
             announcement_id=1,

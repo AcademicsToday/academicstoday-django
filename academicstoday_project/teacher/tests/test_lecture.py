@@ -37,7 +37,7 @@ class LectureTestCase(TestCase):
             password=TEST_USER_PASSWORD
         ).save()
         user = User.objects.get(email=TEST_USER_EMAIL)
-        Teacher.objects.create(user=user).save()
+        teacher = Teacher.objects.create(user=user)
                                  
         # Create a test course.
         Course.objects.create(
@@ -45,6 +45,7 @@ class LectureTestCase(TestCase):
             title="Comics Book Course",
             sub_title="The definitive course on comics!",
             category="",
+            teacher=teacher,
         )
         course = Course.objects.get(id=1)
         Lecture.objects.create(

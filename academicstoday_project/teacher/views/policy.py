@@ -56,8 +56,10 @@ def delete_policy(request, course_id):
     if request.is_ajax():
         if request.method == 'POST':
             policy_id = int(request.POST['policy_id'])
-            policy = Policy.objects.get(policy_id=policy_id)
-            policy.delete()
-            response_data = {'status' : 'success', 'message' : 'deleted'}
+            try:
+                Policy.objects.get(policy_id=policy_id).delete()
+                response_data = {'status' : 'success', 'message' : 'deleted'}
+            except Policy.DoesNotExist:
+                response_data = {'status' : 'failed', 'message' : 'record does not exist'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 

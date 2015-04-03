@@ -33,12 +33,13 @@ class SettingsTestCase(TestCase):
             username=TEST_USER_USERNAME,
             password=TEST_USER_PASSWORD
         )
-        Teacher.objects.create(user=user)
+        teacher = Teacher.objects.create(user=user)
         course = Course.objects.create(
             id=1,
             title="Comics Book Course",
             sub_title="The definitive course on comics!",
             category="",
+            teacher=teacher,
         )
         CourseSetting.objects.create(
             settings_id=1,

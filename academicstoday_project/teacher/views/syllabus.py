@@ -56,8 +56,10 @@ def delete_syllabus(request, course_id):
     if request.is_ajax():
         if request.method == 'POST':
             syllabus_id = int(request.POST['syllabus_id'])
-            syllabus = Syllabus.objects.get(syllabus_id=syllabus_id)
-            syllabus.delete()
-            response_data = {'status' : 'success', 'message' : 'deleted'}
+            try:
+                Syllabus.objects.get(syllabus_id=syllabus_id).delete()
+                response_data = {'status' : 'success', 'message' : 'deleted'}
+            except Syllabus.DoesNotExist:
+                response_data = {'status' : 'failed', 'message' : 'record does not exist'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 

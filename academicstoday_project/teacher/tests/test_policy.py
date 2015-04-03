@@ -34,14 +34,15 @@ class PolicyTestCase(TestCase):
             password=TEST_USER_PASSWORD,
         )
         user = User.objects.get(email=TEST_USER_EMAIL)
-        Teacher.objects.create(user=user)
+        teacher = Teacher.objects.create(user=user)
                                  
         # Create a test course.
         Course.objects.create(
             id=1,
             title="Comics Book Course",
             sub_title="The definitive course on comics!",
-        category="",
+            category="",
+            teacher=teacher,
         )
 
     def get_logged_in_client(self):
@@ -136,6 +137,10 @@ class PolicyTestCase(TestCase):
                 'file': fp,
             }, **kwargs)
             self.assertEqual(response.status_code, 200)
+            json_string = response.content.decode(encoding='UTF-8')
+            array = json.loads(json_string)
+            self.assertEqual(array['message'], 'saved')
+            self.assertEqual(array['status'], 'success')
         
         response = client.post('/teacher/course/1/delete_policy',{
             'policy_id': 1,

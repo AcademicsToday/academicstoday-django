@@ -29,6 +29,13 @@ TEST_USER_PASSWORD = "password"
 
 # Create your tests here.
 class SyllabusTestCase(TestCase):
+    def tearDown(self):
+        for id in range(1, 10):
+            try:
+                Syllabus.objects.get(syllabus_id=id).delete()
+            except Syllabus.DoesNotExist:
+                pass
+    
     def setUp(self):
         # Create our Student.
         User.objects.create_user(
@@ -37,14 +44,15 @@ class SyllabusTestCase(TestCase):
             password=TEST_USER_PASSWORD,
         )
         user = User.objects.get(email=TEST_USER_EMAIL)
-        Teacher.objects.create(user=user)
+        teacher = Teacher.objects.create(user=user)
                                  
         # Create a test course.
         Course.objects.create(
             id=1,
             title="Comics Book Course",
             sub_title="The definitive course on comics!",
-        category="",
+            category="",
+            teacher=teacher,
         )
 
     def get_logged_in_client(self):
@@ -88,19 +96,6 @@ class SyllabusTestCase(TestCase):
         self.assertIn(b'ajax_delete_syllabus',response.content)
         self.assertIn(b'PDF RESULT',response.content)
 
-        try:
-            Syllabus.objects.get(syllabus_id=1).delete()
-        except Syllabus.DoesNotExist:
-            pass
-        try:
-            Syllabus.objects.get(syllabus_id=2).delete()
-        except Syllabus.DoesNotExist:
-            pass
-        try:
-            Syllabus.objects.get(syllabus_id=3).delete()
-        except Syllabus.DoesNotExist:
-            pass
-
     def test_save_syllabus(self):
         kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
         client = self.get_logged_in_client()
@@ -115,19 +110,6 @@ class SyllabusTestCase(TestCase):
             array = json.loads(json_string)
             self.assertEqual(array['message'], 'saved')
             self.assertEqual(array['status'], 'success')
-        
-        try:
-            Syllabus.objects.get(syllabus_id=1).delete()
-        except Syllabus.DoesNotExist:
-            pass
-        try:
-            Syllabus.objects.get(syllabus_id=2).delete()
-        except Syllabus.DoesNotExist:
-            pass
-        try:
-            Syllabus.objects.get(syllabus_id=3).delete()
-        except Syllabus.DoesNotExist:
-            pass
 
     def test_delete_syllabus(self):
         kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
@@ -139,6 +121,10 @@ class SyllabusTestCase(TestCase):
                 'file': fp,
             }, **kwargs)
             self.assertEqual(response.status_code, 200)
+            json_string = response.content.decode(encoding='UTF-8')
+            array = json.loads(json_string)
+            self.assertEqual(array['message'], 'saved')
+            self.assertEqual(array['status'], 'success')
         
         response = client.post('/teacher/course/1/delete_syllabus',{
             'syllabus_id': 1,
@@ -148,16 +134,4 @@ class SyllabusTestCase(TestCase):
         array = json.loads(json_string)
         self.assertEqual(array['message'], 'deleted')
         self.assertEqual(array['status'], 'success')
-        
-        try:
-            Syllabus.objects.get(syllabus_id=1).delete()
-        except Syllabus.DoesNotExist:
-            pass
-        try:
-            Syllabus.objects.get(syllabus_id=2).delete()
-        except Syllabus.DoesNotExist:
-            pass
-        try:
-            Syllabus.objects.get(syllabus_id=3).delete()
-        except Syllabus.DoesNotExist:
-            pass
+

@@ -31,44 +31,6 @@ TEST_USER_USERNAME = "Ledo"
 TEST_USER_PASSWORD = "password"
 
 class OverviewTestCase(TestCase):
-    def tearDown(self):
-        # User
-        try:
-            User.objects.get(email=TEST_USER_EMAIL).delete()
-        except User.DoesNotExist:
-            pass
-        # Syllabus
-        try:
-            Syllabus.objects.get(syllabus_id=1).delete()
-        except Syllabus.DoesNotExist:
-            pass
-        try:
-            Syllabus.objects.get(syllabus_id=2).delete()
-        except Syllabus.DoesNotExist:
-            pass
-        try:
-            Syllabus.objects.get(syllabus_id=3).delete()
-        except Syllabus.DoesNotExist:
-            pass
-        # Policy
-        try:
-            Policy.objects.get(policy_id=1).delete()
-        except Policy.DoesNotExist:
-            pass
-        try:
-            Policy.objects.get(policy_id=2).delete()
-        except Policy.DoesNotExist:
-            pass
-        try:
-            Policy.objects.get(policy_id=3).delete()
-        except Policy.DoesNotExist:
-            pass
-        # Announcement
-        try:
-            Announcement.objects.get(announcement_id=1).delete()
-        except Announcement.DoesNotExist:
-            pass
-
     def setUp(self):
         user = User.objects.create_user(
             email=TEST_USER_EMAIL,
@@ -76,39 +38,39 @@ class OverviewTestCase(TestCase):
             password=TEST_USER_PASSWORD
         )
         teacher = Teacher.objects.create(user=user)
-        
-        # Course
         course = Course.objects.create(
             id=1,
             title="Comics Book Course",
             sub_title="The definitive course on comics!",
             category="",
+            teacher=teacher,
         )
-        
-        # Announcement
+
+    def populate_course_content(self, client, kwargs):
+        course = Course.objects.get(id=1)
         Announcement.objects.create(
             announcement_id=1,
             course=course,
             title='Hello world!',
             body='This is the body of the message.',
         )
-        
-        # Syllabus + Policy Upload
-        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
-        client = self.get_logged_in_client()
+        course = Course.objects.get(id=1)
         file_path = settings.MEDIA_ROOT + '/sample.pdf'
         with open(file_path, 'rb') as fp:
             self.assertTrue(fp is not None)
-            client.post('/teacher/course/1/save_syllabus',{
-                'file': fp,
-            }, **kwargs)
+            Syllabus.objects.create(
+                syllabus_id=1,
+                file='',
+                course=course,
+            )
         with open(file_path, 'rb') as fp:
             self.assertTrue(fp is not None)
-            client.post('/teacher/course/1/save_policy',{
-                'file': fp,
-            }, **kwargs)
-        
-        # Lectures
+            Policy.objects.create(
+                policy_id=1,
+                file='',
+                course=course,
+            )
+            
         Lecture.objects.create(
             lecture_id=1,
             lecture_num=1,
@@ -117,7 +79,6 @@ class OverviewTestCase(TestCase):
             description="Fighting for the destiny of the Earth.",
             course=course,
         )
-
         Lecture.objects.create(
             lecture_id=2,
             lecture_num=2,
@@ -126,8 +87,6 @@ class OverviewTestCase(TestCase):
             description="Fighting for the destiny of the Earth.",
             course=course,
         )
-
-        # Assignments
         Assignment.objects.create(
             assignment_id=1,
             assignment_num=1,
@@ -153,8 +112,33 @@ class OverviewTestCase(TestCase):
             course=course,
             is_final=True,
         )
-            
-    
+
+    def delete_course_content(self):
+        # User
+        try:
+            User.objects.get(email=TEST_USER_EMAIL).delete()
+        except User.DoesNotExist:
+            pass
+        
+        for id in range(1, 10):
+            # Syllabus
+            try:
+                Syllabus.objects.get(syllabus_id=id).delete()
+            except Syllabus.DoesNotExist:
+                pass
+            # Policy
+            try:
+                Policy.objects.get(policy_id=id).delete()
+            except Policy.DoesNotExist:
+                pass
+        
+        # Announcement
+        try:
+            Announcement.objects.get(announcement_id=1).delete()
+        except Announcement.DoesNotExist:
+            pass
+
+
     def get_logged_in_client(self):
         client = Client()
         client.login(
@@ -175,11 +159,18 @@ class OverviewTestCase(TestCase):
         self.assertIn(b'ajax_submit_course()',response.content)
 
     def test_submit_course_for_review(self):
-        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
         client = self.get_logged_in_client()
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        
+        # Create course content.
+        self.populate_course_content(client, kwargs)
+        
         response = client.post('/teacher/course/1/submit_course_for_review',{}, **kwargs)
         self.assertEqual(response.status_code, 200)
         json_string = response.content.decode(encoding='UTF-8')
         array = json.loads(json_string)
         self.assertEqual(array['message'], 'submitted course review')
         self.assertEqual(array['status'], 'success')
+
+        # Delete course content.
+        self.delete_course_content()

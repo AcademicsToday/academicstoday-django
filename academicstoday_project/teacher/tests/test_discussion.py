@@ -8,13 +8,10 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 import json
-
-# Modal
+from account.models import Teacher
 from registrar.models import Course
 from registrar.models import CourseDiscussionPost
 from registrar.models import CourseDiscussionThread
-
-# View
 from teacher.views import discussion
 
 # Contants
@@ -34,6 +31,8 @@ class DiscussionTestCase(TestCase):
             username=TEST_USER_USERNAME,
             password=TEST_USER_PASSWORD
         )
+        user = User.objects.get(email=TEST_USER_EMAIL)
+        teacher = Teacher.objects.create(user=user)
 
         # Create a test course
         Course.objects.create(
@@ -41,6 +40,7 @@ class DiscussionTestCase(TestCase):
             title="Comics Book Course",
             sub_title="The definitive course on comics!",
             category="",
+            teacher=teacher,
         )
     
         course = Course.objects.get(id=1)
