@@ -114,8 +114,9 @@ def save_peer_review(request, course_id, submission_id):
             
             # Fetch from database
             course = Course.objects.get(id=course_id)
-            a_submission = AssignmentSubmission.objects.get(submission_id=submission_id)
-            if a_submission is None:
+            try:
+                a_submission = AssignmentSubmission.objects.get(submission_id=submission_id)
+            except AssignmentSubmission.DoesNotExist:
                 response_data = {'status' : 'failed', 'message' : 'cannot find submission'}
                 return HttpResponse(json.dumps(response_data), content_type="application/json")
             assignment = a_submission.assignment
