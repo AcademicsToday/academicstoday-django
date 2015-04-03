@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf.urls.static import static, settings
 import json
 from registrar.models import Course
+from registrar.models import Teacher
 from registrar.models import Student
 from registrar.models import Assignment
 from registrar.models import AssignmentSubmission
@@ -30,13 +31,12 @@ from student.views import quiz
 from student.views import exam
 from student.views import credit
 
-# Contants
+
 TEST_USER_EMAIL = "ledo@gah.com"
 TEST_USER_USERNAME = "Ledo"
 TEST_USER_PASSWORD = "password"
 
 
-# Create your tests here.
 class CreditTestCase(TestCase):
     def setUp(self):
         # Create our Student.
@@ -44,35 +44,29 @@ class CreditTestCase(TestCase):
             email=TEST_USER_EMAIL,
             username=TEST_USER_USERNAME,
             password=TEST_USER_PASSWORD
-        ).save()
+        )
         user = User.objects.get(email=TEST_USER_EMAIL)
-        Student.objects.create(user=user).save()
+        teacher = Teacher.objects.create(user=user)
+        student = Student.objects.create(user=user)
         
         # Create a test course.
-        Course.objects.create(
+        course = Course.objects.create(
             id=1,
             title="Comics Book Course",
             sub_title="The definitive course on comics!",
             category="",
-        ).save()
-        
-        course = Course.objects.get(id=1)
-        if course is None:
-            self.assertTrue(False)
+            teacher=teacher,
+        )
 
         # Create our assignment(s)
-        Assignment.objects.create(
+        assignment = Assignment.objects.create(
             assignment_id=1,
             assignment_num=1,
             title="Hideauze",
             description="Anime related assignment.",
             worth=25,
             course=course,
-        ).save()
-        
-        assignment = Assignment.objects.get(assignment_id=1)
-        if assignment is None:
-            self.assertTrue(False)
+        )
 
         # Create questions
         EssayQuestion.objects.create(

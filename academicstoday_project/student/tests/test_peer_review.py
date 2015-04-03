@@ -1,4 +1,3 @@
-# Django & Python
 from django.core.urlresolvers import resolve
 from django.http import HttpRequest
 from django.http import QueryDict
@@ -9,9 +8,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.conf.urls.static import static, settings
 import json
-
-# Modal
 from registrar.models import Course
+from registrar.models import Teacher
 from registrar.models import Student
 from registrar.models import Assignment
 from registrar.models import AssignmentSubmission
@@ -24,20 +22,14 @@ from registrar.models import ResponseSubmission
 from registrar.models import TrueFalseQuestion
 from registrar.models import TrueFalseSubmission
 from registrar.models import PeerReview
-
-
-# View
 from student.views import peer_review
 
-# Contants
+
 TEST_USER_EMAIL = "ledo@gah.com"
 TEST_USER_USERNAME = "Ledo"
 TEST_USER_PASSWORD = "password"
 
-# Notes:
-# https://docs.djangoproject.com/en/1.7/topics/testing/tools/#assertions
 
-# Create your tests here.
 class PeerReviewTestCase(TestCase):
     def tearDown(self):
         User.objects.all().delete()
@@ -57,10 +49,10 @@ class PeerReviewTestCase(TestCase):
             email=TEST_USER_EMAIL,
             username=TEST_USER_USERNAME,
             password=TEST_USER_PASSWORD
-        ).save()
+        )
         user = User.objects.get(email=TEST_USER_EMAIL)
-        Student.objects.create(user=user).save()
-        student = Student.objects.get(user=user)
+        teacher = Teacher.objects.create(user=user)
+        student = Student.objects.create(user=user)
                                  
         # Create a test course.
         Course.objects.create(
@@ -68,6 +60,7 @@ class PeerReviewTestCase(TestCase):
             title="Comics Book Course",
             sub_title="The definitive course on comics!",
             category="",
+            teacher=teacher,
         ).save()
                                  
         course = Course.objects.get(id=1)

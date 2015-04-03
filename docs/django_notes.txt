@@ -17,6 +17,8 @@ python manage.py migrate
 Notes:
 - Run these if you’re creating the app for the first time as well using MySQL.
 
+
+
 ——————————————————————
 Super User Creation
 ——————————————————————
@@ -39,7 +41,16 @@ Password (Again): <Enter your own value again>
 Go to the url and play around:
 http://127.0.0.1:8000/admin
 
+
+
 ——————————————————————
 Handing Django Console
 ——————————————————————
 //TODO: Fill in.
+
+
+
+——————————————————————
+Useful Django Links
+——————————————————————
+https://docs.djangoproject.com/en/1.7/topics/testing/tools/#assertions

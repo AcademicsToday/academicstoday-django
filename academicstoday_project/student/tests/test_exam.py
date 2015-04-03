@@ -1,4 +1,3 @@
-# Django & Python
 from django.core.urlresolvers import resolve
 from django.http import HttpRequest
 from django.http import QueryDict
@@ -9,28 +8,21 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.conf.urls.static import static, settings
 import json
-
-# Modal
 from registrar.models import Course
+from registrar.models import Teacher
 from registrar.models import Student
 from registrar.models import Exam
 from registrar.models import ExamSubmission
 from registrar.models import MultipleChoiceQuestion
 from registrar.models import MultipleChoiceSubmission
-
-
-# View
 from student.views import exam
 
-# Contants
+
 TEST_USER_EMAIL = "ledo@gah.com"
 TEST_USER_USERNAME = "Ledo"
 TEST_USER_PASSWORD = "password"
 
-# Notes:
-# https://docs.djangoproject.com/en/1.7/topics/testing/tools/#assertions
 
-# Create your tests here.
 class ExamTestCase(TestCase):
     def setUp(self):
         # Create our Student.
@@ -38,9 +30,10 @@ class ExamTestCase(TestCase):
             email=TEST_USER_EMAIL,
             username=TEST_USER_USERNAME,
             password=TEST_USER_PASSWORD
-        ).save()
+        )
         user = User.objects.get(email=TEST_USER_EMAIL)
-        Student.objects.create(user=user).save()
+        teacher = Teacher.objects.create(user=user)
+        student = Student.objects.create(user=user)
         
         # Create a test course.
         Course.objects.create(
@@ -48,6 +41,7 @@ class ExamTestCase(TestCase):
             title="Comics Book Course",
             sub_title="The definitive course on comics!",
             category="",
+            teacher=teacher,
         )
         course = Course.objects.get(id=1)
 
