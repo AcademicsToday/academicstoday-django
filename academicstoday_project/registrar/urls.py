@@ -20,6 +20,7 @@ urlpatterns = patterns('',
                        
     url(r'^new_course_modal$', teaching.new_course_modal),
     url(r'^save_new_course$', teaching.save_new_course),
+    url(r'^delete_course_modal$', teaching.delete_course_modal),
     url(r'^course_delete$', teaching.course_delete),
                     
     # Transcript

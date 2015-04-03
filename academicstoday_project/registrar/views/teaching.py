@@ -60,6 +60,20 @@ def new_course_modal(request):
         'course_form' : course_form,
     })
 
+@login_required()
+def delete_course_modal(request):
+    course = None
+    if request.is_ajax():
+        if request.method == 'POST':
+            course_id = int(request.POST['course_id'])
+            try:
+                course = Course.objects.get(id=course_id)
+            except Course.DoesNotExist:
+                course = None
+    return render(request, 'registrar/teaching/delete_course_modal.html',{
+        'course' : course,
+    })
+
 
 @login_required(login_url='/landpage')
 def save_new_course(request):

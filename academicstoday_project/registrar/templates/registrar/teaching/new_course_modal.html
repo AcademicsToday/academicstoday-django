@@ -27,7 +27,7 @@
      */
      $(document).ready(function(){
         $('#new_course_modal').on('hidden.bs.modal', function (e) {
-            $('#new_course_modal').html('');
+            $('#ajax_modal_placeholder').html('');
             $('#new_course_btn').prop("disabled", false); // Unlock button                      
         });
     });

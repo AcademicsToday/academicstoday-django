@@ -47,8 +47,8 @@
 </div>
 
 <!-- Modal -->
-<div id="ajax_new_course_modal"
-   name="ajax_new_course_modal"></div>
+<div id="ajax_modal_placeholder"
+   name="ajax_modal_placeholder"></div>
 <!-- end modal -->
 
 <script>
@@ -95,11 +95,34 @@
             type: 'post',
             success: function(result) {
                 // success code execution here
-                $('#ajax_new_course_modal').html(result); // Update UI.
+                $('#ajax_modal_placeholder').html(result); // Update UI.
                 $('#new_course_modal').modal();           // Unhide view.
             },
             error: function(xhr,status,error) {
                 // error code here
+            },
+            complete: function(xhr,status) {
+               // completion code here
+            }
+        });
+    }
+
+    function ajax_delete_course_modal(course_id)
+    {
+        $('#del_' + course_id + '_btn').prop("disabled", true); // Lock button
+        $.ajax( 'delete_course_modal', {
+            data: {
+               'csrfmiddlewaretoken': '{{ csrf_token }}',
+               'course_id': course_id,
+            },
+            type: 'post',
+            success: function(result) {
+               // success code execution here
+               $('#ajax_modal_placeholder').html(result); // Update UI.
+               $('#delete_course_modal').modal();           // Unhide view.
+            },
+            error: function(xhr,status,error) {
+               // error code here
             },
             complete: function(xhr,status) {
                // completion code here

@@ -1,0 +1,40 @@
+<div class="modal fade" id="delete_course_modal" role="dialog">
+    <div class="modal-dialog" style="width:50%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h2 class="modal-title" id="myModalLabel">Warning</h2>
+            </div>
+            <div class="modal-body">
+                <div class="well">
+                    <p>When you delete a course, all data associated with this course will get deleted, this includes Student credits! Suspending is preferred option if the course was a successfully completed. Furthermore, all deletions are permanent, your course cannot be retrieved once deleted.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="$('#delete_course_modal').modal('hide');"
+                           type="button"
+                          class="btn-lg btn-default">
+                    <i class="fa fa-circle-o"></i> Cancel
+                </button>
+                <button type="button"
+                       class="btn-lg btn-danger"
+                     onclick="ajax_delete_course({{ course.id }});">
+                    <i class="fa fa-check-circle"></i> Yes I Understand, Delete this Course
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    /**
+     * Dynamic UI Code.
+     *  To give our application a dynamic feel, the following jQuery code will be
+     *  used to perform various UI changes.
+     */
+     $(document).ready(function(){
+        $('#delete_course_modal').on('hidden.bs.modal', function (e) {
+            $('#ajax_modal_placeholder').html('');
+            $('#del_{{ course.id }}_btn').prop("disabled", false); // Unlock button
+        });
+    });
+</script>
