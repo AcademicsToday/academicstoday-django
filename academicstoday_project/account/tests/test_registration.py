@@ -16,6 +16,9 @@ TEST_USER_PASSWORD = "password"
 
 
 class RegistrationTestCase(TestCase):
+    def tearDown(self):
+        User.objects.all().delete()
+    
     def setUp(self):
         pass
 

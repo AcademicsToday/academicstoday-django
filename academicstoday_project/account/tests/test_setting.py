@@ -17,6 +17,9 @@ TEST_USER_PASSWORD = "password"
 
 
 class SettingTestCase(TestCase):
+    def tearDown(self):
+        User.objects.get(email=TEST_USER_EMAIL).delete()
+
     def setUp(self):
         # Create our user.
         user = User.objects.create_user(

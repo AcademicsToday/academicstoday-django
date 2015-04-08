@@ -16,6 +16,9 @@ TEST_USER_PASSWORD = "password"
 
 
 class DonateTestCase(TestCase):
+    def tearDown(self):
+        User.objects.get(email=TEST_USER_EMAIL).delete()
+
     def setUp(self):
         # Create our user.
         user = User.objects.create_user(
@@ -24,12 +27,10 @@ class DonateTestCase(TestCase):
             password=TEST_USER_PASSWORD
         )
         user.save()
-    
 
     def test_url_resolves_to_donate_page_view(self):
         found = resolve('/donate')
         self.assertEqual(found.func, donate.donate_page)
-    
     
     def test_donate_page_returns_correct_html(self):
         # Test

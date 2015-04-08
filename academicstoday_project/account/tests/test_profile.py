@@ -17,6 +17,9 @@ TEST_USER_PASSWORD = "password"
 
 
 class ProfileTestCase(TestCase):
+    def tearDown(self):
+        User.objects.all().delete()
+    
     def setUp(self):
         # Create our user.
         user = User.objects.create_user(
