@@ -7,6 +7,7 @@ from teacher.views import announcement
 from teacher.views import syllabus
 from teacher.views import policy
 from teacher.views import lecture
+from teacher.views import lecture_note
 from teacher.views import assignment
 from teacher.views import quiz
 from teacher.views import exam
@@ -48,6 +49,13 @@ urlpatterns = patterns('',
     url(r'^teacher/course/(\d+)/save_lecture$', lecture.save_lecture),
     url(r'^teacher/course/(\d+)/delete_lecture$', lecture.delete_lecture),
 
+    # Lecture Note(s)
+    url(r'^teacher/course/(\d+)/lecture/(\d+)/notes$', lecture_note.lecture_notes_page),
+    url(r'^teacher/course/(\d+)/lecture/(\d+)/lecture_notes_table$', lecture_note.lecture_notes_table),
+    url(r'^teacher/course/(\d+)/lecture/(\d+)/lecture_note_modal$', lecture_note.lecture_note_modal),
+    url(r'^teacher/course/(\d+)/lecture/(\d+)/save_lecture_note$', lecture_note.save_lecture_note),
+    url(r'^teacher/course/(\d+)/lecture/(\d+)/delete_lecture_note$', lecture_note.delete_lecture_note),
+                       
     # Assignment(s)
     url(r'^teacher/course/(\d+)/assignments$', assignment.assignments_page),
     url(r'^teacher/course/(\d+)/assignments_table$', assignment.assignments_table),

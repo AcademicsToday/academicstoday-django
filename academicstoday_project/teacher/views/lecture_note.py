@@ -6,24 +6,41 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 import json
 import datetime
+import os
 from registrar.models import Teacher
 from registrar.models import Student
 from registrar.models import Course
 from registrar.models import Lecture
+from registrar.models import PDFUpload
 from teacher.forms import LectureForm
+from teacher.forms import PDFUploadForm
 
 
 @login_required(login_url='/landpage')
-def lectures_page(request, course_id):
+def lecture_notes_page(request, course_id, lecture_id):
     course = Course.objects.get(id=course_id)
     teacher = Teacher.objects.get(user=request.user)
-    return render(request, 'teacher/lecture/view.html',{
+    lecture = Lecture.objects.get(lecture_id=lecture_id)
+    return render(request, 'teacher/lecture_note/view.html',{
         'teacher' : teacher,
         'course' : course,
-        'NO_VIDEO_PLAYER': settings.NO_VIDEO_PLAYER,
-        'YOUTUBE_VIDEO_PLAYER': settings.YOUTUBE_VIDEO_PLAYER,
-        'VIMEO_VIDEO_PLAYER': settings.VIMEO_VIDEO_PLAYER,
-        'BLIPTV_VIDEO_PLAYER': settings.BLIPTV_VIDEO_PLAYER,
+        'lecture' : lecture,
+        'user' : request.user,
+        'tab' : 'lecture_notes',
+        'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
+        'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+    })
+
+
+@login_required(login_url='/landpage')
+def lecture_notes_table(request, course_id, lecture_id):
+    course = Course.objects.get(id=course_id)
+    teacher = Teacher.objects.get(user=request.user)
+    lecture = Lecture.objects.get(lecture_id=lecture_id)
+    return render(request, 'teacher/lecture_note/table.html',{
+        'teacher' : teacher,
+        'course' : course,
+        'lecture' : lecture,
         'user' : request.user,
         'tab' : 'lectures',
         'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
@@ -32,67 +49,60 @@ def lectures_page(request, course_id):
 
 
 @login_required(login_url='/landpage')
-def lectures_table(request, course_id):
-    course = Course.objects.get(id=course_id)
-    teacher = Teacher.objects.get(user=request.user)
-    
-    try:
-        lectures = Lecture.objects.filter(course=course).order_by('-lecture_num')
-    except Lecture.DoesNotExist:
-        lectures = None
-    return render(request, 'teacher/lecture/table.html',{
-        'teacher' : teacher,
-        'course' : course,
-        'lectures' : lectures,
-        'NO_VIDEO_PLAYER': settings.NO_VIDEO_PLAYER,
-        'YOUTUBE_VIDEO_PLAYER': settings.YOUTUBE_VIDEO_PLAYER,
-        'VIMEO_VIDEO_PLAYER': settings.VIMEO_VIDEO_PLAYER,
-        'BLIPTV_VIDEO_PLAYER': settings.BLIPTV_VIDEO_PLAYER,
-        'user' : request.user,
-        'tab' : 'lectures',
-        'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
-        'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
-    })
-
-
-@login_required(login_url='/landpage')
-def lecture_modal(request, course_id):
+def lecture_note_modal(request, course_id, lecture_id):
     if request.method == u'POST':
         # Get the lecture_id of post and either create a brand new form
         # for the user, or load up existing one based on the database
         # data for the particular lecture.
-        lecture_id = int(request.POST['lecture_id'])
         form = None
-        if lecture_id > 0:
-            lecture = Lecture.objects.get(lecture_id=lecture_id)
-            form = LectureForm(instance=lecture)
+        lecture_id = int(lecture_id)
+        upload_id = int(request.POST['upload_id'])
+        if upload_id > 0:
+            upload = PDFUpload.objects.get(upload_id=upload_id)
+            form = PDFUploadForm(instance=upload)
         else:
-            form = LectureForm()
-        return render(request, 'teacher/lecture/modal.html',{
-            'form' : form,
+            form = PDFUploadForm()
+        
+        course = Course.objects.get(id=course_id)
+        lecture = Lecture.objects.get(lecture_id=lecture_id)
+        return render(request, 'teacher/lecture_note/modal.html',{
+            'course': course,
+            'lecture': lecture,
+            'form': form,
         })
 
 
 @login_required(login_url='/landpage')
-def save_lecture(request, course_id):
+def save_lecture_note(request, course_id, lecture_id):
     response_data = {'status' : 'failed', 'message' : 'unknown error with saving'}
     if request.is_ajax():
         if request.method == 'POST':
             course = Course.objects.get(id=course_id)
-            lecture_id = int(request.POST['lecture_id'])
-            form = None
-
-            # If lecture already exists, then lets update only, else insert.
-            if lecture_id > 0:
-                lecture = Lecture.objects.get(lecture_id=lecture_id)
-                form = LectureForm(instance=lecture, data=request.POST)
-            else:
-                form = LectureForm(request.POST, request.FILES)
-
+            lecture_id = int(lecture_id)
+            lecture = Lecture.objects.get(lecture_id=lecture_id)
+            form = PDFUploadForm(request.POST, request.FILES)
+            form.instance.user = request.user
+            upload_id = int(request.POST['upload_id'])
+            
+            # If lecture already exists, then delete local file.
+            if upload_id > 0:
+                # Delete previous file.
+                upload = PDFUpload.objects.get(upload_id=upload_id)
+                if upload.file:
+                    if os.path.isfile(upload.file.path):
+                        os.remove(upload.file.path)
+                        upload.file = None
+                        upload.save()
+                form.instance = upload
+                
+            # Save if valid
             if form.is_valid():
-                instance = form.save(commit=False)
-                instance.course = course
-                instance.save()
+                form.save()
+                
+                # Keep track of notes in lecture.
+                if upload_id == 0:
+                    lecture.notes.add(form.instance)
+                
                 response_data = {'status' : 'success', 'message' : 'saved'}
             else:
                 response_data = {'status' : 'failed', 'message' : json.dumps(form.errors)}
@@ -100,22 +110,14 @@ def save_lecture(request, course_id):
 
 
 @login_required(login_url='/landpage')
-def delete_lecture(request, course_id):
+def delete_lecture_note(request, course_id, lecture_id):
     response_data = {'status' : 'failed', 'message' : 'unknown error with deleting'}
     if request.is_ajax():
         if request.method == 'POST':
-            lecture_id = int(request.POST['lecture_id'])
+            upload_id = int(request.POST['upload_id'])
             try:
-                # Find the lecture.
-                lecture = Lecture.objects.get(lecture_id=lecture_id)
-                
-                # Delete all the notes.
-                for note in lecture.notes.all():
-                    note.delete()
-                
-                # Delete lecture and return OK status, else return BAD status.
-                lecture.delete()
+                PDFUpload.objects.get(upload_id=upload_id).delete()
                 response_data = {'status' : 'success', 'message' : 'deleted'}
-            except Lecture.DoesNotExist:
+            except PDFUpload.DoesNotExist:
                 response_data = {'status' : 'failed', 'message' : 'record not found'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")

@@ -4,6 +4,7 @@ from django.forms.extras.widgets import Select, SelectDateWidget
 from django.conf import settings
 
 from django.forms import ModelForm, Textarea
+from registrar.models import PDFUpload
 from registrar.models import Announcement
 from registrar.models import Syllabus
 from registrar.models import Policy
@@ -57,6 +58,16 @@ class LectureForm(forms.ModelForm):
     class Meta:
         model = Lecture
         fields = ['lecture_id', 'lecture_num', 'week_num', 'title', 'description', 'youtube_url', 'vimeo_url', 'preferred_service']
+
+
+class PDFUploadForm(forms.ModelForm):
+    class Meta:
+        model = PDFUpload
+        fields = ['upload_id', 'title', 'description', 'file']
+        labels = {
+            'file': 'PDF',
+        }
+
 
 
 class AssignmentForm(forms.ModelForm):

@@ -102,6 +102,34 @@ COURSE_CATEGORY_TYPES = (
 )
 
 
+class PDFUpload(models.Model):
+    upload_id = models.AutoField(primary_key=True)
+    category = models.CharField(max_length=127, null=True)
+    title = models.CharField(max_length=127, null=True)
+    description = models.TextField(null=True)
+    upload_date = models.DateField(auto_now= True, null=True)
+    file = models.FileField(upload_to='uploads', null=True)
+    user = models.ForeignKey(User)
+    
+    def delete(self, *args, **kwargs):
+        """
+            Overrided delete functionality to include deleting the local file
+            that we have stored on the system. Currently the deletion funciton
+            is missing this functionality as it's our responsibility to handle
+            the local files.
+        """
+        if self.file:
+            if os.path.isfile(self.file.path):
+                os.remove(self.file.path)
+        super(PDFUpload, self).delete(*args, **kwargs) # Call the "real" delete() method
+    
+    def __str__(self):
+        return self.title
+    
+    class Meta:
+        db_table = 'at_pdf_uploads'
+
+
 class Course(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=127)
@@ -117,12 +145,6 @@ class Course(models.Model):
     teacher = models.ForeignKey(Teacher)
 
     def delete(self, *args, **kwargs):
-        """
-            Overrided delete functionality to include deleting the local file
-            that we have stored on the system. Currently the deletion funciton
-            is missing this functionality as it's our responsibility to handle
-            the local files.
-        """
         if self.file:
             if os.path.isfile(self.file.path):
                 os.remove(self.file.path)
@@ -268,6 +290,7 @@ class Lecture(models.Model):
         default=settings.YOUTUBE_VIDEO_PLAYER
     )
     course = models.ForeignKey(Course)
+    notes = models.ManyToManyField(PDFUpload)
 
     def __str__(self):
         return 'Week: ' + str(self.week_num) + ' Lecture: ' + str(self.lecture_num) + ' Title: ' +self.title;

@@ -19,8 +19,11 @@
                     <li>
                         <i class="fa fa-compass"></i> {{ course.title }}
                     </li>
+                    <li>
+                        <i class="fa fa-video-camera"></i> <a href="/teacher/course/{{ course.id }}/lectures">Lectures</a>
+                    </li>
                     <li class="active">
-                        <i class="fa fa-video-camera"></i> Lectures
+                        <i class="fa fa-file-o"></i> Notes
                     </li>
                 </ol>
             </div>
@@ -46,12 +49,13 @@
      * When the page loads up, get the table data.
      */
     $(document).ready(function(){
-        ajax_refresh_lectures_table();
+        ajax_refresh_lecture_notes_table();
     });
                   
-    function ajax_refresh_lectures_table()
+    function ajax_refresh_lecture_notes_table()
     {
-        $.ajax( 'lectures_table', {
+        var url = '/teacher/course/'+{{ course.id }}+'/lecture/'+{{ lecture.lecture_id }}+'/lecture_notes_table';
+        $.ajax( url, {
             data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
             },
@@ -73,20 +77,21 @@
      *  Function will call AJAX function to load the modal for the new lecture
      *  creation UI.
      */
-    function ajax_lecture_modal(lecture_id)
+    function ajax_lecture_note_modal(upload_id)
     {
-        if (lecture_id == 0)
+        var url = '/teacher/course/'+{{ course.id }}+'/lecture/'+{{ lecture.lecture_id }}+'/lecture_note_modal';
+        if (upload_id == 0)
         {
-            $('#add_lecture_btn').prop("disabled", true); // Lock button
+            $('#add_lecture_note_btn').prop("disabled", true); // Lock button
         }
         else
         {
-            $('#edit_'+lecture_id+'_btn').prop("disabled", true); // Lock button
+            $('#edit_'+upload_id+'_btn').prop("disabled", true); // Lock button
         }
-        $.ajax( 'lecture_modal', {
+        $.ajax( url, {
             data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
-                'lecture_id': lecture_id
+                'upload_id': upload_id
             },
             type: 'post',
             success: function(result) {
@@ -106,21 +111,21 @@
     /**
      *  Function will call AJAX function to delete the teacher's lecture.
      */
-    function ajax_delete_lecture(lecture_id)
+    function ajax_delete_lecture_note(upload_id)
     {
-        $('#del_'+lecture_id+'_btn').prop("disabled", true); // Lock button
-        $.ajax( 'delete_lecture', {
+        var url = '/teacher/course/'+{{ course.id }}+'/lecture/'+{{ lecture.lecture_id }}+'/delete_lecture_note';
+        $('#del_'+upload_id+'_btn').prop("disabled", true); // Lock button
+        $.ajax( url, {
             data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
-                'lecture_id' : lecture_id
+                'upload_id' : upload_id
             },
             type: 'post',
             success: function(result) {
                 // success code execution here
-                $('#del_'+lecture_id+'_btn').prop("disabled", false); // Unlock button
                 if (result.status == 'success')
                 {
-                    ajax_refresh_lectures_table();
+                    ajax_refresh_lecture_notes_table();
                 }
             },
             error: function(xhr,status,error) {
@@ -128,15 +133,10 @@
             },
             complete: function(xhr,status) {
                // completion code here
+               $('#del_'+upload_id+'_btn').prop("disabled", false); // Unlock button
             }
         });
     }
-
-   function view_lecture_notes(lecture_id)
-   {
-       $('#notes_'+lecture_id+'_btn').prop("disabled", true); // Lock button
-       window.location = '/teacher/course/'+{{ course.id }}+'/lecture/'+lecture_id+'/notes';
-   }
 </script>
 
 {% endblock content %}

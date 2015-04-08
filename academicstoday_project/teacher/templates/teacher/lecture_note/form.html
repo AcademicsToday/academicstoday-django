@@ -1,0 +1,21 @@
+<form enctype="multipart/form-data" name="lecture_note_form" id="lecture_note_form">
+    <input type="hidden"
+             id="id_upload_id"
+           name="upload_id"
+          value={% if form.instance.upload_id != None %}"{{ form.instance.upload_id }}"{% else %}0{% endif %}>
+    {% for field in form %}
+    <div class="row">
+        <div class="form-group">
+            <div class="fieldWrapper">
+                <label class="col-sm-3 control-label">
+                    {{ field.label }}
+                </label>
+                <div class="col-sm-9">
+                    {{ field }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <br/>
+    {% endfor %}
+</form>

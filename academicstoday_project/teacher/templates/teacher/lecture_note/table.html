@@ -6,12 +6,11 @@
                           <table class="table table-hover table-striped">
                               <thead>
                                   <tr>
-                                      <th>Lecture #</th>
-                                      <th>Week #</th>
+                                      <th>ID #</th>
                                       <th>Title</th>
-                                      <th>Preferred Service</th>
+                                      <th>Type</th>
                                       <th>
-                                          <button onclick="ajax_lecture_modal(0);"
+                                          <button onclick="ajax_lecture_note_modal(0);"
                                                        id="add_lecture_btn"
                                                      name="add_lecture_btn"
                                                      type="button"
@@ -22,36 +21,20 @@
                                   </tr>
                               </thead>
                               <tbody>
-                              {% for lecture in lectures %}
+                              {% for pdf in lecture.notes.all %}
                               <tr>
-                                  <td align="left" valign="left">{{ lecture.lecture_num }}</td>
-                                  <td align="left" valign="left">{{ lecture.week_num }}</td>
-                                  <td align="left" valign="left">{{ lecture.title }}</td>
-                                  <td align="left" valign="left">
-                                  {% if lecture.preferred_service == YOUTUBE_VIDEO_PLAYER %}
-                                    <i class="fa fa-youtube"></i> YouTube
-                                  {% elif lecture.preferred_service == VIMEO_VIDEO_PLAYER %}
-                                    <i class="fa fa-vimeo-square"></i> Vimeo
-                                  {% else %}
-                                    <i class="fa fa-vimeo-square"></i> Vimeo
-                                  {% endif %}
-                                  </td>
-                                  <td align="left" valign="left">
-                                      <button onclick="ajax_lecture_modal({{ lecture.lecture_id }});"
+                                  <td align="left" valign="left">{{ pdf.upload_id }}</td>
+                                  <td align="left" valign="left">{{ pdf.title }}</td>
+                                  <td align="left" valign="left">PDF</td>
+                                    <td align="left" valign="left">
+                                      <button onclick="ajax_lecture_note_modal({{ pdf.upload_id }});"
                                                    id="edit_{{ lecture.lecture_id }}_btn"
                                                  name="edit_{{ lecture.lecture_id }}_btn"
                                                  type="button"
                                                 class="btn btn-sm btn-warning">
                                           <i class="fa fa-pencil"></i> Edit
                                       </button>
-                                      <button onclick="view_lecture_notes({{ lecture.lecture_id }});"
-                                                   id="notes_{{ lecture.lecture_id }}_btn"
-                                                 name="notes_{{ lecture.lecture_id }}_btn"
-                                                 type="button"
-                                                class="btn btn-sm btn-primary">
-                                          <i class="fa fa-edit"></i> Notes
-                                      </button>
-                                      <button onclick="ajax_delete_lecture({{ lecture.lecture_id }});"
+                                      <button onclick="ajax_delete_lecture_note({{ pdf.upload_id }});"
                                                    id="del_{{ lecture.lecture_id }}_btn"
                                                  name="del_{{ lecture.lecture_id }}_btn"
                                                  type="button"
