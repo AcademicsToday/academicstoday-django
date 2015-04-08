@@ -31,6 +31,14 @@ TEST_USER_USERNAME = "Ledo"
 TEST_USER_PASSWORD = "password"
 
 class OverviewTestCase(TestCase):
+    def tearDown(self):
+        User.objects.get(email=TEST_USER_EMAIL).delete()
+        for id in range(1, 10):
+            try:
+                Course.objects.get(id=id).delete()
+            except Course.DoesNotExist:
+                pass
+
     def setUp(self):
         user = User.objects.create_user(
             email=TEST_USER_EMAIL,
@@ -114,12 +122,6 @@ class OverviewTestCase(TestCase):
         )
 
     def delete_course_content(self):
-        # User
-        try:
-            User.objects.get(email=TEST_USER_EMAIL).delete()
-        except User.DoesNotExist:
-            pass
-        
         for id in range(1, 10):
             # Syllabus
             try:

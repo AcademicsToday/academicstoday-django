@@ -1,4 +1,3 @@
-# Django & Python
 from django.core.urlresolvers import resolve
 from django.http import HttpRequest
 from django.http import QueryDict
@@ -9,8 +8,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.conf.urls.static import static, settings
 import json
-
-# Modal
 from registrar.models import Course
 from registrar.models import Student
 from registrar.models import Teacher
@@ -25,20 +22,22 @@ from registrar.models import ResponseSubmission
 from registrar.models import TrueFalseQuestion
 from registrar.models import TrueFalseSubmission
 from registrar.models import PeerReview
-
-
-# View
 from teacher.views import peer_review
 
-# Contants
+
 TEST_USER_EMAIL = "ledo@gah.com"
 TEST_USER_USERNAME = "Ledo"
 TEST_USER_PASSWORD = "password"
 
-# Create your tests here.
+
 class PeerReviewTestCase(TestCase):
     def tearDown(self):
         User.objects.all().delete()
+        for id in range(1, 10):
+            try:
+                Course.objects.get(id=id).delete()
+            except Course.DoesNotExist:
+                pass
         Student.objects.all().delete()
         Course.objects.all().delete()
         Assignment.objects.all().delete()
