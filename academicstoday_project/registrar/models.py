@@ -141,7 +141,7 @@ class CourseSubmission(models.Model):
     from_submitter = models.TextField(null=True)
     from_reviewer = models.TextField(null=True)
     review_date = models.DateField(auto_now=True, null=True)
-    submission_date = models.DateField(auto_now_add=True, null=True)
+    submission_date = models.DateField(auto_now=True, null=True)
     course = models.ForeignKey(Course)
 
     def __str__(self):
@@ -191,7 +191,7 @@ class Announcement(models.Model):
     announcement_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=31)
     body = models.TextField()
-    post_date = models.DateField(auto_now=True, auto_now_add=True, null=True)
+    post_date = models.DateField(auto_now_add=True, null=True)
     course = models.ForeignKey(Course)
     
     @classmethod
@@ -306,7 +306,7 @@ class ExamSubmission(models.Model):
     percent = models.FloatField(default=0)
     earned_marks = models.FloatField(default=0)
     total_marks = models.PositiveSmallIntegerField(default=0)
-    submission_date = models.DateField(null=True)
+    submission_date = models.DateField(auto_now=True, null=True)
     is_finished = models.BooleanField(default=False)
     student = models.ForeignKey(Student)
     exam = models.ForeignKey(Exam)
@@ -348,7 +348,7 @@ class QuizSubmission(models.Model):
     percent = models.FloatField(default=0)
     earned_marks = models.FloatField(default=0)
     total_marks = models.PositiveSmallIntegerField(default=0)
-    submission_date = models.DateField(null=True)
+    submission_date = models.DateField(auto_now=True, null=True)
     is_finished = models.BooleanField(default=False)
     student = models.ForeignKey(Student)
     quiz = models.ForeignKey(Quiz)
@@ -441,7 +441,7 @@ class PeerReview(models.Model):
         validators=[MinValueValidator(0), MaxValueValidator(5)],
     )
     text = models.TextField(null=True, blank=True)
-    date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
+    date = models.DateTimeField(auto_now=True, null=True)
     user = models.ForeignKey(User)
                           
     def __str__(self):
@@ -454,7 +454,7 @@ class PeerReview(models.Model):
 class EssaySubmission(models.Model):
     submission_id = models.AutoField(primary_key=True)
     file = models.FileField(upload_to='uploads')
-    submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
+    submission_date = models.DateTimeField(auto_now=True, null=True)
     marks = models.FloatField(
         validators=[MinValueValidator(0)],
         default=0
@@ -523,7 +523,7 @@ class MultipleChoiceSubmission(models.Model):
         validators=[MinValueValidator(0)],
         default=0,
     )
-    submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
+    submission_date = models.DateTimeField(auto_now=True, null=True)
     student = models.ForeignKey(Student)
     question = models.ForeignKey(MultipleChoiceQuestion)
   
@@ -574,7 +574,7 @@ class TrueFalseSubmission(models.Model):
     submission_id = models.AutoField(primary_key=True)
     answer = models.BooleanField(default=False)
     marks = models.PositiveSmallIntegerField(default=0)
-    submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
+    submission_date = models.DateTimeField(auto_now=True, null=True)
     marks = models.FloatField(
         validators=[MinValueValidator(0)],
         default=0,
@@ -621,7 +621,7 @@ class ResponseSubmission(models.Model):
         validators=[MinValueValidator(0)],
         default=0
     )
-    submission_date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
+    submission_date = models.DateTimeField(auto_now=True, null=True)
     student = models.ForeignKey(Student)
     question = models.ForeignKey(ResponseQuestion)
     reviews = models.ManyToManyField(PeerReview)
@@ -637,7 +637,7 @@ class CourseDiscussionPost(models.Model):
     post_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=127)
     text = models.TextField(null=True, blank=True)
-    date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
+    date = models.DateTimeField(auto_now=True, null=True)
     user = models.ForeignKey(User)
     
     def __str__(self):
@@ -651,7 +651,7 @@ class CourseDiscussionThread(models.Model):
     thread_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=127)
     text = models.TextField(null=True, blank=True)
-    date = models.DateTimeField(auto_now=True, auto_now_add=True, null=True)
+    date = models.DateTimeField(auto_now=True, null=True)
     course = models.ForeignKey(Course)
     user = models.ForeignKey(User)
     posts = models.ManyToManyField(CourseDiscussionPost)

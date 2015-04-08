@@ -42,11 +42,11 @@ $ export PATH="/Applications/Postgres.app/Contents/Versions/9.4/bin:$PATH"
 $ pip3 install django        # Our MVC Framework
 $ pip3 install psycopg2      # Postgres SQL DB
 $ pip3 install gunicorn      # Web-Server Helper
-$ pip3 install django-cron   # Scheduler
+$ pip3 install Pillow        # Req: ImageField
 
 
 (7) After installation
-$ python -c "import django; print(django.get_version())" # 1.7.4
+$ python -c "import django; print(django.get_version())" # 1.8
 
 
 (8) Now django installed and ready to use , okay lets create a sample site
@@ -75,6 +75,10 @@ DATABASES = {
         "HOST": "localhost",
         "PORT": "5432",
     }
+}
+
+SOUTH_DATABASE_ADAPTERS = {
+    'default': 'south.db.postgresql_psycopg2',
 }
 - - - - - - - - - - - - - - - - - - - - - - - - - -
 
