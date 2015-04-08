@@ -37,8 +37,7 @@
                         <thead>
                             <tr>
                                 <th>Assignment #</th>
-                                <th>Username</th>
-                                <th>Rating</th>
+                                <th>Email</th>
                                 <th>View</th>
                             </tr>
                         </thead>
@@ -47,13 +46,6 @@
                             <tr>
                                 <td>{{ submission.assignment.assignment_num }}</td>
                                 <td>{{ submission.student.user.username }}</td>
-                                <td>
-                                     <i class="fa fa-star"></i>
-                                     <i class="fa fa-star"></i>
-                                     <i class="fa fa-star"></i>
-                                     <i class="fa fa-star"></i>
-                                     <i class="fa fa-star"></i>
-                                </td>
                                 <td>
                                     <button onclick="view_submission({{ submission.submission_id }});"
                                                type="button"
