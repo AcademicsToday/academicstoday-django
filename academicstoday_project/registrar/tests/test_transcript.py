@@ -20,6 +20,13 @@ TEST_USER_PASSWORD = "password"
 
 
 class TranscriptTestCase(TestCase):
+    def tearDown(self):
+        for id in range(1, 10):
+            try:
+                Course.objects.get(id=id).delete()
+            except Course.DoesNotExist:
+                pass
+
     def setUp(self):
         # Create our user.
         User.objects.create_user(

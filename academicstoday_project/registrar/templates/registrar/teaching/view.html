@@ -23,8 +23,8 @@
         <!-- /.row -->
 
         <!-- Courses Rows -->
-        <div id="ajax_courses_table"
-           name="ajax_courses_table">
+        <div id="ajax_table_placeholder"
+           name="ajax_table_placeholder">
            {% if courses.count == 0 or teacher == None %}
            
            <div class="jumbotron">
@@ -70,7 +70,7 @@
             type: 'post',
             success: function(result) {
                     // success code execution here
-                    $('#ajax_courses_table').html(result); // Update UI.
+                    $('#ajax_table_placeholder').html(result); // Update UI.
             },
             error: function(xhr,status,error) {
                // error code here

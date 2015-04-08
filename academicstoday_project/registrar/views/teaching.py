@@ -105,7 +105,7 @@ def save_new_course(request):
                     course=form.instance
                 )
                 
-                response_data = {'status' : 'success', 'message' : 'unknown error with saving'}
+                response_data = {'status' : 'success', 'message' : 'course saved'}
             else:
                 response_data = {'status' : 'failed', 'message' : json.dumps(form.errors)}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
