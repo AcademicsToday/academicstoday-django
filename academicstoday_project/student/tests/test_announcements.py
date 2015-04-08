@@ -19,6 +19,15 @@ TEST_USER_PASSWORD = "password"
 
 
 class AnnouncementTestCase(TestCase):
+    def tearDown(self):
+        User.objects.get(email=TEST_USER_EMAIL).delete()
+        Announcement.objects.all().delete()
+        for id in range(1, 10):
+            try:
+                Course.objects.get(id=id).delete()
+            except Course.DoesNotExist:
+                pass
+
     def setUp(self):
         # Create our user.
         User.objects.create_user(
