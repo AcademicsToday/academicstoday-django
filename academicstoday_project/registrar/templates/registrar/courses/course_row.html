@@ -4,7 +4,11 @@
             <div class="panel-body">
                 <!-- Course Picture -->
                 <div class="col-lg-3 text-left">
+                {% if course.file != None and course.file != '' %}
                     <img src="{{ course.file.url }}" height="256" width="256" />
+                {% else %}
+                    Missing Image!
+                {% endif %}
                 </div>
                 <!-- Course Info -->
                 <div class="col-lg-9 text-left">
