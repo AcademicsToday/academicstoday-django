@@ -106,15 +106,7 @@ def delete_lecture(request, course_id):
         if request.method == 'POST':
             lecture_id = int(request.POST['lecture_id'])
             try:
-                # Find the lecture.
-                lecture = Lecture.objects.get(lecture_id=lecture_id)
-                
-                # Delete all the notes.
-                for note in lecture.notes.all():
-                    note.delete()
-                
-                # Delete lecture and return OK status, else return BAD status.
-                lecture.delete()
+                Lecture.objects.get(lecture_id=lecture_id).delete()
                 response_data = {'status' : 'success', 'message' : 'deleted'}
             except Lecture.DoesNotExist:
                 response_data = {'status' : 'failed', 'message' : 'record not found'}

@@ -292,6 +292,11 @@ class Lecture(models.Model):
     course = models.ForeignKey(Course)
     notes = models.ManyToManyField(PDFUpload)
 
+    def delete(self, *args, **kwargs):
+        for note in self.notes.all():
+            note.delete()
+        super(Lecture, self).delete(*args, **kwargs) # Call the "real" delete() method
+
     def __str__(self):
         return 'Week: ' + str(self.week_num) + ' Lecture: ' + str(self.lecture_num) + ' Title: ' +self.title;
 
