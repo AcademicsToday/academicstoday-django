@@ -49,11 +49,11 @@ class EnrolmentTestCase(TestCase):
             student=student,
         )
     
-    def test_url_resolves_to_transcript_page_view(self):
+    def test_url_resolves_to_enrolment_page_view(self):
         found = resolve('/enrolment')
         self.assertEqual(found.func, enrolment.enrolment_page)
     
-    def test_transcript_page_with_no_enrolments(self):
+    def test_enrolment_page_with_no_enrolments(self):
         client = Client()
         client.login(
             username=TEST_USER_USERNAME,
@@ -63,7 +63,7 @@ class EnrolmentTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'Become a Student!',response.content)
 
-    def test_transcript_page_with_enrolments(self):
+    def test_enrolment_page_with_enrolments(self):
         user = User.objects.get(email=TEST_USER_EMAIL)
         student = Student.objects.get(user=user)
         course = Course.objects.get(id=1)
