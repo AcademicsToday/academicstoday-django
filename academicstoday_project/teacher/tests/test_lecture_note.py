@@ -90,6 +90,24 @@ class LectureNoteTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'lecture_modal',response.content)
 
+    def test_save_lecture_note_with_no_record(self):
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        client = self.get_logged_in_client()
+        file_path = settings.MEDIA_ROOT + '/sample.pdf'
+        with open(file_path, 'rb') as fp:
+            self.assertTrue(fp is not None)
+            response = client.post('/teacher/course/1/lecture/1/save_lecture_note',{
+                'upload_id': 666,
+                'title': 'Blade vs Evil',
+                'description': 'Video of a fight',
+                'file': fp,
+            }, **kwargs)
+            self.assertEqual(response.status_code, 200)
+        json_string = response.content.decode(encoding='UTF-8')
+        array = json.loads(json_string)
+        self.assertEqual(array['message'], 'record does not exist')
+        self.assertEqual(array['status'], 'failed')
+
     def test_save_lecture_note_with_insert(self):
         kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
         client = self.get_logged_in_client()

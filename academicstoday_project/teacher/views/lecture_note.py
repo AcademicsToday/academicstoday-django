@@ -87,7 +87,13 @@ def save_lecture_note(request, course_id, lecture_id):
             # If lecture already exists, then delete local file.
             if upload_id > 0:
                 # Delete previous file.
-                upload = FileUpload.objects.get(upload_id=upload_id)
+                try:
+                    upload = FileUpload.objects.get(upload_id=upload_id)
+                except FileUpload.DoesNotExist:
+                    return HttpResponse(json.dumps({
+                        'status' : 'failed', 'message' : 'record does not exist'
+                    }), content_type="application/json")
+
                 if upload.file:
                     if os.path.isfile(upload.file.path):
                         os.remove(upload.file.path)
