@@ -32,15 +32,9 @@ TEST_USER_PASSWORD = "password"
 
 class PeerReviewTestCase(TestCase):
     def tearDown(self):
-        User.objects.get(email=TEST_USER_EMAIL).delete()
-        for id in range(1, 10):
-            try:
-                Course.objects.get(id=id).delete()
-            except Course.DoesNotExist:
-                pass
-        User.objects.all().delete()
-        Student.objects.all().delete()
-        Course.objects.all().delete()
+        essays = EssaySubmission.objects.all()
+        for essay in essays:
+            essay.delete()
         Assignment.objects.all().delete()
         AssignmentSubmission.objects.all().delete()
         EssayQuestion.objects.all().delete()
@@ -48,6 +42,12 @@ class PeerReviewTestCase(TestCase):
         EssaySubmission.objects.all().delete()
         ResponseSubmission.objects.all().delete()
         PeerReview.objects.all().delete()
+        courses = Course.objects.all()
+        for course in courses:
+            course.delete()
+        User.objects.get(email=TEST_USER_EMAIL).delete()
+        User.objects.all().delete()
+        Course.objects.all().delete()
 
     def setUp(self):
         # Create our Student.

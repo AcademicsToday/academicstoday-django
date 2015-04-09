@@ -31,12 +31,13 @@ TEST_USER_PASSWORD = "password"
 
 class AssignmentTestCase(TestCase):
     def tearDown(self):
+        essays = EssaySubmission.objects.all()
+        for essay in essays:
+            essay.delete()
+        courses = Course.objects.all()
+        for course in courses:
+            course.delete()
         User.objects.get(email=TEST_USER_EMAIL).delete()
-        for id in range(1, 10):
-            try:
-                Course.objects.get(id=id).delete()
-            except Course.DoesNotExist:
-                pass
 
     def setUp(self):
         # Create our Student.
@@ -207,16 +208,6 @@ class AssignmentTestCase(TestCase):
         self.assertEqual(array['status'], 'success')
         self.assertEqual(array['message'], 'submitted')
 
-        # Cleanup
-        try:
-            EssaySubmission.objects.get(submission_id=1).delete()
-        except EssaySubmission.DoesNotExist:
-            pass
-        try:
-            EssaySubmission.objects.get(submission_id=2).delete()
-        except EssaySubmission.DoesNotExist:
-            pass
-
     def test_submit_mc_assignment_answer_with_submissions(self):
         kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
         client = self.get_logged_in_client()
@@ -307,13 +298,5 @@ class AssignmentTestCase(TestCase):
         self.assertEqual(array['message'], 'submitted')
         self.assertEqual(array['status'], 'success')
 
-        # Cleanup
-        try:
-            EssaySubmission.objects.get(submission_id=1).delete()
-        except EssaySubmission.DoesNotExist:
-            pass
-        try:
-            EssaySubmission.objects.get(submission_id=2).delete()
-        except EssaySubmission.DoesNotExist:
-            pass
+
 
