@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/csh
 #------------------------------------------------------------------------------#
 # topcoursepicking.sh                                                          #
 #------------------------------------------------------------------------------#
@@ -21,11 +21,11 @@
 # $ chmod u+x /usr/home/freebsd/py-academicstoday/scripts/topcoursepicking.sh
 #
 # (1) Run command:
-# $ cron -e
+# $ crontab -e
 #
 # (2) This makes cron job run once a month:
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# 0 0 1 * * ./usr/home/freebsd/py-academicstoday/scripts/topcoursepicking.sh
+# 0 0 1 * * ./usr/home/freebsd/py-academicstoday/scripts/topcoursepicking.csh
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # Clear all text on the screen
@@ -35,8 +35,7 @@ clear;
 source /usr/home/freebsd/py-academicstoday/env/bin/activate.csh
 
 # Run command
-cd /usr/home/freebsd/py-academicstoday/
-python manage.py topcoursespicking
+python /usr/home/freebsd/py-academicstoday/academicstoday_project/manage.py topcoursespicking
 
 # Turn off virtual environment
 deactivate

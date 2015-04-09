@@ -12,14 +12,6 @@ INSERT INTO at_course_previews (id, image_filename, title, sub_title, category, 
 VALUES
 (1, 'roundicons.png', 'Comics Book Course', 'The definitive course on comics and western drawings!', 'Liberal Arts', '<p>\nUse this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!\n</p>', '');
 
-/*------------------------------*/
-/* at_landpage_course_previews  */
-/*------------------------------*/
-INSERT INTO at_landpage_course_previews (id, image_filename, title, category)
-VALUES
-(1, 'roundicons-preview.png', 'Comics Book Course', 'Liberal Arts');
-
-
 /*---------------------------*/
 /* at_landpage_team_members  */
 /*---------------------------*/

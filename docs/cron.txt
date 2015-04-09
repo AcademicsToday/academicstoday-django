@@ -1,0 +1,16 @@
+Read: http://www.freebsd.org/doc/en/books/handbook/configtuning-cron.html
+
+
+Step (1):
+% su
+# crontab -e
+
+Step (2):
+Add:
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+SHELL=/bin/csh
+PATH=/etc:/bin:/sbin:/usr/bin:/usr/sbin 2
+# Order of crontab fields
+# minute	hour	mday	month	wday	command
+0 0 1 * * ./usr/home/freebsd/py-academicstoday/scripts/topcoursepicking.csh
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
