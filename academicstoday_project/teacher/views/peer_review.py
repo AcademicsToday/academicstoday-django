@@ -157,7 +157,7 @@ def save_peer_review(request, course_id, assignment_id):
                 # Indicate success
                 response_data = {'status' : 'success', 'message' : 'submitted'}
             else:
-                response_data = {'status' : 'failed', 'message' : form.errors}
+                response_data = {'status' : 'failed', 'message' : json.dumps(form.errors)}
 
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 

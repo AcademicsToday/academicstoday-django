@@ -272,7 +272,7 @@ def submit_e_assignment_answer(request, course_id, assignment_id):
 #                form.save()  # Save the form contents to the model
 #                response_data = {'status' : 'success', 'message' : 'submitted'}
 #            else:
-#                response_data = {'status' : 'failed', 'message' : form.errors}
+#                response_data = {'status' : 'failed', 'message' : json.dumps(form.errors)}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 

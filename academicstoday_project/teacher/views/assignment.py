@@ -362,7 +362,7 @@ def save_question(request, course_id, assignment_id):
                     form.save()
                     response_data = {'status' : 'success', 'message' : 'question was saved'}
                 else:
-                    response_data = {'status' : 'failed', 'message' : form.errors}
+                    response_data = {'status' : 'failed', 'message' : json.dumps(form.errors)}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 

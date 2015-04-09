@@ -17,12 +17,6 @@ from registrar.models import ResponseQuestion
 from registrar.models import Quiz
 from registrar.models import Exam
 
-# Django Forms
-# https://docs.djangoproject.com/en/1.7/topics/forms/
-#
-# Django Widgets
-# https://docs.djangoproject.com/en/1.7/ref/forms/widgets/
-#
 
 class AnnouncementForm(forms.ModelForm):
     class Meta:
@@ -81,8 +75,6 @@ class NoteUploadForm(forms.ModelForm):
             raise forms.ValidationError("Only accepting PDF files for course notes.")
 
 
-
-
 class AssignmentForm(forms.ModelForm):
     class Meta:
         model = Assignment
@@ -130,6 +122,32 @@ class MultipleChoiceQuestionForm(forms.ModelForm):
             'e': 'Option E)',
             'f': 'Option F)',
         }
+
+    def clean(self):
+        cleaned_data = super(MultipleChoiceQuestionForm, self).clean()
+        a_is_correct = cleaned_data.get("a_is_correct")
+        b_is_correct = cleaned_data.get("b_is_correct")
+        c_is_correct = cleaned_data.get("c_is_correct")
+        d_is_correct = cleaned_data.get("d_is_correct")
+        e_is_correct = cleaned_data.get("e_is_correct")
+        f_is_correct = cleaned_data.get("f_is_correct")
+        
+        # Validate to ensure at least a single correct answer exists
+        answer_count = 0
+        if a_is_correct:
+            answer_count += 1
+        if b_is_correct:
+            answer_count += 1
+        if c_is_correct:
+            answer_count += 1
+        if d_is_correct:
+            answer_count += 1
+        if e_is_correct:
+            answer_count += 1
+        if f_is_correct:
+            answer_count += 1
+        if answer_count <= 0:
+            raise forms.ValidationError("Minimum of one correc answer must exist.")
 
 
 class TrueFalseQuestionForm(forms.ModelForm):

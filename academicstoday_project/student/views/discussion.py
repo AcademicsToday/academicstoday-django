@@ -80,7 +80,7 @@ def insert_thread(request, course_id):
                 form.save()
                 response_data = {'status' : 'success', 'message' : 'submitted'}
             else:
-                response_data = {'status' : 'failed', 'message' : form.errors}
+                response_data = {'status' : 'failed', 'message' : json.dumps(form.errors)}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
@@ -183,5 +183,5 @@ def insert_post(request, course_id, thread_id):
                 thread.posts.add(form.instance)
                 response_data = {'status' : 'success', 'message' : 'submitted'}
             else:
-                response_data = {'status' : 'failed', 'message' : form.errors}
+                response_data = {'status' : 'failed', 'message' : json.dumps(form.errors)}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
