@@ -1,4 +1,3 @@
-# Django & Python
 from django.core.urlresolvers import resolve
 from django.http import HttpRequest
 from django.http import QueryDict
@@ -9,32 +8,26 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.conf.urls.static import static, settings
 import json
-
-# Modal
 from registrar.models import Course
 from registrar.models import Teacher
 from registrar.models import Syllabus
-
-
-# View
 from teacher.views import syllabus
 
-# Contants
+
 TEST_USER_EMAIL = "ledo@gah.com"
 TEST_USER_USERNAME = "Ledo"
 TEST_USER_PASSWORD = "password"
 
-# Notes:
-# https://docs.djangoproject.com/en/1.7/topics/testing/tools/#assertions
 
-# Create your tests here.
 class SyllabusTestCase(TestCase):
     def tearDown(self):
-        for id in range(1, 10):
-            try:
-                Syllabus.objects.get(syllabus_id=id).delete()
-            except Syllabus.DoesNotExist:
-                pass
+        syllabuses = Syllabus.objects.all()
+        for syllabus in syllabuses:
+            syllabus.delete()
+        courses = Course.objects.all()
+        for course in courses:
+            course.delete()
+        User.objects.all().delete()
     
     def setUp(self):
         # Create our Student.

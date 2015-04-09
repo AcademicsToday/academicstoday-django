@@ -27,12 +27,13 @@ TEST_USER_PASSWORD = "password"
 # Create your tests here.
 class PolicyTestCase(TestCase):
     def tearDown(self):
+        policies = Policy.objects.all()
+        for policy in policies:
+            policy.delete()
+        courses = Course.objects.all()
+        for course in courses:
+            course.delete()
         User.objects.get(email=TEST_USER_EMAIL).delete()
-        for id in range(1, 10):
-            try:
-                Course.objects.get(id=id).delete()
-            except Course.DoesNotExist:
-                pass
 
     def setUp(self):
         # Create our Student.

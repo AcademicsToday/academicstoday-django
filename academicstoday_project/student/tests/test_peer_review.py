@@ -35,13 +35,6 @@ class PeerReviewTestCase(TestCase):
         essays = EssaySubmission.objects.all()
         for essay in essays:
             essay.delete()
-        Assignment.objects.all().delete()
-        AssignmentSubmission.objects.all().delete()
-        EssayQuestion.objects.all().delete()
-        ResponseQuestion.objects.all().delete()
-        EssaySubmission.objects.all().delete()
-        ResponseSubmission.objects.all().delete()
-        PeerReview.objects.all().delete()
         courses = Course.objects.all()
         for course in courses:
             course.delete()
