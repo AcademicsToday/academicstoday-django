@@ -20,8 +20,11 @@
                     <li>
                         <i class="fa fa-compass"></i> {{ course.title }}
                     </li>
+                    <li>
+                        <i class="fa fa-video-camera"></i> <a href="/course/{{ course.id }}/lectures">Lectures</a>
+                    </li>
                     <li class="active">
-                        <i class="fa fa-video-camera"></i> Lectures
+                        <i class="fa fa-file-o"></i> Lecture Notes
                     </li>
                 </ol>
             </div>
@@ -29,7 +32,7 @@
         <!-- /.row -->
 
         <!-- Weeks & Lectures -->
-        {% include "course/lecture/table.html" %}
+        {% include "course/lecture_note/table.html" %}
         <!-- /.row -->
 
     </div>
@@ -39,18 +42,20 @@
     /**
      *  Function will call AJAX function to load the video player modal for the lecture.
      */
-    function ajax_learn_lecture(lecture_id)
+    function ajax_view_lecture_note(upload_id)
     {
-        $('#play_' + lecture_id + '_btn').prop("disabled", true); // Lock button
-        $.ajax( 'lecture', {
+        var url = '/course/'+{{ course.id }}+'/lecture/'+{{ lecture.lecture_id }}+'/view_lecture_note';
+        
+        $('#play_' + upload_id + '_btn').prop("disabled", true); // Lock button
+        $.ajax( url, {
            data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
-                'lecture_id': lecture_id
+                'upload_id': upload_id
            },
            type: 'post',
            success: function(result) {
                 // success code execution here
-                $('#ajax_learn_lecture').html(result); // Update UI.
+                $('#ajax_modal_placeholder').html(result); // Update UI.
                 $('#lecture_modal').modal();           // Unhide view.
            },
            error: function(xhr,status,error) {
@@ -62,8 +67,10 @@
         });
     }
 </script>
+
 <!-- Modal -->
-<div id="ajax_learn_lecture"
-   name="ajax_learn_lecture"></div>
+<div id="ajax_modal_placeholder"
+   name="ajax_modal_placeholder"></div>
 <!-- /.Modal -->
+
 {% endblock content %}

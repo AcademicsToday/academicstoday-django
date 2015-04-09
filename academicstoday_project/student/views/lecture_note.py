@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from registrar.models import Course
 from registrar.models import Lecture
+from registrar.models import FileUpload
 import json
 import datetime
 
@@ -22,12 +23,12 @@ import datetime
 def lecture_notes_page(request, course_id, lecture_id):
     course = Course.objects.get(id=course_id)
     try:
-        lectures = Lecture.objects.filter(course_id=course_id).order_by('week_num', 'lecture_num')
+        lecture = Lecture.objects.get(lecture_id=lecture_id)
     except Lecture.DoesNotExist:
-        lectures = None
-    return render(request, 'course/lecture/view.html',{
+        lecture = None
+    return render(request, 'course/lecture_note/view.html',{
         'course' : course,
-        'lectures' : lectures,
+        'lecture' : lecture,
         'NO_VIDEO_PLAYER': settings.NO_VIDEO_PLAYER,
         'YOUTUBE_VIDEO_PLAYER': settings.YOUTUBE_VIDEO_PLAYER,
         'VIMEO_VIDEO_PLAYER': settings.VIMEO_VIDEO_PLAYER,
@@ -40,24 +41,22 @@ def lecture_notes_page(request, course_id, lecture_id):
 
 
 @login_required(login_url='/landpage')
-def lecture(request, course_id, lecture_id):
+def view_lecture_note(request, course_id, lecture_id):
     response_data = {}
     if request.is_ajax():
-         if request.method == 'POST':
-             # Check to see if any fields where missing from the form.
-             if request.POST['lecture_id'] != '':
-                 try:
-                     lecture_id = int(request.POST['lecture_id'])
-                     lecture = Lecture.objects.get(lecture_id=lecture_id)
-                 except Lecture.DoesNotExist:
-                     lecture = None
-                 return render(request, 'course/lecture/details.html',{
-                    'lecture' : lecture,
-                    'NO_VIDEO_PLAYER': settings.NO_VIDEO_PLAYER,
-                    'YOUTUBE_VIDEO_PLAYER': settings.YOUTUBE_VIDEO_PLAYER,
-                    'VIMEO_VIDEO_PLAYER': settings.VIMEO_VIDEO_PLAYER,
-                    'BLIPTV_VIDEO_PLAYER': settings.BLIPTV_VIDEO_PLAYER,
-                    'user' : request.user,
-                    'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
-                    'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
-                 })
+        if request.method == 'POST':
+            try:
+                upload_id = int(request.POST['upload_id'])
+                note = FileUpload.objects.get(upload_id=upload_id)
+            except FileUpload.DoesNotExist:
+                note = None
+            return render(request, 'course/lecture_note/details.html',{
+                'note' : note,
+                'NO_VIDEO_PLAYER': settings.NO_VIDEO_PLAYER,
+                'YOUTUBE_VIDEO_PLAYER': settings.YOUTUBE_VIDEO_PLAYER,
+                'VIMEO_VIDEO_PLAYER': settings.VIMEO_VIDEO_PLAYER,
+                'BLIPTV_VIDEO_PLAYER': settings.BLIPTV_VIDEO_PLAYER,
+                'user' : request.user,
+                'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
+                'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+            })

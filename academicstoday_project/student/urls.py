@@ -34,6 +34,7 @@ urlpatterns = patterns('',
                        
     # Lecture Notes
     url(r'^course/(\d+)/lecture/(\d+)/notes$', lecture_note.lecture_notes_page),
+    url(r'^course/(\d+)/lecture/(\d+)/view_lecture_note$', lecture_note.view_lecture_note),
 
     # Assignment(s)
     url(r'^course/(\d+)/assignments$', assignment.assignments_page),
