@@ -11,9 +11,9 @@ from registrar.models import Teacher
 from registrar.models import Student
 from registrar.models import Course
 from registrar.models import Lecture
-from registrar.models import PDFUpload
+from registrar.models import FileUpload
 from teacher.forms import LectureForm
-from teacher.forms import PDFUploadForm
+from teacher.forms import NoteUploadForm
 
 
 @login_required(login_url='/landpage')
@@ -58,10 +58,10 @@ def lecture_note_modal(request, course_id, lecture_id):
         lecture_id = int(lecture_id)
         upload_id = int(request.POST['upload_id'])
         if upload_id > 0:
-            upload = PDFUpload.objects.get(upload_id=upload_id)
-            form = PDFUploadForm(instance=upload)
+            upload = FileUpload.objects.get(upload_id=upload_id)
+            form = NoteUploadForm(instance=upload)
         else:
-            form = PDFUploadForm()
+            form = NoteUploadForm()
         
         course = Course.objects.get(id=course_id)
         lecture = Lecture.objects.get(lecture_id=lecture_id)
@@ -80,14 +80,14 @@ def save_lecture_note(request, course_id, lecture_id):
             course = Course.objects.get(id=course_id)
             lecture_id = int(lecture_id)
             lecture = Lecture.objects.get(lecture_id=lecture_id)
-            form = PDFUploadForm(request.POST, request.FILES)
-            form.instance.user = request.user
+            form = NoteUploadForm(request.POST, request.FILES)
+            form.instance.type = settings.PDF_FILE_UPLOAD_TYPE
             upload_id = int(request.POST['upload_id'])
             
             # If lecture already exists, then delete local file.
             if upload_id > 0:
                 # Delete previous file.
-                upload = PDFUpload.objects.get(upload_id=upload_id)
+                upload = FileUpload.objects.get(upload_id=upload_id)
                 if upload.file:
                     if os.path.isfile(upload.file.path):
                         os.remove(upload.file.path)
@@ -116,8 +116,8 @@ def delete_lecture_note(request, course_id, lecture_id):
         if request.method == 'POST':
             upload_id = int(request.POST['upload_id'])
             try:
-                PDFUpload.objects.get(upload_id=upload_id).delete()
+                FileUpload.objects.get(upload_id=upload_id).delete()
                 response_data = {'status' : 'success', 'message' : 'deleted'}
-            except PDFUpload.DoesNotExist:
+            except FileUpload.DoesNotExist:
                 response_data = {'status' : 'failed', 'message' : 'record not found'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")

@@ -46,15 +46,6 @@
                                     <i class="fa fa-ban"></i> Lecture Unavailable
                                 </button>
                                 {% endif %}
-                                {% if lecture.notes.count > 0 %}
-                                <button type="button"
-                                          id="notes_{{ lecture.lecture_id }}_btn"
-                                        name="notes_{{ lecture.lecture_id }}_btn"
-                                       class="btn btn-sm btn-default"
-                                     onclick="view_lecture_notes({{ lecture.lecture_id }});">
-                                    <i class="fa fa-edit"></i> Notes
-                                </button>
-                                {% endif %}
                             </td>
                         </tr>
                         {% endfor %}

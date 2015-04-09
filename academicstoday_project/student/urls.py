@@ -7,6 +7,7 @@ from student.views import announcement
 from student.views import syllabus
 from student.views import policy
 from student.views import lecture
+from student.views import lecture_note
 from student.views import assignment
 from student.views import quiz
 from student.views import exam
@@ -30,6 +31,9 @@ urlpatterns = patterns('',
     # Lecture
     url(r'^course/(\d+)/lectures$', lecture.lectures_page),
     url(r'^course/(\d+)/lecture$', lecture.lecture),
+                       
+    # Lecture Notes
+    url(r'^course/(\d+)/lecture/(\d+)/notes$', lecture_note.lecture_notes_page),
 
     # Assignment(s)
     url(r'^course/(\d+)/assignments$', assignment.assignments_page),

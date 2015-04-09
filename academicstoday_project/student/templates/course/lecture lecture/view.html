@@ -61,12 +61,6 @@
            }
         });
     }
-
-    function view_lecture_notes(lecture_id)
-    {
-        $('#notes_' + lecture_id + '_btn').prop("disabled", true); // Lock button
-        window.location = '/course/'+{{ course.id }}+'/lecture/'+lecture_id+'/notes';
-    }
 </script>
 <!-- Modal -->
 <div id="ajax_learn_lecture"

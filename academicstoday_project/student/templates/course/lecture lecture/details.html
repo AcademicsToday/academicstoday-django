@@ -1,0 +1,44 @@
+{% load staticfiles %}
+<div class="modal fade" id="lecture_modal" role="dialog">
+    <div class="modal-dialog" style="width:750px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="btn btn-success pull-right" data-dismiss="modal">×</a>
+                <h4>Lecture #{{ lecture.lecture_num }}: {{ lecture.title }}</h4>
+            </div>
+            <div class="modal-body">
+                <form method=''
+                      action=''
+                        name="learnForm">
+                {% if lecture.preferred_service == YOUTUBE_VIDEO_PLAYER %} <!-- YouTube -->
+                        <iframe width="720"
+                               height="480"
+                                  src="{{ lecture.youtube_url }}"
+                          frameborder="0"
+                      allowfullscreen></iframe>
+                {% elif lecture.preferred_service == VIMEO_VIDEO_PLAYER %} <!-- Vimeo -->
+                        <iframe src="{{ lecture.vimeo_url }}"
+                              width="720"
+                             height="480"
+                        frameborder="0"
+                            webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                {% else %}
+                ERROR {{ lecture.preferred_service }}
+                {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function(){
+        // When this model hides, we will clear the contents of it.
+        $('#lecture_modal').on('hidden.bs.modal', function (e) {
+            // Clear all the code inside this modal.
+            $('#ajax_learn_lecture').html('');
+            $('#play_{{ lecture.lecture_id }}_btn').prop("disabled", false); // Unlock button
+        })
+    });
+</script>

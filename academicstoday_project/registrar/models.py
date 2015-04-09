@@ -102,14 +102,13 @@ COURSE_CATEGORY_TYPES = (
 )
 
 
-class PDFUpload(models.Model):
+class FileUpload(models.Model):
     upload_id = models.AutoField(primary_key=True)
-    category = models.CharField(max_length=127, null=True)
+    type = models.PositiveSmallIntegerField(default=settings.UNKNOWN_FILE_UPLOAD_TYPE)
     title = models.CharField(max_length=127, null=True)
     description = models.TextField(null=True)
     upload_date = models.DateField(auto_now= True, null=True)
     file = models.FileField(upload_to='uploads', null=True)
-    user = models.ForeignKey(User)
     
     def delete(self, *args, **kwargs):
         """
@@ -121,13 +120,13 @@ class PDFUpload(models.Model):
         if self.file:
             if os.path.isfile(self.file.path):
                 os.remove(self.file.path)
-        super(PDFUpload, self).delete(*args, **kwargs) # Call the "real" delete() method
+        super(FileUpload, self).delete(*args, **kwargs) # Call the "real" delete() method
     
     def __str__(self):
         return self.title
     
     class Meta:
-        db_table = 'at_pdf_uploads'
+        db_table = 'at_file_uploads'
 
 
 class Course(models.Model):
@@ -290,7 +289,7 @@ class Lecture(models.Model):
         default=settings.YOUTUBE_VIDEO_PLAYER
     )
     course = models.ForeignKey(Course)
-    notes = models.ManyToManyField(PDFUpload)
+    notes = models.ManyToManyField(FileUpload)
 
     def delete(self, *args, **kwargs):
         for note in self.notes.all():
