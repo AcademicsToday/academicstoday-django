@@ -18,8 +18,8 @@
                             <!-- Project Details Go Here -->
                             <h2> {{ course.title }}</h2>
                             <p class="item-intro text-muted">{{ course.sub_title }}</p>
-                            {% if course.file != None and course.file != '' %}
-                            <img class="img-responsive" src="{{ course.file.url }}" alt="">
+                            {% if course.image != None and course.image != '' %}
+                            <img class="img-responsive" src="{{ course.image.url }}" alt="">
                             {% else %}
                             <p>Missing Image!</p>
                             {% endif %}
