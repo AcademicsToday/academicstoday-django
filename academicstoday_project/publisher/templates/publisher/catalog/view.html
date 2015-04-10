@@ -17,17 +17,13 @@
         </div>
         <!-- /.row -->
 
-        {% if marks.count == 0 %}
+        {% if True %}
 
-        <!-- No Grades Banner -->
+        <!-- No Publications Banner -->
         <div class="jumbotron">
-            <h1>No Completed Courses</h1>
+            <h1>No Publications</h1>
             <p>
-                It appears you have not completed any courses yet. To generate a certificate, you must complete a course.
-            </p>
-            <p><a href="/courses"
-                 class="btn btn-primary btn-lg"
-                  role="button">Find Courses »</a>
+                It appears no one has published anything yet.
             </p>
         </div>
         <!-- /.row -->
@@ -35,9 +31,9 @@
         {% else %}
 
         <!-- Certificates -->
-        <div id="ajax_certificates_table"
-           name="ajax_certificates_table">
-            {% include "registrar/certificate/table.html" %}
+        <div id="ajax_placeholder_table"
+           name="ajax_placeholder_table">
+            {% include "publisher/catalog/table.html" %}
         </div>
         <!-- /.row -->
 
@@ -47,5 +43,5 @@
 <div id="ajax_modal"
    name="ajax_modal"></div>
 <!-- end modal -->
-{% include 'registrar/certificate/js.html' %}
+{% include 'publisher/catalog/js.html' %}
 {% endblock content %}
