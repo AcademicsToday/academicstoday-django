@@ -1,13 +1,25 @@
-# AcademicsToday
-# Open source education software development company.
+/* TEAM */
+        Chef: Bartlomiej Mika
+        Contact: bartlomiej.mika [at] gmail.com
+        Twitter: @@BartlomiejMika
+        From: London, Ontario, Canada
 
-# TEAM
-Bartlomiej Mika -- Lead Developer -- @BartlomiejMika
+        Teacher: Micheal Murray
+        Contact: m_poet5 [at] hotmail.com
+        Twitter: @iamnotchad
+        From London, Ontario, Canada
 
-# THANKS
-Thanks for checking us out!
+        Editor: Sebastion Rydzewski
+        Contact: sibrislarenz [at] gmail.com
+        Twitter: @srydzewski_AT
+        From: London, Ontario, Canada
 
-# TECHNOLOGY COLOPHON
-Django
-HTML5 Boilerplate
-Twitter Bootstrap
+
+/* THANKS */
+        Thanks for checking us out!
+
+
+/* TECHNOLOGY COLOPHON */
+        Django
+        HTML5
+        Twitter Bootstrap

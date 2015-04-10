@@ -98,18 +98,17 @@ def save_course(request):
             if course_id > 0:
                 try:
                     course = Course.objects.get(id=course_id)
-                    if course.image:
-                        if os.path.isfile(course.image.path):
-                            os.remove(course.image.path)
-                            course.image = None
-                            course.save()
-                    form = CourseForm(request.POST, request.FILES)
-                    form.instance = course
-                
                 except Course.DoesNotExist:
                     return HttpResponse(json.dumps({
                         'status' : 'failed', 'message' : 'cannot find record'
                     }), content_type="application/json")
+                if course.image:
+                    if os.path.isfile(course.image.path):
+                        os.remove(course.image.path)
+                        course.image = None
+                        course.save()
+                form = CourseForm(request.POST, request.FILES)
+                form.instance = course
             else:
                 try:
                     teacher = Teacher.objects.get(user=request.user)
