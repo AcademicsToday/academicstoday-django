@@ -23,8 +23,8 @@ def policy_page(request, course_id):
         'policy' : policy,
         'user' : request.user,
         'tab' : 'policy',
-        'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
-        'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+        'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
+        'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS,
     })
 
 @login_required(login_url='/landpage')

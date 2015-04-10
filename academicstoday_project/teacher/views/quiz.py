@@ -26,8 +26,8 @@ def quizzes_page(request, course_id):
         'course' : course,
         'user' : request.user,
         'tab' : 'quizzes',
-        'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
-        'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+        'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
+        'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS,
     })
 
 
@@ -46,8 +46,8 @@ def quizzes_table(request, course_id):
         'quizzes' : quizzes,
         'user' : request.user,
         'tab' : 'quizzes',
-        'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
-        'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+        'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
+        'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS,
     })
 
 
@@ -131,8 +131,8 @@ def quiz_page(request, course_id, quiz_id):
         'RESPONSE_QUESTION_TYPE': settings.RESPONSE_QUESTION_TYPE,
         'user' : request.user,
         'tab' : 'quiz',
-        'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
-        'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+        'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
+        'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS,
     })
 
 
@@ -158,8 +158,8 @@ def questions_table(request, course_id, quiz_id):
                   'RESPONSE_QUESTION_TYPE': settings.RESPONSE_QUESTION_TYPE,
                   'user' : request.user,
                   'tab' : 'quiz',
-                  'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
-                  'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+                  'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
+                  'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS,
     })
 
 
@@ -177,8 +177,8 @@ def question_type_modal(request, course_id, quiz_id):
                     'RESPONSE_QUESTION_TYPE': settings.RESPONSE_QUESTION_TYPE,
                     'user' : request.user,
                     'title' : 'New Question',
-                    'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
-                    'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+                    'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
+                    'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS,
                 })
 
 
@@ -198,8 +198,8 @@ def question_true_false_modal(request, course_id, quiz_id):
                     'RESPONSE_QUESTION_TYPE': settings.RESPONSE_QUESTION_TYPE,
                     'user' : request.user,
                     'title' : 'True False Question',
-                    'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
-                    'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+                    'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
+                    'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS,
                 })
 
 

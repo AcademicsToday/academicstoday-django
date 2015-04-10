@@ -17,9 +17,6 @@ from student.views import credit
 
 urlpatterns = patterns('',
     # Announcement
-    url(r'^course/(\d+)/$', announcement.announcements_page),
-    url(r'^course/(\d+)/home$', announcement.announcements_page),
-    url(r'^course/(\d+)/announcement$', announcement.announcements_page),
     url(r'^course/(\d+)/announcements$', announcement.announcements_page),
 
     # Syllabus

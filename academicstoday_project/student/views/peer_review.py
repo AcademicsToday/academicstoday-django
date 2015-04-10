@@ -45,8 +45,8 @@ def peer_reviews_page(request, course_id):
         'submissions': submissions,
         'user' : request.user,
         'tab' : 'peer_reviews',
-        'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
-        'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+        'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
+        'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS,
     })
 
 
@@ -82,8 +82,8 @@ def assignment_page(request, course_id, submission_id):
         'RESPONSE_QUESTION_TYPE': settings.RESPONSE_QUESTION_TYPE,
         'user': request.user,
         'tab': 'peer_review',
-        'local_css_urls': settings.SB_ADMIN_CSS_LIBRARY_URLS,
-        'local_js_urls': settings.SB_ADMIN_JS_LIBRARY_URLS,
+        'local_css_urls': settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
+        'local_js_urls': settings.SB_ADMIN_2_JS_LIBRARY_URLS,
     })
 
 
@@ -100,8 +100,8 @@ def peer_review_modal(request, course_id, submission_id):
                 'submission_id': request.POST['submission_id'],
                 'form': form,
                 'user': request.user,
-                'local_css_urls': settings.SB_ADMIN_CSS_LIBRARY_URLS,
-                'local_js_urls': settings.SB_ADMIN_JS_LIBRARY_URLS,
+                'local_css_urls': settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
+                'local_js_urls': settings.SB_ADMIN_2_JS_LIBRARY_URLS,
             })
 
 

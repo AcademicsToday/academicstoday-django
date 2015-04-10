@@ -26,8 +26,8 @@ def lectures_page(request, course_id):
         'BLIPTV_VIDEO_PLAYER': settings.BLIPTV_VIDEO_PLAYER,
         'user' : request.user,
         'tab' : 'lectures',
-        'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
-        'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+        'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
+        'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS,
     })
 
 
@@ -50,8 +50,8 @@ def lectures_table(request, course_id):
         'BLIPTV_VIDEO_PLAYER': settings.BLIPTV_VIDEO_PLAYER,
         'user' : request.user,
         'tab' : 'lectures',
-        'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
-        'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+        'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
+        'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS,
     })
 
 

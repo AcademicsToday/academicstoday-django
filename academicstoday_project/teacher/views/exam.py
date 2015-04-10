@@ -34,8 +34,8 @@ def exams_page(request, course_id):
         'exams' : exams,
         'user' : request.user,
         'tab' : 'exams',
-        'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
-        'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+        'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
+        'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS,
     })
 
 @login_required(login_url='/landpage')
@@ -53,8 +53,8 @@ def exams_table(request, course_id):
         'exams' : exams,
         'user' : request.user,
         'tab' : 'exams',
-        'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
-        'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+        'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
+        'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS,
     })
 
 
@@ -138,8 +138,8 @@ def exam_page(request, course_id, exam_id):
         'RESPONSE_QUESTION_TYPE': settings.RESPONSE_QUESTION_TYPE,
         'user' : request.user,
         'tab' : 'exam',
-        'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
-        'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+        'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
+        'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS,
     })
 
 
@@ -165,8 +165,8 @@ def questions_table(request, course_id, exam_id):
         'RESPONSE_QUESTION_TYPE': settings.RESPONSE_QUESTION_TYPE,
         'user' : request.user,
         'tab' : 'exam',
-        'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
-        'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+        'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
+        'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS,
     })
 
 
@@ -184,8 +184,8 @@ def question_type_modal(request, course_id, exam_id):
                     'RESPONSE_QUESTION_TYPE': settings.RESPONSE_QUESTION_TYPE,
                     'user' : request.user,
                     'title' : 'New Question',
-                    'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
-                    'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+                    'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
+                    'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS,
                 })
 
 
@@ -205,8 +205,8 @@ def question_multiple_choice_modal(request, course_id, exam_id):
                     'RESPONSE_QUESTION_TYPE': settings.RESPONSE_QUESTION_TYPE,
                     'user' : request.user,
                     'title' : 'Multiple Choice Question',
-                    'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
-                    'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+                    'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
+                    'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS,
                 })
 
 

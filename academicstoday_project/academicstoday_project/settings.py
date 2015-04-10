@@ -127,7 +127,7 @@ MEDIA_URL = '/media/'
 
 # JavaScript Libraries
 #
-SB_ADMIN_CSS_LIBRARY_URLS = [
+SB_ADMIN_2_CSS_LIBRARY_URLS = [
                              "bower_components/bootstrap/dist/css/bootstrap.min.css",
                              "bower_components/metisMenu/dist/metisMenu.min.css",
                              "css/timeline.css",
@@ -136,7 +136,7 @@ SB_ADMIN_CSS_LIBRARY_URLS = [
                              "bower_components/font-awesome/css/font-awesome.min.css",
 ]
 
-SB_ADMIN_JS_LIBRARY_URLS = [
+SB_ADMIN_2_JS_LIBRARY_URLS = [
                             "bower_components/jquery/dist/jquery.min.js",
                             "bower_components/bootstrap/dist/js/bootstrap.min.js",
                             "bower_components/metisMenu/dist/metisMenu.min.js",

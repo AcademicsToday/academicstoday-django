@@ -79,8 +79,8 @@ def assignments_page(request, course_id):
         'user' : request.user,
         'tab' : 'assignments',
         'subtab' : '',
-        'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
-        'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+        'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
+        'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS,
     })
 
 
@@ -98,8 +98,8 @@ def assignments_table(request, course_id):
         'RESPONSE_QUESTION_TYPE' : settings.RESPONSE_QUESTION_TYPE,
         'tab' : 'assignments',
         'subtab' : '',
-        'local_css_urls' : settings.SB_ADMIN_CSS_LIBRARY_URLS,
-        'local_js_urls' : settings.SB_ADMIN_JS_LIBRARY_URLS,
+        'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
+        'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS,
     })
 
 
@@ -167,8 +167,8 @@ def assignment_page(request, course_id, assignment_id):
         'RESPONSE_QUESTION_TYPE': settings.RESPONSE_QUESTION_TYPE,
         'user': request.user,
         'tab': 'assignment',
-        'local_css_urls': settings.SB_ADMIN_CSS_LIBRARY_URLS,
-        'local_js_urls': settings.SB_ADMIN_JS_LIBRARY_URLS,
+        'local_css_urls': settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
+        'local_js_urls': settings.SB_ADMIN_2_JS_LIBRARY_URLS,
     })
 
 
