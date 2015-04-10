@@ -1,0 +1,48 @@
+<div class="modal fade" id="permalink_modal" role="dialog">
+    <div class="modal-dialog" style="width:50%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h2 class="modal-title" id="myModalLabel">Certificate Permalink</h2>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group input-group">
+                        <span class="input-group-addon"><i class="fa fa-link"></i></span>
+                        <input onclick="this.focus();this.select()"
+                                    id="permalink"
+                                  name="permalink"
+                                  type="text"
+                                 class="form-control"
+                                 value="http://www.academicstoday.ca/certificate/{{ mark.credit_id }}"
+                              readonly=true
+                                 style="cursor: pointer;">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button onclick="close_model();"
+                             id="close_permalink_btn"
+                           name="close_permalink_btn"
+                           type="button"
+                          class="btn btn-primary">
+                    <i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#permalink_modal').on('hidden.bs.modal', function (e) {
+            $('#ajax_modal').html('');
+            $('#permalink_{{ mark.credit_id }}_btn').prop("disabled", false);
+        });
+    });
+    
+    function close_model()
+    {
+        $('#close_permalink_btn').prop("disabled", true);
+        $('#permalink_modal').modal('hide');
+    }
+</script>

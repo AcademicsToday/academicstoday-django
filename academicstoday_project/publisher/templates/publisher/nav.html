@@ -57,8 +57,17 @@
                 <li {% if tab == 'certificates' %}class="active"{% endif %}>
                     <a href="certificates"><i class="fa fa-fw fa-certificate"></i> Certificates</a>
                 </li>
-                <li {% if tab == 'publish' %}class="active"{% endif %}>
-                    <a href="publish"><i class="fa fa-fw fa-book"></i> Self-Publish</a>
+                <li class="active">
+                    <a href="#"><i class="fa fa-book fa-fw"></i> Self-Publish<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse in">
+                        <li>
+                            <a  {% if tab == 'publisher_catalog' %}class="active"{% endif %} href="/publish">Catalog</a>
+                        </li>
+                        <li>
+                            <a href="my_list">My Publications</a>
+                        </li>
+                    </ul>
+                    <!-- /.nav-second-level -->
                 </li>
             </ul>
         </div>
@@ -68,6 +77,6 @@
 </nav>
 <script>
     $(document).ready(function(){
-                      $('.dropdown-toggle').dropdown();
-                      });
+        $('.dropdown-toggle').dropdown();
+    });
     </script>

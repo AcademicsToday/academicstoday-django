@@ -90,6 +90,7 @@ $ python manage.py startapp landpage
 $ python manage.py startapp registrar
 $ python manage.py startapp student
 $ python manage.py startapp teacher
+$ python manage.py startapp publisher
 
 
 (11) Then go to academicstoday_project/settings.py and make sure to include ‘py-academicstoday’ in the file.
@@ -107,6 +108,7 @@ INSTALLED_APPS = (
 'registrar',
 'student',
 'teacher',
+'publisher',
 )
 - - - - - - - - - - - - - - - - - - - - - - - - - -
 

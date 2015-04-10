@@ -1,0 +1,22 @@
+{% load staticfiles %}
+{% if mark.is_public %}
+<html>
+    <head>
+        <title>Certificate #{{ mark.credit_id }}</title>
+    </head>
+    <body>
+        <h1>Certificate of Completion</h1>
+        <p>This Certifies that {{ student.user.first_name }} {{ student.user.last_name }} Has Attended <b>{{ mark.course.title }}</b> and is Awarded this Certificate Form From Academics Today.</p>
+    </body>
+</html>
+{% else %}
+<html>
+    <head>
+        <title>Permission Denied</title>
+    </head>
+    <body>
+        <h1>Permission Denied</h1>
+        <p>Student has chosen not to share the results of this certificate.</p>
+    </body>
+</html>
+{% endif %}

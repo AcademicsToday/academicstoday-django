@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'registrar',
     'student',
     'teacher',
+    'publisher'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -128,26 +129,26 @@ MEDIA_URL = '/media/'
 # JavaScript Libraries
 #
 SB_ADMIN_2_CSS_LIBRARY_URLS = [
-                             "bower_components/bootstrap/dist/css/bootstrap.min.css",
-                             "bower_components/metisMenu/dist/metisMenu.min.css",
-                             "css/timeline.css",
-                             "css/sb-admin-2.css",
-                             "bower_components/morrisjs/morris.css",
-                             "bower_components/font-awesome/css/font-awesome.min.css",
+    "bower_components/bootstrap/dist/css/bootstrap.min.css",
+    "bower_components/metisMenu/dist/metisMenu.min.css",
+    "css/timeline.css",
+    "css/sb-admin-2.css",
+    "bower_components/morrisjs/morris.css",
+    "bower_components/font-awesome/css/font-awesome.min.css",
 ]
 
 SB_ADMIN_2_JS_LIBRARY_URLS = [
-                            "bower_components/jquery/dist/jquery.min.js",
-                            "bower_components/bootstrap/dist/js/bootstrap.min.js",
-                            "bower_components/metisMenu/dist/metisMenu.min.js",
-                            "bower_components/raphael/raphael-min.js",
-                            #    "bower_components/morrisjs/morris.min.js",
-                            #    "js/morris-data.js",
-                            "js/sb-admin-2.js",
+    "bower_components/jquery/dist/jquery.min.js",
+    "bower_components/bootstrap/dist/js/bootstrap.min.js",
+    "bower_components/metisMenu/dist/metisMenu.min.js",
+    "bower_components/raphael/raphael-min.js",
+#    "bower_components/morrisjs/morris.min.js",
+#    "js/morris-data.js",
+    "js/sb-admin-2.js",
 ]
 
 AGENCY_CSS_LIBRARY_URLS = [
-                           "js/jquery/1.11.1/jquery-ui.css",
+    "js/jquery/1.11.1/jquery-ui.css",
     "js/bootstrap/3.3.2/css/bootstrap.min.css",
     "js/font-awesome/4.2.0/css/font-awesome.css",
     "js/font-awesome/4.2.0/css/font-awesome.min.css",
@@ -179,11 +180,11 @@ MULTIPLECHOICE_QUESTION_TYPE = 2
 TRUEFALSE_QUESTION_TYPE = 3
 RESPONSE_QUESTION_TYPE = 4
 QUESTION_TYPES = [
-                  ESSAY_QUESTION_TYPE,
-                  MULTIPLECHOICE_QUESTION_TYPE,
-                  TRUEFALSE_QUESTION_TYPE,
-                  RESPONSE_QUESTION_TYPE,
-                  ]
+    ESSAY_QUESTION_TYPE,
+    MULTIPLECHOICE_QUESTION_TYPE,
+    TRUEFALSE_QUESTION_TYPE,
+    RESPONSE_QUESTION_TYPE,
+]
 
 # Course Status
 COURSE_UNAVAILABLE_STATUS = 0
