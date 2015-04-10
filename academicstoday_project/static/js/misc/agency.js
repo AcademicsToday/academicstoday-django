@@ -22,5 +22,9 @@ $('body').scrollspy({
 
 // Closes the Responsive Menu on Menu Item Click
 $('.navbar-collapse ul li a').click(function() {
-    $('.navbar-toggle:visible').click();
+    // For some reason this does not hide the menu.
+    // $('.navbar-toggle:visible').click();
+                                    
+    // This hides the menu.
+    $('.navbar-collapse').removeClass('in')
 });
