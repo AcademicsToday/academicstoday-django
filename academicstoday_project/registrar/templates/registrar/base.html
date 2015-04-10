@@ -42,8 +42,13 @@
             {% include "registrar/script.html" %}
             
             <!-- MAIN -->
-            {% block content %}
-            {% endblock %}
+            <div id="page-wrapper" style="min-height: 564px;">
+                <div class="container-fluid">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+                <!-- /.container-fluid -->
+            </div>
         </div><!-- /#wrapper -->
         
         <!-- Footer -->

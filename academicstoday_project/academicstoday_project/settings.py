@@ -128,30 +128,22 @@ MEDIA_URL = '/media/'
 # JavaScript Libraries
 #
 SB_ADMIN_CSS_LIBRARY_URLS = [
-    "js/jquery/1.11.1/jquery-ui.css",
-    "js/bootstrap/3.3.2/css/bootstrap.min.css",
-    "js/font-awesome/4.2.0/css/font-awesome.css",
-    "js/font-awesome/4.2.0/css/font-awesome.min.css",
-    "css/sb-admin.css"
+                             "bower_components/bootstrap/dist/css/bootstrap.min.css",
+                             "bower_components/metisMenu/dist/metisMenu.min.css",
+                             "css/timeline.css",
+                             "css/sb-admin-2.css",
+                             "bower_components/morrisjs/morris.css",
+                             "bower_components/font-awesome/css/font-awesome.min.css",
 ]
 
 SB_ADMIN_JS_LIBRARY_URLS = [
-    "js/jquery/1.11.1/jquery.min.js",
-    "js/jquery/1.11.1/jquery.tablesorter.js",
-    "js/jquery/1.11.1/jquery-ui.js",
-    "js/jquery-easing/1.3/jquery.easing.min.js",
-    "js/bootstrap/3.3.2/js/bootstrap.min.js",
-    "js/bootstrap/3.3.2/js/bootstrap.js",
-    #     "js/morris/0.5.0/morris.js",
-    #     "js/morris/0.5.0/morris.min.js",
-    "js/morris/0.5.0/raphael.min.js",
-    #    "js/morris/0.5.0/morris-data.js",
-    #    "js/flot/x.x/excanvas.min.js",
-    #    "js/flot/x.x/flot-data.js",
-    #    "js/flot/x.x/jquery.flot.js",
-    #    "js/flot/x.x/jquery.flot.pie.js",
-    #    "js/flot/x.x/jquery.flot.resize.js",
-    #    "js/flot/x.x/jquery.flot.tooltip.min.js",
+                            "bower_components/jquery/dist/jquery.min.js",
+                            "bower_components/bootstrap/dist/js/bootstrap.min.js",
+                            "bower_components/metisMenu/dist/metisMenu.min.js",
+                            "bower_components/raphael/raphael-min.js",
+                            #    "bower_components/morrisjs/morris.min.js",
+                            #    "js/morris-data.js",
+                            "js/sb-admin-2.js",
 ]
 
 AGENCY_CSS_LIBRARY_URLS = [
