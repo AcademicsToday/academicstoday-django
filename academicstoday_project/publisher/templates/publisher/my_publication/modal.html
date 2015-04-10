@@ -1,0 +1,83 @@
+<div class="modal fade" id="publication_modal" role="dialog">
+    <div class="modal-dialog" style="width:50%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h2 class="modal-title" id="myModalLabel">PDF Publication</h2>
+            </div>
+            <div class="modal-body">
+                {% include "publisher/my_publication/form.html" with form=form %}
+            </div>
+            <div class="modal-footer">
+                <button onclick="ajax_create_publication();"
+                             id="submit_btn"
+                           name="submit_btn"
+                           type="button"
+                          class="btn btn-primary">
+                    <i class="fa fa-check-circle"></i> Submit
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    /**
+     * Dynamic UI Code.
+     *  To give our application a dynamic feel, the following jQuery code will be
+     *  used to perform various UI changes.
+     */
+    $(document).ready(function(){
+        $('#publication_modal').on('hidden.bs.modal', function (e) {
+            $('#publication_modal').html('');
+            $('#add_lecture_btn').prop("disabled", false);
+            $('#edit_{{ form.instance.lecture_id }}_btn').prop("disabled", false);
+                                   
+        });
+    });
+                  
+    /**
+     *  Function will call AJAX function to load the register.
+     */
+function ajax_create_publication()
+{
+    var url = '/save_publication';
+    
+    $('#submit_btn').prop("disabled", true); // Lock button
+    
+    // create a FormData Object using your form dom element
+    var data = new FormData();
+    data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+    data.append('publication_id', $('#id_publication_id').val());
+    data.append('title', $('#id_title').val());
+    data.append('description', $('#id_description').val());
+    data.append('file', document.getElementById('id_file').files[0]);
+    jQuery.ajax({
+                url: url,
+                data: data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                type: 'POST',
+                success: function(json_result){
+                // success code execution here
+                if (json_result.status == "success")
+                {
+                    $('#publication_modal').modal('hide');
+                    ajax_refresh_publications_table();
+                }
+                else
+                {
+                    alert(json_result.message);
+                }
+                },
+                error: function(xhr,status,error) {
+                    // error code here
+                },
+                complete: function(xhr,status) {
+                // completion code here
+                    $('#submit_btn').prop("disabled", false); // Unlock button
+                }
+    });
+                
+}
+</script>

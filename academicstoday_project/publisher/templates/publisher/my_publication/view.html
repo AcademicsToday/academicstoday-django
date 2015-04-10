@@ -17,31 +17,34 @@
         </div>
         <!-- /.row -->
 
-        {% if True %}
+        <div id="ajax_placeholder_table"
+           name="ajax_placeholder_table">
+        {% if publications.count == 0 %}
 
         <!-- No Publications Banner -->
         <div class="jumbotron">
-            <h1>No Publications</h1>
+            <h1>Publish</h1>
             <p>
-                Functionality coming soon...
+                Publish any type of intellectual article. It can be based on scientific findings, engineering discovery or any literary work.
             </p>
+            <p><a onclick="popup_publication_modal(0);"
+                       id="publish_0_btn"
+                     name="publish_0_btn"
+                    class="btn btn-primary btn-lg"
+                role="button">Publish Article »</a>
+            </p>
+
         </div>
-        <!-- /.row -->
+        <!-- /.jumbotron -->
 
         {% else %}
-
-        <!-- Certificates -->
-        <div id="ajax_placeholder_table"
-           name="ajax_placeholder_table">
-            {% include "publisher/catalog/table.html" %}
-        </div>
-        <!-- /.row -->
-
+            {% include "publisher/my_publication/table.html" %}
         {% endif %}
-        
+        </div><!-- /.ajax_placeholder_table -->
+
 <!-- Modal -->
 <div id="ajax_modal"
    name="ajax_modal"></div>
 <!-- end modal -->
-{% include 'publisher/catalog/js.html' %}
+{% include 'publisher/my_publication/js.html' %}
 {% endblock content %}

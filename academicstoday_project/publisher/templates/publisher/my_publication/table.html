@@ -4,55 +4,35 @@
             <table class="table table-hover table-striped">
                 <thead>
                     <tr>
-                        <th>Course Title</th>
-                        <th>Accessible</th>
-                        <th>Certificate</th>
-                        <th>Share</th>
+                        <th>Published</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>
+                            <a onclick="popup_publication_modal(0);"
+                                    id="publish_0_btn"
+                                  name="publish_0_btn"
+                                 class="btn btn-success btn-xs"
+                                  role="button">Publish</a>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for mark in marks %}
+                    {% for publication in publications %}
                     <tr>
-                        <td>{{ mark.course.title }}</td>
+                        <td>{{ publication.published_date }}</td>
+                        <td>{{ publication.title }}</td>
+                        <td>{{ publication.description }}</td>
                         <td>
-                        {% if mark.is_public %}
-                            <button onclick="ajax_set_is_public({{ mark.credit_id }});"
-                                         id="chg_{{ mark.credit_id }}_btn"
-                                       name="chg_{{ mark.credit_id }}_btn"
-                                       type="button"
-                                      class="btn btn-xs btn-success"><i class="fa fa-unlock"></i> Public
-                            </button>
-                        {% else %}
-                            <button onclick="ajax_set_is_public({{ mark.credit_id }});"
-                                         id="chg_{{ mark.credit_id }}_btn"
-                                       name="chg_{{ mark.credit_id }}_btn"
-                                       type="button"
-                                      class="btn btn-xs btn-warning"><i class="fa fa-lock"></i> Private
-                            </button>
-                        {% endif %}
-                        </td>
-                        <td>
-                            <a href="certificate/{{ mark.credit_id }}"
-                                 id="view_{{ mark.credit_id }}_btn"
-                               name="view_{{ mark.credit_id }}_btn"
-                               type="button"
-                              class="btn btn-xs btn-primary"
-                              {% if not mark.is_public %}
-                              disabled=""
-                              {% endif %}><i class="fa fa-external-link"></i> View Document
-                            </a>
-                            
-                        </td>
-                        <td>
-                            <button onclick="popup_permalink_modal({{ mark.credit_id }});"
-                                         id="permalink_{{ mark.credit_id }}_btn"
-                                       name="permalink_{{ mark.credit_id }}_btn"
-                                       type="button"
-                                      class="btn btn-xs btn-default"
-                                {% if not mark.is_public %}
-                                   disabled=""
-                                {% endif %}><i class="fa fa-link"></i> Permalink
-                            </button>
+                            <a onclick="popup_publication_modal({{ publication.publication_id }});"
+                                    id="publish_{{ publication.publication_id }}_btn"
+                                  name="publish_{{ publication.publication_id }}_btn"
+                                 class="btn btn-warning btn-xs"
+                                  role="button">Edit</a>
+                            <a onclick="ajax_delete_publication({{ publication.publication_id }});"
+                                    id="del_{{ publication.publication_id }}_btn"
+                                  name="del_{{ publication.publication_id }}_btn"
+                                 class="btn btn-danger btn-xs"
+                                role="button">Delete</a>
                         </td>
                     </tr>
                     {% endfor %}

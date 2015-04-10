@@ -8,7 +8,8 @@ urlpatterns = patterns('',
                        
     # My Publications
     url(r'^my_publications$', my_publication.my_publications_page),
-#    url(r'^change_certificate_accessiblity$', certificate.change_certificate_accessiblity),
-#    url(r'^certificate/(\d+)$', certificate.certificate_page),
-#    url(r'^certificate_permalink_modal$', certificate.certificate_permalink_modal),
+    url(r'^refresh_publications_table$', my_publication.refresh_publications_table),
+    url(r'^my_publication_modal$', my_publication.my_publication_modal),
+    url(r'^save_publication$', my_publication.save_publication),
+    url(r'^delete_publication$', my_publication.delete_publication),
 )
