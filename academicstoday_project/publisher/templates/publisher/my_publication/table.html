@@ -12,7 +12,7 @@
                                     id="publish_0_btn"
                                   name="publish_0_btn"
                                  class="btn btn-success btn-xs"
-                                  role="button">Publish</a>
+                                  role="button"><i class="fa fa-plus"></i> Publish</a>
                         </th>
                     </tr>
                 </thead>
@@ -27,12 +27,12 @@
                                     id="publish_{{ publication.publication_id }}_btn"
                                   name="publish_{{ publication.publication_id }}_btn"
                                  class="btn btn-warning btn-xs"
-                                  role="button">Edit</a>
+                                  role="button"> <i class="fa fa-pencil"></i> Edit</a>
                             <a onclick="ajax_delete_publication({{ publication.publication_id }});"
                                     id="del_{{ publication.publication_id }}_btn"
                                   name="del_{{ publication.publication_id }}_btn"
                                  class="btn btn-danger btn-xs"
-                                role="button">Delete</a>
+                                role="button"> <i class="fa fa-minus"></i> Delete</a>
                         </td>
                     </tr>
                     {% endfor %}

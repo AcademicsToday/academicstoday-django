@@ -1,10 +1,12 @@
 from django.conf.urls import patterns, include, url
 from publisher.views import catalog
 from publisher.views import my_publication
+from publisher.views import publication
 
 urlpatterns = patterns('',
     # Publications(s)
     url(r'^publish$', catalog.catalog_page),
+    url(r'^publication/(\d+)$', publication.publication_page),
                        
     # My Publications
     url(r'^my_publications$', my_publication.my_publications_page),

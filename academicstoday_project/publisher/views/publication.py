@@ -11,21 +11,13 @@ from publisher.models import Publication
 
 
 @login_required(login_url='/landpage')
-def catalog_page(request):
-    publication_list = Publication.objects.all()
-    paginator = Paginator(publication_list, 25) # Show 25 courses per page
-    page = request.GET.get('page')
+def publication_page(request, publication_id):
     try:
-        publications = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        publications = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        publications = paginator.page(paginator.num_pages)
-
-    return render(request, 'publisher/catalog/view.html',{
-        'publications': publications,
+        publication = Publication.objects.get(publication_id=publication_id)
+    except Publication.DoesNotExist:
+        publication = None
+    return render(request, 'publisher/publication/view.html',{
+        'publication': publication,
         'user': request.user,
         'tab': 'publisher_catalog',
         'local_css_urls': settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
