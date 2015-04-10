@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from django.core import serializers
-import json
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
+import json
+import os
 from landpage.models import CoursePreview
 from registrar.models import Student
 from registrar.models import Teacher
@@ -94,13 +95,18 @@ def save_course(request):
     if request.is_ajax():
         if request.method == 'POST':
             course_id = int(request.POST['course_id'])
-            form = None
-            
             if course_id > 0:
                 try:
                     course = Course.objects.get(id=course_id)
-                    form = CourseForm(instance=course, data=request.POST)
-                except Announcement.DoesNotExist:
+                    if course.image:
+                        if os.path.isfile(course.image.path):
+                            os.remove(course.image.path)
+                            course.image = None
+                            course.save()
+                    form = CourseForm(request.POST, request.FILES)
+                    form.instance = course
+                
+                except Course.DoesNotExist:
                     return HttpResponse(json.dumps({
                         'status' : 'failed', 'message' : 'cannot find record'
                     }), content_type="application/json")
@@ -109,15 +115,14 @@ def save_course(request):
                     teacher = Teacher.objects.get(user=request.user)
                 except Teacher.DoesNotExist:
                     teacher = Teacher.objects.create(user=request.user)
-                
                 form = CourseForm(request.POST, request.FILES)
                 form.instance.teacher = teacher
             
             if form.is_valid():
                 form.save()
-                response_data = {'status' : 'success', 'message' : 'saved'}
-        else:
-            response_data = {'status' : 'failed', 'message' : json.dumps(form.errors)}
+                response_data = {'status' : 'success', 'message' : 'course saved'}
+            else:
+                response_data = {'status' : 'failed', 'message' : json.dumps(form.errors)}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 

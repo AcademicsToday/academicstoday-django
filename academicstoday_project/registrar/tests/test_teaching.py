@@ -88,13 +88,15 @@ class TeachingTestCase(TestCase):
             username=TEST_USER_USERNAME,
             password=TEST_USER_PASSWORD
         )
-        response = client.post('/course_modal', {'course_id':1,})
+        response = client.post('/course_modal',{
+            'course_id':0,
+        })
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'ajax_create_course();',response.content)
 
     def test_url_resolves_to_save_course_json(self):
-        found = resolve('/save_new_course')
-        self.assertEqual(found.func, teaching.save_new_course)
+        found = resolve('/save_course')
+        self.assertEqual(found.func, teaching.save_course)
     
     def test_save_new_course(self):
         client = Client()
@@ -106,9 +108,10 @@ class TeachingTestCase(TestCase):
         file_path = settings.MEDIA_ROOT + '/sample.png'
         with open(file_path, 'rb') as fp:
             self.assertTrue(fp is not None)
-            response = client.post('/save_new_course', {
+            response = client.post('/save_course', {
+                'course_id': 0,
                 'finish_date': '2040-01-01',
-                 'category': 'Electrical Engineering',
+                'category': 'Electrical Engineering',
                 'start_date': '2015-01-01',
                 'title': 'Cybernetics',
                 'sub_title': 'We asked for this.',
