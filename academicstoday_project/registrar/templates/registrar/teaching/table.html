@@ -7,10 +7,9 @@
                           <table class="table table-hover table-striped">
                               <thead>
                                   <tr>
-                                      <th>Course #</th>
                                       <th>Title</th>
                                       <th>
-                                          <button onclick="ajax_new_course_modal();"
+                                          <button onclick="ajax_course_modal(0);"
                                                        id="new_course_btn"
                                                      name="new_course_btn"
                                                      type="button"
@@ -23,9 +22,15 @@
                               <tbody>
                               {% for course in courses.all %}
                                   <tr>
-                                      <td align="left" valign="left">{{ course.id }}</td>
                                       <td align="left" valign="left">{{ course.title }}</td>
                                       <td align="left" valign="left">
+                                         <button onclick="ajax_course_modal({{ course.id }});"
+                                                       id="edit_{{ course.id }}_btn"
+                                                     name="edit_{{ course.id }}_btn"
+                                                    type="button"
+                                                   class="btn btn-lg btn-warning">
+                                            <i class="fa fa-pencil"></i> Edit
+                                        </button>
                                         <button onclick="view_course_page({{ course.id }});"
                                                    type="button"
                                                   class="btn btn-lg btn-primary">

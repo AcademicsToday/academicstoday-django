@@ -139,14 +139,14 @@ class Course(models.Model):
     finish_date = models.DateField(null=True)
     is_official = models.BooleanField(default=False)
     status = models.PositiveSmallIntegerField(default=settings.COURSE_UNAVAILABLE_STATUS)
-    file = models.FileField(upload_to='uploads',null=True)
+    image = models.ImageField(upload_to='uploads',null=True)
     students = models.ManyToManyField(Student)
     teacher = models.ForeignKey(Teacher)
 
     def delete(self, *args, **kwargs):
-        if self.file:
-            if os.path.isfile(self.file.path):
-                os.remove(self.file.path)
+        if self.image:
+            if os.path.isfile(self.image.path):
+                os.remove(self.image.path)
         super(Course, self).delete(*args, **kwargs) # Call the "real" delete() method
 
     def __str__(self):

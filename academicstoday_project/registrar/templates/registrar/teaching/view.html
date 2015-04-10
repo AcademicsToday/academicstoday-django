@@ -85,12 +85,18 @@
      *  Function will call AJAX function to load the modal for the new course
      *  creation UI.
      */
-    function ajax_new_course_modal()
+    function ajax_course_modal(course_id)
     {
-        $('#new_course_btn').prop("disabled", true); // Lock button
-        $.ajax( 'new_course_modal', {
+        if (course_id > 0)
+        {
+            $('#edit_' + course_id + '_btn').prop("disabled", true); // Lock button
+        } else {
+            $('#new_course_btn').prop("disabled", true); // Lock button
+        }
+        $.ajax( 'course_modal', {
             data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'course_id': course_id,
             },
             type: 'post',
             success: function(result) {

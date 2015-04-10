@@ -58,17 +58,20 @@ def refresh_teaching_table(request):
 
 
 @login_required(login_url='/landpage')
-def new_course_modal(request):
+def course_modal(request):
     if request.method == u'POST':
-        course_form = CourseForm(request.POST)
-        if course_form.is_valid():
-            course_form.save()
-    else:
-        course_form = CourseForm()
-
-    return render(request, 'registrar/teaching/new_course_modal.html',{
-        'course_form' : course_form,
-    })
+        course_id = int(request.POST['course_id'])
+        form = None
+        course = None
+        if course_id > 0:
+            course = Course.objects.get(id=course_id)
+            form = CourseForm(instance=course)
+        else:
+            form = CourseForm()
+        return render(request, 'registrar/teaching/new_course_modal.html',{
+            'course': course,
+            'course_form' : form,
+        })
 
 @login_required()
 def delete_course_modal(request):

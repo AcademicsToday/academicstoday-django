@@ -1,4 +1,8 @@
-<form enctype="multipart/form-data" name="new_course_form" id="new_course_form">
+<form enctype="multipart/form-data" name="course_form" id="course_form">
+    <input type="hidden"
+            id="id_id"
+          name="id"
+         value={% if form.instance.id != None %}"{{ form.instance.id }}"{% else %}0{% endif %}>
     {% for field in form %}
     <div class="row">
         <div class="form-group">

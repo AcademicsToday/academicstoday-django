@@ -22,12 +22,10 @@ TEST_USER_PASSWORD = "password"
 
 class TeachingTestCase(TestCase):
     def tearDown(self):
+        courses = Course.objects.all()
+        for course in courses:
+            course.delete()
         User.objects.get(email=TEST_USER_EMAIL).delete()
-        for id in range(1, 10):
-            try:
-                Course.objects.get(id=id).delete()
-            except Course.DoesNotExist:
-                pass
 
     def setUp(self):
         # Create our user.
@@ -81,16 +79,16 @@ class TeachingTestCase(TestCase):
         self.assertIn(b'ajax_delete_course_modal(1);',response.content)
 
     def test_url_resolves_to_new_course_modal(self):
-        found = resolve('/new_course_modal')
-        self.assertEqual(found.func, teaching.new_course_modal)
+        found = resolve('/course_modal')
+        self.assertEqual(found.func, teaching.course_modal)
 
-    def test_new_course_modal(self):
+    def test_course_modal(self):
         client = Client()
         client.login(
             username=TEST_USER_USERNAME,
             password=TEST_USER_PASSWORD
         )
-        response = client.post('/new_course_modal')
+        response = client.post('/course_modal', {'course_id':1,})
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'ajax_create_course();',response.content)
 
@@ -114,7 +112,7 @@ class TeachingTestCase(TestCase):
                 'start_date': '2015-01-01',
                 'title': 'Cybernetics',
                 'sub_title': 'We asked for this.',
-                'file': fp,
+                'image': fp,
                 'description': 'HOWTO Guide on upgrading yourself.',
             }, **kwargs)
             self.assertEqual(response.status_code, 200)
