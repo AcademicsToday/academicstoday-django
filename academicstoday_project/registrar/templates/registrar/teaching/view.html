@@ -32,7 +32,7 @@
                <p>Help spread the knowledge to the rest of humankind as a teacher.</p>
                <p><a href="#"
                     class="btn btn-primary btn-lg"
-                  onclick="ajax_new_course_modal();"
+                  onclick="ajax_course_modal(0);"
                      role="button">Create Course »</a>
                </p>
            </div>
@@ -55,11 +55,11 @@
     /**
      * When the page loads up, get the table data.
      */
-    {% if courses != None %}
+{% if courses.count > 0 %}
     $(document).ready(function(){
        ajax_refresh_teaching_table();
     });
-    {% endif %}
+{% endif %}
     
     function ajax_refresh_teaching_table()
     {

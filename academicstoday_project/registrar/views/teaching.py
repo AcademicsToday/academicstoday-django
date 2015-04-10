@@ -89,28 +89,35 @@ def delete_course_modal(request):
 
 
 @login_required(login_url='/landpage')
-def save_new_course(request):
+def save_course(request):
     response_data = {'status' : 'failed', 'message' : 'unknown error with saving'}
     if request.is_ajax():
         if request.method == 'POST':
-            form = CourseForm(request.POST, request.FILES)
-            if form.is_valid():
-                # Create our teacher account which will build our course around.
+            course_id = int(request.POST['course_id'])
+            form = None
+            
+            if course_id > 0:
+                try:
+                    course = Course.objects.get(id=course_id)
+                    form = CourseForm(instance=course, data=request.POST)
+                except Announcement.DoesNotExist:
+                    return HttpResponse(json.dumps({
+                        'status' : 'failed', 'message' : 'cannot find record'
+                    }), content_type="application/json")
+            else:
                 try:
                     teacher = Teacher.objects.get(user=request.user)
                 except Teacher.DoesNotExist:
                     teacher = Teacher.objects.create(user=request.user)
+                
+                form = CourseForm(request.POST, request.FILES)
                 form.instance.teacher = teacher
-                form.save()  # Save course to the database.
-                
-                # Course Initialization
-                CourseSetting.objects.create(
-                    course=form.instance
-                )
-                
-                response_data = {'status' : 'success', 'message' : 'course saved'}
-            else:
-                response_data = {'status' : 'failed', 'message' : json.dumps(form.errors)}
+            
+            if form.is_valid():
+                form.save()
+                response_data = {'status' : 'success', 'message' : 'saved'}
+        else:
+            response_data = {'status' : 'failed', 'message' : json.dumps(form.errors)}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
