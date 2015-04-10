@@ -1,0 +1,71 @@
+<script>
+    function ajax_refresh_certificates_table()
+    {
+        $.ajax( 'certificates_table', {
+               data: {
+                   'csrfmiddlewaretoken': '{{ csrf_token }}',
+               },
+               type: 'post',
+               success: function(result) {
+                   // success code execution here
+                   $('#ajax_certificates_table').html(result); // Update UI.
+               },
+               error: function(xhr,status,error) {
+                   // error code here
+               },
+               complete: function(xhr,status) {
+                   // completion code here
+               }
+        });
+    }
+
+    function ajax_set_is_public(credit_id, is_public)
+    {
+        $('#chg_'+credit_id+'_btn').prop("disabled", true);
+        $.ajax( 'change_certificate_accessiblity', {
+           data: {
+               'csrfmiddlewaretoken': '{{ csrf_token }}',
+               'credit_id': credit_id,
+               'is_public': is_public
+           },
+           type: 'post',
+           success: function(result) {
+                // success code execution here
+                if (result.status == 'success')
+                {
+                     ajax_refresh_certificates_table();
+                }
+           },
+           error: function(xhr,status,error) {
+                // error code here
+           },
+           complete: function(xhr,status) {
+                // completion code here
+                $('#chg_'+credit_id+'_btn').prop("disabled", false);
+           }
+         });
+    }
+
+    function popup_permalink_modal(credit_id)
+    {
+        $('#permalink_'+credit_id+'_btn').prop("disabled", true);
+        $.ajax( 'certificate_permalink_modal', {
+            data: {
+               'csrfmiddlewaretoken': '{{ csrf_token }}',
+               'credit_id' : credit_id
+            },
+            type: 'post',
+            success: function(result) {
+               // success code execution here
+               $('#ajax_modal').html(result);
+               $('#permalink_modal').modal();
+            },
+            error: function(xhr,status,error) {
+               // error code here
+            },
+            complete: function(xhr,status) {
+               // completion code here
+            }
+        });
+    }
+</script>

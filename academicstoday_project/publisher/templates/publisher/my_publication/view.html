@@ -1,0 +1,47 @@
+{% extends 'publisher/base.html' %}
+{% load staticfiles %}
+{% block content %}
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    My Publications
+                    <small>View, add and edit your publications</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li class="active">
+                        <i class="fa fa-book"></i> My Publications
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        {% if True %}
+
+        <!-- No Publications Banner -->
+        <div class="jumbotron">
+            <h1>No Publications</h1>
+            <p>
+                Functionality coming soon...
+            </p>
+        </div>
+        <!-- /.row -->
+
+        {% else %}
+
+        <!-- Certificates -->
+        <div id="ajax_placeholder_table"
+           name="ajax_placeholder_table">
+            {% include "publisher/catalog/table.html" %}
+        </div>
+        <!-- /.row -->
+
+        {% endif %}
+        
+<!-- Modal -->
+<div id="ajax_modal"
+   name="ajax_modal"></div>
+<!-- end modal -->
+{% include 'publisher/catalog/js.html' %}
+{% endblock content %}

@@ -42,29 +42,29 @@
     <div class="navbar-default sidebar" role="navigation">
         <div class="sidebar-nav navbar-collapse">
             <ul class="nav" id="side-menu">
-                <li {% if tab == 'courses' %}class="active"{% endif %}>
+                <li>
                     <a href="courses"><i class="fa fa-fw fa-university"></i> Courses</a>
                 </li>
-                <li {% if tab == 'enrolment' %}class="active"{% endif %}>
+                <li>
                     <a href="enrolment"><i class="fa fa-fw fa-bookmark"></i> Enrolment</a>
                 </li>
-                <li {% if tab == 'teaching' %}class="active"{% endif %}>
+                <li>
                     <a href="teaching"><i class="fa fa-fw fa-suitcase"></i> Teaching</a>
                 </li>
-                <li {% if tab == 'transcript' %}class="active"{% endif %}>
+                <li>
                     <a href="transcript"><i class="fa fa-fw fa-file-text"></i> Transcript</a>
                 </li>
-                <li {% if tab == 'certificates' %}class="active"{% endif %}>
+                <li>
                     <a href="certificates"><i class="fa fa-fw fa-certificate"></i> Certificates</a>
                 </li>
                 <li class="active">
                     <a href="#"><i class="fa fa-book fa-fw"></i> Self-Publish<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse in">
                         <li>
-                            <a  {% if tab == 'publisher_catalog' %}class="active"{% endif %} href="/publish">Catalog</a>
+                            <a {% if tab == 'publisher_catalog' %}class="active"{% endif %} href="/publish">Catalog</a>
                         </li>
                         <li>
-                            <a href="my_list">My Publications</a>
+                            <a {% if tab == 'my_publications' %}class="active"{% endif %} href="my_publications">My Publications</a>
                         </li>
                     </ul>
                     <!-- /.nav-second-level -->
