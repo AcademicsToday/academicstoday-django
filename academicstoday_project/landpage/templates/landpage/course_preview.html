@@ -14,12 +14,15 @@
                 <div class="row clearfix profile-row">
                     <form id='course_preview_form'>
                         <input type="hidden" id="id" name="id" value="{{ course_preview.id }}">
-                    
                         <div class="col-lg-8 col-lg-offset-2">
                             <!-- Project Details Go Here -->
                             <h2> {{ course.title }}</h2>
                             <p class="item-intro text-muted">{{ course.sub_title }}</p>
+                            {% if course.file != None and course.file != '' %}
                             <img class="img-responsive" src="{{ course.file.url }}" alt="">
+                            {% else %}
+                            <p>Missing Image!</p>
+                            {% endif %}
                             <!-- Use this area to describe your project. -->
                             {{ course.description }}
                         </div>

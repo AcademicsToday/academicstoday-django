@@ -41,11 +41,10 @@ def course_preview_modal(request):
     course = None
     if request.method == u'POST':
         POST = request.POST
-        course_id = int(POST.get('course_id'))
-        value = POST.get('course_preview_id')
-        if value is not None:
+        course_id = POST.get('course_id')
+        if course_id is not None:
             try:
-                course = Course.objects.get(id=int(value))
+                course = Course.objects.get(id=int(course_id))
             except Course.DoesNotExist:
                 pass
     return render(request, 'landpage/course_preview.html',{
