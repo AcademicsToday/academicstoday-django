@@ -5,7 +5,7 @@ A open-source platform for online course-based learning and education.
 ## Support
 You can financially support the project by either:
 * Bitcoin donations: 1NdWWNyHJJd5oFhtzAFtApNaHjSuAbGmXZ
-* Darkcoin donations: XcNwdbXmEdnm4ErQuK8A9UkcTwTkUGf7ML 
+* Dash donations: XcNwdbXmEdnm4ErQuK8A9UkcTwTkUGf7ML 
 
 ## Features
 * Students log in and enrol in the provided courses
@@ -14,12 +14,13 @@ You can financially support the project by either:
 * Earn certificates of completion of courses
 
 ## System Requirements
-* Python 3.4.x
-* Postgres SQL DB 9.4
-* pip 1.5.x
+* Python 3.4.x+
+* Postgres SQL DB 9.4+
+* pip 6.1.1+
+* virtualenv 12.1.1+
 
 ## Dependencies
-* Django 1.7.4
+* Django 1.8
 * psycogp2 2.6
 
 ## Build Instructions
