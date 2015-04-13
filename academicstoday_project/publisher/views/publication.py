@@ -58,7 +58,7 @@ def save_peer_review(request, publication_id):
             
             try:
                 publication = Publication.objects.get(publication_id=publication_id)
-            except publication.DoesNotExist:
+            except Publication.DoesNotExist:
                 return HttpResponse(json.dumps({
                     'status' : 'failed', 'message' : 'record does not exist'
                 }), content_type="application/json")
