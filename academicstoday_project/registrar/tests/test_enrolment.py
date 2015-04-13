@@ -86,3 +86,60 @@ class EnrolmentTestCase(TestCase):
         self.assertIn(b'Comics Book Course',response.content)
         self.assertIn(b'ajax_continue_course(1);',response.content)
 
+    def test_url_resolves_to_disenroll_modal_view(self):
+        found = resolve('/disenroll_modal')
+        self.assertEqual(found.func, enrolment.disenroll_modal)
+
+    def test_disenroll_modal_returns_correct_html(self):
+        client = Client()
+        client.login(
+            username=TEST_USER_USERNAME,
+            password=TEST_USER_PASSWORD
+        )
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        response = client.post('/disenroll_modal', {
+            'course_id': 1,
+        }, **kwargs)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Warning',response.content)
+
+    def test_url_resolves_to_disenroll_view(self):
+        found = resolve('/disenrol')
+        self.assertEqual(found.func, enrolment.disenrol)
+
+    def test_disenrol_with_no_enrolment(self):
+        # Delete courses
+        courses = Course.objects.all()
+        for course in courses:
+            course.delete()
+        
+        client = Client()
+        client.login(
+            username=TEST_USER_USERNAME,
+            password=TEST_USER_PASSWORD
+        )
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        response = client.post('/disenrol', {
+            'course_id': 1,
+        }, **kwargs)
+        self.assertEqual(response.status_code, 200)
+        json_string = response.content.decode(encoding='UTF-8')
+        array = json.loads(json_string)
+        self.assertEqual(array['message'], 'record does not exist')
+        self.assertEqual(array['status'], 'failed')
+
+    def test_disenrol_with_enrolment(self):
+        client = Client()
+        client.login(
+            username=TEST_USER_USERNAME,
+            password=TEST_USER_PASSWORD
+        )
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        response = client.post('/disenrol', {
+            'course_id': 1,
+        }, **kwargs)
+        self.assertEqual(response.status_code, 200)
+        json_string = response.content.decode(encoding='UTF-8')
+        array = json.loads(json_string)
+        self.assertEqual(array['message'], 'disenroled')
+        self.assertEqual(array['status'], 'success')

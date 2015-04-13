@@ -83,9 +83,12 @@ def disenrol(request):
     if request.is_ajax():
         course_id = int(request.POST['course_id'])
         student = Student.objects.get(user=request.user)
-        course = Course.objects.get(id=course_id)
-        course.students.remove(student)
-        response_data = {'status' : 'success', 'message' : 'disenroled' }
+        try:
+            course = Course.objects.get(id=course_id)
+            course.students.remove(student)
+            response_data = {'status' : 'success', 'message' : 'disenroled' }
+        except Course.DoesNotExist:
+            response_data = {'status' : 'failed', 'message' : 'record does not exist' }
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
