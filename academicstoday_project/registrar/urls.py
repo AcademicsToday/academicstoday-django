@@ -13,7 +13,10 @@ urlpatterns = patterns('',
 
     # Enrolment(s)
     url(r'^enrolment$', enrolment.enrolment_page),
-                       
+    url(r'^enrolment_table$', enrolment.enrolment_table),
+    url(r'^disenroll_modal$', enrolment.disenroll_modal),
+    url(r'^disenrol', enrolment.disenrol),
+         
     # Teaching
     url(r'^teaching$', teaching.teaching_page),
     url(r'^refresh_teaching_table$', teaching.refresh_teaching_table),

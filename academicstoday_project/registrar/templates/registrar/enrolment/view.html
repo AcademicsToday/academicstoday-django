@@ -36,31 +36,10 @@
                 <div class="panel panel-default">
                     <div class="panel-body">
                       <div class="table-responsive">
-                          <table class="table table-hover table-striped">
-                              <thead>
-                                  <tr>
-                                      <th>Course #</th>
-                                      <th>Title</th>
-                                      <th>
-                                      </th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                              {% for course in courses.all %}
-                                  <tr>
-                                      <td align="left" valign="left">{{ course.id }}</td>
-                                      <td align="left" valign="left">{{ course.title }}</td>
-                                      <td align="left" valign="left">
-                                          <button onclick="ajax_continue_course({{ course.id }});"
-                                                     type="button"
-                                                    class="btn btn-lg btn-primary">
-                                            <i class="fa fa-level-down"></i> Continue
-                                        </button>
-                                      </td>
-                                  </tr>
-                              {% endfor %}
-                            </tbody>
-                          </table>
+                          <div id="ajax_table_placeholder"
+                             name="ajax_table_placeholder">
+                             {% include 'registrar/enrolment/table.html' %}
+                          </div>
                       </div>
                     </div>
                 </div>
@@ -70,7 +49,33 @@
 
         {% endif %}
 </div>
+
+<!-- Modal -->
+<div id="ajax_modal_placeholder"
+   name="ajax_modal_placeholder"></div>
+<!-- end modal -->
+
 <script>
+    function ajax_refresh_enrolments_table()
+    {
+        $.ajax( 'enrolment_table', {
+            data: {
+               'csrfmiddlewaretoken': '{{ csrf_token }}',
+            },
+            type: 'post',
+               success: function(result) {
+               // success code execution here
+               $('#ajax_table_placeholder').html(result); // Update UI.
+            },
+            error: function(xhr,status,error) {
+               // error code here
+            },
+            complete: function(xhr,status) {
+               // completion code here
+            }
+        });
+    }
+    
     function ajax_continue_course(course_id)
     {
         var url = 'enrol';
@@ -94,6 +99,29 @@
            complete: function(xhr,status) {
                // completion code here
            }
+        });
+    }
+
+    function ajax_disenroll_modal(course_id)
+    {
+        $('#del_' + course_id + '_btn').prop("disabled", true); // Lock button
+        $.ajax( 'disenroll_modal', {
+            data: {
+               'csrfmiddlewaretoken': '{{ csrf_token }}',
+               'course_id': course_id,
+            },
+            type: 'post',
+            success: function(result) {
+               // success code execution here
+               $('#ajax_modal_placeholder').html(result); // Update UI.
+               $('#disenroll_modal').modal();             // Unhide view.
+            },
+            error: function(xhr,status,error) {
+               // error code here
+            },
+            complete: function(xhr,status) {
+               // completion code here
+            }
         });
     }
 </script>
