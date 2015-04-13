@@ -35,6 +35,9 @@ class PeerReviewTestCase(TestCase):
         essays = EssaySubmission.objects.all()
         for essay in essays:
             essay.delete()
+        reviews = PeerReview.objects.all()
+        for review in reviews:
+            reviews.delete()
         courses = Course.objects.all()
         for course in courses:
             course.delete()
@@ -213,10 +216,14 @@ class PeerReviewTestCase(TestCase):
             'submission_id': 1,
             'marks': 5,
         },**kwargs)
+        
+        # Delete submission
+        reviews = PeerReview.objects.all()
+        review_id = reviews[0].review_id
         response = client.post('/course/1/peer_review/1/delete_peer_review',{
             'question_id': 1,
             'question_type': settings.ESSAY_QUESTION_TYPE,
-            'review_id': 1,
+            'review_id': review_id,
         },**kwargs)
         json_string = response.content.decode(encoding='UTF-8')
         array = json.loads(json_string)
@@ -233,10 +240,14 @@ class PeerReviewTestCase(TestCase):
             'submission_id': 1,
             'marks': 5,
         },**kwargs)
+        
+        # Delete submission.
+        reviews = PeerReview.objects.all()
+        review_id = reviews[0].review_id
         response = client.post('/course/1/peer_review/1/delete_peer_review',{
             'question_id': 4,
             'question_type': settings.RESPONSE_QUESTION_TYPE,
-            'review_id': 2,
+            'review_id': review_id,
         },**kwargs)
         json_string = response.content.decode(encoding='UTF-8')
         array = json.loads(json_string)

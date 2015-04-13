@@ -54,7 +54,7 @@ class AnnouncementTestCase(TestCase):
 
 
     def test_url_resolves_to_announcements_page_view(self):
-        found = resolve('/course/1/announcement')
+        found = resolve('/course/1/announcements')
         self.assertEqual(found.func, announcement.announcements_page)
 
 
@@ -64,7 +64,7 @@ class AnnouncementTestCase(TestCase):
             username=TEST_USER_USERNAME,
             password=TEST_USER_PASSWORD
         )
-        response = client.post('/course/1/announcement')
+        response = client.post('/course/1/announcements')
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'Comics Book Course',response.content)
         self.assertIn(b'Hello world!',response.content)

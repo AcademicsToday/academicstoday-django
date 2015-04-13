@@ -32,6 +32,9 @@ TEST_USER_PASSWORD = "password"
 
 class PeerReviewTestCase(TestCase):
     def tearDown(self):
+        reviews = PeerReview.objects.all()
+        for review in reviews:
+            reviews.delete()
         courses = Course.objects.all()
         for course in courses:
             course.delete()
