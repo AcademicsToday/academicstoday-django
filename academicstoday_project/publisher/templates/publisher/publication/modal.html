@@ -1,0 +1,59 @@
+{% load staticfiles %}
+<div class="modal fade" id="peer_review_modal" role="dialog">
+    <div class="modal-dialog" style="width:750px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="btn btn-success pull-right" data-dismiss="modal">×</a>
+                <h4>Add Review</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <input type="hidden"
+                             id="id_assignment_id"
+                           name="assignment_id"
+                          value={% if form.instance.assignment_id != None %}"{{ form.instance.assignment_id }}"{% else %}0{% endif %}>
+                    {% if form.instance.question_type != None %}
+                    <input type="hidden"
+                             id="id_question_type"
+                           name="question_type"
+                          value="{{ form.instance.question_type }}">
+                    {% endif %}
+                    {% for field in form %}
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="fieldWrapper">
+                                <label class="col-sm-3 control-label">
+                                    {{ field.label }}
+                                </label>
+                                <div class="col-sm-9">
+                                    {{ field }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    {% endfor %}
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button onclick="ajax_save_peer_review(0);"
+                    type="button"
+                    class="btn btn-primary">
+                    <i class="fa fa-plus"></i> Submit
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function(){
+        // When this model hides, we will clear the contents of it.
+        $('#peer_review_modal').on('hidden.bs.modal', function (e) {
+            // Clear all the code inside this modal.
+            $('#ajax_modal_placeholder').html('');
+            $('#add_review_btn').prop("disabled", false);
+        })
+    });
+</script>

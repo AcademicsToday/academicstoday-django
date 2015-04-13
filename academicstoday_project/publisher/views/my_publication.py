@@ -99,7 +99,10 @@ def delete_publication(request):
         if request.method == 'POST':
             publication_id = int(request.POST['publication_id'])
             try:
-                Publication.objects.get(publication_id=publication_id).delete()
+                publication = Publication.objects.get(publication_id=publication_id)
+                for peer_review in publication.reviews.all():
+                    peer_review.delete()
+                publication.delete()
                 response_data = {'status' : 'success', 'message' : 'deleted'}
             except Publication.DoesNotExist:
                 response_data = {'status' : 'failed', 'message' : 'record not found'}
