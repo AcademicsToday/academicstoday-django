@@ -67,6 +67,14 @@ class SyllabusTestCase(TestCase):
             password=TEST_USER_PASSWORD
         )
         return client
+    
+    def get_logged_in_trudy_client(self):
+        client = Client()
+        client.login(
+            username=TEST_USER_USERNAME2,
+            password=TEST_USER_PASSWORD2
+        )
+        return client
 
     def test_url_resolves_to_syllabus_page_view(self):
         found = resolve('/teacher/course/1/syllabus')
@@ -116,7 +124,7 @@ class SyllabusTestCase(TestCase):
             self.assertEqual(array['message'], 'saved')
             self.assertEqual(array['status'], 'success')
 
-    def test_delete_syllabus(self):
+    def test_delete_syllabus_with_correct_user(self):
         kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
         client = self.get_logged_in_client()
         file_path = settings.MEDIA_ROOT + '/sample.pdf'
@@ -140,3 +148,27 @@ class SyllabusTestCase(TestCase):
         self.assertEqual(array['message'], 'deleted')
         self.assertEqual(array['status'], 'success')
 
+    def test_delete_syllabus_with_correct_user(self):
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        client = self.get_logged_in_client()
+        file_path = settings.MEDIA_ROOT + '/sample.pdf'
+        with open(file_path, 'rb') as fp:
+            self.assertTrue(fp is not None)
+            response = client.post('/teacher/course/1/save_syllabus',{
+                'file': fp,
+            }, **kwargs)
+            self.assertEqual(response.status_code, 200)
+            json_string = response.content.decode(encoding='UTF-8')
+            array = json.loads(json_string)
+            self.assertEqual(array['message'], 'saved')
+            self.assertEqual(array['status'], 'success')
+        client.logout()
+        client = self.get_logged_in_trudy_client()
+        response = client.post('/teacher/course/1/delete_syllabus',{
+            'syllabus_id': 1,
+        }, **kwargs)
+        self.assertEqual(response.status_code, 200)
+        json_string = response.content.decode(encoding='UTF-8')
+        array = json.loads(json_string)
+        self.assertEqual(array['message'], 'unauthorized deletion')
+        self.assertEqual(array['status'], 'failed')

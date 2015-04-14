@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 import json
 import datetime
+from registrar.models import Teacher
 from registrar.models import Course
 from registrar.models import Syllabus
 from teacher.forms import SyllabusForm
@@ -56,9 +57,14 @@ def delete_syllabus(request, course_id):
     if request.is_ajax():
         if request.method == 'POST':
             syllabus_id = int(request.POST['syllabus_id'])
+            teacher = Teacher.objects.get(user=request.user)
             try:
-                Syllabus.objects.get(syllabus_id=syllabus_id).delete()
-                response_data = {'status' : 'success', 'message' : 'deleted'}
+                syllabus = Syllabus.objects.get(syllabus_id=syllabus_id)
+                if syllabus.course.teacher == teacher:
+                    syllabus.delete()
+                    response_data = {'status' : 'success', 'message' : 'deleted'}
+                else:
+                    response_data = {'status' : 'failed', 'message' : 'unauthorized deletion'}
             except Syllabus.DoesNotExist:
                 response_data = {'status' : 'failed', 'message' : 'record does not exist'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
