@@ -27,7 +27,10 @@ from student.views import peer_review
 
 TEST_USER_EMAIL = "ledo@gah.com"
 TEST_USER_USERNAME = "Ledo"
-TEST_USER_PASSWORD = "password"
+TEST_USER_PASSWORD = "ContinentalUnion"
+TEST_USER_EMAIL2 = "whalesquid@hideauze.com"
+TEST_USER_USERNAME2 = "whalesquid"
+TEST_USER_PASSWORD2 = "Evolvers"
 
 
 class PeerReviewTestCase(TestCase):
@@ -46,6 +49,16 @@ class PeerReviewTestCase(TestCase):
         Course.objects.all().delete()
 
     def setUp(self):
+        # Create our Trudy student
+        User.objects.create_user(
+            email=TEST_USER_EMAIL2,
+            username=TEST_USER_USERNAME2,
+            password=TEST_USER_PASSWORD2
+        )
+        user = User.objects.get(email=TEST_USER_EMAIL2)
+        teacher = Teacher.objects.create(user=user)
+        Student.objects.create(user=user).save()
+        
         # Create our Student.
         User.objects.create_user(
             email=TEST_USER_EMAIL,
@@ -254,7 +267,36 @@ class PeerReviewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(array['message'], 'deleted')
         self.assertEqual(array['status'], 'success')
-
+    
+    def test_delete_peer_review_on_incorrect_user(self):
+        client = self.get_logged_in_client()
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        client.post('/course/1/peer_review/1/save_peer_review',{
+            'question_id': 4,
+            'question_type': settings.RESPONSE_QUESTION_TYPE,
+            'submission_id': 1,
+            'marks': 5,
+        },**kwargs)
+            
+        # Delete submission.
+        reviews = PeerReview.objects.all()
+        review_id = reviews[0].review_id
+        client.logout()
+        client.login(
+            username=TEST_USER_USERNAME2,
+            password=TEST_USER_PASSWORD2
+        )
+        response = client.post('/course/1/peer_review/1/delete_peer_review',{
+            'question_id': 4,
+            'question_type': settings.RESPONSE_QUESTION_TYPE,
+            'review_id': review_id,
+        },**kwargs)
+        json_string = response.content.decode(encoding='UTF-8')
+        array = json.loads(json_string)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(array['message'], 'unauthorized deletion')
+        self.assertEqual(array['status'], 'failed')
+    
     def test_update_peer_review_on_essay_question(self):
         client = self.get_logged_in_client()
         kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
