@@ -40,14 +40,14 @@ class ExamTestCase(TestCase):
     def setUp(self):
         # Create our Trudy user.
         User.objects.create_user(
-                                 email=TEST_USER_EMAIL2,
-                                 username=TEST_USER_USERNAME2,
-                                 password=TEST_USER_PASSWORD2
-                                 )
-                                 user = User.objects.get(email=TEST_USER_EMAIL2)
-                                 teacher = Teacher.objects.create(user=user)
+            email=TEST_USER_EMAIL2,
+            username=TEST_USER_USERNAME2,
+            password=TEST_USER_PASSWORD2
+        )
+        user = User.objects.get(email=TEST_USER_EMAIL2)
+        teacher = Teacher.objects.create(user=user)
                                  
-                                 # Create our Student.
+        # Create our Teacher.
         User.objects.create_user(
             email=TEST_USER_EMAIL,
             username=TEST_USER_USERNAME,
@@ -81,6 +81,14 @@ class ExamTestCase(TestCase):
         client.login(
             username=TEST_USER_USERNAME,
             password=TEST_USER_PASSWORD
+        )
+        return client
+
+    def get_logged_in_trudy_client(self):
+        client = Client()
+        client.login(
+            username=TEST_USER_USERNAME2,
+            password=TEST_USER_PASSWORD2
         )
         return client
 
@@ -139,7 +147,7 @@ class ExamTestCase(TestCase):
         self.assertEqual(array['status'], 'failed')
         self.assertEqual(array['message'], 'record does not exist')
 
-    def test_delete_exam_with_submissions(self):
+    def test_delete_exam_with_submissions_and_correct_user(self):
         kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
         client = self.get_logged_in_client()
         response = client.post('/teacher/course/1/delete_exam',{
@@ -150,6 +158,18 @@ class ExamTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(array['status'], 'success')
         self.assertEqual(array['message'], 'deleted')
+
+    def test_delete_exam_with_submissions_and_incorrect_user(self):
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        client = self.get_logged_in_trudy_client()
+        response = client.post('/teacher/course/1/delete_exam',{
+            'exam_id': 1,
+        }, **kwargs)
+        json_string = response.content.decode(encoding='UTF-8')
+        array = json.loads(json_string)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(array['status'], 'failed')
+        self.assertEqual(array['message'], 'unauthorized deletion')
 
     def test_url_resolves_to_save_exam(self):
         found = resolve('/teacher/course/1/save_exam')
@@ -270,7 +290,7 @@ class ExamTestCase(TestCase):
         self.assertEqual(array['message'], 'question was saved')
         self.assertEqual(array['status'], 'success')
 
-    def test_delete_question_with_multiple_choice_question(self):
+    def test_delete_question_with_multiple_choice_question_and_correct_user(self):
         MultipleChoiceQuestion.objects.create(
             question_id=2,
             exam=Exam.objects.get(exam_id=1),
@@ -294,6 +314,31 @@ class ExamTestCase(TestCase):
         array = json.loads(json_string)
         self.assertEqual(array['message'], 'question was deleted')
         self.assertEqual(array['status'], 'success')
+    
+    def test_delete_question_with_multiple_choice_question_and_incorrect_user(self):
+        MultipleChoiceQuestion.objects.create(
+            question_id=2,
+            exam=Exam.objects.get(exam_id=1),
+            title="Hideauze",
+            description="Who where the Hideauze?",
+            a="Former Humans",
+            a_is_correct=True,
+            b="Aliens",
+            b_is_correct=False,
+            c="Magical or Supernatural Creatures",
+            c_is_correct=False,
+        )
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        client = self.get_logged_in_trudy_client()
+        response = client.post('/teacher/course/1/exam/1/delete_question',{
+            'question_id': 2,
+            'question_type': settings.MULTIPLECHOICE_QUESTION_TYPE,
+        }, **kwargs)
+        self.assertEqual(response.status_code, 200)
+        json_string = response.content.decode(encoding='UTF-8')
+        array = json.loads(json_string)
+        self.assertEqual(array['message'], 'unauthorized deletion')
+        self.assertEqual(array['status'], 'failed')
 
     def test_url_resolves_to_questions_table_view(self):
         found = resolve('/teacher/course/1/exam/1/questions_table')

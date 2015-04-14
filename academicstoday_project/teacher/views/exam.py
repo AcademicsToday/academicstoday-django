@@ -108,9 +108,14 @@ def delete_exam(request, course_id):
     if request.is_ajax():
         if request.method == 'POST':
             exam_id = int(request.POST['exam_id'])
+            teacher = Teacher.objects.get(user=request.user)
             try:
-                Exam.objects.get(exam_id=exam_id).delete()
-                response_data = {'status' : 'success', 'message' : 'deleted'}
+                exam = Exam.objects.get(exam_id=exam_id)
+                if exam.course.teacher == teacher:
+                    exam.delete()
+                    response_data = {'status' : 'success', 'message' : 'deleted'}
+                else:
+                     response_data = {'status' : 'failed', 'message' : 'unauthorized deletion'}
             except Exam.DoesNotExist:
                 response_data = {'status' : 'failed', 'message' : 'record does not exist'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
@@ -269,6 +274,10 @@ def delete_question(request, course_id, exam_id):
             question_type = int(request.POST['question_type'])
             question_id = int(request.POST['question_id'])
 
+            if course.teacher != teacher:
+                response_data = {'status' : 'failed', 'message' : 'unauthorized deletion'}
+                return HttpResponse(json.dumps(response_data), content_type="application/json")
+        
             # DC: If question type is unsupported then error
             if question_type not in settings.QUESTION_TYPES:
                 response_data = {'status' : 'failed', 'message' : 'question type not supported'}
