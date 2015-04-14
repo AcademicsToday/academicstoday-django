@@ -117,8 +117,8 @@ def delete_quiz(request, course_id):
                 submission.save()
             except QuizSubmission.DoesNotExist:
                 return HttpResponse(json.dumps({
-                    'status' : 'success',
-                    'message' : 'quiz was deleted'
+                    'status' : 'failed',
+                    'message' : 'record does not exist'
                 }), content_type="application/json")
                                                           
             # Delete all previous entries.
@@ -127,7 +127,7 @@ def delete_quiz(request, course_id):
                 tf_submissions.delete()
             except TrueFalseSubmission.DoesNotExist:
                 pass
-            response_data = {'status' : 'success', 'message' : ''}
+            response_data = {'status' : 'success', 'message' : 'deleted'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 
