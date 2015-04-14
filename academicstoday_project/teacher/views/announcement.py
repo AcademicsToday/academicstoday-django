@@ -110,9 +110,14 @@ def delete_announcement(request, course_id):
     if request.is_ajax():
         if request.method == 'POST':
             announcement_id = int(request.POST['announcement_id'])
+            teacher = Teacher.objects.get(user=request.user)
             try:
-                Announcement.objects.get(announcement_id=announcement_id).delete()
-                response_data = {'status' : 'success', 'message' : 'deleted'}
+                announcement = Announcement.objects.get(announcement_id=announcement_id)
+                if announcement.course.teacher == teacher:
+                    announcement.delete()
+                    response_data = {'status' : 'success', 'message' : 'deleted'}
+                else:
+                    response_data = {'status' : 'failed', 'message' : 'unauthorized deletion'}
             except Announcement.DoesNotExist:
                 response_data = {'status' : 'failed', 'message' : 'cannot find record'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")

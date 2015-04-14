@@ -15,17 +15,29 @@ from teacher.views import announcement
 
 TEST_USER_EMAIL = "ledo@gah.com"
 TEST_USER_USERNAME = "Ledo"
-TEST_USER_PASSWORD = "password"
-
+TEST_USER_PASSWORD = "ContinentalUnion"
+TEST_USER_EMAIL2 = "whalesquid@hideauze.com"
+TEST_USER_USERNAME2 = "whalesquid"
+TEST_USER_PASSWORD2 = "Evolvers"
 
 class AnnouncementTestCase(TestCase):
     def tearDown(self):
         courses = Course.objects.all()
         for course in courses:
             course.delete()
-        User.objects.get(email=TEST_USER_EMAIL).delete()
+        User.objects.all().delete()
 
     def setUp(self):
+        # Create our Trudy user.
+        User.objects.create_user(
+            email=TEST_USER_EMAIL2,
+            username=TEST_USER_USERNAME2,
+            password=TEST_USER_PASSWORD2
+        )
+        user = User.objects.get(email=TEST_USER_EMAIL2)
+        teacher = Teacher.objects.create(user=user)
+                                 
+        # Create a test course
         user = User.objects.create_user(
             email=TEST_USER_EMAIL,
             username=TEST_USER_USERNAME,
@@ -51,6 +63,14 @@ class AnnouncementTestCase(TestCase):
         client.login(
             username=TEST_USER_USERNAME,
             password=TEST_USER_PASSWORD
+        )
+        return client
+
+    def get_logged_in_trudy_client(self):
+        client = Client()
+        client.login(
+            username=TEST_USER_USERNAME2,
+            password=TEST_USER_PASSWORD2
         )
         return client
 
@@ -163,7 +183,7 @@ class AnnouncementTestCase(TestCase):
         self.assertEqual(array['message'], 'cannot find record')
         self.assertEqual(array['status'], 'failed')
 
-    def test_delete_announcement_with_record(self):
+    def test_delete_announcement_with_record_and_correct_user(self):
         kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
         client = self.get_logged_in_client()
         response = client.post('/teacher/course/1/delete_announcement',{
@@ -174,3 +194,15 @@ class AnnouncementTestCase(TestCase):
         array = json.loads(json_string)
         self.assertEqual(array['message'], 'deleted')
         self.assertEqual(array['status'], 'success')
+
+    def test_delete_announcement_with_record_and_incorrect_user(self):
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        client = self.get_logged_in_trudy_client()
+        response = client.post('/teacher/course/1/delete_announcement',{
+            'announcement_id': 1,
+        }, **kwargs)
+        self.assertEqual(response.status_code, 200)
+        json_string = response.content.decode(encoding='UTF-8')
+        array = json.loads(json_string)
+        self.assertEqual(array['message'], 'unauthorized deletion')
+        self.assertEqual(array['status'], 'failed')
