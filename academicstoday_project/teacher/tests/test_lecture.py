@@ -41,14 +41,14 @@ class LectureTestCase(TestCase):
     def setUp(self):
         # Create our Trudy user.
         User.objects.create_user(
-                                 email=TEST_USER_EMAIL2,
-                                 username=TEST_USER_USERNAME2,
-                                 password=TEST_USER_PASSWORD2
-                                 )
-                                 user = User.objects.get(email=TEST_USER_EMAIL2)
-                                 teacher = Teacher.objects.create(user=user)
+            email=TEST_USER_EMAIL2,
+            username=TEST_USER_USERNAME2,
+            password=TEST_USER_PASSWORD2
+        )
+        user = User.objects.get(email=TEST_USER_EMAIL2)
+        teacher = Teacher.objects.create(user=user)
                                  
-                                 # Create our Student.
+        # Create our Student.
         User.objects.create_user(
             email=TEST_USER_EMAIL,
             username=TEST_USER_USERNAME,
@@ -80,6 +80,14 @@ class LectureTestCase(TestCase):
         client.login(
             username=TEST_USER_USERNAME,
             password=TEST_USER_PASSWORD
+        )
+        return client
+    
+    def get_logged_in_trudy_client(self):
+        client = Client()
+        client.login(
+            username=TEST_USER_USERNAME2,
+            password=TEST_USER_PASSWORD2
         )
         return client
     
@@ -173,7 +181,7 @@ class LectureTestCase(TestCase):
         self.assertEqual(array['message'], 'record not found')
         self.assertEqual(array['status'], 'failed')
 
-    def test_delete_lecture(self):
+    def test_delete_lecture_with_correct_user(self):
         kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
         client = self.get_logged_in_client()
         response = client.post('/teacher/course/1/delete_lecture',{
@@ -184,3 +192,15 @@ class LectureTestCase(TestCase):
         array = json.loads(json_string)
         self.assertEqual(array['message'], 'deleted')
         self.assertEqual(array['status'], 'success')
+
+    def test_delete_lecture_with_incorrect_user(self):
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        client = self.get_logged_in_trudy_client()
+        response = client.post('/teacher/course/1/delete_lecture',{
+            'lecture_id': 1,
+        },**kwargs)
+        self.assertEqual(response.status_code, 200)
+        json_string = response.content.decode(encoding='UTF-8')
+        array = json.loads(json_string)
+        self.assertEqual(array['message'], 'unauthorized deletion')
+        self.assertEqual(array['status'], 'failed')
