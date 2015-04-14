@@ -194,10 +194,9 @@ def delete_assignment(request, course_id):
                 submission.save()
             except AssignmentSubmission.DoesNotExist:
                 return HttpResponse(json.dumps({
-                    'status' : 'success',
-                    'message' : 'assignment was deleted'
+                    'status' : 'failed',
+                    'message' : 'record does not exist'
                 }), content_type="application/json")
-
 
             # Delete all previous entries.
             try:
