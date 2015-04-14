@@ -95,8 +95,12 @@ def delete_thread(request, course_id):
                 thread = CourseDiscussionThread.objects.get(
                     course=course,
                     thread_id=thread_id
-                ).delete()
-                response_data = {'status' : 'success', 'message' : 'thread was deleted'}
+                )
+                if thread.user == request.user:
+                    thread.delete()
+                    response_data = {'status' : 'success', 'message' : 'thread was deleted'}
+                else:
+                    response_data = {'status' : 'failed', 'message' : 'unauthorized deletion'}
             except CourseDiscussionThread.DoesNotExist:
                 response_data = {'status' : 'failed', 'message' : 'record does not exist'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")

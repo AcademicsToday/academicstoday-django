@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 import json
 from registrar.models import Course
+from registrar.models import Student
 from registrar.models import Teacher
 from registrar.models import CourseDiscussionPost
 from registrar.models import CourseDiscussionThread
@@ -18,6 +19,9 @@ from student.views import discussion
 TEST_USER_EMAIL = "ledo@gah.com"
 TEST_USER_USERNAME = "Ledo"
 TEST_USER_PASSWORD = "password"
+TEST_USER_EMAIL2 = "whalesquid@hideauze.com"
+TEST_USER_USERNAME2 = "whalesquid"
+TEST_USER_PASSWORD2 = "passwordabc"
 
 
 class DiscussionTestCase(TestCase):
@@ -25,9 +29,19 @@ class DiscussionTestCase(TestCase):
         courses = Course.objects.all()
         for course in courses:
             course.delete()
-        User.objects.get(email=TEST_USER_EMAIL).delete()
+        User.objects.all().delete()
 
     def setUp(self):
+        # Create our Trudy student
+        User.objects.create_user(
+            email=TEST_USER_EMAIL2,
+            username=TEST_USER_USERNAME2,
+            password=TEST_USER_PASSWORD2
+        )
+        user = User.objects.get(email=TEST_USER_EMAIL2)
+        teacher = Teacher.objects.create(user=user)
+        Student.objects.create(user=user).save()
+                                 
         # Create our user.
         User.objects.create_user(
             email=TEST_USER_EMAIL,
@@ -129,7 +143,7 @@ class DiscussionTestCase(TestCase):
         self.assertEqual(array['message'], 'submitted')
         self.assertEqual(array['status'], 'success')
 
-    def test_delete_thread(self):
+    def test_delete_thread_with_correct_user(self):
         kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
         client = self.get_logged_in_client()
         response = client.post('/course/1/delete_thread',{
@@ -139,6 +153,23 @@ class DiscussionTestCase(TestCase):
         array = json.loads(json_string)
         self.assertEqual(array['status'], 'success')
         self.assertEqual(array['message'], 'thread was deleted')
+    
+    def test_delete_thread_with_incorrect_user(self):
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        client = self.get_logged_in_client()
+        client.logout()
+        client.login(
+            username=TEST_USER_USERNAME2,
+            password=TEST_USER_PASSWORD2
+        )
+        response = client.post('/course/1/delete_thread',{
+            'thread_id': 1,
+        }, **kwargs)
+        json_string = response.content.decode(encoding='UTF-8')
+        array = json.loads(json_string)
+        self.assertEqual(array['status'], 'failed')
+        self.assertEqual(array['message'], 'unauthorized deletion')
+
 
     def test_url_resolves_to_thread_page_view(self):
         found = resolve('/course/1/thread/1')
