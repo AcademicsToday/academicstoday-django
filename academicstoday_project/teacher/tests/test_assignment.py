@@ -101,7 +101,6 @@ class AssignmentTestCase(TestCase):
         )
         return client
 
-
     def test_url_resolves_to_assignments_page_view(self):
         found = resolve('/teacher/course/1/assignments')
         self.assertEqual(found.func, assignment.assignments_page)

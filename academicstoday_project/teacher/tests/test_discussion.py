@@ -36,14 +36,14 @@ class DiscussionTestCase(TestCase):
     def setUp(self):
         # Create our Trudy user.
         User.objects.create_user(
-                                 email=TEST_USER_EMAIL2,
-                                 username=TEST_USER_USERNAME2,
-                                 password=TEST_USER_PASSWORD2
-                                 )
-                                 user = User.objects.get(email=TEST_USER_EMAIL2)
-                                 teacher = Teacher.objects.create(user=user)
+            email=TEST_USER_EMAIL2,
+            username=TEST_USER_USERNAME2,
+            password=TEST_USER_PASSWORD2
+        )
+        user = User.objects.get(email=TEST_USER_EMAIL2)
+        teacher = Teacher.objects.create(user=user)
                                  
-                                 # Create our Student.
+        # Create our Teacher.
         User.objects.create_user(
             email=TEST_USER_EMAIL,
             username=TEST_USER_USERNAME,
@@ -85,6 +85,14 @@ class DiscussionTestCase(TestCase):
         client.login(
             username=TEST_USER_USERNAME,
             password=TEST_USER_PASSWORD
+        )
+        return client
+
+    def get_logged_in_trudy_client(self):
+        client = Client()
+        client.login(
+            username=TEST_USER_USERNAME2,
+            password=TEST_USER_PASSWORD2
         )
         return client
 
@@ -144,7 +152,7 @@ class DiscussionTestCase(TestCase):
         self.assertEqual(array['message'], 'submitted')
         self.assertEqual(array['status'], 'success')
 
-    def test_delete_thread(self):
+    def test_delete_thread_with_thread_and_correct_user(self):
         kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
         client = self.get_logged_in_client()
         response = client.post('/teacher/course/1/delete_thread',{
@@ -154,6 +162,29 @@ class DiscussionTestCase(TestCase):
         array = json.loads(json_string)
         self.assertEqual(array['status'], 'success')
         self.assertEqual(array['message'], 'thread was deleted')
+    
+    def test_delete_thread_with_empty(self):
+        CourseDiscussionThread.objects.all().delete()
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        client = self.get_logged_in_client()
+        response = client.post('/teacher/course/1/delete_thread',{
+            'thread_id': 1,
+        }, **kwargs)
+        json_string = response.content.decode(encoding='UTF-8')
+        array = json.loads(json_string)
+        self.assertEqual(array['status'], 'failed')
+        self.assertEqual(array['message'], 'record does not exist')
+    
+    def test_delete_thread_with_thread_and_incorrect_user(self):
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        client = self.get_logged_in_trudy_client()
+        response = client.post('/teacher/course/1/delete_thread',{
+            'thread_id': 1,
+        }, **kwargs)
+        json_string = response.content.decode(encoding='UTF-8')
+        array = json.loads(json_string)
+        self.assertEqual(array['status'], 'failed')
+        self.assertEqual(array['message'], 'unauthorized deletion')
 
     def test_url_resolves_to_posts_page_view(self):
         found = resolve('/teacher/course/1/thread/1')
