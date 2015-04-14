@@ -82,6 +82,7 @@ def save_lecture_note(request, course_id, lecture_id):
             lecture = Lecture.objects.get(lecture_id=lecture_id)
             form = NoteUploadForm(request.POST, request.FILES)
             form.instance.type = settings.PDF_FILE_UPLOAD_TYPE
+            form.instance.user = request.user
             upload_id = int(request.POST['upload_id'])
             
             # If lecture already exists, then delete local file.
@@ -122,8 +123,12 @@ def delete_lecture_note(request, course_id, lecture_id):
         if request.method == 'POST':
             upload_id = int(request.POST['upload_id'])
             try:
-                FileUpload.objects.get(upload_id=upload_id).delete()
-                response_data = {'status' : 'success', 'message' : 'deleted'}
+                upload = FileUpload.objects.get(upload_id=upload_id)
+                if upload.user == request.user:
+                    upload.delete()
+                    response_data = {'status' : 'success', 'message' : 'deleted'}
+                else:
+                    response_data = {'status' : 'failed', 'message' : 'unauthorized deletion'}
             except FileUpload.DoesNotExist:
                 response_data = {'status' : 'failed', 'message' : 'record not found'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")

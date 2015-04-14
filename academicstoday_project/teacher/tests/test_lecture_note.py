@@ -36,12 +36,12 @@ class LectureNoteTestCase(TestCase):
     def setUp(self):
         # Create our Trudy user.
         User.objects.create_user(
-                                 email=TEST_USER_EMAIL2,
-                                 username=TEST_USER_USERNAME2,
-                                 password=TEST_USER_PASSWORD2
-                                 )
-                                 user = User.objects.get(email=TEST_USER_EMAIL2)
-                                 teacher = Teacher.objects.create(user=user)
+            email=TEST_USER_EMAIL2,
+            username=TEST_USER_USERNAME2,
+            password=TEST_USER_PASSWORD2
+        )
+        user = User.objects.get(email=TEST_USER_EMAIL2)
+        teacher = Teacher.objects.create(user=user)
                                  
                                  # Create our Student.
         User.objects.create_user(
@@ -75,6 +75,14 @@ class LectureNoteTestCase(TestCase):
         client.login(
             username=TEST_USER_USERNAME,
             password=TEST_USER_PASSWORD
+        )
+        return client
+    
+    def get_logged_in_trudy_client(self):
+        client = Client()
+        client.login(
+            username=TEST_USER_USERNAME2,
+            password=TEST_USER_PASSWORD2
         )
         return client
     
@@ -179,7 +187,7 @@ class LectureNoteTestCase(TestCase):
         self.assertEqual(array['message'], 'record not found')
         self.assertEqual(array['status'], 'failed')
 
-    def test_delete_lecture_note(self):
+    def test_delete_lecture_note_with_correct_user(self):
         kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
         client = self.get_logged_in_client()
         file_path = settings.MEDIA_ROOT + '/sample.pdf'
@@ -206,3 +214,33 @@ class LectureNoteTestCase(TestCase):
         array = json.loads(json_string)
         self.assertEqual(array['message'], 'deleted')
         self.assertEqual(array['status'], 'success')
+
+    def test_delete_lecture_note_with_incorrect_user(self):
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        client = self.get_logged_in_client()
+        file_path = settings.MEDIA_ROOT + '/sample.pdf'
+        
+        # Insert
+        with open(file_path, 'rb') as fp:
+            self.assertTrue(fp is not None)
+            response = client.post('/teacher/course/1/lecture/1/save_lecture_note',{
+                'upload_id': 0,
+                'title': 'Blade vs Evil',
+                'description': 'Video of a fight',
+                'file': fp,
+            }, **kwargs)
+            self.assertEqual(response.status_code, 200)
+    
+        # Delete
+        uploads = FileUpload.objects.all()  # Find uploaded file & use it's ID.
+        upload = list(uploads).pop()
+        client.logout()
+        client = self.get_logged_in_trudy_client()
+        response = client.post('/teacher/course/1/lecture/1/delete_lecture_note',{
+            'upload_id': upload.upload_id,
+        },**kwargs)
+        self.assertEqual(response.status_code, 200)
+        json_string = response.content.decode(encoding='UTF-8')
+        array = json.loads(json_string)
+        self.assertEqual(array['message'], 'unauthorized deletion')
+        self.assertEqual(array['status'], 'failed')

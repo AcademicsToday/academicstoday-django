@@ -109,6 +109,7 @@ class FileUpload(models.Model):
     description = models.TextField(null=True)
     upload_date = models.DateField(auto_now= True, null=True)
     file = models.FileField(upload_to='uploads', null=True)
+    user = models.ForeignKey(User)
     
     def delete(self, *args, **kwargs):
         """
