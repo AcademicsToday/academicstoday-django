@@ -112,9 +112,14 @@ def delete_assignment(request, course_id):
     if request.is_ajax():
         if request.method == 'POST':
             assignment_id = int(request.POST['assignment_id'])
+            teacher = Teacher.objects.get(user=request.user)
             try:
-                Assignment.objects.get(assignment_id=assignment_id).delete()
-                response_data = {'status' : 'success', 'message' : 'assignment was deleted'}
+                assignment = Assignment.objects.get(assignment_id=assignment_id)
+                if assignment.course.teacher == teacher:
+                    assignment.delete()
+                    response_data = {'status' : 'success', 'message' : 'assignment was deleted'}
+                else:
+                    response_data = {'status' : 'failed', 'message' : 'unauthorized deletion'}
             except Assignment.DoesNotExist:
                 response_data = {'status' : 'failed', 'message' : 'record not found'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
@@ -376,6 +381,10 @@ def delete_question(request, course_id, assignment_id):
             assignment = Assignment.objects.get(assignment_id=assignment_id)
             question_type = int(request.POST['question_type'])
             question_id = int(request.POST['question_id'])
+
+            if course.teacher != teacher:
+                response_data = {'status' : 'failed', 'message' : 'unauthorized deletion'}
+                return HttpResponse(json.dumps(response_data), content_type="application/json")
 
             # DC: If question type is unsupported then error
             if question_type not in settings.QUESTION_TYPES:

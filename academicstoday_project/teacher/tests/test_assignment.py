@@ -31,7 +31,10 @@ from teacher.views import assignment
 # Contants
 TEST_USER_EMAIL = "ledo@gah.com"
 TEST_USER_USERNAME = "Ledo"
-TEST_USER_PASSWORD = "password"
+TEST_USER_PASSWORD = "ContinentalUnion"
+TEST_USER_EMAIL2 = "whalesquid@hideauze.com"
+TEST_USER_USERNAME2 = "whalesquid"
+TEST_USER_PASSWORD2 = "Evolvers"
 
 # Notes:
 # https://docs.djangoproject.com/en/1.7/topics/testing/tools/#assertions
@@ -42,9 +45,18 @@ class AssignmentTestCase(TestCase):
         courses = Course.objects.all()
         for course in courses:
             course.delete()
-        User.objects.get(email=TEST_USER_EMAIL).delete()
+        User.objects.all().delete()
 
     def setUp(self):
+        # Create our Trudy user.
+        User.objects.create_user(
+            email=TEST_USER_EMAIL2,
+            username=TEST_USER_USERNAME2,
+            password=TEST_USER_PASSWORD2
+        )
+        user = User.objects.get(email=TEST_USER_EMAIL2)
+        teacher = Teacher.objects.create(user=user)
+
         # Create our Student.
         User.objects.create_user(
             email=TEST_USER_EMAIL,
@@ -80,6 +92,15 @@ class AssignmentTestCase(TestCase):
             password=TEST_USER_PASSWORD
         )
         return client
+    
+    def get_logged_in_trudy_client(self):
+        client = Client()
+        client.login(
+            username=TEST_USER_USERNAME2,
+            password=TEST_USER_PASSWORD2
+        )
+        return client
+
 
     def test_url_resolves_to_assignments_page_view(self):
         found = resolve('/teacher/course/1/assignments')
@@ -115,6 +136,22 @@ class AssignmentTestCase(TestCase):
         self.assertEqual(found.func, assignment.delete_assignment)
     
     def test_delete_assignment_with_no_submissions(self):
+        try:
+            Assignment.objects.get(assignment_id=1).delete()
+        except Assignment.DoesNotExist:
+            pass
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        client = self.get_logged_in_client()
+        response = client.post('/teacher/course/1/delete_assignment',{
+            'assignment_id': 1,
+        }, **kwargs)
+        json_string = response.content.decode(encoding='UTF-8')
+        array = json.loads(json_string)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(array['status'], 'failed')
+        self.assertEqual(array['message'], 'record not found')
+
+    def test_delete_assignment_with_submissions_and_correct_user(self):
         kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
         client = self.get_logged_in_client()
         response = client.post('/teacher/course/1/delete_assignment',{
@@ -125,6 +162,18 @@ class AssignmentTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(array['status'], 'success')
         self.assertEqual(array['message'], 'assignment was deleted')
+
+    def test_delete_assignment_with_submissions_and_incorrect_user(self):
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        client = self.get_logged_in_trudy_client()
+        response = client.post('/teacher/course/1/delete_assignment',{
+            'assignment_id': 1,
+        }, **kwargs)
+        json_string = response.content.decode(encoding='UTF-8')
+        array = json.loads(json_string)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(array['status'], 'failed')
+        self.assertEqual(array['message'], 'unauthorized deletion')
 
     def test_url_resolves_to_save_assignment(self):
         found = resolve('/teacher/course/1/save_assignment')
@@ -569,3 +618,23 @@ class AssignmentTestCase(TestCase):
         },**kwargs)
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'question_modal',response.content)
+
+    def test_delete_question_with_incorrect_user(self):
+        ResponseQuestion.objects.create(
+            question_id=4,
+            assignment=Assignment.objects.get(assignment_id=1),
+            title="Ice Age",
+            description="Why did humanity migrate off-world?",
+            answer="Because of solar hibernation causing Global Cooling on Earth.",
+        )
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        client = self.get_logged_in_trudy_client()
+        response = client.post('/teacher/course/1/assignment/1/delete_question',{
+            'question_id': 4,
+            'question_type': settings.RESPONSE_QUESTION_TYPE,
+        }, **kwargs)
+        self.assertEqual(response.status_code, 200)
+        json_string = response.content.decode(encoding='UTF-8')
+        array = json.loads(json_string)
+        self.assertEqual(array['message'], 'unauthorized deletion')
+        self.assertEqual(array['status'], 'failed')
