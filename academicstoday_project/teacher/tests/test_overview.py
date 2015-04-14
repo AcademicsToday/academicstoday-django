@@ -28,7 +28,10 @@ from teacher.views import overview
 # Contants
 TEST_USER_EMAIL = "ledo@gah.com"
 TEST_USER_USERNAME = "Ledo"
-TEST_USER_PASSWORD = "password"
+TEST_USER_PASSWORD = "ContinentalUnion"
+TEST_USER_EMAIL2 = "whalesquid@hideauze.com"
+TEST_USER_USERNAME2 = "whalesquid"
+TEST_USER_PASSWORD2 = "Evolvers"
 
 class OverviewTestCase(TestCase):
     def tearDown(self):
@@ -41,9 +44,19 @@ class OverviewTestCase(TestCase):
         courses = Course.objects.all()
         for course in courses:
             course.delete()
-        User.objects.get(email=TEST_USER_EMAIL).delete()
+        User.objects.all().delete()
 
     def setUp(self):
+        # Create our Trudy user.
+        User.objects.create_user(
+                                 email=TEST_USER_EMAIL2,
+                                 username=TEST_USER_USERNAME2,
+                                 password=TEST_USER_PASSWORD2
+                                 )
+                                 user = User.objects.get(email=TEST_USER_EMAIL2)
+                                 teacher = Teacher.objects.create(user=user)
+                                 
+                                 # Create our Student.
         user = User.objects.create_user(
             email=TEST_USER_EMAIL,
             username=TEST_USER_USERNAME,

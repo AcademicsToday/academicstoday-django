@@ -20,7 +20,10 @@ from teacher.views import setting
 # Contants
 TEST_USER_EMAIL = "ledo@gah.com"
 TEST_USER_USERNAME = "Ledo"
-TEST_USER_PASSWORD = "password"
+TEST_USER_PASSWORD = "ContinentalUnion"
+TEST_USER_EMAIL2 = "whalesquid@hideauze.com"
+TEST_USER_USERNAME2 = "whalesquid"
+TEST_USER_PASSWORD2 = "Evolvers"
 
 # Notes:
 # https://docs.djangoproject.com/en/1.7/topics/testing/tools/#assertions
@@ -28,12 +31,22 @@ TEST_USER_PASSWORD = "password"
 # Create your tests here.
 class SettingsTestCase(TestCase):
     def tearDown(self):
-        User.objects.get(email=TEST_USER_EMAIL).delete()
         courses = Course.objects.all()
         for course in courses:
             course.delete()
+        User.objects.all().delete()
     
     def setUp(self):
+        # Create our Trudy user.
+        User.objects.create_user(
+            email=TEST_USER_EMAIL2,
+            username=TEST_USER_USERNAME2,
+            password=TEST_USER_PASSWORD2
+        )
+        user = User.objects.get(email=TEST_USER_EMAIL2)
+        teacher = Teacher.objects.create(user=user)
+                                 
+        # Create our Student.
         user = User.objects.create_user(
             email=TEST_USER_EMAIL,
             username=TEST_USER_USERNAME,

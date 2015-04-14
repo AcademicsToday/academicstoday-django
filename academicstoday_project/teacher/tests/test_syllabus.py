@@ -16,7 +16,10 @@ from teacher.views import syllabus
 
 TEST_USER_EMAIL = "ledo@gah.com"
 TEST_USER_USERNAME = "Ledo"
-TEST_USER_PASSWORD = "password"
+TEST_USER_PASSWORD = "ContinentalUnion"
+TEST_USER_EMAIL2 = "whalesquid@hideauze.com"
+TEST_USER_USERNAME2 = "whalesquid"
+TEST_USER_PASSWORD2 = "Evolvers"
 
 
 class SyllabusTestCase(TestCase):
@@ -30,6 +33,15 @@ class SyllabusTestCase(TestCase):
         User.objects.all().delete()
     
     def setUp(self):
+        # Create our Trudy user.
+        User.objects.create_user(
+            email=TEST_USER_EMAIL2,
+            username=TEST_USER_USERNAME2,
+            password=TEST_USER_PASSWORD2
+        )
+        user = User.objects.get(email=TEST_USER_EMAIL2)
+        teacher = Teacher.objects.create(user=user)
+                                 
         # Create our Student.
         User.objects.create_user(
             email=TEST_USER_EMAIL,

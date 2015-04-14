@@ -22,7 +22,10 @@ from teacher.views import policy
 # Contants
 TEST_USER_EMAIL = "ledo@gah.com"
 TEST_USER_USERNAME = "Ledo"
-TEST_USER_PASSWORD = "password"
+TEST_USER_PASSWORD = "ContinentalUnion"
+TEST_USER_EMAIL2 = "whalesquid@hideauze.com"
+TEST_USER_USERNAME2 = "whalesquid"
+TEST_USER_PASSWORD2 = "Evolvers"
 
 # Create your tests here.
 class PolicyTestCase(TestCase):
@@ -33,9 +36,18 @@ class PolicyTestCase(TestCase):
         courses = Course.objects.all()
         for course in courses:
             course.delete()
-        User.objects.get(email=TEST_USER_EMAIL).delete()
+        User.objects.all().delete()
 
     def setUp(self):
+        # Create our Trudy user.
+        User.objects.create_user(
+            email=TEST_USER_EMAIL2,
+            username=TEST_USER_USERNAME2,
+            password=TEST_USER_PASSWORD2
+        )
+        user = User.objects.get(email=TEST_USER_EMAIL2)
+        teacher = Teacher.objects.create(user=user)
+                                 
         # Create our Student.
         User.objects.create_user(
             email=TEST_USER_EMAIL,
