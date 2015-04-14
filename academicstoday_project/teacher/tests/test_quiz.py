@@ -1,4 +1,3 @@
-# Django & Python
 from django.core.urlresolvers import resolve
 from django.http import HttpRequest
 from django.http import QueryDict
@@ -9,20 +8,15 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.conf.urls.static import static, settings
 import json
-
-# Modal
 from registrar.models import Course
 from registrar.models import Teacher
 from registrar.models import Quiz
 from registrar.models import QuizSubmission
 from registrar.models import TrueFalseQuestion
 from registrar.models import TrueFalseSubmission
-
-
-# View
 from teacher.views import quiz
 
-# Contants
+
 TEST_USER_EMAIL = "ledo@gah.com"
 TEST_USER_USERNAME = "Ledo"
 TEST_USER_PASSWORD = "ContinentalUnion"
@@ -30,10 +24,7 @@ TEST_USER_EMAIL2 = "whalesquid@hideauze.com"
 TEST_USER_USERNAME2 = "whalesquid"
 TEST_USER_PASSWORD2 = "Evolvers"
 
-# Notes:
-# https://docs.djangoproject.com/en/1.7/topics/testing/tools/#assertions
 
-# Create your tests here.
 class QuizTestCase(TestCase):
     def tearDown(self):
         courses = Course.objects.all()
@@ -84,6 +75,14 @@ class QuizTestCase(TestCase):
         client.login(
             username=TEST_USER_USERNAME,
             password=TEST_USER_PASSWORD
+        )
+        return client
+
+    def get_logged_in_trudy_client(self):
+        client = Client()
+        client.login(
+            username=TEST_USER_USERNAME2,
+            password=TEST_USER_PASSWORD2
         )
         return client
 
@@ -142,9 +141,21 @@ class QuizTestCase(TestCase):
         self.assertEqual(array['status'], 'failed')
         self.assertEqual(array['message'], 'record does not exist')
 
-    def test_delete_quiz_withsubmissions(self):
+    def test_delete_quiz_with_submissions(self):
         kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
         client = self.get_logged_in_client()
+        response = client.post('/teacher/course/1/delete_quiz',{
+            'quiz_id': 1,
+        }, **kwargs)
+        json_string = response.content.decode(encoding='UTF-8')
+        array = json.loads(json_string)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(array['status'], 'success')
+        self.assertEqual(array['message'], 'deleted')
+
+    def test_delete_quiz_with_submissions(self):
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        client = self.get_logged_in_trudy_client()
         response = client.post('/teacher/course/1/delete_quiz',{
             'quiz_id': 1,
         }, **kwargs)

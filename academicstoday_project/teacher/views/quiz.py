@@ -262,6 +262,10 @@ def delete_question(request, course_id, quiz_id):
             question_type = int(request.POST['question_type'])
             question_id = int(request.POST['question_id'])
 
+            if course.teacher != teacher:
+                response_data = {'status' : 'failed', 'message' : 'unauthorized deletion'}
+                return HttpResponse(json.dumps(response_data), content_type="application/json")
+        
             # DC: If question type is unsupported then error
             if question_type not in [settings.TRUEFALSE_QUESTION_TYPE]:
                 response_data = {'status' : 'failed', 'message' : 'question type not supported'}
