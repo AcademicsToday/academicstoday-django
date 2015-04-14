@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 import json
 import datetime
+from registrar.models import Teacher
 from registrar.models import Course
 from registrar.models import Policy
 from teacher.forms import PolicyForm
@@ -56,9 +57,14 @@ def delete_policy(request, course_id):
     if request.is_ajax():
         if request.method == 'POST':
             policy_id = int(request.POST['policy_id'])
+            teacher = Teacher.objects.get(user=request.user)
             try:
-                Policy.objects.get(policy_id=policy_id).delete()
-                response_data = {'status' : 'success', 'message' : 'deleted'}
+                policy = Policy.objects.get(policy_id=policy_id)
+                if policy.course.teacher == teacher:
+                    policy.delete()
+                    response_data = {'status' : 'success', 'message' : 'deleted'}
+                else:
+                    response_data = {'status' : 'failed', 'message' : 'unauthorized deletion'}
             except Policy.DoesNotExist:
                 response_data = {'status' : 'failed', 'message' : 'record does not exist'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
