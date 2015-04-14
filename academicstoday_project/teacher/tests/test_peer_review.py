@@ -62,15 +62,15 @@ class PeerReviewTestCase(TestCase):
         user = User.objects.get(email=TEST_USER_EMAIL2)
         teacher = Teacher.objects.create(user=user)
                                  
-        # Create our Student.
+        # Create our Teacher.
         User.objects.create_user(
             email=TEST_USER_EMAIL,
             username=TEST_USER_USERNAME,
             password=TEST_USER_PASSWORD
         ).save()
         user = User.objects.get(email=TEST_USER_EMAIL)
-        student = Student.objects.create(user=user)
         teacher = Teacher.objects.create(user=user)
+        student = Student.objects.create(user=user)
                                  
         # Create a test course.
         course = Course.objects.create(
@@ -129,6 +129,14 @@ class PeerReviewTestCase(TestCase):
         client.login(
             username=TEST_USER_USERNAME,
             password=TEST_USER_PASSWORD
+        )
+        return client
+    
+    def get_logged_in_trudy_client(self):
+        client = Client()
+        client.login(
+            username=TEST_USER_USERNAME2,
+            password=TEST_USER_PASSWORD2
         )
         return client
     
@@ -261,6 +269,28 @@ class PeerReviewTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(array['message'], 'deleted')
         self.assertEqual(array['status'], 'success')
+    
+    def test_delete_peer_review_on_response_question(self):
+        client = self.get_logged_in_client()
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        client.post('/teacher/course/1/peer_review/1/save_peer_review',{
+            'question_id': 4,
+            'question_type': settings.RESPONSE_QUESTION_TYPE,
+            'submission_id': 2,
+            'marks': 5,
+        },**kwargs)
+        client.logout()
+        client = self.get_logged_in_trudy_client()
+        response = client.post('/teacher/course/1/peer_review/1/delete_peer_review',{
+            'question_id': 4,
+            'question_type': settings.RESPONSE_QUESTION_TYPE,
+            'review_id': 2,
+        },**kwargs)
+        json_string = response.content.decode(encoding='UTF-8')
+        array = json.loads(json_string)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(array['message'], 'unauthorized deletion')
+        self.assertEqual(array['status'], 'failed')
 
     def test_update_peer_review_on_essay_question(self):
         client = self.get_logged_in_client()

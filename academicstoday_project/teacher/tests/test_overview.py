@@ -49,14 +49,14 @@ class OverviewTestCase(TestCase):
     def setUp(self):
         # Create our Trudy user.
         User.objects.create_user(
-                                 email=TEST_USER_EMAIL2,
-                                 username=TEST_USER_USERNAME2,
-                                 password=TEST_USER_PASSWORD2
-                                 )
-                                 user = User.objects.get(email=TEST_USER_EMAIL2)
-                                 teacher = Teacher.objects.create(user=user)
+            email=TEST_USER_EMAIL2,
+            username=TEST_USER_USERNAME2,
+            password=TEST_USER_PASSWORD2
+        )
+        user = User.objects.get(email=TEST_USER_EMAIL2)
+        teacher = Teacher.objects.create(user=user)
                                  
-                                 # Create our Student.
+        # Create our Teacher.
         user = User.objects.create_user(
             email=TEST_USER_EMAIL,
             username=TEST_USER_USERNAME,

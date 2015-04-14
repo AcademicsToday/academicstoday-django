@@ -169,8 +169,12 @@ def delete_peer_review(request, course_id, assignment_id):
         if request.method == 'POST':
             review_id = request.POST['review_id']
             try:
-                PeerReview.objects.get(review_id=review_id).delete()
-                response_data = {'status' : 'success', 'message' : 'deleted'}
+                peer_review = PeerReview.objects.get(review_id=review_id)
+                if peer_review.user == request.user:
+                    peer_review.delete()
+                    response_data = {'status' : 'success', 'message' : 'deleted'}
+                else:
+                    response_data = {'status' : 'failed', 'message' : 'unauthorized deletion'}    
             except PeerReview.DoesNotExist:
                 response_data = {'status' : 'failed', 'message' : 'record does not exist'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
