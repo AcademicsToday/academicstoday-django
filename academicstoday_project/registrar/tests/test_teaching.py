@@ -18,6 +18,9 @@ from registrar.views import teaching
 TEST_USER_EMAIL = "ledo@gah.com"
 TEST_USER_USERNAME = "Ledo"
 TEST_USER_PASSWORD = "password"
+TEST_USER_EMAIL2 = "whalesquid@hideauze.com"
+TEST_USER_USERNAME2 = "whalesquid"
+TEST_USER_PASSWORD2 = "passwordabc"
 
 
 class TeachingTestCase(TestCase):
@@ -25,7 +28,7 @@ class TeachingTestCase(TestCase):
         courses = Course.objects.all()
         for course in courses:
             course.delete()
-        User.objects.get(email=TEST_USER_EMAIL).delete()
+        User.objects.all().delete()
 
     def setUp(self):
         # Create our user.
@@ -143,7 +146,7 @@ class TeachingTestCase(TestCase):
         found = resolve('/course_delete')
         self.assertEqual(found.func, teaching.course_delete)
     
-    def test_course_delete(self):
+    def test_course_delete_with_correct_user(self):
         user = User.objects.get(email=TEST_USER_EMAIL)
         teacher = Teacher.objects.get(user=user)
         Course.objects.create(
@@ -167,3 +170,34 @@ class TeachingTestCase(TestCase):
         array = json.loads(json_string)
         self.assertEqual(array['message'], 'deleted')
         self.assertEqual(array['status'], 'success')
+
+    def test_course_delete_with_wrong_user(self):
+        # Create our user & course
+        User.objects.create_user(
+            email=TEST_USER_EMAIL2,
+            username=TEST_USER_USERNAME2,
+            password=TEST_USER_PASSWORD2
+        )
+        user = User.objects.get(email=TEST_USER_EMAIL2)
+        teacher = Teacher.objects.create(user=user)
+        Course.objects.create(
+            id=1,
+            title="Comics Book Course",
+            sub_title="The definitive course on comics!",
+            category="",
+            teacher=teacher,
+        )
+        client = Client()
+        client.login(
+            username=TEST_USER_USERNAME,
+            password=TEST_USER_PASSWORD
+        )
+        kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
+        response = client.post('/course_delete', {
+            'course_id': 1,
+        }, **kwargs)
+        self.assertEqual(response.status_code, 200)
+        json_string = response.content.decode(encoding='UTF-8')
+        array = json.loads(json_string)
+        self.assertEqual(array['message'], 'unauthorized deletion')
+        self.assertEqual(array['status'], 'failed')

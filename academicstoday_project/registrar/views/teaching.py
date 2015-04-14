@@ -134,8 +134,11 @@ def course_delete(request):
                 course_id = int(request.POST['course_id'])
                 teacher = Teacher.objects.get(user=request.user)
                 course = Course.objects.get(id=course_id)
-                course.delete()
-                response_data = {'status' : 'success', 'message' : 'deleted'}
+                if course.teacher == teacher:
+                    course.delete()
+                    response_data = {'status' : 'success', 'message' : 'deleted'}
+                else:
+                    response_data = {'status' : 'failed', 'message' : 'unauthorized deletion'}
             except Teacher.DoesNotExist:
                 response_data = {'status' : 'failure', 'message' : 'no teacher'}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
