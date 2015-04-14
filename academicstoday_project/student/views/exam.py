@@ -123,7 +123,7 @@ def delete_exam(request, course_id):
                 submission.save()
             except ExamSubmission.DoesNotExist:
                 return HttpResponse(json.dumps({
-                    'status' : 'success', 'message' : 'exam was deleted'
+                    'status' : 'failed', 'message' : 'record does not exist'
                 }), content_type="application/json")
                                                     
             # Delete all previous entries.
