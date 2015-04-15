@@ -17,3 +17,8 @@ urlpatterns = patterns('',
     url(r'^privacy\.txt$', views.privacy_txt_page),
     url(r'^save_contact_us_message$', views.save_contact_us_message),
 )
+
+# Captchas
+urlpatterns += patterns('',
+    url(r'^captcha//', include('captcha.urls')),
+)
