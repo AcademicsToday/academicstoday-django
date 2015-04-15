@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
                
     # This regex makes the default URL for the website to launch this view.
+    url(r'^captcha/', include('captcha.urls')),
     url(r'', include('landpage.urls')),
     url(r'', include('account.urls')),
     url(r'', include('registrar.urls')),

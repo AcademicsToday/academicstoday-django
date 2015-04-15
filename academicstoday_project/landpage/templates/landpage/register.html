@@ -1,111 +1,27 @@
 <div class="modal fade" id="register_modal" role="dialog">
-    <div class="modal-dialog" style="width:50%;">
+    <div class="modal-dialog" style="width:30%;">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                 <h2 class="modal-title" id="myModalLabel">Register</h2>
             </div>
             <div class="modal-body">
-                <form id='register_form'>
-                    <!-- FIRST NAME -->
+                <form enctype="multipart/form-data" name="register_form" id="register_form">
+                {% for field in form %}
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">
-                                First Name
-                            </label>
-                            <div class="col-sm-9">
-                                <input type="text"
-                                      class="form-control"
-                                      name="first_name"
-                                        id="first_name"
-                               placeholder="Enter First Name">
+                            <div class="fieldWrapper">
+                                <label class="col-sm-3 control-label">
+                                    {{ field.label }}
+                                </label>
+                                <label class="col-sm-9">
+                                    {{ field }}
+                                </label>
                             </div>
                         </div>
                     </div>
-                    <!-- end FIRST NAME -->
                     <br/>
-                    <!-- LAST NAME -->
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">
-                                Last Name
-                            </label>
-                            <div class="col-sm-9">
-                                <input type="text"
-                                      class="form-control"
-                                       name="last_name"
-                                         id="last_name"
-                                placeholder="Enter Last Name">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- end LAST NAME -->
-                    <br/>
-                    <!-- EMAIL -->
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">
-                                Email
-                            </label>
-                            <div class="col-sm-9">
-                                <input type="text"
-                                      class="form-control"
-                                       name="electronic_mail"
-                                         id="electronic_mail"
-                                placeholder="Enter Email">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- end EMAIL -->
-                    <br/>
-                    <!-- PASSWORD -->
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">
-                                Password
-                            </label>
-                            <div class="col-sm-9">
-                                <input type="password"
-                                      class="form-control"
-                                       name="password"
-                                         id="password"
-                                placeholder="Enter Password">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- end PASSWORD -->
-                    <br/>
-                    <!-- REPEAT PASSWORD -->
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">
-                                Password
-                            </label>
-                            <div class="col-sm-9">
-                                <input type="password"
-                                      class="form-control"
-                                       name="password_repeated"
-                                         id="password_repeated"
-                                placeholder="Repeat Password Again">
-                            </div>
-                        </div>
-                    </div>
-                    <!-- end REPEAT PASSWORD -->
-                    <br/>
-                    <!-- 18+ -->
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">
-                                Are you 18 or older?
-                            </label>
-                            <div class="col-sm-9">
-                                <input type="checkbox"
-                                         id="is_18_or_plus"
-                                       name="is_18_or_plus"> Yes, I am 18 years or older
-                            </div>
-                        </div>
-                    </div>
-                    <!-- end 18+ -->
+                {% endfor %}
                 </form>
             </div>
             <div class="modal-footer">
@@ -152,12 +68,14 @@
         var url = 'register';
         $.ajax( url, {
             data: {
-               'first_name': $('#first_name').val(),
-               'last_name': $('#last_name').val(),
-               'email': $('#electronic_mail').val(),
-               'password': $('#password').val(),
-               'password_repeated': $('#password_repeated').val(),
-               'is_18_or_plus': $('#is_18_or_plus').is(':checked'),
+               'first_name': $('#id_first_name').val(),
+               'last_name': $('#id_last_name').val(),
+               'electronic_mail': $('#id_electronic_mail').val(),
+               'password': $('#id_password').val(),
+               'password_repeated': $('#id_password_repeated').val(),
+               'is_18_or_plus': $('#id_is_18_or_plus').is(':checked'),
+               'captcha_0': $('#id_captcha_0').val(),
+               'captcha_1': $('#id_captcha_1').val(),
                'csrfmiddlewaretoken': '{{ csrf_token }}'
             },
             type: 'POST',
@@ -168,8 +86,8 @@
                     // Send the username & password now that it's in the
                     // registery and then login.
                     ajax_authenticate(
-                        $('#electronic_mail').val(),
-                        $('#password').val()
+                        $('#id_electronic_mail').val(),
+                        $('#id_password').val()
                     );
                }
                else
@@ -182,6 +100,7 @@
             },
             complete: function(xhr,status) {
                // completion code here
+               refresh_captcha();
             }
         });
     }
@@ -222,4 +141,33 @@
             }
         });
     }
+
+  /**
+   * The following function will cause the captcha to refresh.
+   */
+  function refresh_captcha()
+  {
+      var url = location.protocol + "//" + window.location.hostname + ":"
+      + location.port + "/captcha/refresh/";
+      
+      // Make the AJAX-call
+      $.getJSON(url, {}, function(json) {
+                //var $form = $('modal-body').parents('register_form');
+                var $form = $('#register_form');
+                $form.find('input[name="captcha_0"]').val(json.key);
+                $form.find('img.captcha').attr('src', json.image_url);
+        });
+                
+        return false;
+  }
+
+    // Add refresh button after field (this can be done in the template as well)
+    $('img.captcha').after(
+        $('<a href="#void" class="captcha-refresh">Refresh</a>')
+    );
+                       
+    // Click-handler for the refresh-link
+    $('.captcha-refresh').click(function(){
+        refresh_captcha();
+    });
 </script>

@@ -8,6 +8,7 @@ from landpage.models import CoursePreview
 from landpage.models import LandpageContactMessage
 from landpage.models import LandpagePartner
 from registrar.models import Course
+from landpage.form import RegisterForm
 
 import json
 from django.http import HttpResponse
@@ -57,7 +58,10 @@ def login_modal(request):
 
 
 def register_modal(request):
-    return render(request, 'landpage/register.html',{})
+    form = RegisterForm()
+    return render(request, 'landpage/register.html',{
+        'form': form,
+    })
 
 
 def terms_txt_page(request):

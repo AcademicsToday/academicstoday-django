@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'captcha',
     'account',
     'landpage',
     'registrar',
@@ -89,10 +90,6 @@ DATABASES = {
         "HOST": "localhost",
         "PORT": "5432",
     }
-}
-
-SOUTH_DATABASE_ADAPTERS = {
-    'default': 'south.db.postgresql_psycopg2',
 }
 
 
