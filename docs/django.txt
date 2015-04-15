@@ -39,10 +39,11 @@ $ export PATH="/Applications/Postgres.app/Contents/Versions/9.4/bin:$PATH"
 
 
 (6) Now finally lets install djnago
-$ pip3 install django        # Our MVC Framework
-$ pip3 install psycopg2      # Postgres SQL DB
-$ pip3 install gunicorn      # Web-Server Helper
-$ pip3 install Pillow        # Req: ImageField
+$ pip3 install django                 # Our MVC Framework
+$ pip3 install psycopg2               # Postgres SQL DB
+$ pip3 install gunicorn               # Web-Server Helper
+$ pip3 install Pillow                 # Req: ImageField
+$ pip3 install django-simple-captcha  # Captchas
 
 
 (7) After installation
@@ -62,7 +63,7 @@ $ python manage.py runserver
 You should see a site. Exit web server when finished.
 
 
-(10) (10) Lets get our Postgres.app setup, see "postgres.txt", then do this:
+(11) Lets get our Postgres.app setup, see "postgres.txt", then do this:
 
 Update your database settings to use your Postgres SQL DB.
 - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -84,7 +85,7 @@ SOUTH_DATABASE_ADAPTERS = {
 
 
 
-(10) Create an application.
+(12) Create an application.
 $ python manage.py startapp account
 $ python manage.py startapp landpage
 $ python manage.py startapp registrar
@@ -93,7 +94,7 @@ $ python manage.py startapp teacher
 $ python manage.py startapp publisher
 
 
-(11) Then go to academicstoday_project/settings.py and make sure to include ‘py-academicstoday’ in the file.
+(13) Then go to academicstoday_project/settings.py and make sure to include ‘py-academicstoday’ in the file.
 - - - - - - - - - - - - - - - - - - - - - - - - - -
 INSTALLED_APPS = (
 'django.contrib.admin',
@@ -102,7 +103,7 @@ INSTALLED_APPS = (
 'django.contrib.sessions',
 'django.contrib.messages',
 'django.contrib.staticfiles',
-"django_cron",
+'captcha',
 'account',
 'landpage',
 'registrar',
@@ -114,11 +115,11 @@ INSTALLED_APPS = (
 
 
 
-(12) Finally, create a file called ‘requirements.txt’ and add all the libraries this project will use. Make sure this file is located in the root of the project. Run this code.
+(14) Finally, create a file called ‘requirements.txt’ and add all the libraries this project will use. Make sure this file is located in the root of the project. Run this code.
 $ pip freeze > requirements.txt
 
 
-(13) Submit this code to git. We now have the project setup. See “git.txt”.
+(15) Submit this code to git. We now have the project setup. See “git.txt”.
 
 
 

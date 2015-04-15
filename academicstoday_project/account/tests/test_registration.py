@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 import json
 from account.views import registration
+from captcha.models import CaptchaStore
 
 # Contants
 TEST_USER_EMAIL = "ledo@gah.com"
@@ -20,7 +21,8 @@ class RegistrationTestCase(TestCase):
         User.objects.all().delete()
     
     def setUp(self):
-        pass
+        captcha_count = CaptchaStore.objects.count()
+        self.failUnlessEqual(captcha_count, 0)
 
     def test_url_resolves_to_register(self):
         found = resolve('/register')
@@ -30,6 +32,10 @@ class RegistrationTestCase(TestCase):
         # Extra parameters to make this a Ajax style request.
         kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
         
+        # Developer Notes:
+        # To get unit tests working with the django-simple-captcha then follow:
+        # http://stackoverflow.com/questions/3159284/how-to-unit-test-a-form-with-a-captcha-field-in-django
+        
         # Test
         client = Client()
         response = client.post('/register',{
@@ -38,8 +44,10 @@ class RegistrationTestCase(TestCase):
             'password_repeated': TEST_USER_PASSWORD,
             'first_name': 'Ledo',
             'last_name': 'Dunno',
-            'email': TEST_USER_EMAIL,
+            'electronic_mail': TEST_USER_EMAIL,
             'is_18_or_plus': True,
+            'captcha_0': 'dummy-value',
+            'captcha_1': 'PASSED',
         },**kwargs)
         
         # Verify: Check that the response is 200 OK.
@@ -48,8 +56,8 @@ class RegistrationTestCase(TestCase):
         # Verify: Successful response.
         json_string = response.content.decode(encoding='UTF-8')
         array = json.loads(json_string)
-        self.assertEqual(array['status'], 'success')
         self.assertEqual(array['message'], 'successfully registered')
+        self.assertEqual(array['status'], 'success')
 
         # Verify: Database updated
         try:
