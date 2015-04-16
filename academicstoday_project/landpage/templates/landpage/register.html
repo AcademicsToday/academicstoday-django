@@ -1,5 +1,5 @@
 <div class="modal fade" id="register_modal" role="dialog">
-    <div class="modal-dialog" style="width:30%;">
+    <div class="modal-dialog" style="width:450px;">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
@@ -14,9 +14,9 @@
                                 <label class="col-sm-3 control-label">
                                     {{ field.label }}
                                 </label>
-                                <label class="col-sm-9">
+                                <div class="col-sm-9">
                                     {{ field }}
-                                </label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -92,15 +92,16 @@
                }
                else
                {
+                    refresh_captcha();
                     alert(json_result.message);
                }
             },
             error: function(xhr,status,error) {
                // error code here
+               refresh_captcha();
             },
             complete: function(xhr,status) {
                // completion code here
-               refresh_captcha();
             }
         });
     }

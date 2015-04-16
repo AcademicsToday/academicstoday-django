@@ -20,5 +20,5 @@ urlpatterns = patterns('',
 
 # Captchas
 urlpatterns += patterns('',
-    url(r'^captcha//', include('captcha.urls')),
+    url(r'^captcha/', include('captcha.urls')),
 )

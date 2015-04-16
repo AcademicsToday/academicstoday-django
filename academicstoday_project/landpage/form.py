@@ -3,12 +3,34 @@ from django import forms
 from captcha.fields import CaptchaField
 
 class RegisterForm(forms.Form):
-    first_name = forms.CharField(label='First Name', max_length=100)
-    last_name = forms.CharField(label='Last Name', max_length=100)
-    electronic_mail = forms.EmailField(label='Email', max_length=100)
-    password = forms.CharField(label='Password', max_length=100)
-    password_repeated = forms.CharField(label='Repeat Password', max_length=100)
-    is_18_or_plus = forms.BooleanField(required=False)
+    first_name = forms.CharField(
+        label='First Name',
+        max_length=100,
+        widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Enter Last Name'}),
+    )
+    last_name = forms.CharField(
+        label='Last Name',
+        max_length=100,
+        widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Enter Last Name'}),
+    )
+    electronic_mail = forms.EmailField(
+        label='Email',
+        max_length=100,
+        widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Enter Email'}),
+    )
+    password = forms.CharField(
+        label='Password',
+        max_length=100,
+        widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Enter Password'}),
+    )
+    password_repeated = forms.CharField(
+        label='Repeat Password',
+        max_length=100,
+        widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Enter Password Again'}),
+    )
+    is_18_or_plus = forms.BooleanField(
+        required=False
+    )
     captcha = CaptchaField()
 
     def clean_is_18_or_plus(self):
