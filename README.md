@@ -79,11 +79,11 @@ We are almost done! Just follow these instructions and the database will be setu
 
 4. If you haven’t created an administrator for your previous projects, create one now by entering:
   ```
-  # CREATE USER bart WITH PASSWORD '123password';
-  # GRANT ALL PRIVILEGES ON DATABASE academicstoday_db to bart;
+  # CREATE USER django WITH PASSWORD '123password';
+  # GRANT ALL PRIVILEGES ON DATABASE academicstoday_db to django;
   ```
 
-5. Your database "academicstoday_db" is now setup with an admin user account "bart" using the passowrd "123password”. 
+5. Your database "academicstoday_db" is now setup with an admin user account "django" using the passowrd "123password”. 
 
 ### Application + Database
 Run the following commands to populate the database.

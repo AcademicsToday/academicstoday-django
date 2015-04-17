@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='PrivateMessage',
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False)),
+                ('id', models.AutoField(serialize=False, primary_key=True)),
                 ('title', models.CharField(max_length=127)),
                 ('text', models.TextField()),
                 ('sent_date', models.DateField(auto_now_add=True, null=True)),
@@ -25,28 +25,25 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'at_private_messages',
             },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='Student',
             fields=[
-                ('student_id', models.AutoField(primary_key=True, serialize=False)),
+                ('student_id', models.AutoField(serialize=False, primary_key=True)),
                 ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'at_students',
             },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='Teacher',
             fields=[
-                ('teacher_id', models.AutoField(primary_key=True, serialize=False)),
+                ('teacher_id', models.AutoField(serialize=False, primary_key=True)),
                 ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'db_table': 'at_teachers',
             },
-            bases=(models.Model,),
         ),
     ]

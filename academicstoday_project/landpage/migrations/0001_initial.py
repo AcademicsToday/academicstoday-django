@@ -7,13 +7,14 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('registrar', '0001_initial'),
     ]
 
     operations = [
         migrations.CreateModel(
             name='CoursePreview',
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False)),
+                ('id', models.AutoField(serialize=False, primary_key=True)),
                 ('image_filename', models.CharField(max_length=31)),
                 ('title', models.CharField(max_length=63)),
                 ('sub_title', models.CharField(max_length=127)),
@@ -24,26 +25,24 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'at_course_previews',
             },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='LandpageContactMessage',
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False)),
+                ('id', models.AutoField(serialize=False, primary_key=True)),
                 ('name', models.CharField(max_length=127)),
-                ('email', models.EmailField(max_length=75)),
+                ('email', models.EmailField(max_length=254)),
                 ('phone', models.CharField(max_length=63)),
                 ('message', models.TextField()),
             ],
             options={
                 'db_table': 'at_landpage_contact_message',
             },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='LandpageCoursePreview',
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False)),
+                ('id', models.AutoField(serialize=False, primary_key=True)),
                 ('image_filename', models.CharField(max_length=31)),
                 ('title', models.CharField(max_length=127)),
                 ('category', models.CharField(max_length=31)),
@@ -51,12 +50,11 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'at_landpage_course_previews',
             },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='LandpagePartner',
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False)),
+                ('id', models.AutoField(serialize=False, primary_key=True)),
                 ('image_filename', models.CharField(max_length=31)),
                 ('title', models.CharField(max_length=127)),
                 ('url', models.URLField()),
@@ -64,25 +62,33 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'at_landpage_partners',
             },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='LandpageTeamMember',
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False)),
+                ('id', models.AutoField(serialize=False, primary_key=True)),
                 ('full_name', models.CharField(max_length=31)),
                 ('role', models.CharField(max_length=31)),
-                ('twitter_url', models.CharField(null=True, max_length=255)),
-                ('facebook_url', models.CharField(null=True, max_length=255)),
-                ('image_filename', models.CharField(null=True, max_length=255)),
-                ('linkedin_url', models.CharField(null=True, max_length=255)),
-                ('github_url', models.CharField(null=True, max_length=255)),
-                ('google_url', models.CharField(null=True, max_length=255)),
-                ('email', models.EmailField(null=True, max_length=75)),
+                ('twitter_url', models.CharField(max_length=255, null=True)),
+                ('facebook_url', models.CharField(max_length=255, null=True)),
+                ('image_filename', models.CharField(max_length=255, null=True)),
+                ('linkedin_url', models.CharField(max_length=255, null=True)),
+                ('github_url', models.CharField(max_length=255, null=True)),
+                ('google_url', models.CharField(max_length=255, null=True)),
+                ('email', models.EmailField(max_length=254, null=True)),
             ],
             options={
                 'db_table': 'at_landpage_team_members',
             },
-            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='LandpageTopPickCourse',
+            fields=[
+                ('id', models.AutoField(serialize=False, primary_key=True)),
+                ('course', models.ForeignKey(to='registrar.Course')),
+            ],
+            options={
+                'db_table': 'at_landpage_top_pick_courses',
+            },
         ),
     ]

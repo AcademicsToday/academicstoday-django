@@ -92,7 +92,7 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
         "NAME": "academicstoday_db",
-        "USER": "bart",
+        "USER": "django",
         "PASSWORD": "123password",
         "HOST": "localhost",
         "PORT": "5432",

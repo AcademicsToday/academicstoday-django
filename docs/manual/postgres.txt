@@ -33,15 +33,15 @@ To enter a database:
 # \c academicstoday_db
 
 To create an administrator for this database.
-# CREATE USER bart WITH PASSWORD '123password';
-# GRANT ALL PRIVILEGES ON DATABASE academicstoday_db to bart;
+# CREATE USER django WITH PASSWORD '123password';
+# GRANT ALL PRIVILEGES ON DATABASE academicstoday_db to django;
 
 Django will create/drop 'test' databases in unit-testing. So lets give
 permission to the user to have create/drop ability.
-# ALTER USER bart CREATEDB;
+# ALTER USER django CREATEDB;
 
 You are now able to log into the database "academicstoday_db" with the admin
-user account "bart" using the passowrd "123password"."
+user account "django" using the passowrd "123password"."
 
 
 Quick Script
@@ -49,7 +49,7 @@ Quick Script
 drop database academicstoday_db;
 create database academicstoday_db;
 \c academicstoday_db
-GRANT ALL PRIVILEGES ON DATABASE academicstoday_db to bart;
+GRANT ALL PRIVILEGES ON DATABASE academicstoday_db to django;
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
