@@ -47,7 +47,7 @@ def save_syllabus(request, course_id):
                 form.save()
                 response_data = {'status' : 'success', 'message' : 'saved'}
             else:
-                response_data = {'status' : 'failed', 'message' : 'could not save.'}
+                response_data = {'status' : 'failed', 'message' : json.dumps(form.errors)}
     return HttpResponse(json.dumps(response_data), content_type="application/json")
 
 

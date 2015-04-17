@@ -7,6 +7,12 @@
             </div>
             <div class="modal-body">
                 {% include "teacher/syllabus/form.html" with form=form %}
+                
+                <!-- Error Message Box -->
+                <div id="error_box" name="error_box" class="alert alert-danger alert-dismissable" hidden="true">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    ERROR: This is to be filled in by the "print_error" function. If you see this message that means there's an error with your javascript somewhere.
+                </div><!-- /.Error Message Box -->
             </div>
             <div class="modal-footer">
                 <button type="button"
@@ -34,38 +40,59 @@
     /**
      *  Function will call AJAX function to load the register.
      */
-function ajax_save_syllabus()
-{
-    // create a FormData Object using your form dom element
-    var data = new FormData();
-    data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
-    data.append('file', document.getElementById('id_file').files[0]);
+    function ajax_save_syllabus()
+    {
+        // create a FormData Object using your form dom element
+        var data = new FormData();
+        data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+        data.append('file', document.getElementById('id_file').files[0]);
 
-    jQuery.ajax({
-        url: 'save_syllabus',
-        data: data,
-        cache: false,
-        contentType: false,
-        processData: false,
-        type: 'POST',
-        success: function(json_result){
-            // success code execution here
-            if (json_result.status == "success")
-            {
-                $('#syllabus_modal').modal('hide');
-                refresh_page();
+        jQuery.ajax({
+            url: 'save_syllabus',
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: 'POST',
+            success: function(json_result){
+                // success code execution here
+                if (json_result.status == "success")
+                {
+                    $('#syllabus_modal').modal('hide');
+                    refresh_page();
+                }
+                else
+                {
+                    print_error(json_result.message);
+                }
+            },
+            error: function(xhr,status,error) {
+                // error code here
+            },
+            complete: function(xhr,status) {
+                // completion code here
             }
-            else
-            {
-                alert(json_result.message);
+        });
+    }
+
+    /**
+     * Prints a error box with the contents of the errors received from the server.
+     */
+    function print_error(json_result)
+    {
+        $('#error_box').prop("hidden", false); // Display error box.
+    
+        // Iterate through the JSON array of arrays and generate an error string.
+        var message = "<b>Error(s):</b><hr/>";
+        var data = $.parseJSON(json_result)
+        for (var key in data) {
+            if (data.hasOwnProperty(key)) { // this will check if key is owned by data object and not by any of it's ancestors
+                message += "<p>" + key + ": " + data[key] + "<p>";
             }
-        },
-        error: function(xhr,status,error) {
-            // error code here
-        },
-        complete: function(xhr,status) {
-            // completion code here
         }
-    });
-}
+    
+        // Replace the error string with the contents of the error box.
+        $('#error_box').html(message);
+    }
+
 </script>

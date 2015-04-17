@@ -115,7 +115,7 @@
                 }
                 else
                 {
-                    alert(json_result.message);
+                    print_error(json_result.message);
                 }
             },
             error: function(xhr,status,error) {
@@ -162,6 +162,26 @@
     {
         $('#view_'+thread_id+'_btn').prop("disabled", true);
         window.location = 'thread/' + thread_id;
+    }
+
+    /**
+     * Prints a error box with the contents of the errors received from the server.
+     */
+    function print_error(json_result)
+    {
+        $('#error_box').prop("hidden", false); // Display error box.
+    
+        // Iterate through the JSON array of arrays and generate an error string.
+        var message = "<b>Error(s):</b><hr/>";
+        var data = $.parseJSON(json_result)
+        for (var key in data) {
+            if (data.hasOwnProperty(key)) { // this will check if key is owned by data object and not by any of it's ancestors
+                message += "<p>" + key + ": " + data[key] + "<p>";
+            }
+        }
+    
+        // Replace the error string with the contents of the error box.
+        $('#error_box').html(message);
     }
 </script>
 

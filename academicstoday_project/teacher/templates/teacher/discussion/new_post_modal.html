@@ -25,6 +25,11 @@
                 {% endfor %}
                 </form>
 
+                <!-- Error Message Box -->
+                <div id="error_box" name="error_box" class="alert alert-danger alert-dismissable" hidden="true">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    ERROR: This is to be filled in by the "print_error" function. If you see this message that means there's an error with your javascript somewhere.
+                </div><!-- /.Error Message Box -->
             </div>
             <div class="modal-footer">
                 <button onclick="ajax_insert_post({{ thread.thread_id }});"
@@ -47,4 +52,5 @@
             $('#add_post_btn').prop("disabled", false);
         })
     });
+    
 </script>
