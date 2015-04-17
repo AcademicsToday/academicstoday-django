@@ -1,3 +1,4 @@
+![alt tag](https://github.com/AcademicsToday/py-academicstoday/blob/master/docs/media/logo.jpg)
 # py-academicstoday
 ## Description
 A open-source platform for online course-based learning and education.
