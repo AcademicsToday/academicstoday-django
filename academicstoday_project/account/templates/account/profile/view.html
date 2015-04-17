@@ -1,80 +1,54 @@
 {% extends 'account/base.html' %}
 {% load staticfiles %}
 {% block content %}
+<!-- Page Heading -->
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">
+            Profile
+            <small>Change any personal informaion here</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li>
+                <i class="fa fa-university"></i>  <a href="/courses">Registrar</a>
+            </li>
+            <li>
+                <i class="fa fa-compass"></i> {{ user.first_name }} {{ user.last_name }}
+            </li>
+            <li class="active">
+                <i class="fa fa-user"></i> Profile
+            </li>
+        </ol>
+    </div>
+</div>
+<!-- /.row -->
 
-        <!-- Page Heading -->
-        <div class="row">
-            <div class="col-lg-12">
-                <h1 class="page-header">
-                    Profile
-                    <small>Change any personal informaion here</small>
-                </h1>
-                <ol class="breadcrumb">
-                    <li>
-                        <i class="fa fa-university"></i>  <a href="/courses">Registrar</a>
-                    </li>
-                    <li>
-                        <i class="fa fa-compass"></i> {{ user.first_name }} {{ user.last_name }}
-                    </li>
-                    <li class="active">
-                        <i class="fa fa-user"></i> Profile
-                    </li>
-                </ol>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">General Information</h3>
+            </div>
+            <div class="panel-body">
+                        
+            {% include "account/profile/form.html" with form=form %}
+                        
+            <!-- Error Message Box -->
+            <div id="error_box" name="error_box" class="alert alert-danger alert-dismissable" hidden="true">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                ERROR: This is to be filled in by the "print_error" function. If you see this message that means there's an error with your javascript somewhere.
+            </div><!-- /.Error Message Box -->
+            
+            <button onclick="ajax_update_user();"
+                         id="update_user_btn"
+                       name="update_user_btn"
+                       type="button"
+                      class="btn btn-lg btn-primary">Save</button>
             </div>
         </div>
-        <!-- /.row -->
+    </div><!-- /.col-sm-12 -->
+</div><!-- /.row -->
 
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">General Information</h3>
-                    </div>
-                    <div class="panel-body">
-                        
-                        <form role="form">
-                            
-                            <div class="form-group">
-                                <label>First Name</label>
-                                <input class="form-control"
-                                          id="first_name"
-                                        name="first_name"
-                                 placeholder="Enter First Name"
-                                       value="{{ user.first_name }}">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label>Last Name</label>
-                                <input class="form-control"
-                                          id="last_name"
-                                        name="last_name"
-                                 placeholder="Enter Last Name"
-                                       value="{{ user.last_name }}">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label>Email</label>
-                                <input class="form-control"
-                                          id="email"
-                                        name="email"
-                                 placeholder="Enter Email"
-                                       value="{{ user.email }}">
-                                <p class="help-block">Note: Email must be unique and not claimed by anyone else.</p>
-                            </div>
-                            
-                            <button onclick="ajax_update_user();"
-                                         id="update_user_btn"
-                                       name="update_user_btn"
-                                       type="button"
-                                      class="btn btn-lg btn-primary">Save</button>
-                            
-                        </form>
-                        
-                    </div>
-                </div>
-            </div>
-            <!-- /.col-sm-12 -->
-        </div><!-- /.row -->
 <script>
     function ajax_update_user()
     {
@@ -82,16 +56,16 @@
         $.ajax( 'update_user', {
             data: {
                'csrfmiddlewaretoken': '{{ csrf_token }}',
-               'first_name': $('#first_name').val(),
-               'last_name': $('#last_name').val(),
-               'email': $('#email').val()
+               'first_name': $('#id_first_name').val(),
+               'last_name': $('#id_last_name').val(),
+               'email': $('#id_email').val()
             },
             type: 'post',
             success: function(result) {
                // success code execution here
                if (result.status != 'success')
                {
-                    alert(result.message);
+                    print_error(result.message);
                }
                else
                {
@@ -107,5 +81,26 @@
             }
         });
     }
+
+/**
+ * Prints a error box with the contents of the errors received from the server.
+ */
+function print_error(json_result)
+{
+    $('#error_box').prop("hidden", false); // Display error box.
+    
+    // Iterate through the JSON array of arrays and generate an error string.
+    var message = "<b>Error(s):</b><hr/>";
+    var data = $.parseJSON(json_result)
+    for (var key in data) {
+        if (data.hasOwnProperty(key)) { // this will check if key is owned by data object and not by any of it's ancestors
+            message += "<p>" + key + ": " + data[key] + "<p>";
+        }
+    }
+    
+    // Replace the error string with the contents of the error box.
+    $('#error_box').html(message);
+}
+
 </script>
 {% endblock content %}
