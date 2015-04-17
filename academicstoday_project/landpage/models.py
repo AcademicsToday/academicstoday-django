@@ -40,7 +40,7 @@ class LandpageTeamMember(models.Model):
     email = models.EmailField(null=True)
     
     def __str__(self):
-        return self.title
+        return self.full_name
     
     class Meta:
         db_table = 'at_landpage_team_members'
@@ -63,7 +63,7 @@ class LandpageTopPickCourse(models.Model):
     course = models.ForeignKey(Course)
     
     def __str__(self):
-        return self.title
+        return self.course
     
     class Meta:
         db_table = 'at_landpage_top_pick_courses'
@@ -93,7 +93,7 @@ class LandpageContactMessage(models.Model):
     message = models.TextField()
     
     def __str__(self):
-        return self.title
+        return self.name + " " + self.email + " " + self.phone
     
     class Meta:
         db_table = 'at_landpage_contact_message'

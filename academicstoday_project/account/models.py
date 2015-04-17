@@ -11,7 +11,7 @@ class PrivateMessage(models.Model):
     from_address = models.CharField(max_length=255)
     
     def __str__(self):
-        return self.title
+        return "From: " + self.from_address + " To: " + self.to_address + " Title: " + self.title
     
     class Meta:
         db_table = 'at_private_messages'
@@ -22,7 +22,8 @@ class Student(models.Model):
     user = models.ForeignKey(User)
     
     def __str__(self):
-        return self.user
+        return self.user.first_name + " " + \
+                          self.user.last_name 
     
     class Meta:
         db_table = 'at_students'
@@ -33,7 +34,8 @@ class Teacher(models.Model):
     user = models.ForeignKey(User)
     
     def __str__(self):
-        return self.user
+        return self.user.first_name + " " + \
+            self.user.last_name + " "
     
     class Meta:
         db_table = 'at_teachers'

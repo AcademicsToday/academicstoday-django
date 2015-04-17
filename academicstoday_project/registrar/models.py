@@ -167,7 +167,7 @@ class CourseSubmission(models.Model):
     course = models.ForeignKey(Course)
 
     def __str__(self):
-        return str(self.review_date) + ' ' + str(self.review)
+        return str(self.review_date) + ' ' + str(self.course)
 
     class Meta:
         db_table = 'at_course_submissions'
@@ -203,7 +203,7 @@ class CourseFinalMark(models.Model):
     student = models.ForeignKey(Student)
         
     def __str__(self):
-        return self.user
+        return str(self.student) + " " + str(self.course) + " " + str(self.percent) + "%"
                                 
     class Meta:
         db_table = 'at_course_final_marks'
@@ -223,7 +223,7 @@ class Announcement(models.Model):
         return announcement
 
     def __str__(self):
-        return self.course_id + ' ' + self.title + ' ' + self.body + ' ' + self.post_date;
+        return str(self.announcement_id) + ' ' + self.title + ' ' + self.body + ' ' + str(self.post_date);
 
     class Meta:
         db_table = 'at_announcements'
@@ -241,7 +241,7 @@ class Syllabus(models.Model):
         super(Syllabus, self).delete(*args, **kwargs) # Call the "real" delete() method
 
     def __str__(self):
-        return self.syllabus_id + ' ' + self.file.url;
+        return str(self.syllabus_id) + ' ' + self.file.url;
 
     class Meta:
         db_table = 'at_syllabus'
@@ -259,7 +259,7 @@ class Policy(models.Model):
         super(Policy, self).delete(*args, **kwargs) # Call the "real" delete() method
 
     def __str__(self):
-        return self.policy_id + ' ' + self.file.url;
+        return str(self.policy_id) + ' ' + self.file.url;
 
     class Meta:
         db_table = 'at_policys'
@@ -382,7 +382,7 @@ class QuizSubmission(models.Model):
     quiz = models.ForeignKey(Quiz)
 
     def __str__(self):
-        return self.quiz_id + ' ' + self.type;
+        return str(self.submission_id) + ' ' + str(self.percent) + '%'
 
     class Meta:
         db_table = 'at_quiz_submissions'
@@ -406,7 +406,7 @@ class Assignment(models.Model):
     course = models.ForeignKey(Course)
 
     def __str__(self):
-        return self.assignment_id + ' ' + self.type;
+        return str(self.assignment_id) + ' ' + self.title;
 
     class Meta:
         db_table = 'at_assignments'
@@ -423,7 +423,7 @@ class AssignmentSubmission(models.Model):
     assignment = models.ForeignKey(Assignment)
 
     def __str__(self):
-        return str(assignment_num) + ' ' + str(marks);
+        return str(self.submission_id) + ' ' + str(self.percent) + '%';
 
     class Meta:
         db_table = 'at_assignment_submissions'
@@ -447,7 +447,7 @@ class EssayQuestion(models.Model):
     exam = models.ForeignKey(Exam, null=True)
 
     def __str__(self):
-        return self.question_id + ' ' + self.title + ' ' + self.description;
+        return str(self.question_id) + ' ' + self.title + ' ' + self.description;
 
     class Meta:
         db_table = 'at_essay_questions'
@@ -473,7 +473,7 @@ class PeerReview(models.Model):
     user = models.ForeignKey(User)
                           
     def __str__(self):
-        return self.course_id + ' ' + self.file_path;
+        return str(self.review_id) + ' ' + self.text;
 
     class Meta:
         db_table = 'at_peer_reviews'
@@ -501,7 +501,7 @@ class EssaySubmission(models.Model):
         super(EssaySubmission, self).delete(*args, **kwargs) # Call the "real" delete() method
     
     def __str__(self):
-        return self.course_id + ' ' + self.file_path;
+        return str(self.submission_id) + ' ' + self.file.url + ' By ' + str(self.student)
 
     class Meta:
         db_table = 'at_essay_submissions'
@@ -537,7 +537,7 @@ class MultipleChoiceQuestion(models.Model):
     exam = models.ForeignKey(Exam, null=True)
 
     def __str__(self):
-        return self.course_id + ' ' + self.title + ' ' + self.description;
+        return str(self.question_id) + ' ' + self.title + ' ' + self.description;
 
     class Meta:
         db_table = 'at_multiple_choice_questions'
@@ -568,7 +568,7 @@ class MultipleChoiceSubmission(models.Model):
         return submission
 
     def __str__(self):
-        return self.course_id + ' ' + self.selected;
+        return str(self.submission_id) + ' ' + self.question + ' By ' + self.student
 
     class Meta:
         db_table = 'at_multiple_choice_submissions'
@@ -595,7 +595,7 @@ class TrueFalseQuestion(models.Model):
     exam = models.ForeignKey(Exam, null=True)
 
     def __str__(self):
-        return str(self.question_num) + ' ' + self.title + ' ' + self.description;
+        return str(self.question_num) + ' ' + self.title + ' ' + self.description
 
     class Meta:
         db_table = 'at_true_false_questions'
@@ -614,7 +614,7 @@ class TrueFalseSubmission(models.Model):
     question = models.ForeignKey(TrueFalseQuestion)
     
     def __str__(self):
-        return self.course_id + ' ' + self.selected;
+        return str(self.submission_id) + ' ' + self.question + ' By ' + self.student
 
     class Meta:
         db_table = 'at_true_false_submissions'
@@ -639,7 +639,7 @@ class ResponseQuestion(models.Model):
     exam = models.ForeignKey(Exam, null=True)
 
     def __str__(self):
-        return self.course_id + ' ' + self.title + ' ' + self.description;
+        return str(self.question_id) + ' ' + self.title + ' ' + self.description;
 
     class Meta:
         db_table = 'at_response_questions'
@@ -663,7 +663,7 @@ class ResponseSubmission(models.Model):
         super(ResponseSubmission, self).delete(*args, **kwargs)
 
     def __str__(self):
-        return self.course_id + ' ' + self.response;
+        return str(self.submission_id) + ' ' + self.response + ' By ' + self.student
 
     class Meta:
         db_table = 'at_response_submissions'
