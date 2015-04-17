@@ -90,10 +90,8 @@ Run the following commands to populate the database.
   $ cd academicstoday_project
   $ python manage.py makemigrations
   $ python manage.py migrate 
+  $ python manage.py setup_academicstoday
   ```
-
-Finally, we just need to populate the database with initial content and we’re finished! To do this, look into the file ***scripts/initalization.sql*** file and run this script. You are now ready!
-
 
 ## Usage
 To run the web-app, you’ll need to run the server instance and access the page from your browser. 

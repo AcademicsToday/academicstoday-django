@@ -7,13 +7,22 @@ Date: Feb, 14th, 2015
 1) Make sure that the steps in postgres have been completed
 
 
-2) To run our web-apps unit tests, simply run the following commans in your conosle.
+2) To run our web-apps unit tests, simply run the following commans in your conosle
+   to test specific applications (A.k.a. Modules) within this project.
 
 - - - - - - - - - - - - - - - - - - - - - - -
 python manage.py test account.tests;
+python manage.py test landpage.tests;
+python manage.py test publisher.tests;
 python manage.py test registrar.tests;
+python manage.py test student.tests;
+python manage.py test teacher.tests;
 - - - - - - - - - - - - - - - - - - - - - - -
 
 
 3) If you have any questions, then visit:
 https://docs.djangoproject.com/en/1.7/topics/testing/overview/
+
+
+4) If you want to run all the tests at once, run:
+$ python manage.py test

@@ -157,6 +157,13 @@ $ export PATH="/Applications/Postgres.app/Contents/Versions/9.4/bin:$PATH"
 $ pip install -r requirements.txt
 
 
+(7) Finally setup the database and your ready to go
+$ cd academicstoday_project
+$ python manage.py makemigrations
+$ python manage.py migrate
+$ python manage.py setup_academicstoday
+
+
 
 **********
 * SOURCE *
