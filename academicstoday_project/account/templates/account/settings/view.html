@@ -62,6 +62,13 @@
                                    type="button"
                                   class="btn btn-lg btn-primary">Change Password</button>
                         </form>
+                        
+                        <br/>
+                        <!-- Error Message Box -->
+                        <div id="error_box" name="error_box" class="alert alert-danger alert-dismissable" hidden="true">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                            ERROR: This is to be filled in by the "print_error" function. If you see this message that means there's an error with your javascript somewhere.
+                        </div><!-- /.Error Message Box -->
                     </div>
                 </div>
             </div><!-- /.col-sm-12 -->
@@ -82,7 +89,7 @@
                // success code execution here
                if (result.status != 'success')
                {
-                    alert(result.message);
+                    print_error(result.message);
                }
                else
                {
@@ -98,5 +105,20 @@
             }
         });
     }
+
+/**
+ * Prints a error box with the contents of the errors received from the server.
+ */
+function print_error(message)
+{
+    $('#error_box').prop("hidden", false); // Display error box.
+    
+    // Iterate through the JSON array of arrays and generate an error string.
+    var message = "<b>Error(s):</b><hr/>" + "<p>" + message + "</p>";
+    
+    // Replace the error string with the contents of the error box.
+    $('#error_box').html(message);
+}
+
 </script>
 {% endblock content %}
