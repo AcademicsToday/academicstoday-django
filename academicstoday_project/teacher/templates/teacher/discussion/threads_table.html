@@ -28,7 +28,6 @@
                               class="btn btn-sm btn-primary">
                         <i class="fa fa-level-down"></i> View
                     </button>
-                    {% if user == thread.user %}
                     <!-- Only the user that created this thread can delete this thread -->
                     <button onclick="ajax_delete_thread({{ thread.thread_id }});"
                                  id="del_{{ thread.thread_id }}_btn"
@@ -37,7 +36,6 @@
                               class="btn btn-sm btn-danger">
                         <i class="fa fa-minus"></i> Delete
                     </button>
-                    {% endif %}
                 </td>
             </tr>
             {% endfor %}

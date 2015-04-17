@@ -8,6 +8,7 @@ from django.conf import settings
 import json
 import datetime
 from registrar.models import Course
+from registrar.models import Teacher
 from registrar.models import Student
 from registrar.models import CourseDiscussionPost
 from registrar.models import CourseDiscussionThread
@@ -91,12 +92,13 @@ def delete_thread(request, course_id):
         if request.method == 'POST':
             thread_id = int(request.POST['thread_id'])
             course = Course.objects.get(id=course_id)
+            teacher = Teacher.objects.get(user=request.user)
             try:
                 thread = CourseDiscussionThread.objects.get(
                     course=course,
                     thread_id=thread_id
                 )
-                if thread.user == request.user:
+                if thread.course.teacher == teacher:
                     thread.delete()
                     response_data = {'status' : 'success', 'message' : 'thread was deleted'}
                 else:

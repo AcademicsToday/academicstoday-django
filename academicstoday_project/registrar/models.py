@@ -492,6 +492,9 @@ class EssaySubmission(models.Model):
     reviews = models.ManyToManyField(PeerReview)
     
     def delete(self, *args, **kwargs):
+        for review in self.reviews.all():
+            review.delete()
+
         if self.file:
             if os.path.isfile(self.file.path):
                 os.remove(self.file.path)
@@ -654,6 +657,11 @@ class ResponseSubmission(models.Model):
     question = models.ForeignKey(ResponseQuestion)
     reviews = models.ManyToManyField(PeerReview)
 
+    def delete(self, *args, **kwargs):
+        for review in self.review.all():
+            review.delete()
+        super(ResponseSubmission, self).delete(*args, **kwargs)
+
     def __str__(self):
         return self.course_id + ' ' + self.response;
 
@@ -689,3 +697,8 @@ class CourseDiscussionThread(models.Model):
                     
     class Meta:
         db_table = 'at_course_discussion_threads'
+
+    def delete(self, *args, **kwargs):
+        for post in self.posts.all():
+            post.delete()
+        super(CourseDiscussionThread, self).delete(*args, **kwargs)
