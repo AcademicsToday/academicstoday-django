@@ -1,8 +1,7 @@
 from django.db import models
 from django import forms
+from django.forms import ModelForm, Textarea, TextInput
 from django.forms.extras.widgets import Select, SelectDateWidget
-
-from django.forms import ModelForm, Textarea
 from registrar.models import Course
 
 class CourseForm(forms.ModelForm):
@@ -16,7 +15,10 @@ class CourseForm(forms.ModelForm):
             'finish_date': 'Finish Date',
         }
         widgets = {
-            'description': Textarea(attrs={'cols': 70, 'rows':10}),
+            'title': TextInput(attrs={'class': u'form-control','placeholder': u'Enter Title'}),
+            'sub_title': TextInput(attrs={'class': u'form-control','placeholder': u'Enter Sub-Title'}),
+            'description': Textarea(attrs={'class': u'form-control','placeholder': u'Enter Description'}),
+            'category': Select(attrs={'class': u'form-control'}),
             'start_date': SelectDateWidget(),
             'finish_date': SelectDateWidget(),
         }
