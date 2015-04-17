@@ -1,7 +1,7 @@
 from django.db import models
 from django import forms
-
-from django.forms import ModelForm
+from django.forms import ModelForm, Textarea, TextInput, NumberInput
+from django.forms.extras.widgets import Select, SelectDateWidget
 from registrar.models import EssaySubmission
 from registrar.models import AssignmentSubmission
 from registrar.models import PeerReview
@@ -40,7 +40,11 @@ class PeerReviewForm(forms.ModelForm):
         labels = {
             'marks': 'Rating',
             'text': 'Review',
-         }
+        }
+        widgets = {
+#            'marks': TextInput(attrs={'class': u'form-control','placeholder': u'Enter Title'}),
+            'text': Textarea(attrs={'class': u'form-control','placeholder': u'Enter Text'}),
+        }
 
 
 class CourseDiscussionThreadForm(forms.ModelForm):
@@ -50,7 +54,11 @@ class CourseDiscussionThreadForm(forms.ModelForm):
         labels = {
             'title': 'Thread Title',
             'text': 'Thread Content',
-            }
+        }
+        widgets = {
+            'title': TextInput(attrs={'class': u'form-control','placeholder': u'Enter Title'}),
+            'text': Textarea(attrs={'class': u'form-control','placeholder': u'Enter Text'}),
+        }
 
 
 class CourseDiscussionPostForm(forms.ModelForm):
@@ -60,4 +68,8 @@ class CourseDiscussionPostForm(forms.ModelForm):
         labels = {
             'title': 'Post Title',
             'text': 'Post Content',
+        }
+        widgets = {
+            'title': TextInput(attrs={'class': u'form-control','placeholder': u'Enter Title'}),
+            'text': Textarea(attrs={'class': u'form-control','placeholder': u'Enter Text'}),
         }
