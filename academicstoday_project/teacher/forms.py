@@ -2,8 +2,8 @@ from django.db import models
 from django import forms
 from django.forms.extras.widgets import Select, SelectDateWidget
 from django.conf import settings
-
-from django.forms import ModelForm, Textarea
+from django.forms import ModelForm, Textarea, TextInput, NumberInput
+from django.forms.extras.widgets import Select, SelectDateWidget
 from registrar.models import FileUpload
 from registrar.models import Announcement
 from registrar.models import Syllabus
@@ -26,7 +26,8 @@ class AnnouncementForm(forms.ModelForm):
 
         }
         widgets = {
-            'body': Textarea(attrs={'cols': 70, 'rows':10}),
+            'title': TextInput(attrs={'class': u'form-control','placeholder': u'Enter Title'}),
+            'body': Textarea(attrs={'class': u'form-control','placeholder': u'Enter Description'}),
         }
 
 
@@ -52,6 +53,21 @@ class LectureForm(forms.ModelForm):
     class Meta:
         model = Lecture
         fields = ['lecture_id', 'lecture_num', 'week_num', 'title', 'description', 'youtube_url', 'vimeo_url', 'preferred_service']
+        labels = {
+            'lecture_num': 'Lecture Number',
+            'week_num': 'Week Number',
+            'youtube_url': 'YouTube URL',
+            'vimeo_url': 'Vimeo URL',
+        }
+        widgets = {
+            'lecture_num': NumberInput(attrs={'class': u'form-control','placeholder': u'Enter Lecture Number'}),
+            'week_num': NumberInput(attrs={'class': u'form-control','placeholder': u'Enter Week Number'}),
+            'title': TextInput(attrs={'class': u'form-control','placeholder': u'Enter Title'}),
+            'description': Textarea(attrs={'class': u'form-control','placeholder': u'Enter Description'}),
+            'youtube_url': TextInput(attrs={'class': u'form-control','placeholder': u'Enter YouTube URL'}),
+            'vimeo_url': TextInput(attrs={'class': u'form-control','placeholder': u'Enter Vimeo URL'}),
+            'preferred_service': Select(attrs={'class': u'form-control'}),
+        }
 
 
 class NoteUploadForm(forms.ModelForm):
@@ -60,6 +76,10 @@ class NoteUploadForm(forms.ModelForm):
         fields = ['upload_id', 'title', 'description', 'file']
         labels = {
             'file': 'PDF',
+        }
+        widgets = {
+            'title': TextInput(attrs={'class': u'form-control','placeholder': u'Enter Title'}),
+            'description': Textarea(attrs={'class': u'form-control','placeholder': u'Enter Description'}),
         }
 
     # Function will apply validation on the 'file' upload column in the table.
@@ -80,11 +100,16 @@ class AssignmentForm(forms.ModelForm):
         model = Assignment
         fields = ['assignment_id', 'assignment_num', 'title', 'description', 'start_date', 'due_date', 'worth']
         labels = {
+            'assignment_num': 'Assignment Number',
             'worth': 'Worth % of Final Mark',
         }
         widgets = {
+            'assignment_num': NumberInput(attrs={'class': u'form-control','placeholder': u'Enter Assignment Number'}),
+            'title': TextInput(attrs={'class': u'form-control','placeholder': u'Enter Title'}),
+            'description': Textarea(attrs={'class': u'form-control','placeholder': u'Enter Description'}),
             'start_date': SelectDateWidget(),
             'due_date': SelectDateWidget(),
+            'worth': Select(attrs={'class': u'form-control'}),
         }
 
 
@@ -96,8 +121,8 @@ ASSIGNMENT_QUESTION_TYPE_CHOICES = (
 )
 
 class AssignmentQuestionTypeForm(forms.Form):
-    question_num = forms.IntegerField(label='Question #', initial=1, widget=forms.NumberInput(attrs={'min': '0', 'max': '100', 'step': '1'}))
-    question_type = forms.CharField(label='Question Type', widget=forms.Select(choices=ASSIGNMENT_QUESTION_TYPE_CHOICES))
+    question_num = forms.IntegerField(label='Question #', initial=1, widget=forms.NumberInput(attrs={'class': u'form-control','placeholder': u'Enter Question Number', 'min': '0', 'max': '100', 'step': '1'}))
+    question_type = forms.CharField(label='Question Type', widget=forms.Select(attrs={'class': u'form-control'}, choices=ASSIGNMENT_QUESTION_TYPE_CHOICES))
 
 
 class EssayQuestionForm(forms.ModelForm):
@@ -106,6 +131,14 @@ class EssayQuestionForm(forms.ModelForm):
         fields = ['question_num', 'title', 'description', 'marks']
         labels = {
             'question_num': 'Question #',
+        }
+        widgets = {
+            'question_num': NumberInput(attrs={'class': u'form-control','placeholder': u'Enter Question Number'}),
+            'title': TextInput(attrs={'class': u'form-control','placeholder': u'Enter Title'}),
+            'description': Textarea(attrs={'class': u'form-control','placeholder': u'Enter Description'}),
+            'start_date': SelectDateWidget(),
+            'due_date': SelectDateWidget(),
+            'marks': NumberInput(attrs={'class': u'form-control','placeholder': u'Enter Marks'}),
         }
 
 
@@ -121,6 +154,18 @@ class MultipleChoiceQuestionForm(forms.ModelForm):
             'd': 'Option D)',
             'e': 'Option E)',
             'f': 'Option F)',
+        }
+        widgets = {
+            'question_num': NumberInput(attrs={'class': u'form-control','placeholder': u'Enter Question Number'}),
+            'title': TextInput(attrs={'class': u'form-control','placeholder': u'Enter Title'}),
+            'description': Textarea(attrs={'class': u'form-control','placeholder': u'Enter Description'}),
+            'a': TextInput(attrs={'class': u'form-control','placeholder': u'Enter Option A Description'}),
+            'b': TextInput(attrs={'class': u'form-control','placeholder': u'Enter Option B Description'}),
+            'c': TextInput(attrs={'class': u'form-control','placeholder': u'Enter Option C Description'}),
+            'd': TextInput(attrs={'class': u'form-control','placeholder': u'Enter Option D Description'}),
+            'e': TextInput(attrs={'class': u'form-control','placeholder': u'Enter Option E Description'}),
+            'f': TextInput(attrs={'class': u'form-control','placeholder': u'Enter Option F Description'}),
+            'marks': NumberInput(attrs={'class': u'form-control','placeholder': u'Enter Marks'}),
         }
 
     def clean(self):
@@ -158,6 +203,14 @@ class TrueFalseQuestionForm(forms.ModelForm):
             'question_num': 'Question #',
             'answer': 'Answer is True?',
         }
+        widgets = {
+            'question_num': NumberInput(attrs={'class': u'form-control','placeholder': u'Enter Question Number'}),
+            'title': TextInput(attrs={'class': u'form-control','placeholder': u'Enter Title'}),
+            'description': Textarea(attrs={'class': u'form-control','placeholder': u'Enter Description'}),
+            'true_choice': TextInput(attrs={'class': u'form-control','placeholder': u'Enter True Choice Description'}),
+            'false_choice': TextInput(attrs={'class': u'form-control','placeholder': u'Enter False Choice Description'}),
+            'marks': NumberInput(attrs={'class': u'form-control','placeholder': u'Enter Marks'}),
+        }
 
 
 class ResponseQuestionForm(forms.ModelForm):
@@ -167,15 +220,21 @@ class ResponseQuestionForm(forms.ModelForm):
         labels = {
             'question_num': 'Question #',
         }
+        widgets = {
+            'question_num': NumberInput(attrs={'class': u'form-control','placeholder': u'Enter Question Number'}),
+            'title': TextInput(attrs={'class': u'form-control','placeholder': u'Enter Title'}),
+            'description': Textarea(attrs={'class': u'form-control','placeholder': u'Enter Description'}),
+            'answer': Textarea(attrs={'class': u'form-control','placeholder': u'Enter Answer'}),
+            'marks': NumberInput(attrs={'class': u'form-control','placeholder': u'Enter Marks'}),
+    }
 
 QUIZ_QUESTION_TYPE_CHOICES = (
     (settings.TRUEFALSE_QUESTION_TYPE, 'True/False'),
 )
 
 class QuizQuestionTypeForm(forms.Form):
-    question_num = forms.IntegerField(label='Question #', initial=1, widget=forms.NumberInput(attrs={'min': '0', 'max': '100', 'step': '1'}))
-    question_type = forms.CharField(label='Question Type', widget=forms.Select(choices=QUIZ_QUESTION_TYPE_CHOICES))
-
+    question_num = forms.IntegerField(label='Question #', initial=1, widget=forms.NumberInput(attrs={'class': u'form-control','placeholder': u'Enter Question Number', 'min': '0', 'max': '100', 'step': '1'}))
+    question_type = forms.CharField(label='Question Type', widget=forms.Select(attrs={'class': u'form-control'}, choices=QUIZ_QUESTION_TYPE_CHOICES))
 
 class QuizForm(forms.ModelForm):
     class Meta:
@@ -186,8 +245,12 @@ class QuizForm(forms.ModelForm):
             'worth': 'Worth % of Final Mark',
         }
         widgets = {
+            'quiz_num': NumberInput(attrs={'class': u'form-control','placeholder': u'Enter Quiz Number'}),
+            'title': TextInput(attrs={'class': u'form-control','placeholder': u'Enter Title'}),
+            'description': Textarea(attrs={'class': u'form-control','placeholder': u'Enter Description'}),
             'start_date': SelectDateWidget(),
             'due_date': SelectDateWidget(),
+            'worth': Select(attrs={'class': u'form-control'}),
         }
 
 EXAM_QUESTION_TYPE_CHOICES = (
@@ -195,8 +258,8 @@ EXAM_QUESTION_TYPE_CHOICES = (
 )
 
 class ExamQuestionTypeForm(forms.Form):
-    question_num = forms.IntegerField(label='Question #', initial=1, widget=forms.NumberInput(attrs={'min': '0', 'max': '100', 'step': '1'}))
-    question_type = forms.CharField(label='Question Type', widget=forms.Select(choices=EXAM_QUESTION_TYPE_CHOICES))
+    question_num = forms.IntegerField(label='Question #', initial=1, widget=forms.NumberInput(attrs={'class': u'form-control','placeholder': u'Enter Question Number', 'min': '0', 'max': '100', 'step': '1'}))
+    question_type = forms.CharField(label='Question Type', widget=forms.Select(attrs={'class': u'form-control'}, choices=EXAM_QUESTION_TYPE_CHOICES))
 
 
 class ExamForm(forms.ModelForm):
@@ -209,6 +272,10 @@ class ExamForm(forms.ModelForm):
             'is_final': 'Is Final Exam',
         }
         widgets = {
+            'exam_num': NumberInput(attrs={'class': u'form-control','placeholder': u'Enter Exam Number'}),
+            'title': TextInput(attrs={'class': u'form-control','placeholder': u'Enter Title'}),
+            'description': Textarea(attrs={'class': u'form-control','placeholder': u'Enter Description'}),
             'start_date': SelectDateWidget(),
             'due_date': SelectDateWidget(),
-    }
+            'worth': Select(attrs={'class': u'form-control'}),
+        }
