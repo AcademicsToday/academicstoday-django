@@ -100,6 +100,20 @@ DATABASES = {
 }
 
 
+
+# Email
+# http://stackoverflow.com/questions/19264907/python-django-gmail-smtp-setup
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+DEFAULT_TO_EMAIL = EMAIL_HOST_USER
+
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 

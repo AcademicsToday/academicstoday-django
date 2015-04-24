@@ -1,6 +1,6 @@
 #!/bin/csh
 #------------------------------------------------------------------------------#
-# topcoursepicking.sh                                                          #
+# topcoursepicking.csh                                                         #
 #------------------------------------------------------------------------------#
 # By: Bartlomiej Mika
 # Date: April, 8th, 2015
@@ -18,7 +18,7 @@
 # HOWTO: Setup:  #
 #----------------#
 # (1) Give permission
-# $ chmod u+x /usr/home/freebsd/py-academicstoday/scripts/topcoursepicking.sh
+# $ chmod u+x /usr/home/freebsd/py-academicstoday/scripts/topcoursepicking.csh
 #
 # (1) Run command:
 # $ crontab -e
