@@ -49,9 +49,7 @@
      */
     function get_youtube_url()
     {
-        // If someone simply copy and pasted the entire 'embedded url'
-        // from YouTube, then we simply have to extract the 'src='
-        // contents
+        // If someone enters something like: <iframe .... blah blah ... </iframe>
         var youtube_url = $('#id_youtube_url').val();
         if (youtube_url.indexOf("<iframe") > -1)
         {
@@ -70,14 +68,20 @@
             }
         }
                                                                   
-        // If someone entered a URL like htis: https://www.youtube.com/watch?v=_Leog98q6iA
+        // If someone entered a URL like this: https://www.youtube.com/watch?v=_Leog98q6iA
         if (youtube_url.indexOf("?v=") > -1)
         {
             youtube_id = youtube_url.split('?v=')[1];
             youtube_url = "https://www.youtube.com/embed/" + youtube_id;
         }
-                   
-        alert(youtube_url);
+         
+        // If someone shares a URL like this: https://youtu.be/_Leog98q6iA
+        if (youtube_url.indexOf("https://youtu.be") > -1)
+        {
+            youtube_id = youtube_url.split('https://youtu.be/')[1];
+            youtube_url = "https://www.youtube.com/embed/" + youtube_id;
+        }
+                
         return youtube_url;
     }
     
