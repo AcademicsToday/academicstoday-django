@@ -69,6 +69,12 @@ class LectureForm(forms.ModelForm):
             'preferred_service': Select(attrs={'class': u'form-control'}),
         }
 
+    def clean(self):
+        youtube_url = self.cleaned_data['youtube_url']
+        if youtube_url is not '':
+            if "https://www.youtube.com/embed/" not in youtube_url:
+                raise forms.ValidationError("YouTube URL needs to be a embedded URL.")
+
 
 class NoteUploadForm(forms.ModelForm):
     class Meta:

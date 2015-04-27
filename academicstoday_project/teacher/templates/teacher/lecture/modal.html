@@ -42,6 +42,46 @@
     });
     
     /**
+     * Function looks at the youtube url and either returns the URL or if
+     * it detects a user added a iframe image, it then parses out the stuff
+     * and returns only the URL. Also if URL is simply copied from browser URL
+     * then parse out the YouTube ID and return embedded link.
+     */
+    function get_youtube_url()
+    {
+        // If someone simply copy and pasted the entire 'embedded url'
+        // from YouTube, then we simply have to extract the 'src='
+        // contents
+        var youtube_url = $('#id_youtube_url').val();
+        if (youtube_url.indexOf("<iframe") > -1)
+        {
+            // Split it up by whitespace and find 'src='
+            var split = youtube_url.split(' ');
+            for(var i in split)
+            {
+                if (split[i].indexOf("src=") > -1)
+                {
+                    var code = split[i];
+                    var url_with_doublequotes = code.split('=')[1];
+                    var url = str = url_with_doublequotes.replace(/"/g, "");
+                    youtube_url = url;
+                    break;
+                }
+            }
+        }
+                                                                  
+        // If someone entered a URL like htis: https://www.youtube.com/watch?v=_Leog98q6iA
+        if (youtube_url.indexOf("?v=") > -1)
+        {
+            youtube_id = youtube_url.split('?v=')[1];
+            youtube_url = "https://www.youtube.com/embed/" + youtube_id;
+        }
+                   
+        alert(youtube_url);
+        return youtube_url;
+    }
+    
+    /**
      *  Function will call AJAX function to load the register.
      */
     function ajax_create_lecture()
@@ -56,7 +96,7 @@
         data.append('description', $('#id_description').val());
         data.append('lecture_num', $('#id_lecture_num').val());
         data.append('week_num', $('#id_week_num').val());
-        data.append('youtube_url', $('#id_youtube_url').val());
+        data.append('youtube_url', get_youtube_url());
         data.append('vimeo_url', $('#id_vimeo_url').val());
         data.append('preferred_service', $('#id_preferred_service').val());
         jQuery.ajax({
