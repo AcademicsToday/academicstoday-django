@@ -11,8 +11,8 @@ from account.views import donate
 
 # Contants
 TEST_USER_EMAIL = "ledo@gah.com"
-TEST_USER_USERNAME = "Ledo"
-TEST_USER_PASSWORD = "password"
+TEST_USER_USERNAME = "ledo"
+TEST_USER_PASSWORD = "ContinentalUnion"
 
 
 class DonateTestCase(TestCase):
