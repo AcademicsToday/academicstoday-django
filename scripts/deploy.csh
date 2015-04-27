@@ -29,5 +29,9 @@ clear;
 # Turn on virtual environment
 source /usr/home/freebsd/py-academicstoday/env/bin/activate.csh
 
+# Bugfix
+ln -s /usr/home/freebsd/py-academicstoday/env/lib/python3.4/site-packages/django/contrib/admin/static/admin /usr/home/freebsd/py-academicstoday/academicstoday_project/static/admin
+
 # Run command
-gunicorn -c gunicorn_config.py /usr/home/freebsd/py-academicstoday/academicstoday_project/academicstoday_project.wsgi
+cd /usr/home/freebsd/py-academicstoday/academicstoday_project
+gunicorn -c gunicorn_config.py academicstoday_project.wsgi
