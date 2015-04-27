@@ -15,20 +15,12 @@ from django.http import HttpResponse
 from django.conf import settings
 
 
-def robots_txt_page(request):
-    return render(request, 'misc/robots.txt', {}, content_type="text/plain")
-
-
-def humans_txt_page(request):
-    return render(request, 'misc/humans.txt', {}, content_type="text/plain")
-
-
 def landpage_page(request):
     top_courses = LandpageTopPickCourse.objects.all()
     course_previews = LandpageCoursePreview.objects.all()
     team_members = LandpageTeamMember.objects.all().order_by('id')
     partners = LandpagePartner.objects.all()
-    return render(request, 'landpage/main.html',{
+    return render(request, 'landpage/main/index.html',{
         'top_courses': top_courses,
         'course_previews' : course_previews,
         'team_members' : team_members,
@@ -48,28 +40,9 @@ def course_preview_modal(request):
                 course = Course.objects.get(id=int(course_id))
             except Course.DoesNotExist:
                 pass
-    return render(request, 'landpage/course_preview.html',{
+    return render(request, 'landpage/main/course_preview.html',{
         'course' : course
     })
-
-
-def login_modal(request):
-    return render(request, 'landpage/login.html',{})
-
-
-def register_modal(request):
-    form = RegisterForm()
-    return render(request, 'landpage/register.html',{
-        'form': form,
-    })
-
-
-def terms_txt_page(request):
-    return render(request, 'misc/terms.txt', {}, content_type="text/plain")
-
-
-def privacy_txt_page(request):
-    return render(request, 'misc/privacy.txt', {}, content_type="text/plain")
 
 
 def save_contact_us_message(request):
