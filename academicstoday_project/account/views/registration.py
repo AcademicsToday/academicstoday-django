@@ -28,8 +28,8 @@ def register(request):
                 # Create the user in our database
                 try:
                     user = User.objects.create_user(
-                        request.POST['electronic_mail'],  # Username
-                        request.POST['electronic_mail'],
+                        request.POST['electronic_mail'].lower(),  # Username
+                        request.POST['electronic_mail'].lower(),  # Email
                         request.POST['password']
                     )
                     user.first_name = request.POST['first_name']

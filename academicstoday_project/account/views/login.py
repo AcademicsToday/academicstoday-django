@@ -12,7 +12,10 @@ def login_authentication(request):
     response_data = {'status' : 'failure', 'message' : 'an unknown error occured'}
     if request.is_ajax():
         if request.method == 'POST':
-            user = authenticate(username=request.POST.get('username'), password=request.POST.get('password'))
+            user = authenticate(
+                username=request.POST.get('username').lower(),
+                password=request.POST.get('password')
+            )
             
             # Does the user exist for the username and has correct password?
             if user is not None:
