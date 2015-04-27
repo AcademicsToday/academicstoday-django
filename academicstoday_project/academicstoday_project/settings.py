@@ -173,7 +173,6 @@ AGENCY_CSS_LIBRARY_URLS = [
     "js/bootstrap/3.3.2/css/bootstrap.min.css",
     "js/font-awesome/4.2.0/css/font-awesome.css",
     "js/font-awesome/4.2.0/css/font-awesome.min.css",
-    "css/landpage.css",
     "css/agency.css"
 ]
 

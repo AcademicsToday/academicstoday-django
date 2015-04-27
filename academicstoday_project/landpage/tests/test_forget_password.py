@@ -5,7 +5,7 @@ from django.test import TestCase
 from django.test import Client
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from landpage.views import txt
+from landpage.views import forgot_password
 import json
 from landpage.models import LandpageTeamMember
 from landpage.models import LandpageCoursePreview
@@ -19,7 +19,7 @@ TEST_USER_USERNAME = "Ledo"
 TEST_USER_PASSWORD = "password"
 
 
-class TxtTest(TestCase):
+class ForgotPasswordTest(TestCase):
     def tearDown(self):
         courses = Course.objects.all()
         for course in courses:
@@ -35,11 +35,26 @@ class TxtTest(TestCase):
         user = User.objects.get(email=TEST_USER_EMAIL)
         teacher = Teacher.objects.create(user=user)
         student = Student.objects.create(user=user)
-        
-    def test_robots_txt_page(self):
-        found = resolve('/robots.txt');
-        self.assertEqual(found.func,txt.robots_txt_page)
+        course = Course.objects.create(
+            id=1,
+            title="Comics Book Course",
+            sub_title="The definitive course on comics!",
+            category="",
+            teacher=teacher,
+        )
 
-    def test_humans_txt_page(self):
-        found = resolve('/humans.txt');
-        self.assertEqual(found.func,txt.humans_txt_page)
+
+    def test_url_resolves_to_forgot_password_page(self):
+        found = resolve('/forgot_password');
+        self.assertEqual(found.func,forgot_password.forgot_password_page)
+
+    def test_forgot_password_page_returns_correct_html(self):
+        parameters = {"course_id":1}
+        client = Client()
+        response = client.post(
+            '/forgot_password',
+            data=parameters,
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Forgot Password',response.content)
+#        self.assertIn(b'The definitive course on comics!',response.content)

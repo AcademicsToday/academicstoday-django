@@ -19,7 +19,7 @@ TEST_USER_USERNAME = "Ledo"
 TEST_USER_PASSWORD = "password"
 
 
-class LandpageTest(TestCase):
+class RegisterTest(TestCase):
     def tearDown(self):
         courses = Course.objects.all()
         for course in courses:

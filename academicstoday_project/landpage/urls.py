@@ -4,13 +4,14 @@ from landpage.views import txt
 from landpage.views import landpage
 from landpage.views import login
 from landpage.views import register
+from landpage.views import privacy
+from landpage.views import terms
+from landpage.views import forgot_password
 
 urlpatterns = patterns('',
     # Custom Files
     url(r'^robots\.txt$', txt.robots_txt_page),
     url(r'^humans\.txt$', txt.humans_txt_page),
-    url(r'^terms\.txt$', txt.terms_txt_page),
-    url(r'^privacy\.txt$', txt.privacy_txt_page),
                        
     # Landpage
     url(r'^$', landpage.landpage_page),
@@ -23,6 +24,11 @@ urlpatterns = patterns('',
 
     # Regsiter
     url(r'^register_modal$', register.register_modal),
+                       
+    # Off-Convas Stuff
+    url(r'^terms$', terms.terms_page),
+    url(r'^privacy', privacy.privacy_page),
+    url(r'^forgot_password$', forgot_password.forgot_password_page),
 )
 
 # Captchas
