@@ -7,7 +7,7 @@
             </div>
             <div class="modal-body">
                 <div class="well">
-                    <p>When you disenrol from a course, all your course work (including final marks) will get deleted! Furthermore, all deletions are permanent, your course cannot be retrieved once deleted.</p>
+                    <p>When you disenroll from a course, all your course work (including final marks) will get deleted! Furthermore, all deletions are permanent, your course cannot be retrieved once deleted.</p>
                 </div>
             </div>
             <div class="modal-footer">
@@ -18,8 +18,8 @@
                 </button>
                 <button type="button"
                        class="btn-lg btn-danger"
-                     onclick="ajax_disenrol_course({{ course.id }});">
-                    <i class="fa fa-check-circle"></i> Yes I Understand, Disenrol from this Course
+                     onclick="ajax_disenroll_course({{ course.id }});">
+                    <i class="fa fa-check-circle"></i> Yes I Understand, Disenroll from this Course
                 </button>
             </div>
         </div>
@@ -41,10 +41,10 @@
     /**
      *  Function will call AJAX function to delete the teacher's course.
      */
-    function ajax_disenrol_course(course_id)
+    function ajax_disenroll_course(course_id)
     {
         $('#del_' + course_id + '_btn').prop("disabled", true); // Lock button
-        $.ajax( 'disenrol', {
+        $.ajax( 'disenroll', {
             data: {
                'csrfmiddlewaretoken': '{{ csrf_token }}',
                'course_id' : course_id
@@ -55,7 +55,7 @@
                if (result.status == 'success')
                {
                     $('#disenroll_modal').modal('hide');
-                    ajax_refresh_enrolments_table();
+                    ajax_refresh_enrollments_table();
                }
             },
             error: function(xhr,status,error) {

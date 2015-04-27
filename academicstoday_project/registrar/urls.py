@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 
 from registrar.views import courses
-from registrar.views import enrolment
+from registrar.views import enrollment
 from registrar.views import teaching
 from registrar.views import transcript
 from registrar.views import certificate
@@ -9,13 +9,13 @@ from registrar.views import certificate
 urlpatterns = patterns('',
     # Courses
     url(r'^courses$', courses.courses_page),
-    url(r'^enrol$', courses.enrol),
+    url(r'^enroll$', courses.enroll),
 
-    # Enrolment(s)
-    url(r'^enrolment$', enrolment.enrolment_page),
-    url(r'^enrolment_table$', enrolment.enrolment_table),
-    url(r'^disenroll_modal$', enrolment.disenroll_modal),
-    url(r'^disenrol', enrolment.disenrol),
+    # Enrollment(s)
+    url(r'^enrollment$', enrollment.enrollment_page),
+    url(r'^enrollment_table$', enrollment.enrollment_table),
+    url(r'^disenroll_modal$', enrollment.disenroll_modal),
+    url(r'^disenroll', enrollment.disenroll),
          
     # Teaching
     url(r'^teaching$', teaching.teaching_page),

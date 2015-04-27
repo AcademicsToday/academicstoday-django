@@ -11,7 +11,7 @@ from registrar.models import Course
 from registrar.models import Teacher
 from registrar.models import Student
 from registrar.models import CourseFinalMark
-from registrar.views import enrolment
+from registrar.views import enrollment
 
 
 TEST_USER_EMAIL = "ledo@gah.com"
@@ -19,7 +19,7 @@ TEST_USER_USERNAME = "Ledo"
 TEST_USER_PASSWORD = "password"
 
 
-class EnrolmentTestCase(TestCase):
+class EnrollmentTestCase(TestCase):
     def tearDown(self):
         courses = Course.objects.all()
         for course in courses:
@@ -55,21 +55,21 @@ class EnrolmentTestCase(TestCase):
             student=student,
         )
     
-    def test_url_resolves_to_enrolment_page_view(self):
-        found = resolve('/enrolment')
-        self.assertEqual(found.func, enrolment.enrolment_page)
+    def test_url_resolves_to_enrollment_page_view(self):
+        found = resolve('/enrollment')
+        self.assertEqual(found.func, enrollment.enrollment_page)
     
-    def test_enrolment_page_with_no_enrolments(self):
+    def test_enrollment_page_with_no_enrollments(self):
         client = Client()
         client.login(
             username=TEST_USER_USERNAME,
             password=TEST_USER_PASSWORD
         )
-        response = client.post('/enrolment')
+        response = client.post('/enrollment')
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'Become a Student!',response.content)
 
-    def test_enrolment_page_with_enrolments(self):
+    def test_enrollment_page_with_enrollments(self):
         user = User.objects.get(email=TEST_USER_EMAIL)
         student = Student.objects.get(user=user)
         course = Course.objects.get(id=1)
@@ -81,14 +81,14 @@ class EnrolmentTestCase(TestCase):
             username=TEST_USER_USERNAME,
             password=TEST_USER_PASSWORD
         )
-        response = client.post('/enrolment')
+        response = client.post('/enrollment')
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'Comics Book Course',response.content)
         self.assertIn(b'ajax_continue_course(1);',response.content)
 
     def test_url_resolves_to_disenroll_modal_view(self):
         found = resolve('/disenroll_modal')
-        self.assertEqual(found.func, enrolment.disenroll_modal)
+        self.assertEqual(found.func, enrollment.disenroll_modal)
 
     def test_disenroll_modal_returns_correct_html(self):
         client = Client()
@@ -104,10 +104,10 @@ class EnrolmentTestCase(TestCase):
         self.assertIn(b'Warning',response.content)
 
     def test_url_resolves_to_disenroll_view(self):
-        found = resolve('/disenrol')
-        self.assertEqual(found.func, enrolment.disenrol)
+        found = resolve('/disenroll')
+        self.assertEqual(found.func, enrollment.disenroll)
 
-    def test_disenrol_with_no_enrolment(self):
+    def test_disenroll_with_no_enrollment(self):
         # Delete courses
         courses = Course.objects.all()
         for course in courses:
@@ -119,7 +119,7 @@ class EnrolmentTestCase(TestCase):
             password=TEST_USER_PASSWORD
         )
         kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
-        response = client.post('/disenrol', {
+        response = client.post('/disenroll', {
             'course_id': 1,
         }, **kwargs)
         self.assertEqual(response.status_code, 200)
@@ -128,18 +128,18 @@ class EnrolmentTestCase(TestCase):
         self.assertEqual(array['message'], 'record does not exist')
         self.assertEqual(array['status'], 'failed')
 
-    def test_disenrol_with_enrolment(self):
+    def test_disenroll_with_enrollment(self):
         client = Client()
         client.login(
             username=TEST_USER_USERNAME,
             password=TEST_USER_PASSWORD
         )
         kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
-        response = client.post('/disenrol', {
+        response = client.post('/disenroll', {
             'course_id': 1,
         }, **kwargs)
         self.assertEqual(response.status_code, 200)
         json_string = response.content.decode(encoding='UTF-8')
         array = json.loads(json_string)
-        self.assertEqual(array['message'], 'disenroled')
+        self.assertEqual(array['message'], 'disenrolled')
         self.assertEqual(array['status'], 'success')

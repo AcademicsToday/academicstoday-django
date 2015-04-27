@@ -9,7 +9,7 @@ You can financially support the project by either:
 * Dash donations: XcNwdbXmEdnm4ErQuK8A9UkcTwTkUGf7ML 
 
 ## Features
-* Students log in and enrol in the provided courses
+* Students log in and enroll in the provided courses
 * Watch educational online videos lectures for courses
 * Fill out quizzes tests and assignments to get graded on
 * Earn certificates of completion of courses

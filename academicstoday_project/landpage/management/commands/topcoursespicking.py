@@ -5,7 +5,7 @@ from registrar.models import Course
 from landpage.models import LandpageTopPickCourse
 
 class Command(BaseCommand):
-    help = 'Picks the top 9 courses with the highest student enrolment.'
+    help = 'Picks the top 9 courses with the highest student enrollment.'
     
     def handle(self, *args, **options):
         """

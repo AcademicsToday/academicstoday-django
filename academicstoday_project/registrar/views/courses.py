@@ -54,15 +54,15 @@ def courses_page(request):
 
 
 @login_required()
-def enrol(request):
+def enroll(request):
     response_data = {'status' : 'failure', 'message' : 'unsupported request format'}
     if request.is_ajax():
         course_id = int(request.POST['course_id'])
         student = Student.objects.get(user=request.user)
         course = Course.objects.get(id=course_id)
 
-        # Lookup the course in the students enrolment history and if the
-        # student is not enrolled, then enrol them now.
+        # Lookup the course in the students enrollment history and if the
+        # student is not enrolled, then enroll them now.
         try:
             Course.objects.get(
                 students__student_id=student.student_id,

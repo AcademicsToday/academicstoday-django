@@ -16,7 +16,7 @@ from registrar.forms import CourseForm
 
 
 @login_required(login_url='/landpage')
-def enrolment_page(request):
+def enrollment_page(request):
     # Create our student account which will build our registration around.
     try:
         student = Student.objects.get(user=request.user)
@@ -26,18 +26,18 @@ def enrolment_page(request):
         courses = Course.objects.filter(students__student_id=student.student_id)
     except Course.DoesNotExist:
         courses = None
-    return render(request, 'registrar/enrolment/view.html',{
+    return render(request, 'registrar/enrollment/view.html',{
         'student' : student,
         'courses': courses,
         'user' : request.user,
-        'tab' : 'enrolment',
+        'tab' : 'enrollment',
         'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
         'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS
     })
 
 
 @login_required()
-def enrolment_table(request):
+def enrollment_table(request):
     # Create our student account which will build our registration around.
     try:
         student = Student.objects.get(user=request.user)
@@ -47,11 +47,11 @@ def enrolment_table(request):
         courses = Course.objects.filter(students__student_id=student.student_id)
     except Course.DoesNotExist:
         courses = None
-    return render(request, 'registrar/enrolment/table.html',{
+    return render(request, 'registrar/enrollment/table.html',{
         'student' : student,
         'courses': courses,
         'user' : request.user,
-        'tab' : 'enrolment',
+        'tab' : 'enrollment',
     })
 
 @login_required()
@@ -67,18 +67,18 @@ def disenroll_modal(request):
         course = Course.objects.get(id=course_id)
     except Course.DoesNotExist:
         course = None
-    return render(request, 'registrar/enrolment/disenroll_modal.html',{
+    return render(request, 'registrar/enrollment/disenroll_modal.html',{
         'student' : student,
         'course': course,
         'user' : request.user,
-        'tab' : 'enrolment',
+        'tab' : 'enrollment',
         'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
         'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS
     })
 
 
 @login_required()
-def disenrol(request):
+def disenroll(request):
     response_data = {'status' : 'failure', 'message' : 'unsupported request format'}
     if request.is_ajax():
         course_id = int(request.POST['course_id'])
@@ -86,7 +86,7 @@ def disenrol(request):
         try:
             course = Course.objects.get(id=course_id)
             course.students.remove(student)
-            response_data = {'status' : 'success', 'message' : 'disenroled' }
+            response_data = {'status' : 'success', 'message' : 'disenrolled' }
         except Course.DoesNotExist:
             response_data = {'status' : 'failed', 'message' : 'record does not exist' }
     return HttpResponse(json.dumps(response_data), content_type="application/json")

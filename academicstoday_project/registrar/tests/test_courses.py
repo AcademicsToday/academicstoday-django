@@ -71,13 +71,13 @@ class TeachingTestCase(TestCase):
         response = client.post('/courses')
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'Comics Book Course',response.content)
-        self.assertIn(b'ajax_enrol(1);',response.content)
+        self.assertIn(b'ajax_enroll(1);',response.content)
 
-    def test_url_resolves_to_enrol(self):
-        found = resolve('/enrol')
-        self.assertEqual(found.func, courses.enrol)
+    def test_url_resolves_to_enroll(self):
+        found = resolve('/enroll')
+        self.assertEqual(found.func, courses.enroll)
 
-    def test_enrol(self):
+    def test_enroll(self):
         user = User.objects.get(email=TEST_USER_EMAIL)
         teacher = Teacher.objects.get(user=user)
         student = Student.objects.get(user=user)
@@ -96,7 +96,7 @@ class TeachingTestCase(TestCase):
             password=TEST_USER_PASSWORD
         )
         kwargs = {'HTTP_X_REQUESTED_WITH':'XMLHttpRequest'}
-        response = client.post('/enrol',{
+        response = client.post('/enroll',{
             'course_id': 1,
         }, **kwargs)
         self.assertEqual(response.status_code, 200)

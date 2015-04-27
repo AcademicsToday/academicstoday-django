@@ -5,12 +5,12 @@
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">
-                    Enrolment
+                    Enrollment
                     <small>The classes which you are a student of</small>
                 </h1>
                 <ol class="breadcrumb">
                     <li class="active">
-                        <i class="fa fa-bookmark"></i> Enrolment
+                        <i class="fa fa-bookmark"></i> Enrollment
                     </li>
                 </ol>
             </div>
@@ -21,7 +21,7 @@
 
         <div class="jumbotron">
             <h1>Become a Student!</h1>
-            <p>Learn, grow and become a better person. Enrol in a class and start today!</p>
+            <p>Learn, grow and become a better person. Enroll in a class and start today!</p>
             <p><a href="/courses"
                  class="btn btn-primary btn-lg"
                   role="button">Find Courses »</a>
@@ -38,7 +38,7 @@
                       <div class="table-responsive">
                           <div id="ajax_table_placeholder"
                              name="ajax_table_placeholder">
-                             {% include 'registrar/enrolment/table.html' %}
+                             {% include 'registrar/enrollment/table.html' %}
                           </div>
                       </div>
                     </div>
@@ -56,9 +56,9 @@
 <!-- end modal -->
 
 <script>
-    function ajax_refresh_enrolments_table()
+    function ajax_refresh_enrollments_table()
     {
-        $.ajax( 'enrolment_table', {
+        $.ajax( 'enrollment_table', {
             data: {
                'csrfmiddlewaretoken': '{{ csrf_token }}',
             },
@@ -78,7 +78,7 @@
     
     function ajax_continue_course(course_id)
     {
-        var url = 'enrol';
+        var url = 'enroll';
     
         $.ajax( url, {
            data: {
