@@ -128,6 +128,7 @@ USE_L10N = True
 USE_TZ = False
 
 
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
@@ -137,11 +138,13 @@ STATICFILES_DIRS = (
 )
 
 
+
 # User uploaded content.
 #
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
 
 
 # JavaScript Libraries
@@ -189,6 +192,7 @@ AGENCY_JS_LIBRARY_URLS = [
 ]
 
 
+
 # Custom Constants
 #
 
@@ -220,3 +224,10 @@ BLIPTV_VIDEO_PLAYER = '3'
 # File Upload Types
 UNKNOWN_FILE_UPLOAD_TYPE = 0
 PDF_FILE_UPLOAD_TYPE = 1
+
+
+
+# Application Specific Settings
+#
+APPLICATION_HAS_ADVERTISMENT = False
+APPLICATION_HAS_PUBLIC_ACCESS_TO_TEACHERS = True
