@@ -29,6 +29,7 @@ urlpatterns = patterns('',
     url(r'^terms$', terms.terms_page),
     url(r'^privacy', privacy.privacy_page),
     url(r'^forgot_password$', forgot_password.forgot_password_page),
+    url(r'^reset_password$', forgot_password.reset_password),
 )
 
 # Captchas

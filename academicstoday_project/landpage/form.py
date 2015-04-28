@@ -48,5 +48,14 @@ class RegisterForm(forms.Form):
             raise forms.ValidationError("Passwords do not match.")
         return password_repeated
 
+class ForgotPasswordForm(forms.Form):
+    email = forms.EmailField(
+        label='Email',
+        max_length=100,
+        widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Enter Email'}),
+    )
+    captcha = CaptchaField()
+
+
 # Captcha Setup:
 # http://django-simple-captcha.readthedocs.org/en/latest/usage.html#installation
