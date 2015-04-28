@@ -86,6 +86,12 @@ We are almost done! Just follow these instructions and the database will be setu
 5. Your database "academicstoday_db" is now setup with an admin user account "django" using the passowrd "123password”. 
 
 ### Application + Database
+Run the following command to create your custom settings instance. Note: Please write all your application passwords here as it won't be tracked on git.
+  ```
+  $ cd academicstoday_project/academicstoday_project
+  $ cp secret_settings_example.py secret_settings.py
+  ```
+
 Run the following commands to populate the database.
   ```
   $ cd academicstoday_project
