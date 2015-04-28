@@ -141,4 +141,4 @@ docs/_build/
 # that you set when you where setting up the project.
 academicstoday-env/  
 *.cfg
-secret_settings.py # Do not track application passwords!
+py-academicstoday/academicstoday_project/academicstoday_project/secret_settings.py
