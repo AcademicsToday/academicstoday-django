@@ -141,4 +141,4 @@ docs/_build/
 # that you set when you where setting up the project.
 academicstoday-env/  
 *.cfg
-py-academicstoday/academicstoday_project/academicstoday_project/secret_settings.py
+academicstoday_project/academicstoday_project/secret_settings.py
