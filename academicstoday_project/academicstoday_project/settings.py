@@ -16,17 +16,23 @@ import sys
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Import variables for our application. Basically all imported variables
+# have a SECRET_* prefix.
+try:
+    from academicstoday_project.secret_settings import *
+except ImportError:
+    pass
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '+hjm%=(6hyfz+jh+n9w3_)=#4obtl=xtn37@0fm_m3k9f7)rp7'
+SECRET_KEY = SECRET_SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = SECRET_DEBUG
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = SECRET_ALLOWED_HOSTS
 
 
 # Application definition
@@ -92,8 +98,8 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
         "NAME": "academicstoday_db",
-        "USER": "django",
-        "PASSWORD": "123password",
+        "USER": SECRET_DB_USER,
+        "PASSWORD": SECRET_DB_PASSWORD,
         "HOST": "localhost",
         "PORT": "5432",
     }
@@ -105,10 +111,10 @@ DATABASES = {
 # http://stackoverflow.com/questions/19264907/python-django-gmail-smtp-setup
 
 EMAIL_USE_TLS = True
-EMAIL_HOST = ''
-EMAIL_PORT = 587
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST = SECRET_EMAIL_HOST
+EMAIL_PORT = SECRET_EMAIL_PORT
+EMAIL_HOST_USER = SECRET_EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = SECRET_EMAIL_HOST_PASSWORD
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 DEFAULT_TO_EMAIL = EMAIL_HOST_USER
 
@@ -223,10 +229,3 @@ BLIPTV_VIDEO_PLAYER = '3'
 # File Upload Types
 UNKNOWN_FILE_UPLOAD_TYPE = 0
 PDF_FILE_UPLOAD_TYPE = 1
-
-
-
-# Application Specific Settings
-#
-APPLICATION_HAS_ADVERTISMENT = False
-APPLICATION_HAS_PUBLIC_ACCESS_TO_TEACHERS = True
