@@ -26,6 +26,7 @@ def quizzes_page(request, course_id):
         'course' : course,
         'user' : request.user,
         'tab' : 'quizzes',
+        'HAS_ADVERTISMENT': settings.APPLICATION_HAS_ADVERTISMENT,
         'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
         'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS,
     })
@@ -45,9 +46,6 @@ def quizzes_table(request, course_id):
         'course' : course,
         'quizzes' : quizzes,
         'user' : request.user,
-        'tab' : 'quizzes',
-        'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
-        'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS,
     })
 
 
@@ -131,6 +129,7 @@ def quiz_page(request, course_id, quiz_id):
         'RESPONSE_QUESTION_TYPE': settings.RESPONSE_QUESTION_TYPE,
         'user' : request.user,
         'tab' : 'quiz',
+        'HAS_ADVERTISMENT': settings.APPLICATION_HAS_ADVERTISMENT,
         'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
         'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS,
     })
@@ -148,18 +147,15 @@ def questions_table(request, course_id, quiz_id):
         tf_questions = None
 
     return render(request, 'teacher/quiz/question_table.html',{
-                  'teacher' : teacher,
-                  'course' : course,
-                  'quiz' : quiz,
-                  'tf_questions' : tf_questions,
-                  'ESSAY_QUESTION_TYPE': settings.ESSAY_QUESTION_TYPE,
-                  'MULTIPLECHOICE_QUESTION_TYPE': settings.MULTIPLECHOICE_QUESTION_TYPE,
-                  'TRUEFALSE_QUESTION_TYPE': settings.TRUEFALSE_QUESTION_TYPE,
-                  'RESPONSE_QUESTION_TYPE': settings.RESPONSE_QUESTION_TYPE,
-                  'user' : request.user,
-                  'tab' : 'quiz',
-                  'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
-                  'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS,
+        'teacher' : teacher,
+        'course' : course,
+        'quiz' : quiz,
+        'tf_questions' : tf_questions,
+        'ESSAY_QUESTION_TYPE': settings.ESSAY_QUESTION_TYPE,
+        'MULTIPLECHOICE_QUESTION_TYPE': settings.MULTIPLECHOICE_QUESTION_TYPE,
+        'TRUEFALSE_QUESTION_TYPE': settings.TRUEFALSE_QUESTION_TYPE,
+        'RESPONSE_QUESTION_TYPE': settings.RESPONSE_QUESTION_TYPE,
+        'user' : request.user,
     })
 
 

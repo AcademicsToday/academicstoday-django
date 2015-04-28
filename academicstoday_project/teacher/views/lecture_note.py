@@ -27,6 +27,7 @@ def lecture_notes_page(request, course_id, lecture_id):
         'lecture' : lecture,
         'user' : request.user,
         'tab' : 'lecture_notes',
+        'HAS_ADVERTISMENT': settings.APPLICATION_HAS_ADVERTISMENT,
         'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
         'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS,
     })
@@ -42,9 +43,6 @@ def lecture_notes_table(request, course_id, lecture_id):
         'course' : course,
         'lecture' : lecture,
         'user' : request.user,
-        'tab' : 'lectures',
-        'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
-        'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS,
     })
 
 

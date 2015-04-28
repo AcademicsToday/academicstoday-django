@@ -30,6 +30,7 @@ def credit_page(request, course_id):
         'final_mark': final_mark,
         'user' : request.user,
         'tab' : 'credit',
+        'HAS_ADVERTISMENT': settings.APPLICATION_HAS_ADVERTISMENT,
         'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
         'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS,
     })
@@ -126,6 +127,4 @@ def error_credits_modal(request, course_id, submission_id):
             # Check to see if any fields where missing from the form.
             return render(request, 'course/peer_review/review_modal.html',{
                 'user': request.user,
-                'local_css_urls': settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
-                'local_js_urls': settings.SB_ADMIN_2_JS_LIBRARY_URLS,
             })

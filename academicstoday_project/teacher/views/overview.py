@@ -83,6 +83,7 @@ def overview_page(request, course_id):
         'COURSE_REJECTED_STATUS': settings.COURSE_REJECTED_STATUS,
         'user': request.user,
         'tab': 'overview',
+        'HAS_ADVERTISMENT': settings.APPLICATION_HAS_ADVERTISMENT,
         'local_css_urls': settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
         'local_js_urls': settings.SB_ADMIN_2_JS_LIBRARY_URLS,
     })

@@ -27,8 +27,6 @@ try:
 except ImportError:
     pass
 
-
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
@@ -94,7 +92,7 @@ WSGI_APPLICATION = 'academicstoday_project.wsgi.application'
 
 
 # Captcha App
-
+#
 if 'test' in sys.argv:
     CAPTCHA_TEST_MODE = True
 

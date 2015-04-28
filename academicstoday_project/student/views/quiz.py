@@ -72,6 +72,7 @@ def quizzes_page(request, course_id):
         'RESPONSE_QUESTION_TYPE' : settings.RESPONSE_QUESTION_TYPE,
         'tab' : 'quizzes',
         'subtab' : '',
+        'HAS_ADVERTISMENT': settings.APPLICATION_HAS_ADVERTISMENT,
         'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
         'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS,
     })
@@ -89,10 +90,6 @@ def quizzes_table(request, course_id):
         'MULTIPLECHOICE_QUESTION_TYPE' : settings.MULTIPLECHOICE_QUESTION_TYPE,
         'TRUEFALSE_QUESTION_TYPE' : settings.TRUEFALSE_QUESTION_TYPE,
         'RESPONSE_QUESTION_TYPE' : settings.RESPONSE_QUESTION_TYPE,
-        'tab' : 'quizzes',
-        'subtab' : '',
-        'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
-        'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS,
     })
 
 
@@ -160,6 +157,7 @@ def quiz_page(request, course_id, quiz_id):
         'RESPONSE_QUESTION_TYPE' : settings.RESPONSE_QUESTION_TYPE,
         'tab' : 'quiz',
         'subtab' : '',
+        'HAS_ADVERTISMENT': settings.APPLICATION_HAS_ADVERTISMENT,
         'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
         'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS,
     })

@@ -29,6 +29,7 @@ def discussion_page(request, course_id):
         'threads': threads,
         'user': request.user,
         'tab': 'discussion',
+        'HAS_ADVERTISMENT': settings.APPLICATION_HAS_ADVERTISMENT,
         'local_css_urls': settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
         'local_js_urls': settings.SB_ADMIN_2_JS_LIBRARY_URLS,
     })
@@ -47,9 +48,6 @@ def threads_table(request, course_id):
         'course': course,
         'threads': threads,
         'user': request.user,
-        'tab': 'discussion',
-        'local_css_urls': settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
-        'local_js_urls': settings.SB_ADMIN_2_JS_LIBRARY_URLS,
     })
 
 
@@ -61,9 +59,6 @@ def new_thread_modal(request, course_id):
         'course': course,
         'form': form,
         'user': request.user,
-        'tab': 'discussion',
-        'local_css_urls': settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
-        'local_js_urls': settings.SB_ADMIN_2_JS_LIBRARY_URLS,
     })
 
 
@@ -123,6 +118,7 @@ def thread_page(request, course_id, thread_id):
         'thread': thread,
         'user': request.user,
         'tab': 'thread',
+        'HAS_ADVERTISMENT': settings.APPLICATION_HAS_ADVERTISMENT,
         'local_css_urls': settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
         'local_js_urls': settings.SB_ADMIN_2_JS_LIBRARY_URLS,
     })
@@ -144,9 +140,6 @@ def posts_table(request, course_id, thread_id):
         'course': course,
         'thread': thread,
         'user': request.user,
-        'tab': 'thread',
-        'local_css_urls': settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
-        'local_js_urls': settings.SB_ADMIN_2_JS_LIBRARY_URLS,
     })
 
 
@@ -163,9 +156,6 @@ def new_post_modal(request, course_id, thread_id):
         'form': form,
         'thread': thread,
         'user': request.user,
-        'tab': 'discussion',
-        'local_css_urls': settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
-        'local_js_urls': settings.SB_ADMIN_2_JS_LIBRARY_URLS,
     })
 
 

@@ -45,8 +45,23 @@
             <!-- MAIN -->
             <div id="page-wrapper" style="min-height: 564px;">
                 <div class="container-fluid">
+                    {% if HAS_ADVERTISMENT %}
+                    <!-- Ads -->
+                    <br/>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div style="text-align: center;">
+                                <script type="text/javascript" src="http://srvpub.com/adServe/banners?tid=31830_45942_5&size=468x60" ></script>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.Ads-->
+                    {% endif %}
+                    
+                    <!-- Content -->
                     {% block content %}
                     {% endblock %}
+                    <!-- /.Content -->
                 </div><!-- /.container-fluid -->
             </div>
         

@@ -34,6 +34,7 @@ def certificates_page(request):
         'marks': marks,
         'user': request.user,
         'tab': 'certificates',
+        'HAS_ADVERTISMENT': settings.APPLICATION_HAS_ADVERTISMENT,
         'local_css_urls': settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
         'local_js_urls': settings.SB_ADMIN_2_JS_LIBRARY_URLS
     })
@@ -55,9 +56,6 @@ def certificates_table(request):
         'student': student,
         'marks': marks,
         'user': request.user,
-        'tab': 'certificates',
-        'local_css_urls': settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
-        'local_js_urls': settings.SB_ADMIN_2_JS_LIBRARY_URLS
     })
 
 
@@ -97,6 +95,7 @@ def certificate_page(request, credit_id):
         'mark': mark,
         'user': request.user,
         'tab': 'certificates',
+        'HAS_ADVERTISMENT': settings.APPLICATION_HAS_ADVERTISMENT,
         'local_css_urls': settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
         'local_js_urls': settings.SB_ADMIN_2_JS_LIBRARY_URLS
     })

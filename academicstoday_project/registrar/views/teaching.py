@@ -32,6 +32,7 @@ def teaching_page(request):
         'courses': courses,
         'user' : request.user,
         'tab' : 'teaching',
+        'HAS_ADVERTISMENT': settings.APPLICATION_HAS_ADVERTISMENT,
         'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
         'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS
     })
@@ -52,9 +53,6 @@ def refresh_teaching_table(request):
         'teacher' : teacher,
         'courses': courses,
         'user' : request.user,
-        'tab' : 'teaching',
-        'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
-        'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS
     })
 
 

@@ -48,6 +48,7 @@ def courses_page(request):
         'teacher' : teacher,
         'user' : request.user,
         'tab' : 'courses',
+        'HAS_ADVERTISMENT': settings.APPLICATION_HAS_ADVERTISMENT,
         'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
         'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS
     })
