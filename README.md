@@ -94,7 +94,7 @@ Run the following command to create your custom settings instance. Note: Please 
 
 Run the following commands to populate the database.
   ```
-  $ cd academicstoday_project
+  $ cd ../academicstoday_project
   $ python manage.py makemigrations
   $ python manage.py migrate 
   $ python manage.py setup_academicstoday
