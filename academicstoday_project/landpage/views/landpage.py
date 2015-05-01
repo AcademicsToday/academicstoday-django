@@ -28,6 +28,7 @@ def landpage_page(request):
         'team_members' : team_members,
         'partners': partners,
         'contact_form': contact_form,
+        'HAS_ADVERTISMENT': settings.APPLICATION_HAS_ADVERTISMENT,
         'local_css_urls' : settings.AGENCY_CSS_LIBRARY_URLS,
         'local_js_urls' : settings.AGENCY_JS_LIBRARY_URLS
     })
