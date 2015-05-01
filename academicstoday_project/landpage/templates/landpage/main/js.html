@@ -101,6 +101,10 @@ function ajax_send_message()
                 // success code execution here
                 if (result.status == 'success')
                 {
+                    $('#id_contact_name_danger').html('');
+                    $('#id_contact_email_danger').html('');
+                    $('#id_contact_phone_danger').html('');
+                    $('#id_contact_message_danger').html('');
                     alert("Message sent!");
                     window.location = ''
                 }
