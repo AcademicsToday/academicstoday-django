@@ -1,5 +1,5 @@
 /* TEAM */
-        Chef: Bartlomiej Mika
+        Lead Developer: Bartlomiej Mika
         Contact: bartlomiej.mika [at] gmail.com
         Twitter: @@BartlomiejMika
         From: London, Ontario, Canada
@@ -9,11 +9,15 @@
         Twitter: @iamnotchad
         From London, Ontario, Canada
 
-        Editor: Sebastion Rydzewski
+        Vido Editor: Sebastion Rydzewski
         Contact: sibrislarenz [at] gmail.com
         Twitter: @srydzewski_AT
         From: London, Ontario, Canada
 
+/* SPECIAL THANKS */
+        Beta Tester: Rodolfo Martinez
+        Contact: rnmartinez [at] gmail.com
+        From: London Ontario, Canada
 
 /* THANKS */
         Thanks for checking us out!
