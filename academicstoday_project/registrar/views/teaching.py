@@ -100,11 +100,17 @@ def save_course(request):
                     return HttpResponse(json.dumps({
                         'status' : 'failed', 'message' : 'cannot find record'
                     }), content_type="application/json")
-                if course.image:
-                    if os.path.isfile(course.image.path):
-                        os.remove(course.image.path)
-                        course.image = None
-                        course.save()
+                
+                # Only delete the previous file if a new file is
+                # detected in this update.
+                if len(request.FILES) > 0:
+                    if course.image:
+                        if os.path.isfile(course.image.path):
+                            os.remove(course.image.path)
+                            course.image = None
+                            course.save()
+                
+                # Update model.
                 form = CourseForm(request.POST, request.FILES)
                 form.instance = course
             else:
