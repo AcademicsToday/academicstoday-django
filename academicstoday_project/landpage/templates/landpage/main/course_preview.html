@@ -7,28 +7,28 @@
                 <h2 class="modal-title" id="myModalLabel">Preview</h2>
             </div>
             <div class="modal-body">
-                {% if course == None %}
-                <h2>ERROR</h2>
-                <p>No course preview entered!</p>
-                {% else %}
-                <div class="row clearfix profile-row">
-                    <form id='course_preview_form'>
-                        <input type="hidden" id="id" name="id" value="{{ course_preview.id }}">
-                        <div class="col-lg-8 col-lg-offset-2">
-                            <!-- Project Details Go Here -->
-                            <h2> {{ course.title }}</h2>
-                            <p class="item-intro text-muted">{{ course.sub_title }}</p>
-                            {% if course.image != None and course.image != '' %}
-                            <img class="img-responsive" src="{{ course.image.url }}" alt="">
-                            {% else %}
-                            <p>Missing Image!</p>
-                            {% endif %}
-                            <!-- Use this area to describe your project. -->
-                            {{ course.description }}
-                        </div>
-                    </form>
+                <!-- Course Picture -->
+                <div class="col-lg-12">
+                    {% if course.image != None and course.image != '' %}
+                    <img src="{{ course.image.url }}" height="100%" width="100%" />
+                    {% else %}
+                    Missing Image!
+                    {% endif %}
                 </div>
-                {% endif %}
+                <!-- Course Info -->
+                <div class="col-lg-12 text-left">
+                    <h2>{{ course.title }}<br/>
+                        {% if teacher == course.teacher %}
+                        <small>[You cannot enroll in a class you currently teach!]</small>
+                        {% else %}
+                        <small>{{ course.sub_title }}</small>
+                        {% endif %}
+                    </h2>
+                    {% if course.is_official %}<p align="left"><span class="badge">Offical</span></p>{% endif %}
+                    <p>{{ course.description }}<p>
+                    <p>Durration: {{ course.start_date }} to {{ course.finish_date }}</p>
+                </div>
+                <!-- /.Course Info -->
             </div>
             <div class="modal-footer">
                 <button type="button"
@@ -36,7 +36,7 @@
                 data-dismiss="modal"
                         form="course_preview_form"
                      onclick="">
-                    <i class="fa fa-times"></i> Close Project
+                    <i class="fa fa-times"></i> Close
                 </button>
             </div>
         </div>

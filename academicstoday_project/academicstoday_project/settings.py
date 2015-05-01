@@ -141,18 +141,14 @@ USE_TZ = False
 
 
 
-# Static files (CSS, JavaScript, Images)
+# Static files (CSS, JavaScript, Images) & Upload Content
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "media"),
 )
-
-
-
-# User uploaded content.
-#
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
