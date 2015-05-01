@@ -2,11 +2,54 @@ from django.db import models
 from django import forms
 from captcha.fields import CaptchaField
 
+class ContactForm(forms.Form):
+    name = forms.CharField(
+        label='Name',
+        max_length=64,
+        widget=forms.TextInput(
+            attrs={
+                'class':'form-control',
+                'placeholder':'Your Name *'
+            }
+        ),
+    )
+    email = forms.EmailField(
+        label='Email',
+        max_length=64,
+        widget=forms.TextInput(
+            attrs={
+                'class':'form-control',
+                'placeholder':'Your Email *',
+            }
+        ),
+    )
+    phone = forms.CharField(
+        label='Phone',
+        max_length=31,
+        widget=forms.TextInput(
+            attrs={
+                'class':'form-control',
+                'placeholder':'Your Phone *'
+            }
+        ),
+    )
+    message = forms.CharField(
+        label='Message',
+        max_length=255,
+        widget=forms.Textarea(
+            attrs={
+                'class':'form-control',
+                'placeholder':'Your Message *'
+            }
+        ),
+    )
+
+
 class RegisterForm(forms.Form):
     first_name = forms.CharField(
         label='First Name',
         max_length=100,
-        widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Enter Last Name'}),
+        widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Enter First Name'}),
     )
     last_name = forms.CharField(
         label='Last Name',

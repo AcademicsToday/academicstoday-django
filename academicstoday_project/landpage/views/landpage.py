@@ -9,6 +9,7 @@ from landpage.models import LandpageContactMessage
 from landpage.models import LandpagePartner
 from registrar.models import Course
 from landpage.form import RegisterForm
+from landpage.form import ContactForm
 
 import json
 from django.http import HttpResponse
@@ -20,11 +21,13 @@ def landpage_page(request):
     course_previews = LandpageCoursePreview.objects.all()
     team_members = LandpageTeamMember.objects.all().order_by('id')
     partners = LandpagePartner.objects.all()
+    contact_form = ContactForm()
     return render(request, 'landpage/main/index.html',{
         'top_courses': top_courses,
         'course_previews' : course_previews,
         'team_members' : team_members,
         'partners': partners,
+        'contact_form': contact_form,
         'local_css_urls' : settings.AGENCY_CSS_LIBRARY_URLS,
         'local_js_urls' : settings.AGENCY_JS_LIBRARY_URLS
     })
@@ -50,19 +53,26 @@ def save_contact_us_message(request):
     if request.is_ajax():
         if request.method == 'POST':
             try:
-                name = request.POST['name']
-                email = request.POST['email']
-                phone = request.POST['phone']
-                message = request.POST['message']
+                form = ContactForm(request.POST)
+            
+                # Validate the form: the captcha field will automatically
+                # check the input
+                if form.is_valid():
+                    name = request.POST['name']
+                    email = request.POST['email']
+                    phone = request.POST['phone']
+                    message = request.POST['message']
                 
-                LandpageContactMessage.objects.create(
-                    name=name,
-                    email=email,
-                    phone=phone,
-                    message=message,
-                ).save()
-                
-                response_data = {'status' : 'success', 'message' : 'saved'}
+                    # Save our message.
+                    LandpageContactMessage.objects.create(
+                        name=name,
+                        email=email,
+                        phone=phone,
+                        message=message,
+                    ).save()
+                    response_data = {'status' : 'success', 'message' : 'saved'}
+                else:
+                    response_data = {'status' : 'failed', 'message' : json.dumps(form.errors)}
             except:
                 response_data = {
                     'status' : 'failure',
