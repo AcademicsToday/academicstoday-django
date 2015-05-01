@@ -1,5 +1,6 @@
 from django.db import models
 from django import forms
+from django.core.exceptions import ValidationError
 from captcha.fields import CaptchaField
 
 class ContactForm(forms.Form):
@@ -43,6 +44,21 @@ class ContactForm(forms.Form):
             }
         ),
     )
+
+    def clean_phone(self):
+        phone = self.cleaned_data.get('phone', None)
+        
+        # clean phone by removing all non-numerals
+        phone = ''.join(x for x in phone if x.isdigit())
+        
+        ph_length = str(phone)
+        min_length = 10
+        max_length = 13
+        if len(ph_length) < min_length:
+            raise ValidationError('Please enter 10 digit phone number.')
+        if len(ph_length) > max_length:
+            raise ValidationError('Phone number must be at maxium 13 digits long')
+        return phone
 
 
 class RegisterForm(forms.Form):
