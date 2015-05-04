@@ -21,8 +21,7 @@ You can financially support the project by either:
 * virtualenv 12.1.1+
 
 ## Dependencies
-* Django 1.8
-* psycogp2 2.6
+See [requirements.txt](https://github.com/AcademicsToday/py-academicstoday/blob/master/requirements.txt) for more information.
 
 ## Build Instructions
 ### Application
