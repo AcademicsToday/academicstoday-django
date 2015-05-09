@@ -86,15 +86,16 @@ function ajax_popup_register()
  */
 function ajax_send_message()
 {
-    var url = 'save_contact_us_message';
-    
-    $.ajax( url, {
+    $('#id_send_msg_btn').prop("disabled", true);
+    $.ajax( 'save_contact_us_message', {
            data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
                 'name': $("#id_name").val(),
                 'email': $("#id_email").val(),
                 'phone': $("#id_phone").val(),
-                'message': $("#id_message").val()
+                'message': $("#id_message").val(),
+                'captcha_0': $("#id_captcha_0").val(),
+                'captcha_1': $("#id_captcha_1").val(),
            },
            type: 'post',
            success: function(result) {
@@ -105,16 +106,19 @@ function ajax_send_message()
                     $('#id_contact_email_danger').html('');
                     $('#id_contact_phone_danger').html('');
                     $('#id_contact_message_danger').html('');
+                    $('#id_contact_captcha_danger').html('');
                     alert("Message sent!");
                     window.location = ''
                 }
                 else
                 {
+                    refresh_captcha();
                     var data = $.parseJSON(result.message)
                     var name_msg = '';
                     var email_msg = '';
                     var phone_msg = '';
                     var message_msg = '';
+                    var captcha_msg = '';
                     for (var key in data) {
                         if (data.hasOwnProperty(key)) {
                             if (key == 'name')
@@ -133,6 +137,10 @@ function ajax_send_message()
                             {
                                 message_msg = data[key];
                             }
+                            if (key == 'captcha')
+                            {
+                                captcha_msg = data[key];
+                            }
                         }
                     }
            
@@ -140,6 +148,7 @@ function ajax_send_message()
                     $('#id_contact_email_danger').html(email_msg);
                     $('#id_contact_phone_danger').html(phone_msg);
                     $('#id_contact_message_danger').html(message_msg);
+                    $('#id_contact_captcha_danger').html(captcha_msg);
                 }
            },
            error: function(xhr,status,error) {
@@ -147,8 +156,36 @@ function ajax_send_message()
            },
            complete: function(xhr,status) {
                 // completion code here
+                $('#id_send_msg_btn').prop("disabled", false);
            }
     });
 }
 
+
+/**
+ * The following function will cause the captcha to refresh.
+ */
+function refresh_captcha()
+{
+    var url = location.protocol + "//" + window.location.hostname + ":" + location.port + "/captcha/refresh/";
+    
+    // Make the AJAX-call
+    $.getJSON(url, {}, function(json) {
+              //var $form = $('modal-body').parents('register_form');
+              var $form = $('#contactForm');
+              $form.find('input[name="captcha_0"]').val(json.key);
+              $form.find('img.captcha').attr('src', json.image_url);
+              });
+              return false;
+}
+
+// Add refresh button after field (this can be done in the template as well)
+$('img.captcha').after(
+    $('<a href="#void" class="captcha-refresh">Refresh</a>')
+);
+
+// Click-handler for the refresh-link
+$('.captcha-refresh').click(function(){
+    refresh_captcha();
+});
 </script>

@@ -1,49 +1,27 @@
+from datetime import date
 from django.db import models
 from django import forms
+from django.forms import ModelForm, Textarea, TextInput, NumberInput
+from django.forms.extras.widgets import Select, SelectDateWidget
+from django.forms.widgets import EmailInput
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from captcha.fields import CaptchaField
+from landpage.models import LandpageContactMessage
 
-class ContactForm(forms.Form):
-    name = forms.CharField(
-        label='Name',
-        max_length=64,
-        widget=forms.TextInput(
-            attrs={
-                'class':'form-control',
-                'placeholder':'Your Name *'
-            }
-        ),
-    )
-    email = forms.EmailField(
-        label='Email',
-        max_length=64,
-        widget=forms.TextInput(
-            attrs={
-                'class':'form-control',
-                'placeholder':'Your Email *',
-            }
-        ),
-    )
-    phone = forms.CharField(
-        label='Phone',
-        max_length=31,
-        widget=forms.TextInput(
-            attrs={
-                'class':'form-control',
-                'placeholder':'Your Phone *'
-            }
-        ),
-    )
-    message = forms.CharField(
-        label='Message',
-        max_length=255,
-        widget=forms.Textarea(
-            attrs={
-                'class':'form-control',
-                'placeholder':'Your Message *'
-            }
-        ),
-    )
+class ContactForm(forms.ModelForm):
+    captcha = CaptchaField()
+    class Meta:
+        model = LandpageContactMessage
+        fields = ['name','email', 'phone', 'message']
+        labels = {
+        }
+        widgets = {
+            'name': TextInput(attrs={'class': u'form-control','placeholder': u'Enter Full Name'}),
+            'email': EmailInput(attrs={'class': u'form-control','placeholder': u'Enter Email'}),
+            'phone': TextInput(attrs={'class': u'form-control','placeholder': u'Enter Phone'}),
+            'comment': Textarea(attrs={'class': u'form-control','placeholder': u'Enter Comment'}),
+    }
 
     def clean_phone(self):
         phone = self.cleaned_data.get('phone', None)
@@ -55,9 +33,9 @@ class ContactForm(forms.Form):
         min_length = 10
         max_length = 13
         if len(ph_length) < min_length:
-            raise ValidationError('Please enter 10 digit phone number.')
+            raise ValidationError('Must be 10 digit phone number.')
         if len(ph_length) > max_length:
-            raise ValidationError('Phone number must be at maxium 13 digits long')
+            raise ValidationError('Must be at maxium 13 digits long')
         return phone
 
 

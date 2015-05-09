@@ -91,6 +91,7 @@ class LandpageContactMessage(models.Model):
     email = models.EmailField()
     phone = models.CharField(max_length=63)
     message = models.TextField()
+    posted_date = models.DateTimeField(auto_now=True, null=True)
     
     def __str__(self):
         return self.name + " " + self.email + " " + self.phone
