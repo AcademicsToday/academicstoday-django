@@ -41,7 +41,9 @@ DEBUG = SECRET_DEBUG
 ALLOWED_HOSTS = SECRET_ALLOWED_HOSTS
 
 
+
 # Application definition
+#
 
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -91,10 +93,13 @@ TEMPLATES = [
 WSGI_APPLICATION = 'academicstoday_project.wsgi.application'
 
 
+
 # Captcha App
 #
 if 'test' in sys.argv:
     CAPTCHA_TEST_MODE = True
+CAPTCHA_FONT_SIZE = 52
+
 
 
 # Database
