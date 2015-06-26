@@ -26,7 +26,12 @@ class RegisterForm(forms.Form):
     email = forms.EmailField(
         label='Email',
         max_length=100,
-        widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Enter Email'}),
+        widget=forms.TextInput(attrs={
+            'autocorrect':'off',
+            'autocapitalize':'none',
+            'class':'form-control',
+            'placeholder':'Enter Email'
+        }),
         required=True,
     )
     password = forms.CharField(
