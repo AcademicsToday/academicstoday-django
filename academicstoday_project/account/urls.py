@@ -8,8 +8,6 @@ from account.views import setting
 from account.views import donate
 
 urlpatterns = patterns('',
-    url(r'^login$', login.login_authentication),
-    url(r'^logout$', login.logout_authentication),
     url(r'^profile$', profile.profile_page),
     url(r'^update_user$', profile.update_user),
     url(r'^inbox$', mail.mail_page),
