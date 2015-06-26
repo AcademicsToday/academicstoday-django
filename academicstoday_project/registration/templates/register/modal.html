@@ -5,7 +5,7 @@
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                 <h2 class="modal-title" id="myModalLabel">Register</h2>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" id="id_registration_form">
                 <form enctype="multipart/form-data" name="register_form" id="register_form">
                 {% for field in form %}
                     <div class="row">
@@ -69,17 +69,21 @@
      */
     function ajax_register()
     {
+        // Only fetch the information on the register modal.
+        var $form = $('#register_form');
+        
+        // Send registration AJAX call to the server.
         var url = 'register';
         $.ajax( url, {
             data: {
-               'first_name': $('#id_first_name').val(),
-               'last_name': $('#id_last_name').val(),
-               'electronic_mail': $('#id_electronic_mail').val(),
-               'password': $('#id_password').val(),
-               'password_repeated': $('#id_password_repeated').val(),
+               'first_name': $form.find('input[name="first_name"]').val(),
+               'last_name': $form.find('input[name="last_name"]').val(),
+               'email': $form.find('input[name="email"]').val(),
+               'password': $form.find('input[name="password"]').val(),
+               'password_repeated': $form.find('input[name="password_repeated"]').val(),
                'is_18_or_plus': $('#id_is_18_or_plus').is(':checked'),
-               'captcha_0': $('#id_captcha_0').val(),
-               'captcha_1': $('#id_captcha_1').val(),
+               'captcha_0': $form.find('input[name="captcha_0"]').val(),
+               'captcha_1': $form.find('input[name="captcha_1"]').val(),
                'csrfmiddlewaretoken': '{{ csrf_token }}'
             },
             type: 'POST',
@@ -90,8 +94,8 @@
                     // Send the username & password now that it's in the
                     // registery and then login.
                     ajax_authenticate(
-                        $('#id_electronic_mail').val(),
-                        $('#id_password').val()
+                        $form.find('input[name="email"]').val(),
+                        $form.find('input[name="password"]').val()
                     );
                }
                else
@@ -100,7 +104,6 @@
                
                     // Make the hidden error box appear and display error.
                     print_error(json_result.message);
-               
                }
             },
             error: function(xhr,status,error) {

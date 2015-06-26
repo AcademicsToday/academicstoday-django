@@ -88,6 +88,8 @@ SOUTH_DATABASE_ADAPTERS = {
 (12) Create an application.
 $ python manage.py startapp account
 $ python manage.py startapp landpage
+$ python manage.py startapp registration
+$ python manage.py startapp login
 $ python manage.py startapp registrar
 $ python manage.py startapp student
 $ python manage.py startapp teacher
@@ -106,6 +108,8 @@ INSTALLED_APPS = (
 'captcha',
 'account',
 'landpage',
+'registration',
+'login',
 'registrar',
 'student',
 'teacher',

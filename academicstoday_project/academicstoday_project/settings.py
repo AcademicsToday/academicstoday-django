@@ -55,6 +55,8 @@ INSTALLED_APPS = (
     'captcha',
     'account',
     'landpage',
+    'registration',
+    'login',
     'registrar',
     'student',
     'teacher',

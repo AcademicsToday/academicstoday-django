@@ -8,7 +8,6 @@ from landpage.models import CoursePreview
 from landpage.models import LandpageContactMessage
 from landpage.models import LandpagePartner
 from registrar.models import Course
-from landpage.form import RegisterForm
 from landpage.form import ContactForm
 
 import json

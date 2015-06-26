@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 import json
-from account.views import registration
+from . import views
 from captcha.models import CaptchaStore
 
 # Contants
@@ -17,6 +17,9 @@ TEST_USER_PASSWORD = "password"
 
 
 class RegistrationTestCase(TestCase):
+    """
+        python manage.py test registration
+    """
     def tearDown(self):
         User.objects.all().delete()
     
@@ -26,7 +29,7 @@ class RegistrationTestCase(TestCase):
 
     def test_url_resolves_to_register(self):
         found = resolve('/register')
-        self.assertEqual(found.func, registration.register)
+        self.assertEqual(found.func, views.register)
 
     def test_register_with_succesful_login(self):
         # Extra parameters to make this a Ajax style request.
@@ -44,7 +47,7 @@ class RegistrationTestCase(TestCase):
             'password_repeated': TEST_USER_PASSWORD,
             'first_name': 'Ledo',
             'last_name': 'Dunno',
-            'electronic_mail': TEST_USER_EMAIL,
+            'email': TEST_USER_EMAIL,
             'is_18_or_plus': True,
             'captcha_0': 'dummy-value',
             'captcha_1': 'PASSED',
@@ -56,7 +59,7 @@ class RegistrationTestCase(TestCase):
         # Verify: Successful response.
         json_string = response.content.decode(encoding='UTF-8')
         array = json.loads(json_string)
-        self.assertEqual(array['message'], 'successfully registered')
+        self.assertEqual(array['message'], 'user registered')
         self.assertEqual(array['status'], 'success')
 
         # Verify: Database updated
