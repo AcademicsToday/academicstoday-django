@@ -1,7 +1,4 @@
 from django.conf.urls import patterns, include, url
-
-from . import views
-from account.views import login
 from account.views import mail
 from account.views import profile
 from account.views import setting

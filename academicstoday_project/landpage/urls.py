@@ -2,7 +2,6 @@ from django.conf.urls import patterns, include, url
 
 from landpage.views import txt
 from landpage.views import landpage
-from landpage.views import login
 from landpage.views import privacy
 from landpage.views import terms
 from landpage.views import forgot_password
@@ -17,9 +16,6 @@ urlpatterns = patterns('',
     url(r'^landpage$', landpage.landpage_page),
     url(r'^course_preview_modal$', landpage.course_preview_modal),
     url(r'^save_contact_us_message$', landpage.save_contact_us_message),
-
-    # Login
-    url(r'^login_modal$', login.login_modal),
                        
     # Off-Convas Stuff
     url(r'^terms$', terms.terms_page),
