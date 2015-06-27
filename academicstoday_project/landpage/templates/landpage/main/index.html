@@ -115,8 +115,14 @@
                             <i class="fa fa-plus fa-3x"></i>
                         </div>
                     </div>
+                    {% if top_pick.course.image == '' %}
+                    <img src="{% static 'img/dummy.png' %}"
+                        class="img-responsive" alt="">
+                    {% else %}
                     <img src="{{ top_pick.course.image.url }}"
-                       class="img-responsive" alt="">
+                        class="img-responsive" alt="">
+                    {% endif %}
+                    
                         </a>
                 <div class="portfolio-caption">
                     <h4>{{ top_pick.course.title }}</h4>

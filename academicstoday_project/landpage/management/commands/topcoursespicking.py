@@ -33,9 +33,9 @@ class Command(BaseCommand):
         
         # Pick the top three courses and create our entries here
         index = 1
-        max_count = 2
+        max_count = 4
         for course_id in courses.keys():
-            if index < max_count:
+            if index < max_count:  # Pick top 3 courses.
                 course_obj = Course.objects.get(id=course_id)
                 LandpageTopPickCourse.objects.create(
                     id=index,
