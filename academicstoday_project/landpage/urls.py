@@ -5,11 +5,16 @@ from landpage.views import landpage
 from landpage.views import privacy
 from landpage.views import terms
 from landpage.views import forgot_password
+from landpage.views import google
 
 urlpatterns = patterns('',
     # Custom Files
     url(r'^robots\.txt$', txt.robots_txt_page),
     url(r'^humans\.txt$', txt.humans_txt_page),
+                       
+    # Google Verify
+    url(r'^googlee81f1c16590924d1.html$', google.google_verify_page),
+    url(r'^googlee81f1c16590924d1$', google.google_verify_page),
                        
     # Landpage
     url(r'^$', landpage.landpage_page),
