@@ -38,7 +38,7 @@ def lectures_table(request, course_id):
     teacher = Teacher.objects.get(user=request.user)
     
     try:
-        lectures = Lecture.objects.filter(course=course).order_by('-lecture_num')
+        lectures = Lecture.objects.filter(course=course).order_by('-week_num', '-lecture_num')
     except Lecture.DoesNotExist:
         lectures = None
     return render(request, 'teacher/lecture/table.html',{
