@@ -7,6 +7,7 @@ SB_ADMIN_2_CSS_LIBRARY_URLS = [
     "css/sb-admin-2.css",
     "bower_components/morrisjs/morris.css",
     "bower_components/font-awesome/css/font-awesome.min.css",
+    "js/jquery-te/1.4.0/jquery-te-1.4.0.css",
 ]
 
 SB_ADMIN_2_JS_LIBRARY_URLS = [
@@ -17,6 +18,7 @@ SB_ADMIN_2_JS_LIBRARY_URLS = [
 #    "bower_components/morrisjs/morris.min.js",
 #    "js/morris-data.js",
     "js/sb-admin-2.js",
+    "js/jquery-te/1.4.0/jquery-te-1.4.0.min.js",
 ]
 
 AGENCY_CSS_LIBRARY_URLS = [

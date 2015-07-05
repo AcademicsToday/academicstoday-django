@@ -9,7 +9,6 @@
                                   <tr>
                                       <th>Posted</th>
                                       <th>Title</th>
-                                      <th>Message</th>
                                       <th>
                                           <button onclick="ajax_announcement_modal(0);"
                                                        id="new_announcement_btn"
@@ -26,7 +25,6 @@
                               <tr>
                                   <td align="left" valign="left">{{ announcement.post_date }}</td>
                                   <td align="left" valign="left">{{ announcement.title }}</td>
-                                  <td align="left" valign="left">{{ announcement.body }}</td>
                                   <td align="left" valign="left">
                                       <button onclick="ajax_announcement_modal({{ announcement.announcement_id }});"
                                                    id="edit_{{ announcement.announcement_id }}_btn"

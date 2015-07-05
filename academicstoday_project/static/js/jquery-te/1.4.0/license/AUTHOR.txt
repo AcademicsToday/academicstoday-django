@@ -1,0 +1,6 @@
+﻿AUTHOR
+
+jQuery TE 1.4.0 , http://jqueryte.com/
+Copyright (C) 2013, Fatih Koca (fattih@fattih.com), (http://jqueryte.com/about)
+
+jQuery TE is provided under the MIT LICENSE.
