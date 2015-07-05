@@ -52,7 +52,7 @@
         data.append('csrfmiddlewaretoken', '{{ csrf_token }}');
         data.append('course_id', $('#id_id').val());
         data.append('title', $('#id_title').val());
-        data.append('sub_title', $('#id_title').val());
+        data.append('sub_title', $('#id_sub_title').val());
         data.append('category', $('#id_category').val());
         data.append('description', $('#id_description').val());
         data.append('image', document.getElementById('id_image').files[0]);
