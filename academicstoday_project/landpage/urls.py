@@ -30,10 +30,10 @@ urlpatterns = patterns('',
     url(r'^save_contact_us_message$', landpage.save_contact_us_message),
                        
     # Off-Convas Stuff
-    url(r'^terms$', terms.terms_page),
-    url(r'^privacy', privacy.privacy_page),
-    url(r'^forgot_password$', forgot_password.forgot_password_page),
-    url(r'^reset_password$', forgot_password.reset_password),
+    url(r'^terms$', terms.terms_page, name='terms'),
+    url(r'^privacy', privacy.privacy_page, name='privacy'),
+    url(r'^forgot_password$', forgot_password.forgot_password_page, name='forgot_password'),
+    url(r'^reset_password$', forgot_password.reset_password, name='reset_password'),
                        
     # Sitemap
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap')
