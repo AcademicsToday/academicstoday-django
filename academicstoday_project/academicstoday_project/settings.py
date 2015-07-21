@@ -40,6 +40,8 @@ DEBUG = SECRET_DEBUG
 
 ALLOWED_HOSTS = SECRET_ALLOWED_HOSTS
 
+# 'Sites Framework' requires this line.
+SITE_ID = 1
 
 
 # Application definition
@@ -52,6 +54,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'django.contrib.sitemaps',
     'captcha',
     'account',
     'landpage',
