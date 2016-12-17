@@ -15,7 +15,7 @@ xcuserdata
 *.moved-aside
 DerivedData
 *.hmap
-*.ipa
+a*.ipa
 *.xcuserstate
 
 # CocoaPods
@@ -26,9 +26,8 @@ DerivedData
 #
 # Pods/
 
-
 #—————————
-# OSX 
+# OSX
 #—————————
 .DS_Store
 .AppleDouble
@@ -36,7 +35,6 @@ DerivedData
 
 # Icon must end with two \r
 Icon
-
 
 # Thumbnails
 ._*
@@ -50,7 +48,6 @@ Icon
 .AppleDesktop
 Network Trash Folder
 Temporary Items
-
 
 #—————————
 # WINDOWS
@@ -71,20 +68,23 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 
-
 #—————————
 # LINUX
 #—————————
 # KDE directory preferences
 .directory
-
+.idea  # PyCharm
+*/.idea/
 
 #—————————
 # Python
 #—————————
 # Byte-compiled / optimized / DLL files
 __pycache__/
+__pycache__/*
+__pycache__
 *.py[cod]
+*.pyc
 
 # C extensions
 *.so
@@ -113,7 +113,10 @@ pip-delete-this-directory.txt
 .coverage
 .cache
 nosetests.xml
+coverage.txt
 coverage.xml
+coverage_html
+coverage_html/*
 
 # Translations
 *.mo
@@ -133,12 +136,22 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 
-
 #—————————————————————————————
 # Python VirtualEnv Directory
 #—————————————————————————————
 # Important Note: Make sure this is the name of the virtualenv directory
 # that you set when you where setting up the project.
-academicstoday-env/  
+env/
+env/*
+env
+.env
+*.cfg
+
+#—————————————————————————————
+# Application Specific Ignores
+#—————————————————————————————
+# Important Note: Make sure this is the name of the virtualenv directory
+# that you set when you where setting up the project.
+academicstoday-env/
 *.cfg
 academicstoday_project/academicstoday_project/secret_settings.py
