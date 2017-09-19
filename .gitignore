@@ -146,6 +146,7 @@ env/*
 env
 .env
 *.cfg
+env/*.json
 
 #—————————————————————————————
 # Application Specific Ignores
