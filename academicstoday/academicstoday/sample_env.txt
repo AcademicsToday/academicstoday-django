@@ -1,0 +1,37 @@
+#--------#
+# Django #
+#--------#
+SECRET_KEY=<<REPLACE WITH SOMESORT OF SECRET KEY>>>
+IS_DEBUG=True
+ALLOWED_HOSTS='*'
+ADMIN_NAME=<<REPLACE WITH YOUR NAME>>>
+ADMIN_EMAIL=<<REPLACE WITH YOUR EMAIL>>>
+
+#----------#
+# Database #
+#----------#
+DATABASE_URL=postgres://django:SOMEPASSWORD@localhost:5432/academicstoday_db
+DB_NAME=academicstoday_db
+DB_USER=django
+DB_PASSWORD=<<REPLACE WITH YOUR SOMEPASSWORD>>
+DB_HOST=localhost
+DB_PORT="5432"
+
+#-------#
+# Email #
+#-------#
+DEFAULT_TO_EMAIL=<REPLACE WITH YOUR EMAIL>>
+DEFAULT_FROM_EMAIL=<<REPLACE WITH YOUR EMAIL>>
+EMAIL_BACKEND=django.core.mail.backends.console.EmailBackend
+
+#----------------#
+# Django-Htmlmin #
+#----------------#
+HTML_MINIFY=True
+KEEP_COMMENTS_ON_MINIFYING=False
+
+#--------------------------------#
+# Application Specific Variables #
+#--------------------------------#
+ACADEMICSTODAY_APP_HTTP_PROTOCOL=http://
+ACADEMICSTODAY_APP_HTTP_DOMAIN=academicstoday.ca

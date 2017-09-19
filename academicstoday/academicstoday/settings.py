@@ -118,6 +118,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware', # Extra Django App
     'django.middleware.locale.LocaleMiddleware',              # Extra Django App
+    'htmlmin.middleware.HtmlMinifyMiddleware',                # Third Party
+    'htmlmin.middleware.MarkRequestMiddleware',               # Third Party
 ]
 
 ROOT_URLCONF = 'academicstoday.urls'
@@ -323,6 +325,13 @@ RQ_QUEUES = {
         'DEFAULT_TIMEOUT': 360,
     }
 }
+
+
+# django-htmlmin
+# https://github.com/cobrateam/django-htmlmin
+
+HTML_MINIFY = env_var("HTML_MINIFY")
+KEEP_COMMENTS_ON_MINIFYING = env_var("KEEP_COMMENTS_ON_MINIFYING")
 
 
 # Application Specific Variables #
