@@ -146,7 +146,7 @@ env/*
 env
 .env
 *.cfg
-env/*.json
+env/pip-selfcheck.json
 
 #—————————————————————————————
 # Application Specific Ignores
