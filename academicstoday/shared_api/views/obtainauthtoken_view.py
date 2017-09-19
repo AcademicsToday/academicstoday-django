@@ -1,6 +1,7 @@
 import django_filters
 from django.conf.urls import url, include
 from django.contrib.auth.models import User, Group
+from django.contrib.auth import authenticate, login, logout
 from django_filters import rest_framework as filters
 from django.http import Http404
 from rest_framework.views import APIView
@@ -35,8 +36,16 @@ class ObtainAuthTokenAPIView(APIView):
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
 
-        content = {
-            'token': str(token.key),
-        }
+        # Create a session for this User by logging this user in.
+        authenticated_user = authenticate(
+            username=user.email,
+            password=serializer['password'].value
+        )
+        login(self.request, authenticated_user)
 
-        return Response(content)
+        return Response(
+            data = {
+                'token': str(token.key),
+            },
+            status=status.HTTP_200_OK
+        )

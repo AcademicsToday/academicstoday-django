@@ -20,11 +20,12 @@
     //###################//
     // MEMBER VARIABLES  //
     //###################//
-    var fire_alarms = [];
+
 
     //###################//
     // MEMEBER FUNCTIONS //
     //###################//
+
 
     /**
      * Function will log the user out of the account.
@@ -70,7 +71,7 @@
 </p>
 <h4>List</h4>
 {% for university in universities %}
-    <a href="{% tenant_url university.schema_name 'at_tenant_university_launchpad_master' %}">{{ university }}</a>
+    <a href="{% tenant_url university.schema_name 'at_tenant_dashboard_master' %}">{{ university }}</a>
 {% endfor %}
 
 

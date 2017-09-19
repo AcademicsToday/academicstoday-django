@@ -25,20 +25,39 @@
     //###################//
     // MEMEBER FUNCTIONS //
     //###################//
+    
 
+    /**
+     * Function will log the user out of the account.
+     */
+    function perform_logout() {
+        // Attempt to log out.
+        api_post_logout(
+            function () {
+                window.location = "{% get_app_domain %}{% url 'at_login_master' %}";
+            }, function() {
+                alert("Failed logging out.");
+            }
+        );
+    }
 
     //###################//
     //    START JS APP   //
     //###################//
-
-    
     $(document).ready(function () {
+        var token = "{{ request.token }}";
+        console.log(token);
+
         //
         // (1) Prevent using this view if API key was not granted.
         //
         if (api_is_supported()) {
+
             if (!api_is_authenticated()) {
-                window.location = "{% get_app_domain %}{% url 'at_login_master' %}";
+
+
+
+                //window.location = "{% get_app_domain %}{% url 'at_login_master' %}";
             }
         } else {
             window.location = "{% get_app_domain %}";
@@ -48,13 +67,12 @@
 </script>
 <!-- end Include JS -->
 
-<h1>Found a University</h1>
 
-<strong>Submitted!</strong>
-<p>Please wait until we approve your university. You will receive an email.</p>
+<h1>Dashboard</h1>
+
 <br />
-
+<h3>Logout</h3>
 <p>
-    <a href="{% url 'at_dashboard_master' %}">Back</a>
+    <a onclick="perform_logout();">Sign off</a>
 </p>
 {% endblock content %}
