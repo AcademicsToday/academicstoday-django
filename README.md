@@ -21,7 +21,7 @@ See [requirements.txt](https://github.com/AcademicsToday/py-academicstoday/blob/
 ## Build Instructions
 To setup ``academicstoday-django`` on your system, then please read any of the following articles:
 
-1. [HOWTO: Setup Academics Today on MacOS for Development]()
+* [HOWTO: Setup Academics Today on MacOS for Development](https://github.com/AcademicsToday/academicstoday-django/wiki/Setup-Project-on-MacOS)
 
 ## Financial Support
 We appreciate any support you may provide.
