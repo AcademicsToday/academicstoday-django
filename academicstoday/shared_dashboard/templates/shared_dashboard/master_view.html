@@ -1,0 +1,79 @@
+{% extends 'shared_foundation/frontend_base.html' %}
+{% load staticfiles i18n foundation_tags %}
+
+{% block title %}
+{% trans 'Dashboard | Academics Today' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<!-- Include JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+ crossorigin="anonymous"></script>
+{% include 'shared_foundation/common_js.html' %}
+{% include 'shared_api/shared_api_view.html' %}
+<script>
+    //###################//
+    // MEMBER VARIABLES  //
+    //###################//
+    var fire_alarms = [];
+
+    //###################//
+    // MEMEBER FUNCTIONS //
+    //###################//
+
+    /**
+     * Function will log the user out of the account.
+     */
+    function perform_logout() {
+        // Attempt to log out.
+        api_post_logout(
+            function () {
+                window.location = "{% get_app_domain %}{% url 'at_login_master' %}";
+            }, function() {
+                alert("Failed logging out.");
+            }
+        );
+    }
+
+    //###################//
+    //    START JS APP   //
+    //###################//
+    $(document).ready(function () {
+        //
+        // (1) Prevent using this view if API key was not granted.
+        //
+        if (api_is_supported()) {
+            if (!api_is_authenticated()) {
+                window.location = "{% get_app_domain %}{% url 'at_login_master' %}";
+            }
+        } else {
+            window.location = "{% get_app_domain %}";
+        }
+
+    }); // end Document Start
+</script>
+<!-- end Include JS -->
+
+
+<h1>Dashboard</h1>
+
+
+<h3>Universities</h3>
+<h4>Create</h4>
+<p>
+    <a href="{% url 'at_university_founding_master' %}">Create a University</a>
+</p>
+<h4>List</h4>
+
+
+<br />
+<h3>Logout</h3>
+<p>
+    <a onclick="perform_logout();">Sign off</a>
+</p>
+{% endblock content %}

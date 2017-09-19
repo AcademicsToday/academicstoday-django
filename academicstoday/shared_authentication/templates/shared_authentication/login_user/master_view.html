@@ -1,0 +1,81 @@
+{% extends 'shared_foundation/frontend_base.html' %}
+{% load staticfiles i18n foundation_tags %}
+{% block title %}{% trans 'Login | Academics Today' %}{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+<!-- JAVASCRIPT -->
+<!-- Include JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+ crossorigin="anonymous"></script>
+{% include 'shared_foundation/common_js.html' %}
+{% include 'shared_api/shared_api_view.html' %}
+<script>
+    $(document).ready(function () {
+        // Detect "Enter" button clicked and then auto-click on our submit button.
+        $(document).keypress(function(event){
+            if(event.keyCode == 13){
+                $("#id_login_btn").click();
+            }
+        });
+
+        // ALGORITHM:
+        // (1) Check to see if our browser supports "HTML Storage" and if our
+        //     browser does not then we need to redirect to an error page
+        //     telling the user that they are missing that technology.
+        // (2) If the browser supports "HTML Storage" then attempt to check to
+        //     see if the browser currently has an API key saved. If the
+        //     browser has an API key saved then redirect the app into the
+        //     authenticated portal.
+        if (api_is_supported()) {
+            if (api_is_authenticated()) {
+                window.location = "{% get_app_domain %}{% url 'at_dashboard_master' %}";
+            }
+        } else {
+            window.location = "{% get_app_domain %}";
+        }
+
+    }); // end Document Start
+
+    /**
+     * Function will take the EMAIL and PASSWORD, submit the information to the
+     * server and have either an error returned or an API KEY which
+     */
+    function ajax_login()
+    {
+        api_post_login(
+            $('#id_email').val().toLowerCase(),
+            $('#id_password').val(),
+            function(was_successful) {
+                if (was_successful) {
+                    // Load up our dashboard.
+                    window.location = "{% get_app_domain %}{% url 'at_dashboard_master' %}";
+                } else {
+                    alert("Failed logging in, did not receive token.");
+                }
+            },
+            function(xhr, status, error) {
+                alert("Wrong login credentials.");
+                // Convert the error json into string.
+                // var string = JSON.stringify( error );
+                // console.log(string);
+            }
+        ); // End Login
+    }
+</script>
+<!-- end JAVASCRIPT -->
+<h1>Login</h1>
+
+<form style="width:280px;margin:auto;">
+    <input type="text" placeholder="{% trans 'Email Address' %}" id="id_email" autocapitalize="off" />
+    <input type="password" placeholder="{% trans 'Password' %}" id="id_password" autocapitalize="off" />
+    <input id="id_login_btn" type="button" onclick="ajax_login();" value="{% trans 'Login' %}" class="ui-btn ui-corner-all" />
+</form>
+
+<p>
+    <a href="{% url 'at_index_master' %}">Back</a>
+</p>
+{% endblock content %}

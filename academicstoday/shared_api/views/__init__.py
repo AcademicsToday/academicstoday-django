@@ -1,0 +1,2 @@
+from shared_api.views.obtainauthtoken_view import ObtainAuthTokenAPIView
+from shared_api.views.register_user_view import RegisterUserAPIView

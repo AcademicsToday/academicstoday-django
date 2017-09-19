@@ -1,0 +1,158 @@
+<script>
+    // DEVELOPER NOTES:
+    // - Requires "common_js.html" to be included before using this code.
+
+    /**
+     *  Function will return TRUE or FALSE depending on whether the current
+     *  browser supports "HTML5 Local Storage". This function must be called
+     *  before any API function gets called.
+     */
+    function api_is_supported()
+    {
+        if (typeof(Storage) !== "undefined") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Function returns TRUE or FALSE depending on whether the user is
+     * authenticated in the browser.
+     */
+    function api_is_authenticated()
+    {
+        // Fetch our existing API token.
+        var private_api_key = localStorage.getItem("private_api_key");
+
+        // If an API key was returned then continue...
+        if (private_api_key === undefined) {
+            return false;
+        } else {
+            if (private_api_key == null) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }
+
+    /**
+     *  Function will take the EMAIL / PASSWORD and verify with the server
+     *  to confirm if that account exists. If that account exists then a
+     *  token will be returned and saved in the "HTML5 Local Storage".
+     */
+    function api_post_login(email_or_username, password, func_callback, func_error_callback)
+    {
+        var url = get_base_domain_url("/api/get_token?format=json");
+        var type = "POST"; // Insert.
+
+        jQuery.ajax({
+            url: url,
+            data: {
+                'email_or_username': email_or_username,
+                'password': password
+            },
+            type: 'POST',
+            traditional: true, // Note: This allows many-to-many arrays for Django REST Framework
+            success: function(json_results){
+
+                // Store the API key for the authenticated user.
+                var private_api_key = json_results['token'];
+
+                // If an API key was returned then continue...
+                if (private_api_key !== undefined) {
+                    // Save the api key in the browser.
+                    localStorage.setItem("private_api_key", private_api_key);
+
+                    // Return with a success condition.
+                    func_callback(true);
+
+                // Return with an error status.
+                } else {
+                    func_callback(false);
+                }
+            },
+            error: function(xhr, status, error) {
+                func_error_callback(xhr, status, error);
+            },
+            complete: function(xhr,status) {
+                // Do nothing.
+            }
+        });
+    }
+
+    /**
+     *  Function will log out the user from the system. Essentially this
+     *  function will clear the API key and thus none of the API functions
+     *  will not work because no API key will exist.
+     */
+    function api_post_logout(func_callback, func_error_callback)
+    {
+        // Save the api key in the browser.
+        localStorage.setItem("private_api_key", undefined);
+
+        // Remove the API key which is currently saved in the browser.
+        localStorage.removeItem("private_api_key");
+
+        // Return with a success condition.
+        func_callback(true);
+    }
+
+    /**
+     * data - email, password
+     */
+    function api_post_register(data, func_callback, func_error_callback)
+    {
+        var url = get_base_domain_url("/api/register/user/?format=json");
+        var type = "POST"; // Insert.
+
+        jQuery.ajax({
+            url: url,
+            data: data,
+            type: 'POST',
+            traditional: true, // Note: This allows many-to-many arrays for Django REST Framework
+            success: function(json_results){
+                func_callback(json_results);
+            },
+            error: function(xhr, status, error) {
+                func_error_callback(xhr, status, error);
+            },
+            complete: function(xhr,status) {
+                // Do nothing.
+            }
+        });
+    }
+
+    /**
+     * data - name, alternate_name
+     */
+    function api_post_register_university(data, func_callback, func_error_callback)
+    {
+        // Fetch our existing API token.
+        var private_api_key = localStorage.getItem("private_api_key");
+
+        // Our URL to the API endpoint.
+        var url = get_base_domain_url("/api/register/university/?format=json");
+        var type = "POST"; // Insert.
+
+        jQuery.ajax({
+            url: url,
+            headers: {
+                Authorization: 'Token ' + private_api_key
+            },
+            data: data,
+            type: 'POST',
+            traditional: true, // Note: This allows many-to-many arrays for Django REST Framework
+            success: function(json_results){
+                func_callback(json_results);
+            },
+            error: function(xhr, status, error) {
+                func_error_callback(xhr, status, error);
+            },
+            complete: function(xhr,status) {
+                // Do nothing.
+            }
+        });
+    }
+</script>

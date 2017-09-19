@@ -1,0 +1,39 @@
+{% load staticfiles i18n foundation_tags %}
+    <!DOCTYPE html>
+    <html lang="{{ request.language }}">
+      <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{% block title %}{% trans 'Academics Today' %}{% endblock %}</title>
+
+        <!-- REQUIRED: VERIFICATION -->
+        <meta name="google-site-verification" content="TODO" />
+        <!-- end REQUIRED: VERIFICATION -->
+
+      </head>
+      <body>
+
+           <!-- HEADER CONTENT -->
+           {% block header_content %}
+
+           {% endblock %}
+           <!-- /.HEADER CONTENT -->
+
+            {% if request.user.is_authenticated %}
+            {% endif %}
+
+            <!-- CONTENT -->
+            {% block content %}
+            {% endblock %}
+            <!-- /.CONTENT -->
+
+
+
+        {% include "shared_foundation/common_js.html" %}
+
+
+
+        </div>
+    </body>
+</html>

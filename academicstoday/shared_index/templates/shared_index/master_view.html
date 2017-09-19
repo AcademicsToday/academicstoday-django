@@ -1,0 +1,27 @@
+{% extends 'shared_foundation/frontend_base.html' %}
+{% load staticfiles i18n %}
+
+{% block title %}
+{% trans 'Academics Today' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+<!-- Include JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+ crossorigin="anonymous"></script>
+
+
+<h1>Homepage</h1>
+
+
+<p>
+    <a href="{% url 'at_login_master' %}">Login</a>
+</p>
+<p>
+    <a href="{% url 'at_register_master' %}">Register</a>
+</p>
+{% endblock content %}

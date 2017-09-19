@@ -1,12 +1,7 @@
-![alt tag](https://github.com/AcademicsToday/py-academicstoday/blob/master/docs/media/logo.png)
-# py-academicstoday
+![alt tag](https://github.com/AcademicsToday/academicstoday-django/blob/master/docs/media/logo.png)
+# academicstoday-django
 ## Description
 A open-source platform for online course-based learning and education.
-
-## Support
-You can financially support the project by either:
-* Bitcoin donations: 1NdWWNyHJJd5oFhtzAFtApNaHjSuAbGmXZ
-* Dash donations: XcNwdbXmEdnm4ErQuK8A9UkcTwTkUGf7ML 
 
 ## Features
 * Students log in and enroll in the provided courses
@@ -15,10 +10,8 @@ You can financially support the project by either:
 * Earn certificates of completion of courses
 
 ## System Requirements
-* Python 3.4.x+
-* Postgres SQL DB 9.4+
-* pip 6.1.1+
-* virtualenv 12.1.1+
+* Python 3.6.x+
+* Postgres SQL DB 9.6+
 
 ## Dependencies
 See [requirements.txt](https://github.com/AcademicsToday/py-academicstoday/blob/master/requirements.txt) for more information.
@@ -29,17 +22,13 @@ For Linux and OSX users, run these commands:
 
 1. First clone the project locally and then go into the directory
   ```
-  $ git clone https://github.com/AcademicsToday/py-academicstoday.git 
-  $ cd py-academicstoday
+  $ git clone https://github.com/AcademicsToday/academicstoday-django;
+  $ cd academicstoday-django;
   ```
 
 2. Setup our virtual environment
   ```
-  (OSX)
-  $ python3 -m venv env
-
-  (Linux)
-  $ virtualenv env
+  $ virtualenv -p python3.6 env
   ```
 
 3. Now lets activate virtual environment
@@ -47,13 +36,7 @@ For Linux and OSX users, run these commands:
   $ source env/bin/activate
   ```
 
-4. OSX USERS ONLY: If you are using ‘Postgres.app’, you’ll need to have pg_config setup in your $PATH. If you already have set this up, skip this step, else simply run this command in the console to set the path manually.
-
-  ```
-  $ export PATH="/Applications/Postgres.app/Contents/Versions/9.4/bin:$PATH"
-  ```
-
-5. Now lets install the libraries this project depends on.
+4. Now lets install the libraries this project depends on.
   ```
   $ pip install -r requirements.txt
   ```
@@ -61,56 +44,98 @@ For Linux and OSX users, run these commands:
 ### Database
 We are almost done! Just follow these instructions and the database will be setup for the application to use.
 
-1. Load up your postgres and enter the console. Then to create our database, enter:
-  ```
-  # create database academicstoday_db;
+#### MacOS Database
+Let us setup our database:
+
+  ```sql
+  drop database academicstoday_db;
+  create database academicstoday_db;
+  \c academicstoday_db;
+  CREATE USER django WITH PASSWORD '123password';
+  GRANT ALL PRIVILEGES ON DATABASE academicstoday_db to django;
+  ALTER USER django CREATEDB;
+  ALTER ROLE django SUPERUSER;
+  -- CREATE EXTENSION postgis;
   ```
 
-2. To confirm it was created, run this line, you should see the database in the output
-  ```
-  # \l
+#### Ubuntu Database
+Let us setup our database:
+
+  ```sql
+  sudo -i -u postgres
+  psql
+
+  DROP DATABASE academicstoday_db;
+  CREATE DATABASE academicstoday_db;
+  \c academicstoday_db;
+  CREATE USER django WITH PASSWORD '123password';
+  GRANT ALL PRIVILEGES ON DATABASE academicstoday_db to django;
+  ALTER USER django CREATEDB;
+  -- ALTER ROLE django SUPERUSER;
+  -- CREATE EXTENSION postgis;
   ```
 
-3. Enter the database
-  ```
-  # \c academicstoday_db
-  ```
+#### CentOS 7 Database:
 
-4. If you haven’t created an administrator for your previous projects, create one now by entering:
+  ```sql
+  sudo -i -u postgres;
+  dropdb academicstoday_db;
+  createdb academicstoday_db;
+  psql academicstoday_db;
+  CREATE USER django WITH PASSWORD '123password';
+  GRANT ALL PRIVILEGES ON DATABASE academicstoday_db to django;
+  ALTER USER django CREATEDB;
+  ALTER ROLE django SUPERUSER;
+  -- CREATE EXTENSION postgis;
   ```
-  # CREATE USER django WITH PASSWORD '123password';
-  # GRANT ALL PRIVILEGES ON DATABASE academicstoday_db to django;
-  ```
-
-5. Your database "academicstoday_db" is now setup with an admin user account "django" using the passowrd "123password”. 
 
 ### Application + Database
 Run the following command to create your custom settings instance. Note: Please write all your application passwords here as it won't be tracked on git.
+
   ```
-  $ cd academicstoday_project/academicstoday_project
+  $ cd academicstodayacademicstoday
   $ cp secret_settings_example.py secret_settings.py
   ```
 
 Run the following commands to populate the database.
   ```
-  $ cd ../academicstoday_project
-  $ python manage.py makemigrations
-  $ python manage.py migrate 
-  $ python manage.py setup_academicstoday
+  cd ../academicstoday;
+  python manage.py makemigrations;
+  python manage.py migrate_schemas;
+  python manage.py populate_public;
+  python manage.py setup_fixtures;
+  python manage.py populate_site;
   ```
 
+Update your hosts file to support our applications domain.
+  ```
+  sudo vi /etc/hosts
+  ```
+
+  Append to the file...
+  ```
+  127.0.0.1       academicstoday.com
+  127.0.0.1       academicstoday.ca
+  ```
+
+
+  refresh
+  ```
+  dscacheutil -flushcache
+  ```
+
+
 ## Usage
-To run the web-app, you’ll need to run the server instance and access the page from your browser. 
+To run the web-app, you’ll need to run the server instance and access the page from your browser.
 
 Start up the web-server:
   ```
-  $ cd academicstoday_project
-  $ python manage.py runserver
+  $ sudo ./manage.py runserver academicstoday.ca:80
   ```
 
 In your web-browser, load up the following url
   ```
-  http://127.0.0.1:8000/
+  http://academicstoday.ca/
   ```
 
 Congratulations, you are all setup to run the web-app! Have fun coding!

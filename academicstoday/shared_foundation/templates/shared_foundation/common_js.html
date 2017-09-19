@@ -1,0 +1,81 @@
+{% load foundation_tags %}
+<script>
+    function phonenumber_to_integer(phone_string){
+        if (typeof phone_string === "undefined") {
+            return 0;
+        }
+
+        var phone = phone_string;
+        phone = phone.replace(/\D/g,''); // Remove non-numeric characters
+        phone = parseInt(phone);
+        return phone;
+    }
+
+    /**
+    *  Returns the exact domain without subdomains.
+    */
+   function get_base_domain_url(append_url) {
+       return "{% get_app_domain %}" + append_url;
+   }
+
+    function get_phone(text_id)
+    {
+        return phonenumber_to_integer( $(text_id).val() );
+    }
+
+    function is_phone_valid(phone) {
+        if (phone.length != 10) {
+            return false;
+        }
+        return !isNaN( phonenumber_to_integer(phone) );
+    }
+
+    /*
+     * http://stackoverflow.com/a/46181
+     */
+    function is_email_valid(email) {
+        var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+        return re.test(email);
+    }
+
+    function date_to_django_datetime(js_date) {
+        var today = js_date;
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear(); var hh = today.getHours();
+        var m = today.getMinutes();
+        var secs = today.getSeconds();
+        var now = yyyy+"-"+mm+"-"+dd+"T"+hh+":"+m+":"+secs;
+        return now;
+    }
+
+    function date_to_django_date(js_date) {
+        var today = js_date;
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear(); var hh = today.getHours();
+        var now = yyyy+"-"+mm+"-"+dd;
+        return now;
+    }
+
+    /**
+     *  Source: http://stackoverflow.com/a/12773665
+     */
+    function check_canadian_postal(postal_code) {
+        var regex = new RegExp(/^[ABCEGHJKLMNPRSTVXY]\d[ABCEGHJKLMNPRSTVWXYZ]( )?\d[ABCEGHJKLMNPRSTVWXYZ]\d$/i);
+        if (regex.test(postal_code)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function check_unitedstates_zip(zip_code) {
+        var regex = new RegExp(/(^\d{5}$)|(^\d{5}-\d{4}$)/);
+        if (regex.test(zip_code)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+</script>
