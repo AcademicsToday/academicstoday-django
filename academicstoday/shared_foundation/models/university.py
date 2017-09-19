@@ -3,6 +3,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django_tenants.models import TenantMixin, DomainMixin
 from shared_foundation.models.abstract_thing import AbstractSharedThing
+from shared_foundation import constants
 
 
 class SharedUniversity(TenantMixin, AbstractSharedThing):
@@ -41,6 +42,28 @@ class SharedUniversity(TenantMixin, AbstractSharedThing):
         blank=True,
         related_name="%(app_label)s_%(class)s_students_related"
     )
+    is_listed = models.BooleanField(
+        _("Is Listed"),
+        help_text=_('Variable controls whether this university will be listed to the public.'),
+        default=True,
+        blank=True
+    )
+    is_content_open = models.BooleanField(
+        _("Is Content Open"),
+        help_text=_('Variable controls whether non-registered users are able to view the contents of the university or users must be registered to view. This includes: courses, forums, etc.'),
+        default=True,
+        blank=True
+    )
+    registration_requirement = models.PositiveSmallIntegerField(
+        _("Registration Reqirement"),
+        choices=constants.REGISTRATION_REQUIREMENT_OPTIONS,
+        help_text=_('The registration requirement for students to be accepted into this university.'),
+        default=constants.NO_REGISTRATION_REQUIREMENT_ID,
+        blank=True
+    )
+
+    def __str__(self):
+        return str(self.name)
 
 
 class SharedUniveristyDomain(DomainMixin):

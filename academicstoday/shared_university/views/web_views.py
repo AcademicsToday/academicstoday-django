@@ -13,3 +13,9 @@ def create_detail_page(request):
     return render(request, 'shared_university/create/detail_view.html',{
         'current_page': 'home-master',
     })
+
+
+def launchpad_master_page(request):
+    return render(request, 'shared_university/create/master_view.html',{
+        'current_page': 'home-master',
+    })

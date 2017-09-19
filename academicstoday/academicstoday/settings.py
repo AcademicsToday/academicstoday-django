@@ -98,8 +98,9 @@ TENANT_APPS = (
     'django.contrib.contenttypes',
 
     # Tenant-specific apps
-    # 'tenant_api',
-    # 'tenant_foundation'
+    'tenant_dashboard',
+    'tenant_registrar',
+    'tenant_university'
 )
 
 INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
