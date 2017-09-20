@@ -25,7 +25,7 @@
     //###################//
     // MEMEBER FUNCTIONS //
     //###################//
-    
+
 
     /**
      * Function will log the user out of the account.
@@ -45,17 +45,10 @@
     //    START JS APP   //
     //###################//
     $(document).ready(function () {
-        //
-        // (1) Prevent using this view if API key was not granted.
-        //
-        if (api_is_supported()) {
-            if (!api_is_authenticated()) {
-                window.location = "{% get_app_domain %}{% url 'at_login_master' %}";
-            }
-        } else {
-            window.location = "{% get_app_domain %}";
+        var token = "{{ request.token }}";
+        if (token == "") {
+            window.location = "{% get_app_domain %}{% url 'at_login_master' %}";
         }
-
     }); // end Document Start
 
     /**

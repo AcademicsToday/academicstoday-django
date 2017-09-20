@@ -22,20 +22,9 @@
             }
         });
 
-        // ALGORITHM:
-        // (1) Check to see if our browser supports "HTML Storage" and if our
-        //     browser does not then we need to redirect to an error page
-        //     telling the user that they are missing that technology.
-        // (2) If the browser supports "HTML Storage" then attempt to check to
-        //     see if the browser currently has an API key saved. If the
-        //     browser has an API key saved then redirect the app into the
-        //     authenticated portal.
-        if (api_is_supported()) {
-            if (api_is_authenticated()) {
-                window.location = "{% get_app_domain %}{% url 'at_dashboard_master' %}";
-            }
-        } else {
-            window.location = "{% get_app_domain %}";
+        var token = "{{ request.token }}";
+        if (token == "") {
+            window.location = "{% get_app_domain %}{% url 'at_login_master' %}";
         }
 
     }); // end Document Start

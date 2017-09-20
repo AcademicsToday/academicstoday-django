@@ -3,7 +3,7 @@ from django.http import HttpResponseBadRequest, HttpResponseForbidden
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from rest_framework.authtoken.models import Token
-from foundation_app import constants
+from shared_foundation import constants
 
 
 class AcademicsTodayTokenMiddleware(object):

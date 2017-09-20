@@ -54,12 +54,19 @@ SITE_ID = 1
 # Application definition
 #
 
+# The following configuration forces Django to use the "ISO-8601" standard
+# for the dates.
 DATETIME_FORMAT = 'iso-8601'
 DATETIME_INPUT_FORMATS = 'iso-8601'
 DATE_FORMAT = 'iso-8601'
 DATE_INPUT_FORMATS = 'iso-8601'
 TIME_FORMAT = 'iso-8601'
 TIME_INPUT_FORMATS = 'iso-8601'
+
+# This configuration ensures that all authenticated users from the public
+# schema to exist authenticated in the tenant schemas as well. This is
+# important to have "django-tenants" work
+SESSION_COOKIE_DOMAIN = '.' + env_var("ACADEMICSTODAY_APP_HTTP_DOMAIN")
 
 
 # Application definition
@@ -107,8 +114,8 @@ INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in S
 
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',                  # Third Party
     'django_tenants.middleware.main.TenantMainMiddleware',    # Third Party
+    'corsheaders.middleware.CorsMiddleware',                  # Third Party
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -120,6 +127,7 @@ MIDDLEWARE = [
     'django.middleware.locale.LocaleMiddleware',              # Extra Django App
     'htmlmin.middleware.HtmlMinifyMiddleware',                # Third Party
     'htmlmin.middleware.MarkRequestMiddleware',               # Third Party
+    'shared_foundation.middleware.AcademicsTodayTokenMiddleware'
 ]
 
 ROOT_URLCONF = 'academicstoday.urls'
