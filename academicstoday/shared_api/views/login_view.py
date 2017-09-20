@@ -34,7 +34,6 @@ class LoginAPIView(APIView):
         serializer = AuthCustomTokenSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
-        token, created = Token.objects.get_or_create(user=user)
 
         # Create a session for this User by logging this user in.
         authenticated_user = authenticate(
@@ -42,6 +41,7 @@ class LoginAPIView(APIView):
             password=serializer['password'].value
         )
         login(self.request, authenticated_user)
+        token, created = Token.objects.get_or_create(user=user)
 
         return Response(
             data = {

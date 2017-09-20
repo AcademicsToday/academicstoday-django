@@ -127,7 +127,8 @@ MIDDLEWARE = [
     'django.middleware.locale.LocaleMiddleware',              # Extra Django App
     'htmlmin.middleware.HtmlMinifyMiddleware',                # Third Party
     'htmlmin.middleware.MarkRequestMiddleware',               # Third Party
-    'shared_foundation.middleware.AcademicsTodayTokenMiddleware'
+    'shared_foundation.middleware.AcademicsTodayTokenMiddleware',
+    'shared_foundation.middleware.AcademicsTodayIPAddressMiddleware'
 ]
 
 ROOT_URLCONF = 'academicstoday.urls'

@@ -46,8 +46,9 @@
     //###################//
     $(document).ready(function () {
         var token = "{{ request.token }}";
-        if (token == "") {
-            window.location = "{% get_app_domain %}{% url 'at_login_master' %}";
+        if (token == "" || token == undefined) {
+            alert(token);
+            //window.location = "{% get_app_domain %}{% url 'at_login_master' %}";
         }
     }); // end Document Start
 </script>

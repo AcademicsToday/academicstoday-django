@@ -56,19 +56,7 @@
             type: 'POST',
             traditional: true, // Note: This allows many-to-many arrays for Django REST Framework
             success: function(json_results){
-
-                // Store the API key for the authenticated user.
-                var private_api_key = json_results['token'];
-
-                // If an API key was returned then continue...
-                if (private_api_key !== undefined) {
-                    // Return with a success condition.
-                    func_callback(true);
-
-                // Return with an error status.
-                } else {
-                    func_callback(false);
-                }
+                func_callback(json_results);
             },
             error: function(xhr, status, error) {
                 func_error_callback(xhr, status, error);
