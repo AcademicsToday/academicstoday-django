@@ -9,7 +9,7 @@ from shared_foundation import models
 from shared_foundation import utils
 
 
-def validateEmail( email ):  # DEPRECATED
+def validateEmail( email ):
     """
     https://stackoverflow.com/a/3218128
     """
@@ -22,7 +22,7 @@ def validateEmail( email ):  # DEPRECATED
         return False
 
 
-class AuthCustomTokenSerializer(serializers.Serializer):  # DEPRECATED
+class AuthCustomTokenSerializer(serializers.Serializer):
     """
     https://stackoverflow.com/a/28218467
     """
@@ -44,7 +44,7 @@ class AuthCustomTokenSerializer(serializers.Serializer):  # DEPRECATED
                 email_or_username = user_request.username
 
             user = authenticate(username=email_or_username, password=password)
-
+            
             if user:
                 if not user.is_active:
                     msg = _('User account is disabled.')

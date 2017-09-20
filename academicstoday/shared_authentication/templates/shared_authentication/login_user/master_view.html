@@ -23,8 +23,8 @@
         });
 
         var token = "{{ request.token }}";
-        if (token == "") {
-            window.location = "{% get_app_domain %}{% url 'at_login_master' %}";
+        if (token != "" && token != undefined) {
+            window.location = "{% get_app_domain %}{% url 'at_dashboard_master' %}";
         }
 
     }); // end Document Start

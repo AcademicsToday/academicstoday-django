@@ -2,14 +2,18 @@ from django.conf.urls import include, url
 from rest_framework.urlpatterns import format_suffix_patterns
 from rest_framework import serializers, viewsets, routers
 from rest_framework.urlpatterns import format_suffix_patterns
-from shared_api.views.obtainauthtoken_view import ObtainAuthTokenAPIView
+from shared_api.views.login_view import LoginAPIView
+from shared_api.views.logout_view import LogoutAPIView
+from shared_api.views.obtainauthtoken_view import ObtainAuthTokenAPIView # DEPRECATED
 from shared_api.views.register_user_view import RegisterUserAPIView
 from shared_api.views.register_university_view import RegisterUniversityAPIView
 
 
 urlpatterns = [
     # Authentication.
-    url(r'^api/get_token$', ObtainAuthTokenAPIView.as_view()),
+    url(r'^api/login$', LoginAPIView.as_view()),
+    url(r'^api/logout$', LogoutAPIView.as_view()),
+    url(r'^api/get_token$', ObtainAuthTokenAPIView.as_view()), # DEPRECATED
     url(r'^api/register/user/$', RegisterUserAPIView.as_view()),
 
     # University

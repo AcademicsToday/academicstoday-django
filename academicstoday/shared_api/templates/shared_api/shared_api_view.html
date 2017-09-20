@@ -23,7 +23,7 @@
     function api_is_authenticated()
     {
         // Fetch our existing API token.
-        var private_api_key = localStorage.getItem("private_api_key");
+        var private_api_key = "{{ request.token }}";
 
         // If an API key was returned then continue...
         if (private_api_key === undefined) {
@@ -44,7 +44,7 @@
      */
     function api_post_login(email_or_username, password, func_callback, func_error_callback)
     {
-        var url = get_base_domain_url("/api/get_token?format=json");
+        var url = get_base_domain_url("/api/login?format=json");
         var type = "POST"; // Insert.
 
         jQuery.ajax({
@@ -62,9 +62,6 @@
 
                 // If an API key was returned then continue...
                 if (private_api_key !== undefined) {
-                    // Save the api key in the browser.
-                    localStorage.setItem("private_api_key", private_api_key);
-
                     // Return with a success condition.
                     func_callback(true);
 
@@ -89,14 +86,29 @@
      */
     function api_post_logout(func_callback, func_error_callback)
     {
-        // Save the api key in the browser.
-        localStorage.setItem("private_api_key", undefined);
+        // Fetch our existing API token.
+        var private_api_key = "{{ request.token }}";
 
-        // Remove the API key which is currently saved in the browser.
-        localStorage.removeItem("private_api_key");
+        var url = get_base_domain_url("/api/logout?format=json");
+        var type = "POST"; // Insert.
 
-        // Return with a success condition.
-        func_callback(true);
+        jQuery.ajax({
+            url: url,
+            headers: {
+                Authorization: 'Token ' + private_api_key
+            },
+            type: 'POST',
+            traditional: true, // Note: This allows many-to-many arrays for Django REST Framework
+            success: function(json_results){
+                func_callback(json_results);
+            },
+            error: function(xhr, status, error) {
+                func_error_callback(xhr, status, error);
+            },
+            complete: function(xhr,status) {
+                // Do nothing.
+            }
+        });
     }
 
     /**
@@ -130,7 +142,7 @@
     function api_post_register_university(data, func_callback, func_error_callback)
     {
         // Fetch our existing API token.
-        var private_api_key = localStorage.getItem("private_api_key");
+        var private_api_key = "{{ request.token }}";
 
         // Our URL to the API endpoint.
         var url = get_base_domain_url("/api/register/university/?format=json");

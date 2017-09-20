@@ -1,5 +1,5 @@
 {% extends 'shared_foundation/frontend_base.html' %}
-{% load staticfiles i18n %}
+{% load staticfiles i18n foundation_tags %}
 
 {% block title %}
 {% trans 'Academics Today' %}
@@ -13,6 +13,12 @@
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"
   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
  crossorigin="anonymous"></script>
+<script>
+var token = "{{ request.token }}";
+if (token != "" && token != undefined) {
+    window.location = "{% get_app_domain %}{% url 'at_dashboard_master' %}";
+}
+</script>
 
 
 <h1>Homepage</h1>
