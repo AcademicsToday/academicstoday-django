@@ -106,6 +106,7 @@ TENANT_APPS = (
 
     # Tenant-specific apps
     'tenant_dashboard',
+    'tenant_foundation',
     'tenant_registrar',
     'tenant_university'
 )
