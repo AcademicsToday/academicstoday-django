@@ -1,0 +1,69 @@
+{% extends 'shared_foundation/frontend_base.html' %}
+{% load staticfiles i18n foundation_tags %}
+
+{% block title %}
+{% trans 'Registrar | Academics Today' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<!-- Include JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+ crossorigin="anonymous"></script>
+{% include 'shared_foundation/common_js.html' %}
+{% include 'shared_api/shared_api_view.html' %}
+<script>
+    //###################//
+    // MEMBER VARIABLES  //
+    //###################//
+
+
+    //###################//
+    // MEMEBER FUNCTIONS //
+    //###################//
+
+
+    /**
+     * Function will log the user out of the account.
+     */
+    function perform_logout() {
+        // Attempt to log out.
+        api_post_logout(
+            function () {
+                window.location = "{% get_app_domain %}{% url 'at_login_master' %}";
+            }, function() {
+                alert("Failed logging out.");
+            }
+        );
+    }
+
+    //###################//
+    //    START JS APP   //
+    //###################//
+    $(document).ready(function () {
+        var token = "{{ request.token }}";
+        if (token == "" || token === undefined) {
+            // alert("Token", token);
+            window.location = "{% get_app_domain %}{% url 'at_login_master' %}";
+        }
+    }); // end Document Start
+</script>
+<!-- end Include JS -->
+
+
+<h1>{% trans 'Registrar' %}</h1>
+
+<p>I want to join this university...</p>
+<p>
+    <input type="button" value="Apply now" />
+</p>
+
+
+<p>
+    <a href="{% url 'at_dashboard_master' %}">Back</a>
+</p>
+{% endblock content %}

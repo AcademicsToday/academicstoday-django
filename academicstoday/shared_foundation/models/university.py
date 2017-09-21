@@ -42,6 +42,12 @@ class SharedUniversity(TenantMixin, AbstractSharedThing):
         blank=True,
         related_name="%(app_label)s_%(class)s_students_related"
     )
+    applicants = models.ManyToManyField(
+        User,
+        help_text=_('The users who have applied to this university and require admission decision by an administrator.'),
+        blank=True,
+        related_name="%(app_label)s_%(class)s_applicants_related"
+    )
     is_listed = models.BooleanField(
         _("Is Listed"),
         help_text=_('Variable controls whether this university will be listed to the public.'),
@@ -64,6 +70,30 @@ class SharedUniversity(TenantMixin, AbstractSharedThing):
 
     def __str__(self):
         return str(self.name)
+
+    def is_member(self, user):
+        """
+        Function returns TRUE/FALSE depending on whether the user somehow
+        belongs to this university or not.
+        """
+        if user in self.administrators.all():
+            return True
+        elif user in self.teachers.all():
+            return True
+        elif user in self.students.all():
+            return True
+        else:
+            return False
+
+    def is_applicant(self, user):
+        """
+        Functions returns TRUE/FALSE depending if user is an applicant in
+        this university.
+        """
+        if user in self.applicants.all():
+            return True
+        else:
+            return False
 
 
 class SharedUniveristyDomain(DomainMixin):
