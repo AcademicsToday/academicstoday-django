@@ -31,20 +31,20 @@ def tenant_url(schema_name, view_name):
 
 
 @register.inclusion_tag('templatetags/render_shared_sidebar_menu.html')
-def render_shared_sidebar_menu(user=None):
+def render_shared_sidebar_menu(page_id, user=None):
     """
     TODO
     """
     return {
-        'todo': None
+        'page_id': page_id
     }
 
 
 @register.inclusion_tag('templatetags/render_shared_top_menu.html')
-def render_shared_top_menu(user=None):
+def render_shared_top_menu(page_id, user=None):
     """
     TODO
     """
     return {
-        'todo': None
+        'page_id': page_id
     }

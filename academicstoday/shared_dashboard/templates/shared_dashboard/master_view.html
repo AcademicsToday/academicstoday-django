@@ -11,11 +11,6 @@
 {% block content %}
 
 <!-- Include JS -->
-<script src="https://code.jquery.com/jquery-3.2.1.min.js"
-  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
- crossorigin="anonymous"></script>
-{% include 'shared_foundation/common_js.html' %}
-{% include 'shared_api/shared_api_view.html' %}
 <script>
     //###################//
     // MEMBER VARIABLES  //
@@ -26,20 +21,6 @@
     // MEMEBER FUNCTIONS //
     //###################//
 
-
-    /**
-     * Function will log the user out of the account.
-     */
-    function perform_logout() {
-        // Attempt to log out.
-        api_post_logout(
-            function () {
-                window.location = "{% get_app_domain %}{% url 'at_login_master' %}";
-            }, function() {
-                alert("Failed logging out.");
-            }
-        );
-    }
 
     //###################//
     //    START JS APP   //
@@ -80,16 +61,5 @@
 {% for university in universities %}
     <a href="{% university_gateway_url university request.user %}">{{ university }}</a>
 {% endfor %}
-
-
-<br />
-<br />
-<br />
-
-
-<h2>PROTOTYPE MENU</h2>
-<ul>
-    <li><a onclick="perform_logout();">Sign off</a></li>
-</lu>
 
 {% endblock content %}

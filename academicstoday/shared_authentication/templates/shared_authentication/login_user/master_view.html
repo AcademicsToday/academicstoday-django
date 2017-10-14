@@ -1,18 +1,8 @@
-{% extends 'shared_foundation/frontend_base.html' %}
+{% extends 'shared_foundation/pre_app_base.html' %}
 {% load staticfiles i18n foundation_tags %}
 {% block title %}{% trans 'Login | Academics Today' %}{% endblock title %}
-
-{% block header_content %}
-{% endblock header_content %}
-
 {% block content %}
 <!-- JAVASCRIPT -->
-<!-- Include JS -->
-<script src="https://code.jquery.com/jquery-3.2.1.min.js"
-  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
- crossorigin="anonymous"></script>
-{% include 'shared_foundation/common_js.html' %}
-{% include 'shared_api/shared_api_view.html' %}
 <script>
     $(document).ready(function () {
         // Detect "Enter" button clicked and then auto-click on our submit button.
@@ -56,15 +46,39 @@
     }
 </script>
 <!-- end JAVASCRIPT -->
-<h1>Login</h1>
 
-<form style="width:280px;margin:auto;">
-    <input type="text" placeholder="{% trans 'Email Address' %}" id="id_email" autocapitalize="off" />
-    <input type="password" placeholder="{% trans 'Password' %}" id="id_password" autocapitalize="off" />
-    <input id="id_login_btn" type="button" onclick="ajax_login();" value="{% trans 'Login' %}" class="ui-btn ui-corner-all" />
-</form>
 
-<p>
-    <a href="{% url 'at_index_master' %}">Back</a>
-</p>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="login-panel panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{% trans 'Please Sign In' %}</h3>
+                </div>
+                <div class="panel-body">
+                    <form role="form">
+                        <fieldset>
+                            <div class="form-group">
+                                <input class="form-control" placeholder="{% trans 'E-mail' %}" name="email" type="email" autofocus id="id_email" autocapitalize="off">
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" placeholder="{% trans 'Password' %}" name="password" type="password" value="" id="id_password" autocapitalize="off">
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input name="remember" type="checkbox" value="Remember Me">{% trans 'Remember Me' %}
+                                </label>
+                            </div>
+                            <!-- Change this to a button or input when using this as a form -->
+                            <a onclick="ajax_login();" class="btn btn-lg btn-success btn-block">{% trans 'Login' %}</a>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+            <p>
+                <a href="{% get_app_domain %}{% url 'at_index_master' %}">{% trans 'Back' %}</a>
+            </p>
+        </div>
+    </div>
+</div>
 {% endblock content %}

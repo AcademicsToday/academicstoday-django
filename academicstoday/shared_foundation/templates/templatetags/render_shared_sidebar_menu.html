@@ -14,9 +14,12 @@
                 </div>
                 <!-- /input-group -->
             </li>
-            <li>
-                <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+            <li {% if page_id == "shared-dashboard-master" %}class="active"{% endif %}>
+                <a {% if page_id == "shared-dashboard-master" %}class="active"{% endif %} href="{% url 'at_dashboard_master' %}">
+                    <i class="fa fa-dashboard fa-fw"></i> Dashboard
+                </a>
             </li>
+            {% comment %}
             <li>
                 <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
@@ -89,6 +92,8 @@
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
+            {% endcomment %}
+            {% comment %}
             <li class="active">
                 <a href="#"><i class="fa fa-files-o fa-fw"></i> Sample Pages<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
@@ -101,6 +106,7 @@
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
+            {% endcomment %}
         </ul>
     </div>
     <!-- /.sidebar-collapse -->

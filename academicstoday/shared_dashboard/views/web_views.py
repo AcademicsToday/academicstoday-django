@@ -29,7 +29,7 @@ def master_page(request):
         Q(students__id=request.user.id)
     )
     return render(request, 'shared_dashboard/master_view.html',{
-        'current_page': 'home-master',
+        'page_id': 'shared-dashboard-master',
         'universities': universities,
         'my_managing_univerisites': my_managing_univerisites,
         'my_teaching_univerisites': my_teaching_univerisites,

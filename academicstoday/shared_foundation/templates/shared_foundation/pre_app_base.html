@@ -43,45 +43,10 @@
 </head>
 
 <body>
-
-    <div id="wrapper">
-
-        <!-- Navigation -->
-        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-            {% render_shared_top_menu page_id request.user %}
-            {% render_shared_sidebar_menu page_id request.user %}
-        </nav>
-
-        <!-- Page Content -->
-        <div id="page-wrapper">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <!-- HEADER CONTENT -->
-                        {% block header_content %}
-                            <h1 class="page-header">Blank</h1>
-                        {% endblock %}
-                        <!-- /.HEADER CONTENT -->
-
-                        {% if request.user.is_authenticated %}
-                        {% endif %}
-
-                        <!-- CONTENT -->
-                        {% block content %}
-                            <!-- CONTENT GETS RENDERED HERE .. -->
-                        {% endblock %}
-                        <!-- /.CONTENT -->
-                    </div>
-                    <!-- /.col-lg-12 -->
-                </div>
-                <!-- /.row -->
-            </div>
-            <!-- /.container-fluid -->
-        </div>
-        <!-- /#page-wrapper -->
-
-    </div>
-    <!-- /#wrapper -->
+    <!-- CONTENT -->
+    {% block content %}
+    {% endblock %}
+    <!-- /.CONTENT -->
 
     <!-- Bootstrap Core JavaScript -->
     <script src="{% static 'app_base/vendor/bootstrap/js/bootstrap.min.js' %}"></script>

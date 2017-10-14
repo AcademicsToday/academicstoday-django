@@ -1,20 +1,12 @@
-{% extends 'shared_foundation/frontend_base.html' %}
+{% extends 'shared_foundation/pre_app_base.html' %}
 {% load staticfiles i18n foundation_tags %}
 
 {% block title %}
 {% trans 'Register | Academics Today' %}
 {% endblock title %}
 
-{% block header_content %}
-{% endblock header_content %}
-
 {% block content %}
-<!-- Include JS -->
-<script src="https://code.jquery.com/jquery-3.2.1.min.js"
-  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
- crossorigin="anonymous"></script>
- {% include 'shared_foundation/common_js.html' %}
- {% include 'shared_api/shared_api_view.html' %}
+<!-- JAVASCRIPT -->
 <script>
     $(document).ready(function () {
         // Detect "Enter" button clicked and then auto-click on our submit button.
@@ -57,6 +49,8 @@
             'password_repeated': $('#id_password_repeated').val(),
         }
 
+        console.log(data);
+
         // Submit to the server.
         api_post_register(
             data,
@@ -77,25 +71,51 @@
         ); // End Login
     }
 </script>
+<!-- end JAVASCRIPT -->
 
+<!-- CONTENT -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="login-panel panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{% trans 'Please Fill out Register Form' %}</h3>
+                </div>
+                <div class="panel-body">
+                    <form role="form">
+                        <fieldset>
+                            <div class="form-group">
+                                <input class="form-control" placeholder="{% trans 'First Name' %}" name="first_name" type="text" autofocus id="id_first_name" autocapitalize="off" />
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" placeholder="{% trans 'Last Name' %}" name="last_name" type="text" autofocus id="id_last_name" autocapitalize="off" />
+                            </div>
 
-<h1>Register</h1>
-
-<form style="width:280px;margin:auto;">
-    <input type="text" placeholder="{% trans 'First Name' %}" id="id_first_name" autocapitalize="off" />
-    <input type="text" placeholder="{% trans 'Last Name' %}" id="id_last_name" autocapitalize="off" />
-    <input type="text" placeholder="{% trans 'Email Address' %}" id="id_email" autocapitalize="off" />
-    <input type="password" placeholder="{% trans 'Password' %}" id="id_password" autocapitalize="off" />
-    <input type="password" placeholder="{% trans 'Password (Repeat)' %}" id="id_password_repeated" autocapitalize="off" />
-    <input id="id_register_btn" type="button" onclick="ajax_register();" value="{% trans 'Register' %}" class="ui-btn ui-corner-all" />
-</form>
-
-
-
-<p>
-    <a href="{% url 'at_index_master' %}">Back</a>
-</p>
-
-
-
+                            <div class="form-group">
+                                <input class="form-control" placeholder="{% trans 'E-mail' %}" name="email" type="email" autofocus id="id_email" autocapitalize="off" />
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" placeholder="{% trans 'Password' %}" name="password" type="password" value="" id="id_password" autocapitalize="off" />
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" placeholder="{% trans 'Repeat Password' %}" name="repeat_password" type="password" value="" id="id_password_repeated" autocapitalize="off" />
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input name="remember" type="checkbox" value="Remember Me">{% trans 'I agree to the terms.' %}
+                                </label>
+                            </div>
+                            <!-- Change this to a button or input when using this as a form -->
+                            <a onclick="ajax_register();" class="btn btn-lg btn-success btn-block">{% trans 'Register' %}</a>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+            <p>
+                <a href="{% get_app_domain %}{% url 'at_index_master' %}">{% trans 'Back' %}</a>
+            </p>
+        </div>
+    </div>
+</div>
+<!-- end CONTENT -->
 {% endblock content %}
