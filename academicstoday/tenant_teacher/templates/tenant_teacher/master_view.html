@@ -1,5 +1,5 @@
 {% extends 'shared_foundation/frontend_base.html' %}
-{% load staticfiles i18n foundation_tags tenant_foundation_tags %}
+{% load staticfiles i18n foundation_tags %}
 
 {% block title %}
 {% trans 'Dashboard | Academics Today' %}
@@ -46,24 +46,20 @@
     //###################//
     $(document).ready(function () {
         var token = "{{ request.token }}";
-        if (token == "" || token === undefined) {
-            // alert("Token", token);
-            window.location = "{% get_app_domain %}{% url 'at_login_master' %}";
+        if (token == "" || token == undefined) {
+            alert(token);
+            //window.location = "{% get_app_domain %}{% url 'at_login_master' %}";
         }
     }); // end Document Start
 </script>
 <!-- end Include JS -->
 
 
-<h1>Dashboard</h1>
+<h1>Teacher ({{ request.tenant }})</h1>
 <h2>DEVELOPER NOTES</h2>
-<p>This is the dashboard that all users see when they first log in. Inside this GUI there should be the following.</p>
+<p>TODO</p>
 <ul>
-    <li>Listing of universities you are admin.</li>
-    <li>Listing of universities you are a student / teacher in.</li>
-    <li>Listing announcements in courses you belong to.</li>
-    <li>Listing new communications from other users</li>
-    <li>Listing of recent marks / test results if you are a student.</li>
+    <li>TODO</li>
 </ul>
 
 
@@ -71,25 +67,17 @@
 
 
 <h2>PROTOTYPE GUI</h2>
-<h3>Universities</h3>
-<h4>Create</h4>
-<p>
-    <a href="{% url 'at_university_founding_master' %}">Create a University</a>
-</p>
-<h4>List</h4>
-{% for university in universities %}
-    <a href="{% university_gateway_url university request.user %}">{{ university }}</a>
-{% endfor %}
+<p>TODO</p>
 
-
-<br />
-<br />
 <br />
 
 
 <h2>PROTOTYPE MENU</h2>
 <ul>
+    <li><a href="{{ constants.ACADEMICSTODAY_APP_HTTP_PROTOCOL }}{{ constants.ACADEMICSTODAY_APP_HTTP_DOMAIN }}{% url 'at_dashboard_master' %}">Academics Today Home</a></li>
+    <li><a href="{% tenant_url request.tenant.schema_name 'at_tenant_admin_dashboard_master' %}">Dashboard</a></li>
+    <li>Teachers</li>
     <li><a onclick="perform_logout();">Sign off</a></li>
-</lu>
+</ul>
 
 {% endblock content %}

@@ -109,7 +109,7 @@ TENANT_APPS = (
     'tenant_dashboard',
     'tenant_foundation',
     'tenant_registrar',
-    'tenant_university'
+    'tenant_teacher',
 )
 
 INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]

@@ -28,3 +28,23 @@ def tenant_url(schema_name, view_name):
         return settings.ACADEMICSTODAY_APP_HTTP_PROTOCOL + schema_name + '.%s' % settings.ACADEMICSTODAY_APP_HTTP_DOMAIN + reverse(view_name)
     else:
         return settings.ACADEMICSTODAY_APP_HTTP_PROTOCOL + '%s' % settings.ACADEMICSTODAY_APP_HTTP_DOMAIN + reverse(view_name)
+
+
+@register.inclusion_tag('templatetags/render_shared_sidebar_panel.html')
+def render_shared_sidebar_menu(user):
+    """
+    TODO
+    """
+    return {
+        'todo': None
+    }
+
+
+@register.inclusion_tag('templatetags/render_shared_top_menu.html')
+def render_shared_top_menu(user):
+    """
+    TODO
+    """
+    return {
+        'todo': None
+    }

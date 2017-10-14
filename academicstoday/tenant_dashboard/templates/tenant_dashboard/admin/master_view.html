@@ -67,7 +67,7 @@
 
 
 <h2>PROTOTYPE GUI</h2>
-
+<p>TODO</p>
 
 <br />
 
@@ -75,6 +75,8 @@
 <h2>PROTOTYPE MENU</h2>
 <ul>
     <li><a href="{{ constants.ACADEMICSTODAY_APP_HTTP_PROTOCOL }}{{ constants.ACADEMICSTODAY_APP_HTTP_DOMAIN }}{% url 'at_dashboard_master' %}">Home</a></li>
+    <li>Dashboard</li>
+    <li><a href="{% tenant_url request.tenant.schema_name 'at_tenant_teacher_master' %}">Teachers</li></li>
     <li><a onclick="perform_logout();">Sign off</a></li>
 </ul>
 
