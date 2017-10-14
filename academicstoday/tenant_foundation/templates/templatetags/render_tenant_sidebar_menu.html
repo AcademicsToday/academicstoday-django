@@ -1,0 +1,73 @@
+{% load staticfiles i18n foundation_tags tenant_foundation_tags %}
+
+<div class="navbar-default sidebar" role="navigation">
+    <div class="sidebar-nav navbar-collapse">
+        <ul class="nav" id="side-menu">
+
+            <li class="sidebar-search">
+                <div class="input-group custom-search-form">
+                    <input type="text" class="form-control" placeholder="{% trans 'Search university...' %}">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+                </div>
+                <!-- /input-group -->
+            </li>
+
+            <li>
+                <a href="{% get_app_domain %}{% url 'at_dashboard_master' %}">
+                    <i class="fa fa-level-up fa-fw"></i>&nbsp;{% trans 'Back' %}
+                </a>
+            </li>
+
+
+            <li {% if page_id == "tenant_dashboard" %}class="active"{% endif %}>
+                <a {% if page_id == "tenant_dashboard" %}class="active"{% endif %} href="{% university_gateway_url university user %}">
+                    <i class="fa fa-dashboard fa-fw"></i>&nbsp;{% trans 'Dashboard' %}
+                </a>
+            </li>
+
+
+            <li>
+                <a href="{% get_app_domain %}{% url 'at_dashboard_master' %}">
+                    <i class="fa fa-tasks fa-fw"></i>&nbsp;{% trans 'Courses' %}
+                </a>
+            </li>
+
+            <li>
+                <a href="{% get_app_domain %}{% url 'at_dashboard_master' %}">
+                    <i class="fa fa-certificate fa-fw"></i>&nbsp;{% trans 'Diploma &amp; Certification' %}
+                </a>
+            </li>
+
+            <li>
+                <a href="{% get_app_domain %}{% url 'at_dashboard_master' %}">
+                    <i class="fa fa-sitemap fa-fw"></i>&nbsp;{% trans 'Faculty &amp; Staff' %}
+                </a>
+            </li>
+
+            <li>
+                <a href="{% get_app_domain %}{% url 'at_dashboard_master' %}">
+                    <i class="fa fa-group fa-fw"></i>&nbsp;{% trans 'Students &amp; Alumini' %}
+                </a>
+            </li>
+
+            <li>
+                <a href="{% get_app_domain %}{% url 'at_dashboard_master' %}">
+                    <i class="fa fa-map-signs fa-fw"></i>&nbsp;{% trans 'Registrar &amp; Admissions' %}
+                </a>
+            </li>
+
+            <li>
+                <a href="{% get_app_domain %}{% url 'at_dashboard_master' %}">
+                    <i class="fa fa-cogs fa-fw"></i>&nbsp;{% trans 'Administration' %}
+                </a>
+            </li>
+
+        </ul>
+    </div>
+    <!-- /.sidebar-collapse -->
+</div>
+<!-- /.navbar-static-side -->

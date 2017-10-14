@@ -35,11 +35,13 @@ def university_gateway_url(university, user):
     return settings.ACADEMICSTODAY_APP_HTTP_PROTOCOL + university.schema_name + '.%s' % settings.ACADEMICSTODAY_APP_HTTP_DOMAIN + reverse('at_tenant_registrar_master')
 
 
-@register.inclusion_tag('templatetags/tenant_foundation_tags.html')
-def render_tenant_sidebar_menu(university, user):
+@register.inclusion_tag('templatetags/render_tenant_sidebar_menu.html')
+def render_tenant_sidebar_menu(university, page_id, user):
     """
     TODO
     """
     return {
-        'todo': None
+        'university': university,
+        'page_id': page_id,
+        'user': user
     }

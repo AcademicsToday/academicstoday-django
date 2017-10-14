@@ -9,7 +9,7 @@ from tenant_registrar.decorators import tenant_registration_required
 @tenant_registration_required
 def admin_master_page(request):
     return render(request, 'tenant_dashboard/admin/master_view.html',{
-        'current_page': 'home-master',
+        'page_id': 'tenant_dashboard',
     })
 
 
@@ -17,7 +17,7 @@ def admin_master_page(request):
 @tenant_registration_required
 def teacher_master_page(request):
     return render(request, 'tenant_dashboard/teacher/master_view.html',{
-        'current_page': 'home-master',
+        'page_id': 'tenant_dashboard',
     })
 
 
@@ -25,5 +25,5 @@ def teacher_master_page(request):
 @tenant_registration_required
 def student_master_page(request):
     return render(request, 'tenant_dashboard/student/master_view.html',{
-        'current_page': 'home-master',
+        'page_id': 'tenant_dashboard',
     })

@@ -1,83 +1,16 @@
-{% extends 'shared_foundation/frontend_base.html' %}
-{% load staticfiles i18n foundation_tags %}
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n foundation_tags tenant_foundation_tags %}
 
 {% block title %}
 {% trans 'Dashboard | Academics Today' %}
 {% endblock title %}
 
 {% block header_content %}
-{% endblock header_content %}
+    <h1 class="page-header">{% trans 'University Dashboard' %}</h1>
+{% endblock %}
 
 {% block content %}
 
-<!-- Include JS -->
-<script src="https://code.jquery.com/jquery-3.2.1.min.js"
-  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
- crossorigin="anonymous"></script>
-{% include 'shared_foundation/common_js.html' %}
-{% include 'shared_api/shared_api_view.html' %}
-<script>
-    //###################//
-    // MEMBER VARIABLES  //
-    //###################//
-
-
-    //###################//
-    // MEMEBER FUNCTIONS //
-    //###################//
-
-
-    /**
-     * Function will log the user out of the account.
-     */
-    function perform_logout() {
-        // Attempt to log out.
-        api_post_logout(
-            function () {
-                window.location = "{% get_app_domain %}{% url 'at_login_master' %}";
-            }, function() {
-                alert("Failed logging out.");
-            }
-        );
-    }
-
-    //###################//
-    //    START JS APP   //
-    //###################//
-    $(document).ready(function () {
-        var token = "{{ request.token }}";
-        if (token == "" || token == undefined) {
-            alert(token);
-            //window.location = "{% get_app_domain %}{% url 'at_login_master' %}";
-        }
-    }); // end Document Start
-</script>
-<!-- end Include JS -->
-
-
-<h1>Dashboard ({{ request.tenant }})</h1>
-<h2>DEVELOPER NOTES</h2>
-<p>This is the GUI for the admin when you are admin. This page will list:</p>
-<ul>
-    <li>TODO</li>
-</ul>
-
-
-<br />
-
-
-<h2>PROTOTYPE GUI</h2>
 <p>TODO</p>
-
-<br />
-
-
-<h2>PROTOTYPE MENU</h2>
-<ul>
-    <li><a href="{{ constants.ACADEMICSTODAY_APP_HTTP_PROTOCOL }}{{ constants.ACADEMICSTODAY_APP_HTTP_DOMAIN }}{% url 'at_dashboard_master' %}">Home</a></li>
-    <li>Dashboard</li>
-    <li><a href="{% tenant_url request.tenant.schema_name 'at_tenant_teacher_master' %}">Teachers</li></li>
-    <li><a onclick="perform_logout();">Sign off</a></li>
-</ul>
 
 {% endblock content %}
