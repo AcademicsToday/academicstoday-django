@@ -46,6 +46,7 @@ urlpatterns += i18n_patterns(
     url(r'^', include('shared_foundation.urls')),
     url(r'^', include('shared_index.urls')),
     url(r'^', include('shared_university.urls')),
+    url(r'^', include('tenant_api.urls')),
     url(r'^', include('tenant_dashboard.urls')),
     url(r'^', include('tenant_registrar.urls')),
     url(r'^', include('tenant_university.urls')),

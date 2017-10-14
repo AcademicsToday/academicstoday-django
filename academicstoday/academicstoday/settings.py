@@ -105,6 +105,7 @@ TENANT_APPS = (
     'django.contrib.contenttypes',
 
     # Tenant-specific apps
+    'tenant_api',
     'tenant_dashboard',
     'tenant_foundation',
     'tenant_registrar',

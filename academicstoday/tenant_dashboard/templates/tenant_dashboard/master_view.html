@@ -55,13 +55,13 @@
 <!-- end Include JS -->
 
 
-<h1>Dashboard</h1>
+<h1>Dashboard ({{ request.tenant }})</h1>
 
 
 <br />
 
 <p>
-    <a href="{% url 'at_dashboard_master' %}">Back</a>
+    <a href="{{ constants.ACADEMICSTODAY_APP_HTTP_PROTOCOL }}{{ constants.ACADEMICSTODAY_APP_HTTP_DOMAIN }}{% url 'at_dashboard_master' %}">Back</a>
 </p>
 
 <br />
