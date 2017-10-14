@@ -98,6 +98,7 @@ SHARED_APPS = (
     'shared_foundation',
     'shared_index',
     'shared_university',
+    'shared_course'
 )
 
 TENANT_APPS = (

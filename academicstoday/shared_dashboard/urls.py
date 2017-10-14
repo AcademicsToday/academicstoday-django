@@ -4,5 +4,5 @@ from shared_dashboard.views import web_views
 
 
 urlpatterns = (
-    url(r'^dashboard/$', web_views.master_page, name='at_dashboard_master'),
+    url(r'^dashboard$', web_views.master_page, name='at_dashboard_master'),
 )
