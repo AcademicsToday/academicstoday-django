@@ -30,8 +30,8 @@ def tenant_url(schema_name, view_name):
         return settings.ACADEMICSTODAY_APP_HTTP_PROTOCOL + '%s' % settings.ACADEMICSTODAY_APP_HTTP_DOMAIN + reverse(view_name)
 
 
-@register.inclusion_tag('templatetags/render_shared_sidebar_panel.html')
-def render_shared_sidebar_menu(user):
+@register.inclusion_tag('templatetags/render_shared_sidebar_menu.html')
+def render_shared_sidebar_menu(user=None):
     """
     TODO
     """
@@ -41,7 +41,7 @@ def render_shared_sidebar_menu(user):
 
 
 @register.inclusion_tag('templatetags/render_shared_top_menu.html')
-def render_shared_top_menu(user):
+def render_shared_top_menu(user=None):
     """
     TODO
     """
