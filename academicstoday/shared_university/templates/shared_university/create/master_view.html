@@ -1,12 +1,13 @@
-{% extends 'shared_foundation/frontend_base.html' %}
-{% load staticfiles i18n foundation_tags %}
+{% extends 'shared_foundation/app_base.html' %}
+{% load staticfiles i18n foundation_tags tenant_foundation_tags %}
 
 {% block title %}
-{% trans 'Dashboard | Academics Today' %}
+{% trans 'Found a University | Academics Today' %}
 {% endblock title %}
 
 {% block header_content %}
-{% endblock header_content %}
+    <h1 class="page-header">{% trans 'Found a University' %}</h1>
+{% endblock %}
 
 {% block content %}
 
@@ -86,15 +87,7 @@
 </script>
 <!-- end Include JS -->
 
-<h1>Found a University</h1>
-<h2>DEVELOPER NOTES</h2>
-<p>This is the page where you can create a university and become an admin of it.</p>
 
-
-<br />
-
-
-<h2>PROTOTYPE GUI</h2>
 <form style="width:280px;margin:auto;">
     <input type="text" placeholder="{% trans 'Schema Name' %}" id="id_schema_name" autocapitalize="off" />
     <input type="text" placeholder="{% trans 'Official Name' %}" id="id_name" autocapitalize="off" />
@@ -103,11 +96,4 @@
 </form>
 
 
-<br />
-
-
-<h2>PROTOTYPE MENU</h2>
-<p>
-    <a href="{% url 'at_dashboard_master' %}">Back</a>
-</p>
 {% endblock content %}

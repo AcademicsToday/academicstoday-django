@@ -6,5 +6,5 @@ from shared_university.views import web_views
 urlpatterns = (
     url(r'^university/founding$', web_views.create_master_page, name='at_university_founding_master'),
     url(r'^university/founding/completed$', web_views.create_detail_page, name='at_university_founding_detail'),
-
+    url(r'^universities$', web_views.list_master_page, name='at_university_list_master'),
 )

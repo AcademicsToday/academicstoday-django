@@ -1,14 +1,16 @@
-{% extends 'shared_foundation/frontend_base.html' %}
-{% load staticfiles i18n foundation_tags %}
+{% extends 'shared_foundation/app_base.html' %}
+{% load staticfiles i18n foundation_tags tenant_foundation_tags %}
 
 {% block title %}
-{% trans 'Dashboard | Academics Today' %}
+{% trans 'Finished Founding a University | Academics Today' %}
 {% endblock title %}
 
 {% block header_content %}
-{% endblock header_content %}
+    <h1 class="page-header">{% trans 'Finished Founding a University' %}</h1>
+{% endblock %}
 
 {% block content %}
+
 
 <!-- Include JS -->
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"
@@ -48,13 +50,7 @@
 </script>
 <!-- end Include JS -->
 
-<h1>Found a University</h1>
-<p>This is the page to indicate that user successfully registered their university.</p>
-<strong>Submitted!</strong>
-<p>Please wait until we approve your university. You will receive an email.</p>
-<br />
+<strong>{% trans 'Submitted!' %}</strong>
+<p>{% trans 'Please wait until we approve your university. You will receive an email.' %}</p>
 
-<p>
-    <a href="{% url 'at_dashboard_master' %}">Back</a>
-</p>
 {% endblock content %}

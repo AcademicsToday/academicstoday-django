@@ -1,11 +1,12 @@
-{% load staticfiles i18n foundation_tags %}
+{% load staticfiles i18n foundation_tags tenant_foundation_tags %}
 
 <div class="navbar-default sidebar" role="navigation">
     <div class="sidebar-nav navbar-collapse">
         <ul class="nav" id="side-menu">
+
             <li class="sidebar-search">
                 <div class="input-group custom-search-form">
-                    <input type="text" class="form-control" placeholder="Search...">
+                    <input type="text" class="form-control" placeholder="{% trans 'Search for course...' %}">
                     <span class="input-group-btn">
                         <button class="btn btn-default" type="button">
                             <i class="fa fa-search"></i>
@@ -14,24 +15,57 @@
                 </div>
                 <!-- /input-group -->
             </li>
+
+
             <li {% if page_id == "shared-dashboard-master" %}class="active"{% endif %}>
                 <a {% if page_id == "shared-dashboard-master" %}class="active"{% endif %} href="{% url 'at_dashboard_master' %}">
-                    <i class="fa fa-dashboard fa-fw"></i> Dashboard
+                    <i class="fa fa-dashboard fa-fw"></i>&nbsp;{% trans 'Dashboard' %}
                 </a>
             </li>
-            {% comment %}
+
+
+            <li {% if page_id == "shared-university-list" %}class="active"{% endif %}>
+                <a href="{% get_app_domain %}{% url 'at_university_list_master' %}" {% if page_id == "shared-university-list" %}class="active"{% endif %}>
+                    <i class="fa fa-university fa-fw"></i>&nbsp;{% trans 'Universities' %}
+                </a>
+            </li>
+
+
             <li>
-                <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
+                <a href="tables.html">
+                    <i class="fa fa-table fa-fw"></i>&nbsp;{% trans 'Courses' %}
+                </a>
+            </li>
+
+
+            <li>
+                <a href="#">
+                    <i class="fa fa-sitemap fa-fw"></i>&nbsp;{% trans 'My University' %}
+                    <span class="fa arrow"></span>
+                </a>
                 <ul class="nav nav-second-level">
-                    <li>
-                        <a href="flot.html">Flot Charts</a>
-                    </li>
-                    <li>
-                        <a href="morris.html">Morris.js Charts</a>
-                    </li>
+                    {% for university in my_universities %}
+                        <li>
+                            <a href="{% university_gateway_url university user %}">{{ university }}</a>
+                        </li>
+                    {% empty %}
+                        <li>
+                            <a>{% trans 'You do not belong to any yet!' %}</a>
+                        </li>
+                    {% endfor %}
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
+
+
+            <li {% if page_id == "shared-university-create" %}class="active"{% endif %}>
+                <a href="{% url 'at_university_founding_master' %}" {% if page_id == "shared-university-create" %}class="active"{% endif %}>
+                    <i class="fa fa-flag fa-fw"></i>&nbsp;{% trans 'Found a University' %}
+                </a>
+            </li>
+
+
+            {% comment %}
             <li>
                 <a href="tables.html"><i class="fa fa-table fa-fw"></i> Tables</a>
             </li>

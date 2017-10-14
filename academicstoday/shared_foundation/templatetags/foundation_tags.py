@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from shared_foundation import constants
+from shared_foundation.models import SharedUniversity
 
 
 register = template.Library()
@@ -35,8 +36,22 @@ def render_shared_sidebar_menu(page_id, user=None):
     """
     TODO
     """
+    # Fetch all the univeristies in our system which are publicaly listed.
+    my_universities = SharedUniversity.objects.filter(
+        Q(administrators__id=user.id) |
+        Q(teachers__id=user.id) |
+        Q(students__id=user.id)
+    ).prefetch_related(
+        'administrators',
+        'teachers',
+        'students'
+    )
+
+    # Return our objects for this view.
     return {
-        'page_id': page_id
+        'page_id': page_id,
+        'user': user,
+        'my_universities': my_universities
     }
 
 

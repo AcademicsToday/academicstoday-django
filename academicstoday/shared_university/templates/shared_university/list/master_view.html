@@ -1,0 +1,26 @@
+{% extends 'shared_foundation/app_base.html' %}
+{% load staticfiles i18n foundation_tags tenant_foundation_tags %}
+
+{% block title %}
+{% trans 'Universities | Academics Today' %}
+{% endblock title %}
+
+{% block header_content %}
+    <h1 class="page-header">{% trans 'Universities' %}</h1>
+{% endblock %}
+
+{% block content %}
+
+
+{% for university in universities.all %}
+    <li>
+        <a href="{% university_gateway_url university user %}">{{ university }}</a>
+    </li>
+{% empty %}
+    <li>
+        <a>{% trans 'There is no universities currently' %}</a>
+    </li>
+{% endfor %}
+
+
+{% endblock content %}
