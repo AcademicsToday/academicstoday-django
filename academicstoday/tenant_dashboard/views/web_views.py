@@ -7,7 +7,23 @@ from tenant_registrar.decorators import tenant_registration_required
 
 @login_required(login_url='/en/login')
 @tenant_registration_required
-def master_page(request):
-    return render(request, 'tenant_dashboard/master_view.html',{
+def admin_master_page(request):
+    return render(request, 'tenant_dashboard/admin/master_view.html',{
+        'current_page': 'home-master',
+    })
+
+
+@login_required(login_url='/en/login')
+@tenant_registration_required
+def teacher_master_page(request):
+    return render(request, 'tenant_dashboard/teacher/master_view.html',{
+        'current_page': 'home-master',
+    })
+
+
+@login_required(login_url='/en/login')
+@tenant_registration_required
+def student_master_page(request):
+    return render(request, 'tenant_dashboard/student/master_view.html',{
         'current_page': 'home-master',
     })

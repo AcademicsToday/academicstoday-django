@@ -1,5 +1,5 @@
 {% extends 'shared_foundation/frontend_base.html' %}
-{% load staticfiles i18n foundation_tags %}
+{% load staticfiles i18n foundation_tags shared_dashboard_tags %}
 
 {% block title %}
 {% trans 'Dashboard | Academics Today' %}
@@ -56,6 +56,7 @@
 
 
 <h1>Dashboard</h1>
+<h2>DEVELOPER NOTES</h2>
 <p>This is the dashboard that all users see when they first log in. Inside this GUI there should be the following.</p>
 <ul>
     <li>Listing of universities you are admin.</li>
@@ -65,6 +66,11 @@
     <li>Listing of recent marks / test results if you are a student.</li>
 </ul>
 
+
+<br />
+
+
+<h2>PROTOTYPE GUI</h2>
 <h3>Universities</h3>
 <h4>Create</h4>
 <p>
@@ -72,13 +78,18 @@
 </p>
 <h4>List</h4>
 {% for university in universities %}
-    <a href="{% tenant_url university.schema_name 'at_tenant_dashboard_master' %}">{{ university }}</a>
+    <a href="{% university_gateway_url university request.user %}">{{ university }}</a>
 {% endfor %}
 
 
 <br />
-<h3>Logout</h3>
-<p>
-    <a onclick="perform_logout();">Sign off</a>
-</p>
+<br />
+<br />
+
+
+<h2>PROTOTYPE MENU</h2>
+<ul>
+    <li><a onclick="perform_logout();">Sign off</a></li>
+</lu>
+
 {% endblock content %}
