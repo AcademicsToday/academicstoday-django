@@ -1,32 +1,4 @@
 #—————————
-# Xcode
-#—————————
-build/
-*.pbxuser
-!default.pbxuser
-*.mode1v3
-!default.mode1v3
-*.mode2v3
-!default.mode2v3
-*.perspectivev3
-!default.perspectivev3
-xcuserdata
-*.xccheckout
-*.moved-aside
-DerivedData
-*.hmap
-a*.ipa
-*.xcuserstate
-
-# CocoaPods
-#
-# We recommend against adding the Pods directory to your .gitignore. However
-# you should judge for yourself, the pros and cons are mentioned at:
-# http://guides.cocoapods.org/using/using-cocoapods.html#should-i-ignore-the-pods-directory-in-source-control
-#
-# Pods/
-
-#—————————
 # OSX
 #—————————
 .DS_Store
@@ -81,60 +53,106 @@ $RECYCLE.BIN/
 #—————————
 # Byte-compiled / optimized / DLL files
 __pycache__/
-__pycache__/*
-__pycache__
 *.py[cod]
-*.pyc
+*$py.class
 
 # C extensions
 *.so
 
 # Distribution / packaging
-bin/
+.Python
+env/
 build/
 develop-eggs/
-#dist/
+dist/
+downloads/
 eggs/
+.eggs/
 lib/
 lib64/
 parts/
 sdist/
 var/
+wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
 
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
 
 # Unit test / coverage reports
+htmlcov/
 .tox/
 .coverage
+.coverage.*
 .cache
 nosetests.xml
-coverage.txt
 coverage.xml
-coverage_html
-coverage_html/*
+*.cover
+.hypothesis/
 
 # Translations
 *.mo
-
-# Mr Developer
-.mr.developer.cfg
-.project
-.pydevproject
-
-# Rope
-.ropeproject
+*.pot
 
 # Django stuff:
 *.log
-*.pot
+local_settings.py
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
 
 # Sphinx documentation
 docs/_build/
+
+# PyBuilder
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# celery beat schedule file
+celerybeat-schedule
+
+# SageMath parsed files
+*.sage.py
+
+# dotenv
+.env
+
+# virtualenv
+.venv
+venv/
+ENV/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+
 
 #—————————————————————————————
 # Python VirtualEnv Directory
@@ -146,12 +164,37 @@ env/*
 env
 .env
 *.cfg
+env/pip-selfcheck.json
+*.csv#
 
 #—————————————————————————————
 # Application Specific Ignores
 #—————————————————————————————
 # Important Note: Make sure this is the name of the virtualenv directory
 # that you set when you where setting up the project.
+# Do not share our secret configuration file.
+academicstoday_project/academicstoday_project/.env
+
+# Do not share our converage file.
+coverage.txt
+
+# Do not share your `sqlite3` database related files.
+academicstoday_project/db.sqlite3
+academicstoday_project/db.sqlite3-journal
+
+# Do not share your 'django-haystack' related files.
+academicstoday_project/academicstoday_project/whoosh_index
+
+# Do not share real-life production data.
+prod_*.csv
+
+# Project related notes.
+private_notes.txt
+
+# Do not share collected static files.
+academicstoday_project/academicstoday_project/static
+academicstoday_project/staticfiles
+
 academicstoday-env/
 *.cfg
 academicstoday_project/academicstoday_project/secret_settings.py
