@@ -2,7 +2,7 @@
 # py-academicstoday
 
 ## Description
-A open-source platform for online course-based learning and education.
+A open-source platform for online course-based learning and education.<br />
 Note - This portal is now accessible with django version 3.2
 
 ## Support
