@@ -1,10 +1,10 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 from account.views import mail
 from account.views import profile
 from account.views import setting
 from account.views import donate
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'^profile$', profile.profile_page),
     url(r'^update_user$', profile.update_user),
     url(r'^inbox$', mail.mail_page),
@@ -14,4 +14,4 @@ urlpatterns = patterns('',
     url(r'^settings$', setting.settings_page),
     url(r'^update_password$', setting.update_password),
     url(r'^donate$', donate.donate_page),
-)
+]

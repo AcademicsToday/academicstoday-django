@@ -1,7 +1,7 @@
 from django.db import models
 from django import forms
 from django.forms import ModelForm, Textarea, TextInput
-from django.forms.extras.widgets import Select, SelectDateWidget
+from django.forms.widgets import Select, SelectDateWidget
 from registrar.models import Course
 
 class CourseForm(forms.ModelForm):

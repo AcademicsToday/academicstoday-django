@@ -60,7 +60,7 @@ class LandpageCoursePreview(models.Model):
 
 class LandpageTopPickCourse(models.Model):
     id = models.AutoField(primary_key=True)
-    course = models.ForeignKey(Course)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
     
     def __str__(self):
         return self.course

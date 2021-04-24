@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 
 from registrar.views import courses
 from registrar.views import enrollment
@@ -6,7 +6,7 @@ from registrar.views import teaching
 from registrar.views import transcript
 from registrar.views import certificate
 
-urlpatterns = patterns('',
+urlpatterns = [
     # Courses
     url(r'^courses$', courses.courses_page),
     url(r'^enroll$', courses.enroll),
@@ -35,4 +35,4 @@ urlpatterns = patterns('',
     url(r'^change_certificate_accessiblity$', certificate.change_certificate_accessiblity),
     url(r'^certificate/(\d+)$', certificate.certificate_page),
     url(r'^certificate_permalink_modal$', certificate.certificate_permalink_modal),
-)
+]

@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 
 from . import views
 
@@ -15,7 +15,7 @@ from student.views import discussion
 from student.views import peer_review
 from student.views import credit
 
-urlpatterns = patterns('',
+urlpatterns = [
     # Announcement
     url(r'^course/(\d+)/announcements$', announcement.announcements_page),
 
@@ -88,4 +88,4 @@ urlpatterns = patterns('',
     # Credit
     url(r'^course/(\d+)/credit$', credit.credit_page),
     url(r'^course/(\d+)/submit_credit_application$', credit.submit_credit_application),
-)
+]
