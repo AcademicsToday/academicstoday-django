@@ -1,9 +1,9 @@
 from django.db import models
 from django import forms
-from django.forms.extras.widgets import Select, SelectDateWidget
+from django.forms.widgets import Select, SelectDateWidget
 from django.conf import settings
 from django.forms import ModelForm, Textarea, TextInput, NumberInput
-from django.forms.extras.widgets import Select, SelectDateWidget
+from django.forms.widgets import Select, SelectDateWidget
 from registrar.models import FileUpload
 from registrar.models import Announcement
 from registrar.models import Syllabus

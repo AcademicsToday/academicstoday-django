@@ -21,6 +21,7 @@ def landpage_page(request):
     team_members = LandpageTeamMember.objects.all().order_by('id')
     partners = LandpagePartner.objects.all()
     contact_form = ContactForm()
+    print(settings.AGENCY_CSS_LIBRARY_URLS)
     return render(request, 'landpage/main/index.html',{
         'top_courses': top_courses,
         'course_previews' : course_previews,

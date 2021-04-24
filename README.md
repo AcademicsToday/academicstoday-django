@@ -1,7 +1,9 @@
 ![alt tag](https://github.com/AcademicsToday/py-academicstoday/blob/master/docs/media/logo.png)
 # py-academicstoday
+
 ## Description
-A open-source platform for online course-based learning and education.
+A open-source platform for online course-based learning and education.<br />
+Note - This portal is now accessible with django version 3.2
 
 ## Support
 You can financially support the project by either:

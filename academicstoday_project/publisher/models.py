@@ -11,7 +11,7 @@ class Publication(models.Model):
     description = models.TextField(null=True)
     published_date = models.DateField(auto_now= True, null=True)
     file = models.FileField(upload_to='uploads', null=True)
-    author = models.ForeignKey(User)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     reviews = models.ManyToManyField(PeerReview)
     
     def delete(self, *args, **kwargs):
